@@ -1,0 +1,371 @@
+{% comment %}
+  ==========================================================================
+  ELLORA SPACES — ABOUT PAGE SECTION 2: VALUE PROPOSITIONS / TRUST BADGES
+  File: sections/ellora-about-features.liquid
+  Fully customizable via Shopify Theme Customizer
+  ==========================================================================
+{% endcomment %}
+
+<div class="el-section-wrapper el-sec-about-features-wrapper" id="ellora-about-features-{{ section.id }}">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
+
+    #ellora-about-features-{{ section.id }} {
+      --el-bg: {{ section.settings.bg_color | default: '#FAF9F6' }};
+      --el-dark: {{ section.settings.title_color | default: '#1C1B19' }};
+      --el-desc: {{ section.settings.desc_color | default: '#5C554E' }};
+      --el-divider: {{ section.settings.divider_color | default: '#E6E1D9' }};
+      --el-hover: {{ section.settings.hover_color | default: '#9E533D' }};
+      --el-font-serif: 'Cormorant Garamond', Georgia, serif;
+      --el-font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+
+      background-color: var(--el-bg);
+      padding-top: {{ section.settings.padding_top_desktop | default: 48 }}px;
+      padding-bottom: {{ section.settings.padding_bottom_desktop | default: 56 }}px;
+      width: 100%;
+      font-family: var(--el-font-sans);
+      box-sizing: border-box;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    #ellora-about-features-{{ section.id }} *,
+    #ellora-about-features-{{ section.id }} *::before,
+    #ellora-about-features-{{ section.id }} *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    #ellora-about-features-{{ section.id }} .el-about-features-container {
+      width: 90%;
+      max-width: {{ section.settings.container_max_width | default: 1720 }}px;
+      margin: 0 auto;
+    }
+
+    #ellora-about-features-{{ section.id }} .el-about-features-grid {
+      display: grid;
+      grid-template-columns: repeat({{ section.blocks.size | at_most: 4 | at_least: 1 }}, 1fr);
+      gap: 0;
+    }
+
+    #ellora-about-features-{{ section.id }} .el-about-feature-item {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      padding: 0 32px 0 0;
+      position: relative;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    #ellora-about-features-{{ section.id }} .el-about-feature-item:not(:first-child) {
+      padding-left: 36px;
+    }
+
+    {% if section.settings.show_dividers %}
+    #ellora-about-features-{{ section.id }} .el-about-feature-item:not(:last-child)::after {
+      content: '';
+      position: absolute;
+      right: 0;
+      top: 6px;
+      height: calc(100% - 12px);
+      width: 1px;
+      background-color: var(--el-divider);
+    }
+    {% endif %}
+
+    #ellora-about-features-{{ section.id }} .el-about-feature-icon {
+      width: 30px;
+      height: 30px;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      color: var(--el-dark);
+    }
+
+    #ellora-about-features-{{ section.id }} .el-about-feature-icon svg,
+    #ellora-about-features-{{ section.id }} .el-about-feature-icon img {
+      width: 28px;
+      height: 28px;
+      object-fit: contain;
+    }
+
+    #ellora-about-features-{{ section.id }} .el-about-feature-title {
+      font-family: var(--el-font-serif);
+      font-size: clamp(20px, 1.6vw, {{ section.settings.title_font_size | default: 24 }}px);
+      font-weight: 400;
+      color: var(--el-dark);
+      margin-bottom: 10px;
+      letter-spacing: -0.01em;
+      line-height: 1.25;
+      transition: color 0.25s ease;
+    }
+
+    #ellora-about-features-{{ section.id }} .el-about-feature-item:hover .el-about-feature-title {
+      color: var(--el-hover);
+    }
+
+    #ellora-about-features-{{ section.id }} .el-about-feature-desc {
+      font-family: var(--el-font-sans);
+      font-size: clamp(13px, 0.95vw, {{ section.settings.desc_font_size | default: 13.5 }}px);
+      color: var(--el-desc);
+      line-height: 1.56;
+      font-weight: 400;
+    }
+
+    /* Tablet breakpoint */
+    @media (max-width: 960px) {
+      #ellora-about-features-{{ section.id }} {
+        padding-top: {{ section.settings.padding_top_mobile | default: 36 }}px;
+        padding-bottom: {{ section.settings.padding_bottom_mobile | default: 40 }}px;
+      }
+
+      #ellora-about-features-{{ section.id }} .el-about-features-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 36px 28px !important;
+      }
+
+      #ellora-about-features-{{ section.id }} .el-about-feature-item {
+        padding: 0 !important;
+      }
+
+      #ellora-about-features-{{ section.id }} .el-about-feature-item::after {
+        display: none !important;
+      }
+    }
+
+    /* Mobile breakpoint */
+    @media (max-width: 600px) {
+      #ellora-about-features-{{ section.id }} .el-about-features-container {
+        width: 92%;
+      }
+
+      #ellora-about-features-{{ section.id }} .el-about-features-grid {
+        grid-template-columns: 1fr !important;
+        gap: 28px !important;
+      }
+
+      #ellora-about-features-{{ section.id }} .el-about-feature-icon {
+        margin-bottom: 14px;
+      }
+
+      #ellora-about-features-{{ section.id }} .el-about-feature-title {
+        font-size: 21px;
+        margin-bottom: 8px;
+      }
+    }
+  </style>
+
+  <div class="el-about-features-container">
+    <div class="el-about-features-grid">
+      {%- for block in section.blocks -%}
+        <{% if block.settings.link != blank %}a href="{{ block.settings.link }}"{% else %}div{% endif %} 
+          class="el-about-feature-item" 
+          {{ block.shopify_attributes }}>
+          
+          <div class="el-about-feature-icon" aria-hidden="true">
+            {%- if block.settings.icon_image != blank -%}
+              {{ block.settings.icon_image | image_url: width: 60 | image_tag: loading: 'lazy', alt: block.settings.title }}
+            {%- elsif block.settings.custom_svg != blank -%}
+              {{ block.settings.custom_svg }}
+            {%- else -%}
+              <!-- Built-in Ellora Signature Weave Hatch Pattern -->
+              <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <line x1="3" y1="9" x2="9" y2="3" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"></line>
+                <line x1="3" y1="16" x2="16" y2="3" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"></line>
+                <line x1="3" y1="23" x2="23" y2="3" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"></line>
+                <line x1="7" y1="27" x2="27" y2="7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"></line>
+                <line x1="14" y1="27" x2="27" y2="14" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"></line>
+                <line x1="21" y1="27" x2="27" y2="21" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"></line>
+              </svg>
+            {%- endif -%}
+          </div>
+
+          <h3 class="el-about-feature-title">{{ block.settings.title }}</h3>
+          <p class="el-about-feature-desc">{{ block.settings.description }}</p>
+
+        </{% if block.settings.link != blank %}a{% else %}div{% endif %}>
+      {%- endfor -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "About — 02 Trust Badges",
+  "tag": "section",
+  "class": "section-ellora-about-features",
+  "settings": [
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#FAF9F6"
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Title Color",
+      "default": "#1C1B19"
+    },
+    {
+      "type": "color",
+      "id": "desc_color",
+      "label": "Description Text Color",
+      "default": "#5C554E"
+    },
+    {
+      "type": "color",
+      "id": "divider_color",
+      "label": "Vertical Divider Color",
+      "default": "#E6E1D9"
+    },
+    {
+      "type": "color",
+      "id": "hover_color",
+      "label": "Title Hover Color",
+      "default": "#9E533D"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_dividers",
+      "label": "Show Vertical Dividers on Desktop",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "title_font_size",
+      "label": "Title Font Size (px)",
+      "min": 18,
+      "max": 32,
+      "step": 1,
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "desc_font_size",
+      "label": "Description Font Size (px)",
+      "min": 12,
+      "max": 18,
+      "step": 0.5,
+      "default": 13.5
+    },
+    {
+      "type": "range",
+      "id": "container_max_width",
+      "label": "Container Max Width (px)",
+      "min": 1100,
+      "max": 1920,
+      "step": 20,
+      "default": 1720
+    },
+    {
+      "type": "range",
+      "id": "padding_top_desktop",
+      "label": "Desktop Padding Top (px)",
+      "min": 20,
+      "max": 100,
+      "step": 4,
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_desktop",
+      "label": "Desktop Padding Bottom (px)",
+      "min": 20,
+      "max": 100,
+      "step": 4,
+      "default": 56
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "label": "Mobile Padding Top (px)",
+      "min": 10,
+      "max": 60,
+      "step": 2,
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "label": "Mobile Padding Bottom (px)",
+      "min": 10,
+      "max": 60,
+      "step": 2,
+      "default": 40
+    }
+  ],
+  "blocks": [
+    {
+      "type": "feature_item",
+      "name": "Badge / Value Item",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "icon_image",
+          "label": "Custom Icon Image (Optional)"
+        },
+        {
+          "type": "html",
+          "id": "custom_svg",
+          "label": "Custom SVG Code (Optional)"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Calm atmosphere"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Description",
+          "default": "Chat to our friendly team to tell your design and technical needs"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link (Optional)"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "About — 02 Trust Badges",
+      "blocks": [
+        {
+          "type": "feature_item",
+          "settings": {
+            "title": "Calm atmosphere",
+            "description": "Chat to our friendly team to tell your design and technical needs"
+          }
+        },
+        {
+          "type": "feature_item",
+          "settings": {
+            "title": "Clear sizing",
+            "description": "Chat to our friendly team to tell your design and technical needs"
+          }
+        },
+        {
+          "type": "feature_item",
+          "settings": {
+            "title": "Honest selling unit",
+            "description": "Chat to our friendly team to tell your design and technical needs"
+          }
+        },
+        {
+          "type": "feature_item",
+          "settings": {
+            "title": "Guided selection",
+            "description": "Chat to our friendly team to tell your design and technical needs"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

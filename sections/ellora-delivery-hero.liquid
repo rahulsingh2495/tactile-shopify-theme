@@ -1,0 +1,376 @@
+{% comment %}
+  ==========================================================================
+  ELLORA SPACES — DELIVERY HERO SECTION
+  File: sections/ellora-delivery-hero.liquid
+  Theme Editor Name: Delivery Hero
+  Features:
+  - Editorial split header with Cormorant Garamond headline & narrative copy
+  - 4 quick logistics highlights pills
+  - Architectural hero banner image with height & radius sliders
+  - Breadcrumb navigation
+  ==========================================================================
+{% endcomment %}
+
+<div class="el-section-wrapper el-sec-del-hero" id="ellora-delivery-hero-{{ section.id }}">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
+
+    #ellora-delivery-hero-{{ section.id }} {
+      --el-dh-bg: {{ section.settings.bg_color | default: '#FFFFFF' }};
+      --el-dh-primary: {{ section.settings.primary_color | default: '#8E6356' }};
+      --el-dh-dark: {{ section.settings.text_dark | default: '#1C1B19' }};
+      --el-dh-muted: {{ section.settings.text_muted | default: '#68645F' }};
+      --el-dh-border: {{ section.settings.border_color | default: '#ECE7E1' }};
+      --el-dh-card-bg: {{ section.settings.card_bg | default: '#FAF8F5' }};
+
+      --el-dh-pt: {{ section.settings.padding_top | default: 60 }}px;
+      --el-dh-pb: {{ section.settings.padding_bottom | default: 60 }}px;
+
+      background-color: var(--el-dh-bg);
+      color: var(--el-dh-dark);
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      padding-top: var(--el-dh-pt);
+      padding-bottom: var(--el-dh-pb);
+    }
+
+    #ellora-delivery-hero-{{ section.id }} *,
+    #ellora-delivery-hero-{{ section.id }} *::before,
+    #ellora-delivery-hero-{{ section.id }} *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    #ellora-delivery-hero-{{ section.id }} .el-dh-container {
+      width: 90%;
+      max-width: {{ section.settings.container_max_width | default: 1280 }}px;
+      margin: 0 auto;
+    }
+
+    /* Breadcrumbs */
+    #ellora-delivery-hero-{{ section.id }} .el-dh-breadcrumbs {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12.5px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--el-dh-muted);
+      margin-bottom: 24px;
+    }
+
+    #ellora-delivery-hero-{{ section.id }} .el-dh-breadcrumbs a {
+      color: var(--el-dh-muted);
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    #ellora-delivery-hero-{{ section.id }} .el-dh-breadcrumbs a:hover {
+      color: var(--el-dh-primary);
+    }
+
+    #ellora-delivery-hero-{{ section.id }} .el-dh-breadcrumbs span.sep {
+      opacity: 0.5;
+    }
+
+    /* Split Header */
+    #ellora-delivery-hero-{{ section.id }} .el-dh-split-header {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 48px;
+      align-items: end;
+      margin-bottom: 36px;
+    }
+
+    #ellora-delivery-hero-{{ section.id }} .el-dh-kicker {
+      font-size: 11.5px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      font-weight: 600;
+      color: var(--el-dh-primary);
+      margin-bottom: 12px;
+      display: block;
+    }
+
+    #ellora-delivery-hero-{{ section.id }} .el-dh-title {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 46px;
+      font-weight: 400;
+      color: var(--el-dh-dark);
+      line-height: 1.12;
+      letter-spacing: -0.01em;
+    }
+
+    #ellora-delivery-hero-{{ section.id }} .el-dh-desc {
+      font-size: 15.5px;
+      color: var(--el-dh-muted);
+      line-height: 1.7;
+    }
+
+    /* Logistics Pills */
+    #ellora-delivery-hero-{{ section.id }} .el-dh-pills {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 36px;
+    }
+
+    #ellora-delivery-hero-{{ section.id }} .el-dh-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--el-dh-card-bg);
+      border: 1px solid var(--el-dh-border);
+      padding: 7px 16px;
+      border-radius: 999px;
+      font-size: 12.5px;
+      color: var(--el-dh-dark);
+    }
+
+    #ellora-delivery-hero-{{ section.id }} .el-dh-pill svg {
+      width: 15px;
+      height: 15px;
+      stroke: var(--el-dh-primary);
+    }
+
+    /* Banner Frame */
+    #ellora-delivery-hero-{{ section.id }} .el-dh-banner {
+      width: 100%;
+      height: {{ section.settings.banner_height | default: 460 }}px;
+      border-radius: {{ section.settings.banner_radius | default: 2 }}px;
+      overflow: hidden;
+      background-color: #F0ECE7;
+      position: relative;
+    }
+
+    #ellora-delivery-hero-{{ section.id }} .el-dh-banner img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    @media (max-width: 900px) {
+      #ellora-delivery-hero-{{ section.id }} .el-dh-split-header {
+        grid-template-columns: 1fr;
+        gap: 16px;
+      }
+      #ellora-delivery-hero-{{ section.id }} .el-dh-title {
+        font-size: 34px;
+      }
+      #ellora-delivery-hero-{{ section.id }} .el-dh-banner {
+        height: {{ section.settings.banner_height_mobile | default: 280 }}px;
+      }
+    }
+  </style>
+
+  <div class="el-dh-container">
+    {%- if section.settings.show_breadcrumbs -%}
+      <div class="el-dh-breadcrumbs">
+        <a href="{{ routes.root_url }}">Home</a>
+        <span class="sep">/</span>
+        <span>Delivery &amp; Logistics</span>
+      </div>
+    {%- endif -%}
+
+    <div class="el-dh-split-header">
+      <div>
+        {%- if section.settings.kicker != blank -%}
+          <span class="el-dh-kicker">{{ section.settings.kicker }}</span>
+        {%- endif -%}
+        <h1 class="el-dh-title">{{ section.settings.title | default: 'Delivery & Site Logistics' }}</h1>
+      </div>
+
+      <div>
+        <p class="el-dh-desc">
+          {{ section.settings.desc | default: 'Natural stone and large-format porcelain require specialized freight handling. We oversee pallet crating, transit tracking, and tail-lift offloading direct to your project site.' }}
+        </p>
+      </div>
+    </div>
+
+    <!-- Logistics Highlights -->
+    {%- if section.settings.show_pills -%}
+      <div class="el-dh-pills">
+        <div class="el-dh-pill">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg>
+          <span>Tail-Lift Curb-Side Offloading</span>
+        </div>
+        <div class="el-dh-pill">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+          <span>Reinforced Timber Pallet Crating</span>
+        </div>
+        <div class="el-dh-pill">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+          <span>Pre-Delivery Driver Booking Call</span>
+        </div>
+        <div class="el-dh-pill">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          <span>Insured Transit &amp; 48hr Breakage Coverage</span>
+        </div>
+      </div>
+    {%- endif -%}
+
+    <!-- Banner -->
+    <div class="el-dh-banner">
+      {%- if section.settings.image != blank -%}
+        <img src="{{ section.settings.image | image_url: width: 2000 }}" alt="{{ section.settings.title | escape }}" loading="lazy">
+      {%- else -%}
+        <img src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?q=80&w=1800&auto=format&fit=crop" alt="Ellora Logistics & Pallet Freight" loading="lazy">
+      {%- endif -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Delivery Hero",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "kicker",
+      "label": "Kicker Subtitle",
+      "default": "SPECIALIZED PALLET FREIGHT & DISPATCH"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Delivery & Site Logistics"
+    },
+    {
+      "type": "textarea",
+      "id": "desc",
+      "label": "Description",
+      "default": "Natural stone and large-format porcelain require specialized freight handling. We oversee pallet crating, transit tracking, and tail-lift offloading direct to your project site."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_breadcrumbs",
+      "label": "Show Breadcrumbs",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_pills",
+      "label": "Show Logistics Highlight Pills",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Hero Banner Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Banner Image"
+    },
+    {
+      "type": "range",
+      "id": "banner_height",
+      "label": "Banner Height (Desktop)",
+      "min": 300,
+      "max": 650,
+      "step": 10,
+      "unit": "px",
+      "default": 460
+    },
+    {
+      "type": "range",
+      "id": "banner_height_mobile",
+      "label": "Banner Height (Mobile)",
+      "min": 200,
+      "max": 400,
+      "step": 10,
+      "unit": "px",
+      "default": 280
+    },
+    {
+      "type": "range",
+      "id": "banner_radius",
+      "label": "Banner Corner Radius",
+      "min": 0,
+      "max": 16,
+      "step": 2,
+      "unit": "px",
+      "default": 2
+    },
+    {
+      "type": "header",
+      "content": "Colors & Layout"
+    },
+    {
+      "type": "range",
+      "id": "container_max_width",
+      "label": "Container Max Width",
+      "min": 1000,
+      "max": 1600,
+      "step": 20,
+      "unit": "px",
+      "default": 1280
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "primary_color",
+      "label": "Primary Accent Color",
+      "default": "#8E6356"
+    },
+    {
+      "type": "color",
+      "id": "text_dark",
+      "label": "Dark Text Color",
+      "default": "#1C1B19"
+    },
+    {
+      "type": "color",
+      "id": "text_muted",
+      "label": "Muted Text Color",
+      "default": "#68645F"
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "Border Color",
+      "default": "#ECE7E1"
+    },
+    {
+      "type": "color",
+      "id": "card_bg",
+      "label": "Pill Background",
+      "default": "#FAF8F5"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding Top (Desktop)",
+      "min": 0,
+      "max": 140,
+      "step": 2,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding Bottom (Desktop)",
+      "min": 0,
+      "max": 140,
+      "step": 2,
+      "unit": "px",
+      "default": 60
+    }
+  ],
+  "presets": [
+    {
+      "name": "Delivery Hero"
+    }
+  ]
+}
+{% endschema %}

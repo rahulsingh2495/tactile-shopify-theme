@@ -1,0 +1,1178 @@
+{% comment %}
+  ==========================================================================
+  ELLORA SPACES — RELATED COLLECTIONS SECTION
+  File: sections/ellora-related-collection.liquid
+  Pixel-perfect standalone section matching Ellora editorial design
+  Features:
+  - DYNAMIC BACKEND INTEGRATION:
+    * Auto-fetches real collections directly from Shopify backend
+    * Supports native Shopify collection_list picker for custom selection
+    * Intelligently excludes generic handles ('frontpage', 'all') and current collection
+    * Pulls dynamic collection titles, URLs, descriptions, and images
+    * Falls back to collection's first product image if banner is not set
+  - Alignment options for top section heading & kicker (Left, Center, Right)
+  - 4-Card Architectural Grid with rounded imagery (no outer button)
+  - Interactive Expanding Drawer at bottom of every card:
+    * Default State: Shows upward chevron arrow and Serif Collection Title
+    * Hover State: Smoothly expands upward, rotates arrow 180° down,
+      and reveals tactile narrative description
+    * Smooth CSS Grid transition collapses back when mouse leaves
+  - Alignment options for Card Heading and Paragraph (Left, Center, Right)
+  - Whole card is clickable linking to collection URL
+  ==========================================================================
+{% endcomment %}
+
+<div class="el-related-collections-wrapper" id="ellora-related-{{ section.id }}">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
+
+    #ellora-related-{{ section.id }} {
+      --el-rc-bg: {{ section.settings.bg_color | default: '#FAF9F6' }};
+      --el-rc-drawer-bg: {{ section.settings.drawer_bg | default: '#FAF8F5' }};
+      --el-rc-primary: {{ section.settings.accent_color | default: '#BA8877' }};
+      --el-rc-dark: #1E1B18;
+      --el-rc-text: #2D2A28;
+      --el-rc-desc: #55504A;
+      --el-rc-muted: #736E67;
+      --el-rc-border: #ECE7E1;
+      --el-rc-font-serif: 'Cormorant Garamond', Georgia, serif;
+      --el-rc-font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+
+      background-color: var(--el-rc-bg);
+      font-family: var(--el-rc-font-sans);
+      color: var(--el-rc-text);
+      padding-top: {{ section.settings.padding_top | default: 60 }}px;
+      padding-bottom: {{ section.settings.padding_bottom | default: 80 }}px;
+      width: 100%;
+      box-sizing: border-box;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      {% if section.settings.show_top_border %}
+        border-top: 1px solid var(--el-rc-border);
+      {% endif %}
+    }
+
+    #ellora-related-{{ section.id }} *,
+    #ellora-related-{{ section.id }} *::before,
+    #ellora-related-{{ section.id }} *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    #ellora-related-{{ section.id }} .el-rc-container {
+      width: 90%;
+      max-width: 1720px;
+      margin: 0 auto;
+    }
+
+    /* Section Top Header */
+    #ellora-related-{{ section.id }} .el-rc-header {
+      text-align: {{ section.settings.header_align | default: 'left' }};
+      margin-bottom: 36px;
+    }
+
+    #ellora-related-{{ section.id }} .el-rc-kicker {
+      font-family: var(--el-rc-font-sans);
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--el-rc-muted);
+      margin-bottom: 8px;
+    }
+
+    #ellora-related-{{ section.id }} .el-rc-title {
+      font-family: var(--el-rc-font-serif);
+      font-size: clamp(28px, 3.2vw, 42px);
+      font-weight: 400;
+      color: var(--el-rc-dark);
+      margin: 0;
+      letter-spacing: -0.01em;
+      line-height: 1.15;
+    }
+
+    #ellora-related-{{ section.id }} .el-slider-nav-wrap {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    #ellora-related-{{ section.id }} .el-slider-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: #FFFFFF;
+      border: 1px solid var(--el-rc-border);
+      color: var(--el-rc-dark);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.22s ease;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+    }
+
+    #ellora-related-{{ section.id }} .el-slider-btn:hover {
+      background: var(--el-rc-primary);
+      border-color: var(--el-rc-primary);
+      color: #FFFFFF;
+    }
+
+    #ellora-related-{{ section.id }} .el-rc-grid {
+      display: grid;
+      grid-template-columns: repeat({{ section.settings.columns_desktop | default: 4 }}, 1fr);
+      gap: 24px;
+    }
+
+    #ellora-related-{{ section.id }} .el-rc-grid.is-slider {
+      display: flex !important;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      scroll-behavior: smooth;
+      gap: 24px;
+      scrollbar-width: none;
+      -webkit-overflow-scrolling: touch;
+      padding-bottom: 8px;
+    }
+
+    #ellora-related-{{ section.id }} .el-rc-grid.is-slider::-webkit-scrollbar {
+      display: none;
+    }
+
+    #ellora-related-{{ section.id }} .el-rc-grid.is-slider .el-rc-card {
+      flex: 0 0 calc((100% - ({{ section.settings.columns_desktop | default: 4 }} - 1) * 24px) / {{ section.settings.columns_desktop | default: 4 }});
+      min-width: 250px;
+      scroll-snap-align: start;
+    }
+
+    /* Architectural Card */
+    #ellora-related-{{ section.id }} .el-rc-card {
+      position: relative;
+      border-radius: 8px;
+      overflow: hidden;
+      background-color: #EFEBE5;
+      box-shadow: 0 4px 18px rgba(0, 0, 0, 0.04);
+      isolation: isolate;
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease;
+    }
+
+    #ellora-related-{{ section.id }} .el-rc-card:hover {
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.09);
+    }
+
+    #ellora-related-{{ section.id }} .el-rc-card-link {
+      display: block;
+      position: relative;
+      width: 100%;
+      height: 100%;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    /* Card Image Media */
+    #ellora-related-{{ section.id }} .el-rc-media {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 4 / 5;
+      overflow: hidden;
+      background-color: #EDE8E2;
+    }
+
+    #ellora-related-{{ section.id }} .el-rc-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    #ellora-related-{{ section.id }} .el-rc-card:hover .el-rc-img {
+      transform: scale(1.04);
+    }
+
+    /* ==========================================================================
+       BOTTOM EXPANDING DRAWER CONTAINER
+       Default: Clean ivory container flush at bottom with upward chevron & title
+       Hover: Smoothly expands upward, reveals description, rotates chevron down
+       Mouse Out: Seamlessly collapses back down
+       ========================================================================== */
+    #ellora-related-{{ section.id }} .el-rc-drawer {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background-color: var(--el-rc-drawer-bg);
+      border-top-left-radius: 14px;
+      border-top-right-radius: 14px;
+      padding: 10px 22px 18px 22px;
+      box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.07);
+      transition: all 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+      z-index: 2;
+      pointer-events: auto;
+    }
+
+    #ellora-related-{{ section.id }} .el-rc-card:hover .el-rc-drawer,
+    #ellora-related-{{ section.id }} .el-rc-card.is-expanded .el-rc-drawer {
+      padding-bottom: 24px;
+      box-shadow: 0 -8px 28px rgba(0, 0, 0, 0.12);
+    }
+
+    /* Small Centered Arrow Icon */
+    #ellora-related-{{ section.id }} .el-rc-chevron-wrap {
+      display: flex;
+      align-items: center;
+      width: 100%;
+      margin-bottom: 4px;
+      cursor: pointer;
+    }
+
+    #ellora-related-{{ section.id }} .el-rc-chevron-toggle {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 3px 8px;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: background-color 0.25s ease, transform 0.25s ease;
+    }
+
+    #ellora-related-{{ section.id }} .el-rc-chevron {
+      width: 14px;
+      height: 14px;
+      color: var(--el-rc-muted);
+      transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1), color 0.3s ease;
+      display: block;
+    }
+
+    #ellora-related-{{ section.id }} .el-rc-card:hover .el-rc-chevron,
+    #ellora-related-{{ section.id }} .el-rc-card.is-expanded .el-rc-chevron {
+      transform: rotate(180deg);
+      color: var(--el-rc-dark);
+    }
+
+    #ellora-related-{{ section.id }} .el-rc-card.is-expanded .el-rc-chevron-toggle {
+      background-color: rgba(0, 0, 0, 0.06);
+    }
+
+    /* Collection Serif Title */
+    #ellora-related-{{ section.id }} .el-rc-drawer-title {
+      font-family: var(--el-rc-font-serif);
+      font-size: clamp(21px, 1.8vw, 25px);
+      font-weight: 400;
+      color: var(--el-rc-dark);
+      margin: 0;
+      line-height: 1.25;
+      letter-spacing: -0.01em;
+      transition: color 0.3s ease;
+    }
+
+    /* Smooth CSS Grid Collapsible Container */
+    #ellora-related-{{ section.id }} .el-rc-drawer-expand {
+      display: grid;
+      grid-template-rows: 0fr;
+      opacity: 0;
+      transition: grid-template-rows 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+                  opacity 0.35s ease,
+                  margin-top 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+      margin-top: 0;
+    }
+
+    #ellora-related-{{ section.id }} .el-rc-card:hover .el-rc-drawer-expand,
+    #ellora-related-{{ section.id }} .el-rc-card.is-expanded .el-rc-drawer-expand {
+      grid-template-rows: 1fr;
+      opacity: 1;
+      margin-top: 14px;
+    }
+
+    #ellora-related-{{ section.id }} .el-rc-drawer-inner {
+      overflow: hidden;
+      min-height: 0;
+    }
+
+    /* Expanded Narrative Description */
+    #ellora-related-{{ section.id }} .el-rc-drawer-desc {
+      font-family: var(--el-rc-font-sans);
+      font-size: 13.5px;
+      line-height: 1.55;
+      font-weight: 400;
+      color: var(--el-rc-desc);
+      margin: 0;
+      letter-spacing: -0.005em;
+    }
+
+    #ellora-related-{{ section.id }} .el-rc-cta-wrap {
+      width: 100%;
+      margin-top: 10px;
+    }
+
+    #ellora-related-{{ section.id }} .el-rc-explore-cta {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--el-rc-primary);
+      text-decoration: underline;
+      white-space: nowrap;
+      transition: opacity 0.2s ease;
+    }
+
+    /* Responsive Breakpoints */
+    @media (max-width: 1024px) {
+      #ellora-related-{{ section.id }} .el-rc-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+      }
+      #ellora-related-{{ section.id }} .el-rc-grid.is-slider .el-rc-card {
+        flex: 0 0 calc((100% - 20px) / 2);
+        min-width: 220px;
+      }
+      #ellora-related-{{ section.id }} .el-rc-drawer {
+        padding: 10px 18px 16px 18px;
+      }
+      #ellora-related-{{ section.id }} .el-rc-drawer-title {
+        font-size: 19px;
+      }
+      #ellora-related-{{ section.id }} .el-rc-drawer-desc {
+        font-size: 13px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      #ellora-related-{{ section.id }} {
+        padding-top: {{ section.settings.padding_top_mobile | default: 40 }}px;
+        padding-bottom: {{ section.settings.padding_bottom_mobile | default: 50 }}px;
+      }
+      #ellora-related-{{ section.id }} .el-rc-grid {
+        grid-template-columns: repeat({{ section.settings.columns_mobile | default: '2' }}, 1fr);
+        gap: 12px;
+      }
+      #ellora-related-{{ section.id }} .el-rc-grid.is-slider .el-rc-card {
+        flex: 0 0 calc((100% - ({{ section.settings.columns_mobile | default: '2' }} - 1) * 12px) / {{ section.settings.columns_mobile | default: '2' }});
+        min-width: 150px;
+      }
+      #ellora-related-{{ section.id }} .el-rc-drawer {
+        padding: 6px 12px 10px 12px !important;
+        border-top-left-radius: 10px !important;
+        border-top-right-radius: 10px !important;
+        max-height: 58% !important;
+        box-sizing: border-box !important;
+      }
+      #ellora-related-{{ section.id }} .el-rc-card:hover .el-rc-drawer,
+      #ellora-related-{{ section.id }} .el-rc-card.is-expanded .el-rc-drawer {
+        padding-bottom: 12px !important;
+      }
+      #ellora-related-{{ section.id }} .el-rc-drawer-title {
+        font-size: 14px !important;
+        line-height: 1.25 !important;
+        letter-spacing: -0.01em !important;
+      }
+      #ellora-related-{{ section.id }} .el-rc-chevron-wrap {
+        margin-bottom: 2px !important;
+      }
+      #ellora-related-{{ section.id }} .el-rc-chevron-toggle {
+        padding: 3px 10px !important;
+        min-height: 20px;
+      }
+      #ellora-related-{{ section.id }} .el-rc-chevron {
+        width: 12px !important;
+        height: 12px !important;
+      }
+      #ellora-related-{{ section.id }} .el-rc-card:hover .el-rc-drawer-expand,
+      #ellora-related-{{ section.id }} .el-rc-card.is-expanded .el-rc-drawer-expand {
+        margin-top: 6px !important;
+      }
+      #ellora-related-{{ section.id }} .el-rc-drawer-desc {
+        display: -webkit-box !important;
+        -webkit-line-clamp: 2 !important;
+        -webkit-box-orient: vertical !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+        font-size: 11px !important;
+        line-height: 1.35 !important;
+        margin: 0 !important;
+      }
+      #ellora-related-{{ section.id }} .el-rc-cta-wrap {
+        margin-top: 6px !important;
+      }
+      #ellora-related-{{ section.id }} .el-rc-explore-cta {
+        font-size: 10.5px !important;
+        white-space: nowrap !important;
+      }
+    }
+  </style>
+
+  {%- assign source = section.settings.collection_source | default: 'auto' -%}
+  {%- assign max_cols = section.settings.collections_to_show | default: 4 -%}
+  {%- assign def_title_align = section.settings.card_title_align | default: 'center' -%}
+  {%- assign def_desc_align = section.settings.card_desc_align | default: 'left' -%}
+  {%- assign def_btn_align = section.settings.card_btn_align | default: 'center' -%}
+  {%- assign def_chevron_justify = 'center' -%}
+  {%- if def_title_align == 'left' -%}
+    {%- assign def_chevron_justify = 'flex-start' -%}
+  {%- elsif def_title_align == 'right' -%}
+    {%- assign def_chevron_justify = 'flex-end' -%}
+  {%- endif -%}
+
+  {%- comment -%} Check if any blocks actually have collections assigned {%- endcomment -%}
+  {%- assign has_valid_blocks = false -%}
+  {%- if section.blocks.size > 0 -%}
+    {%- for block in section.blocks -%}
+      {%- if block.settings.collection != blank -%}
+        {%- assign has_valid_blocks = true -%}
+        {%- break -%}
+      {%- endif -%}
+    {%- endfor -%}
+  {%- endif -%}
+
+  <section class="el-rc-container">
+    <div class="el-rc-header" style="display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 16px;">
+      <div>
+        {%- if section.settings.kicker != blank -%}
+          <div class="el-rc-kicker">{{ section.settings.kicker }}</div>
+        {%- endif -%}
+        <h2 class="el-rc-title">{{ section.settings.title | default: 'Related Collections' }}</h2>
+      </div>
+      {%- if section.settings.layout_type == 'slider' -%}
+        <div class="el-slider-nav-wrap">
+          <button type="button" class="el-slider-btn el-slider-prev" aria-label="Previous collections">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"></polyline></svg>
+          </button>
+          <button type="button" class="el-slider-btn el-slider-next" aria-label="Next collections">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+          </button>
+        </div>
+      {%- endif -%}
+    </div>
+
+    <div class="el-rc-grid{% if section.settings.layout_type == 'slider' %} is-slider{% endif %}">
+
+      {%- comment -%}
+        -----------------------------------------------------------------------
+        MODE 1: EXPLICIT COLLECTION LIST
+        -----------------------------------------------------------------------
+      {%- endcomment -%}
+      {%- if source == 'list' and section.settings.collection_list != blank and section.settings.collection_list.count > 0 -%}
+        {%- for col in section.settings.collection_list limit: max_cols -%}
+          {%- assign card_title = col.title -%}
+          {%- assign card_url = col.url -%}
+          {%- assign card_img = col.image | default: col.featured_image -%}
+          {%- if card_img == blank and col.products.first != blank -%}
+            {%- assign card_img = col.products.first.featured_image -%}
+          {%- endif -%}
+          {%- assign card_desc = col.description | strip_html | truncatewords: 24 -%}
+          {%- if card_desc == blank -%}
+            {%- assign card_desc = 'Every surface in our ' | append: card_title | append: ' collection is selected for its tactile quality, tonal depth and architectural presence.' -%}
+          {%- endif -%}
+
+          {%- assign img_mod = forloop.index0 | modulo: 4 -%}
+          {%- case img_mod -%}
+            {%- when 0 -%}{%- assign fallback_img = "https://cdn.shopify.com/s/files/1/0990/3685/6647/files/sec4_surface_01_tall_arrivals.jpg?v=1789453291" -%}
+            {%- when 1 -%}{%- assign fallback_img = "https://cdn.shopify.com/s/files/1/0990/3685/6647/files/sec4_surface_02_bestsellers.jpg?v=1789453291" -%}
+            {%- when 2 -%}{%- assign fallback_img = "https://cdn.shopify.com/s/files/1/0990/3685/6647/files/sec5_crafted_01_marble_tub.jpg?v=1789453291" -%}
+            {%- when 3 -%}{%- assign fallback_img = "https://cdn.shopify.com/s/files/1/0990/3685/6647/files/sec5_crafted_03_kitchen_sink.jpg?v=1789453291" -%}
+          {%- endcase -%}
+
+          <div class="el-rc-card">
+            <a href="{{ card_url }}" class="el-rc-card-link" aria-label="{{ card_title }}">
+              <div class="el-rc-media">
+                {%- if card_img != blank -%}
+                  {{ card_img | image_url: width: 800 | image_tag: class: 'el-rc-img', loading: 'lazy', alt: card_title }}
+                {%- else -%}
+                  <img src="{{ fallback_img }}" alt="{{ card_title }}" class="el-rc-img" loading="lazy">
+                {%- endif -%}
+              </div>
+              <div class="el-rc-drawer">
+                <div class="el-rc-chevron-wrap" style="justify-content: {{ def_chevron_justify }};" aria-label="Toggle details">
+                  <span class="el-rc-chevron-toggle">
+                    <svg class="el-rc-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <polyline points="18 15 12 9 6 15"></polyline>
+                    </svg>
+                  </span>
+                </div>
+                <h3 class="el-rc-drawer-title" style="text-align: {{ def_title_align }};">{{ card_title }}</h3>
+                <div class="el-rc-drawer-expand">
+                  <div class="el-rc-drawer-inner">
+                    <p class="el-rc-drawer-desc" style="text-align: {{ def_desc_align }};">{{ card_desc }}</p>
+                    <div class="el-rc-cta-wrap" style="text-align: {{ def_btn_align }};">
+                      <span class="el-rc-explore-cta">Explore &rarr;</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </a>
+          </div>
+        {%- endfor -%}
+
+      {%- comment -%}
+        -----------------------------------------------------------------------
+        MODE 2: MANUAL BLOCKS (IF EXPLICITLY CHOSEN OR BLOCKS HAVE COLLECTIONS)
+        -----------------------------------------------------------------------
+      {%- endcomment -%}
+      {%- elsif source == 'blocks' and has_valid_blocks -%}
+        {%- for block in section.blocks -%}
+          {%- assign col = block.settings.collection -%}
+          {%- assign card_url = block.settings.link | default: col.url | default: '/collections/all' -%}
+          {%- assign card_title = block.settings.title | default: col.title | default: 'Collection' -%}
+          {%- assign card_desc = block.settings.description | default: block.settings.overlay_desc -%}
+          {%- if card_desc == blank and col.description != blank -%}
+            {%- assign card_desc = col.description | strip_html | truncatewords: 24 -%}
+          {%- endif -%}
+          {%- if card_desc == blank -%}
+            {%- assign card_desc = 'Every surface in our ' | append: card_title | append: ' collection is selected for its tactile quality, tonal depth and architectural presence.' -%}
+          {%- endif -%}
+
+          {%- assign this_title_align = block.settings.title_align | default: def_title_align -%}
+          {%- if this_title_align == blank -%}{%- assign this_title_align = def_title_align -%}{%- endif -%}
+          {%- assign this_desc_align = block.settings.desc_align | default: def_desc_align -%}
+          {%- if this_desc_align == blank -%}{%- assign this_desc_align = def_desc_align -%}{%- endif -%}
+          {%- assign this_btn_align = block.settings.btn_align | default: def_btn_align -%}
+          {%- if this_btn_align == blank -%}{%- assign this_btn_align = def_btn_align -%}{%- endif -%}
+
+          {%- assign chevron_justify = 'center' -%}
+          {%- if this_title_align == 'left' -%}
+            {%- assign chevron_justify = 'flex-start' -%}
+          {%- elsif this_title_align == 'right' -%}
+            {%- assign chevron_justify = 'flex-end' -%}
+          {%- endif -%}
+
+          {%- assign card_img = block.settings.image | default: col.image | default: col.featured_image -%}
+          {%- if card_img == blank and col.products.first != blank -%}
+            {%- assign card_img = col.products.first.featured_image -%}
+          {%- endif -%}
+
+          <div class="el-rc-card" {{ block.shopify_attributes }}>
+            <a href="{{ card_url }}" class="el-rc-card-link" aria-label="{{ card_title }}">
+              <div class="el-rc-media">
+                {%- if card_img != blank -%}
+                  {{ card_img | image_url: width: 800 | image_tag: class: 'el-rc-img', loading: 'lazy', alt: card_title }}
+                {%- elsif block.settings.fallback_image != blank -%}
+                  <img src="{{ block.settings.fallback_image }}" alt="{{ card_title }}" class="el-rc-img" loading="lazy">
+                {%- else -%}
+                  <img src="https://cdn.shopify.com/s/files/1/0990/3685/6647/files/sec4_surface_01_tall_arrivals.jpg?v=1789453291" alt="{{ card_title }}" class="el-rc-img" loading="lazy">
+                {%- endif -%}
+              </div>
+              <div class="el-rc-drawer">
+                <div class="el-rc-chevron-wrap" style="justify-content: {{ chevron_justify }};" aria-label="Toggle details">
+                  <span class="el-rc-chevron-toggle">
+                    <svg class="el-rc-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <polyline points="18 15 12 9 6 15"></polyline>
+                    </svg>
+                  </span>
+                </div>
+                <h3 class="el-rc-drawer-title" style="text-align: {{ this_title_align }};">{{ card_title }}</h3>
+                <div class="el-rc-drawer-expand">
+                  <div class="el-rc-drawer-inner">
+                    <p class="el-rc-drawer-desc" style="text-align: {{ this_desc_align }};">{{ card_desc }}</p>
+                    <div class="el-rc-cta-wrap" style="text-align: {{ this_btn_align }};">
+                      <span class="el-rc-explore-cta">Explore &rarr;</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </a>
+          </div>
+        {%- endfor -%}
+
+      {%- comment -%}
+        -----------------------------------------------------------------------
+        MODE 3 (DEFAULT): FULL DYNAMIC BACKEND AUTO-FETCH
+        Loops directly through collections created in Shopify Admin backend!
+        -----------------------------------------------------------------------
+      {%- endcomment -%}
+      {%- else -%}
+        {%- assign dynamic_count = 0 -%}
+
+        {%- for col in collections -%}
+          {%- comment -%} Skip generic collections and current collection on collection pages {%- endcomment -%}
+          {%- if col.handle == 'frontpage' or col.handle == 'all' -%}{%- continue -%}{%- endif -%}
+          {%- if template contains 'collection' and collection.handle != blank and col.handle == collection.handle -%}{%- continue -%}{%- endif -%}
+
+          {%- assign card_title = col.title -%}
+          {%- assign card_url = col.url -%}
+          {%- assign card_img = col.image | default: col.featured_image -%}
+          {%- if card_img == blank and col.products.first != blank -%}
+            {%- assign card_img = col.products.first.featured_image -%}
+          {%- endif -%}
+
+          {%- assign card_desc = col.description | strip_html | truncatewords: 24 -%}
+          {%- if card_desc == blank -%}
+            {%- assign card_desc = 'Every surface in our ' | append: card_title | append: ' collection is selected for its tactile quality, tonal depth and architectural presence.' -%}
+          {%- endif -%}
+
+          {%- assign img_mod = dynamic_count | modulo: 4 -%}
+          {%- case img_mod -%}
+            {%- when 0 -%}{%- assign fallback_img = "https://cdn.shopify.com/s/files/1/0990/3685/6647/files/sec4_surface_01_tall_arrivals.jpg?v=1789453291" -%}
+            {%- when 1 -%}{%- assign fallback_img = "https://cdn.shopify.com/s/files/1/0990/3685/6647/files/sec4_surface_02_bestsellers.jpg?v=1789453291" -%}
+            {%- when 2 -%}{%- assign fallback_img = "https://cdn.shopify.com/s/files/1/0990/3685/6647/files/sec5_crafted_01_marble_tub.jpg?v=1789453291" -%}
+            {%- when 3 -%}{%- assign fallback_img = "https://cdn.shopify.com/s/files/1/0990/3685/6647/files/sec5_crafted_03_kitchen_sink.jpg?v=1789453291" -%}
+          {%- endcase -%}
+
+          <div class="el-rc-card">
+            <a href="{{ card_url }}" class="el-rc-card-link" aria-label="{{ card_title }}">
+              <div class="el-rc-media">
+                {%- if card_img != blank -%}
+                  {{ card_img | image_url: width: 800 | image_tag: class: 'el-rc-img', loading: 'lazy', alt: card_title }}
+                {%- else -%}
+                  <img src="{{ fallback_img }}" alt="{{ card_title }}" class="el-rc-img" loading="lazy">
+                {%- endif -%}
+              </div>
+              <div class="el-rc-drawer">
+                <div class="el-rc-chevron-wrap" style="justify-content: {{ def_chevron_justify }};" aria-label="Toggle details">
+                  <span class="el-rc-chevron-toggle">
+                    <svg class="el-rc-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <polyline points="18 15 12 9 6 15"></polyline>
+                    </svg>
+                  </span>
+                </div>
+                <h3 class="el-rc-drawer-title" style="text-align: {{ def_title_align }};">{{ card_title }}</h3>
+                <div class="el-rc-drawer-expand">
+                  <div class="el-rc-drawer-inner">
+                    <p class="el-rc-drawer-desc" style="text-align: {{ def_desc_align }};">{{ card_desc }}</p>
+                    <div class="el-rc-cta-wrap" style="text-align: {{ def_btn_align }};">
+                      <span class="el-rc-explore-cta">Explore &rarr;</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </a>
+          </div>
+
+          {%- assign dynamic_count = dynamic_count | plus: 1 -%}
+          {%- if dynamic_count >= max_cols -%}{%- break -%}{%- endif -%}
+        {%- endfor -%}
+
+        {%- comment -%}
+          If store backend has fewer than 2 custom collections, show editorial starter cards
+        {%- endcomment -%}
+        {%- if dynamic_count == 0 -%}
+          <div class="el-rc-card">
+            <a href="/collections/all" class="el-rc-card-link" aria-label="Ceramic Tiles">
+              <div class="el-rc-media">
+                <img src="https://cdn.shopify.com/s/files/1/0990/3685/6647/files/sec4_surface_01_tall_arrivals.jpg?v=1789453291" alt="Ceramic Tiles" class="el-rc-img" loading="lazy">
+              </div>
+              <div class="el-rc-drawer">
+                <div class="el-rc-chevron-wrap" style="justify-content: {{ def_chevron_justify }};" aria-label="Toggle details">
+                  <span class="el-rc-chevron-toggle">
+                    <svg class="el-rc-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <polyline points="18 15 12 9 6 15"></polyline>
+                    </svg>
+                  </span>
+                </div>
+                <h3 class="el-rc-drawer-title" style="text-align: {{ def_title_align }};">Ceramic Tiles</h3>
+                <div class="el-rc-drawer-expand">
+                  <div class="el-rc-drawer-inner">
+                    <p class="el-rc-drawer-desc" style="text-align: {{ def_desc_align }};">Every surface is selected for its tactile quality, tonal depth and architectural presence. Ellora Living focuses on materials that age beautifully.</p>
+                    <div class="el-rc-cta-wrap" style="text-align: {{ def_btn_align }};">
+                      <span class="el-rc-explore-cta">Explore &rarr;</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </a>
+          </div>
+
+          <div class="el-rc-card">
+            <a href="/collections/all" class="el-rc-card-link" aria-label="Marble & Stone">
+              <div class="el-rc-media">
+                <img src="https://cdn.shopify.com/s/files/1/0990/3685/6647/files/sec4_surface_02_bestsellers.jpg?v=1789453291" alt="Marble & Stone" class="el-rc-img" loading="lazy">
+              </div>
+              <div class="el-rc-drawer">
+                <div class="el-rc-chevron-wrap" style="justify-content: {{ def_chevron_justify }};" aria-label="Toggle details">
+                  <span class="el-rc-chevron-toggle">
+                    <svg class="el-rc-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <polyline points="18 15 12 9 6 15"></polyline>
+                    </svg>
+                  </span>
+                </div>
+                <h3 class="el-rc-drawer-title" style="text-align: {{ def_title_align }};">Marble & Stone</h3>
+                <div class="el-rc-drawer-expand">
+                  <div class="el-rc-drawer-inner">
+                    <p class="el-rc-drawer-desc" style="text-align: {{ def_desc_align }};">Every surface is selected for its tactile quality, tonal depth and architectural presence. Ellora Living focuses on materials that age beautifully.</p>
+                    <div class="el-rc-cta-wrap" style="text-align: {{ def_btn_align }};">
+                      <span class="el-rc-explore-cta">Explore &rarr;</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </a>
+          </div>
+
+          <div class="el-rc-card">
+            <a href="/collections/all" class="el-rc-card-link" aria-label="Architectural Wallpapers">
+              <div class="el-rc-media">
+                <img src="https://cdn.shopify.com/s/files/1/0990/3685/6647/files/sec5_crafted_01_marble_tub.jpg?v=1789453291" alt="Architectural Wallpapers" class="el-rc-img" loading="lazy">
+              </div>
+              <div class="el-rc-drawer">
+                <div class="el-rc-chevron-wrap" style="justify-content: {{ def_chevron_justify }};" aria-label="Toggle details">
+                  <span class="el-rc-chevron-toggle">
+                    <svg class="el-rc-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <polyline points="18 15 12 9 6 15"></polyline>
+                    </svg>
+                  </span>
+                </div>
+                <h3 class="el-rc-drawer-title" style="text-align: {{ def_title_align }};">Architectural Wallpapers</h3>
+                <div class="el-rc-drawer-expand">
+                  <div class="el-rc-drawer-inner">
+                    <p class="el-rc-drawer-desc" style="text-align: {{ def_desc_align }};">Every surface is selected for its tactile quality, tonal depth and architectural presence. Ellora Living focuses on materials that age beautifully.</p>
+                    <div class="el-rc-cta-wrap" style="text-align: {{ def_btn_align }};">
+                      <span class="el-rc-explore-cta">Explore &rarr;</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </a>
+          </div>
+
+          <div class="el-rc-card">
+            <a href="/collections/all" class="el-rc-card-link" aria-label="Porcelain Surfaces">
+              <div class="el-rc-media">
+                <img src="https://cdn.shopify.com/s/files/1/0990/3685/6647/files/sec5_crafted_03_kitchen_sink.jpg?v=1789453291" alt="Porcelain Surfaces" class="el-rc-img" loading="lazy">
+              </div>
+              <div class="el-rc-drawer">
+                <div class="el-rc-chevron-wrap" style="justify-content: {{ def_chevron_justify }};" aria-label="Toggle details">
+                  <span class="el-rc-chevron-toggle">
+                    <svg class="el-rc-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <polyline points="18 15 12 9 6 15"></polyline>
+                    </svg>
+                  </span>
+                </div>
+                <h3 class="el-rc-drawer-title" style="text-align: {{ def_title_align }};">Porcelain Surfaces</h3>
+                <div class="el-rc-drawer-expand">
+                  <div class="el-rc-drawer-inner">
+                    <p class="el-rc-drawer-desc" style="text-align: {{ def_desc_align }};">Every surface is selected for its tactile quality, tonal depth and architectural presence. Ellora Living focuses on materials that age beautifully.</p>
+                    <div class="el-rc-cta-wrap" style="text-align: {{ def_btn_align }};">
+                      <span class="el-rc-explore-cta">Explore &rarr;</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </a>
+          </div>
+        {%- endif -%}
+
+      {%- endif -%}
+    </div>
+  </section>
+
+  <script>
+    (function() {
+      var root = document.getElementById('ellora-related-{{ section.id }}');
+      if (!root) return;
+
+      // Slider scroll buttons
+      var prevBtn = root.querySelector('.el-slider-prev');
+      var nextBtn = root.querySelector('.el-slider-next');
+      var gridTrack = root.querySelector('.el-rc-grid.is-slider');
+
+      if (gridTrack && prevBtn && nextBtn) {
+        prevBtn.addEventListener('click', function() {
+          var scrollAmount = gridTrack.clientWidth * 0.75;
+          gridTrack.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+        });
+        nextBtn.addEventListener('click', function() {
+          var scrollAmount = gridTrack.clientWidth * 0.75;
+          gridTrack.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+        });
+      }
+
+      // Mobile / Touch interaction:
+      // First tap expands the bottom drawer to reveal description & CTA without redirecting.
+      // Second tap on the arrow/toggle, title, or drawer body collapses it back down.
+      // Tapping "Explore →" or the image navigates directly to the collection URL.
+      var cards = root.querySelectorAll('.el-rc-card');
+      cards.forEach(function(card) {
+        var link = card.querySelector('.el-rc-card-link');
+        if (!link) return;
+
+        link.addEventListener('click', function(e) {
+          var isTouchOrSmall = window.matchMedia('(max-width: 991px)').matches || ('ontouchstart' in window);
+          if (!isTouchOrSmall) return; // Desktop mouse hover handles expansion, clicks navigate directly
+
+          if (!card.classList.contains('is-expanded')) {
+            // First tap: Prevent instant redirect and expand drawer to show details
+            e.preventDefault();
+            cards.forEach(function(c) {
+              if (c !== card) c.classList.remove('is-expanded');
+            });
+            card.classList.add('is-expanded');
+          } else {
+            // Card is already expanded:
+            var isCta = e.target.closest('.el-rc-explore-cta') || e.target.closest('.el-rc-cta-wrap');
+            var isMedia = e.target.closest('.el-rc-media');
+
+            if (isCta || isMedia) {
+              // User tapped Explore CTA or the image above drawer: navigate to collection URL
+              return;
+            } else {
+              // User tapped the arrow toggle, title, or drawer body: collapse drawer back down!
+              e.preventDefault();
+              e.stopPropagation();
+              card.classList.remove('is-expanded');
+            }
+          }
+        });
+      });
+
+      // Tap outside collapses any expanded card
+      document.addEventListener('click', function(e) {
+        if (!root.contains(e.target)) {
+          cards.forEach(function(c) {
+            c.classList.remove('is-expanded');
+          });
+        }
+      });
+    })();
+  </script>
+</div>
+
+{% schema %}
+{
+  "name": "Related Collections",
+  "tag": "section",
+  "class": "section-ellora-related-collections",
+  "settings": [
+    {
+      "type": "text",
+      "id": "kicker",
+      "label": "Kicker Label",
+      "default": "COLLECTION"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Section Heading",
+      "default": "Related Collections"
+    },
+    {
+      "type": "header",
+      "content": "Layout Settings"
+    },
+    {
+      "type": "select",
+      "id": "layout_type",
+      "label": "Layout Style",
+      "options": [
+        { "value": "grid", "label": "Grid" },
+        { "value": "slider", "label": "Slider (Carousel)" }
+      ],
+      "default": "grid"
+    },
+    {
+      "type": "range",
+      "id": "columns_desktop",
+      "min": 2,
+      "max": 5,
+      "step": 1,
+      "label": "Columns on Desktop",
+      "default": 4
+    },
+    {
+      "type": "select",
+      "id": "columns_mobile",
+      "label": "Columns (Mobile)",
+      "options": [
+        { "value": "1", "label": "1 Column" },
+        { "value": "2", "label": "2 Columns" }
+      ],
+      "default": "2"
+    },
+    {
+      "type": "select",
+      "id": "header_align",
+      "label": "Top Heading Alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "select",
+      "id": "collection_source",
+      "label": "Collection Source",
+      "options": [
+        {
+          "value": "auto",
+          "label": "Dynamic (From Store)"
+        },
+        {
+          "value": "list",
+          "label": "Selected Collection List"
+        },
+        {
+          "value": "blocks",
+          "label": "Custom Manual Blocks"
+        }
+      ],
+      "default": "auto"
+    },
+    {
+      "type": "collection_list",
+      "id": "collection_list",
+      "label": "Choose Collections",
+      "limit": 12
+    },
+    {
+      "type": "range",
+      "id": "collections_to_show",
+      "min": 2,
+      "max": 12,
+      "step": 1,
+      "unit": "col",
+      "label": "Collections to Show",
+      "default": 4
+    },
+    {
+      "type": "select",
+      "id": "card_title_align",
+      "label": "Card Heading Alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "select",
+      "id": "card_desc_align",
+      "label": "Card Paragraph Align",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "select",
+      "id": "card_btn_align",
+      "label": "Button Alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_top_border",
+      "label": "Show Top Divider Border",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#FAF9F6"
+    },
+    {
+      "type": "color",
+      "id": "drawer_bg",
+      "label": "Drawer Card Background",
+      "default": "#FAF8F5"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Terracotta Accent Color",
+      "default": "#BA8877"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 20,
+      "max": 120,
+      "step": 5,
+      "unit": "px",
+      "label": "Top Padding",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 20,
+      "max": 120,
+      "step": 5,
+      "unit": "px",
+      "label": "Bottom Padding",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "label": "Mobile Top Padding",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "label": "Mobile Bottom Padding",
+      "default": 50
+    }
+  ],
+  "blocks": [
+    {
+      "type": "collection_card",
+      "name": "Collection Card",
+      "settings": [
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Select Collection"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Custom Card Image"
+        },
+        {
+          "type": "text",
+          "id": "fallback_image",
+          "label": "Fallback Image CDN URL"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Custom Title"
+        },
+        {
+          "type": "select",
+          "id": "title_align",
+          "label": "Heading Align Override",
+          "options": [
+            {
+              "value": "",
+              "label": "Use Section Default"
+            },
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "right",
+              "label": "Right"
+            }
+          ],
+          "default": ""
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Card Description"
+        },
+        {
+          "type": "select",
+          "id": "desc_align",
+          "label": "Paragraph Align",
+          "options": [
+            {
+              "value": "",
+              "label": "Use Section Default"
+            },
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "right",
+              "label": "Right"
+            }
+          ],
+          "default": ""
+        },
+        {
+          "type": "select",
+          "id": "btn_align",
+          "label": "Button Align Override",
+          "options": [
+            {
+              "value": "",
+              "label": "Use Section Default"
+            },
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "right",
+              "label": "Right"
+            }
+          ],
+          "default": ""
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Custom Link URL"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Related Collections"
+    }
+  ]
+}
+{% endschema %}

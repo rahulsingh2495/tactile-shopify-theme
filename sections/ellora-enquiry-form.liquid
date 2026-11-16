@@ -1,0 +1,832 @@
+{% comment %}
+  ==========================================================================
+  ELLORA SPACES — ENQUIRY PAGE SECTION 2: ENQUIRY & PROJECT DETAILS FORM
+  File: sections/ellora-enquiry-form.liquid
+  Fully customizable via Shopify Theme Customizer
+  Uses native Shopify {% form 'contact' %} for seamless email delivery
+  ==========================================================================
+{% endcomment %}
+
+<div class="el-section-wrapper el-sec-enquiry-form" id="ellora-enquiry-form-{{ section.id }}">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
+
+    #ellora-enquiry-form-{{ section.id }} {
+      --el-bg: {{ section.settings.bg_color | default: '#FFFFFF' }};
+      --el-title-color: {{ section.settings.title_color | default: '#8E6356' }};
+      --el-text-color: {{ section.settings.text_color | default: '#5C5854' }};
+      --el-label-color: {{ section.settings.label_color | default: '#45423E' }};
+      --el-input-bg: {{ section.settings.input_bg | default: '#FAF8F5' }};
+      --el-input-border: {{ section.settings.input_border | default: '#EDE8E1' }};
+      --el-input-focus: {{ section.settings.input_focus_border | default: '#BA9587' }};
+      --el-input-text: {{ section.settings.input_text_color | default: '#1C1B19' }};
+      --el-placeholder: {{ section.settings.placeholder_color | default: '#A49F98' }};
+      --el-btn-bg: {{ section.settings.btn_bg | default: '#BA9587' }};
+      --el-btn-hover: {{ section.settings.btn_hover_bg | default: '#A58072' }};
+      --el-btn-text: {{ section.settings.btn_text_color | default: '#FFFFFF' }};
+      --el-font-serif: 'Cormorant Garamond', Georgia, serif;
+      --el-font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+
+      width: 100%;
+      background-color: var(--el-bg);
+      font-family: var(--el-font-sans);
+      box-sizing: border-box;
+      padding-top: {{ section.settings.padding_top | default: 60 }}px;
+      padding-bottom: {{ section.settings.padding_bottom | default: 70 }}px;
+      position: relative;
+    }
+
+    #ellora-enquiry-form-{{ section.id }} *,
+    #ellora-enquiry-form-{{ section.id }} *::before,
+    #ellora-enquiry-form-{{ section.id }} *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    #ellora-enquiry-form-{{ section.id }} .el-form-container {
+      width: 90%;
+      max-width: {{ section.settings.container_max_width | default: 1720 }}px;
+      margin: 0 auto;
+    }
+
+    #ellora-enquiry-form-{{ section.id }} .el-form-split-grid {
+      display: grid;
+      grid-template-columns: {{ section.settings.left_col_width | default: 38 }}% 1fr;
+      gap: {{ section.settings.column_gap | default: 60 }}px;
+      align-items: flex-start;
+    }
+
+    /* Left Narrative Column */
+    #ellora-enquiry-form-{{ section.id }} .el-form-narrative {
+      max-width: 440px;
+    }
+
+    #ellora-enquiry-form-{{ section.id }} .el-form-headline {
+      font-family: var(--el-font-serif);
+      font-size: {{ section.settings.title_size_desktop | default: 42 }}px;
+      line-height: 1.18;
+      font-weight: {{ section.settings.title_weight | default: 400 }};
+      color: var(--el-title-color);
+      letter-spacing: -0.01em;
+      margin-bottom: 24px;
+    }
+
+    #ellora-enquiry-form-{{ section.id }} .el-form-description {
+      font-family: var(--el-font-sans);
+      font-size: {{ section.settings.desc_size | default: 13.5 }}px;
+      line-height: 1.68;
+      font-weight: 400;
+      color: var(--el-text-color);
+      letter-spacing: 0.005em;
+    }
+
+    /* Right Form Column */
+    #ellora-enquiry-form-{{ section.id }} .el-form-fields-wrapper {
+      width: 100%;
+    }
+
+    #ellora-enquiry-form-{{ section.id }} .el-form-grid-inner {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px 20px;
+    }
+
+    #ellora-enquiry-form-{{ section.id }} .el-form-group {
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+
+    #ellora-enquiry-form-{{ section.id }} .el-form-group.el-col-full {
+      grid-column: span 2;
+    }
+
+    #ellora-enquiry-form-{{ section.id }} .el-field-label {
+      font-family: var(--el-font-sans);
+      font-size: 13px;
+      font-weight: 400;
+      color: var(--el-label-color);
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 3px;
+    }
+
+    #ellora-enquiry-form-{{ section.id }} .el-field-required {
+      color: var(--el-title-color);
+      font-size: 13px;
+      line-height: 1;
+    }
+
+    #ellora-enquiry-form-{{ section.id }} input[type="text"],
+    #ellora-enquiry-form-{{ section.id }} input[type="email"],
+    #ellora-enquiry-form-{{ section.id }} input[type="tel"],
+    #ellora-enquiry-form-{{ section.id }} select,
+    #ellora-enquiry-form-{{ section.id }} textarea {
+      width: 100%;
+      background-color: var(--el-input-bg);
+      border: 1px solid var(--el-input-border);
+      border-radius: {{ section.settings.input_radius | default: 3 }}px;
+      color: var(--el-input-text);
+      font-family: var(--el-font-sans);
+      font-size: 13.5px;
+      font-weight: 400;
+      padding: 0 16px;
+      height: 48px;
+      outline: none;
+      transition: border-color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;
+    }
+
+    #ellora-enquiry-form-{{ section.id }} textarea {
+      height: {{ section.settings.textarea_height | default: 135 }}px;
+      padding: 14px 16px;
+      resize: vertical;
+      line-height: 1.55;
+    }
+
+    #ellora-enquiry-form-{{ section.id }} select {
+      cursor: pointer;
+      background-image: url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L5 5L9 1' stroke='%23666059' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 16px center;
+      padding-right: 38px;
+    }
+
+    #ellora-enquiry-form-{{ section.id }} input::placeholder,
+    #ellora-enquiry-form-{{ section.id }} textarea::placeholder {
+      color: var(--el-placeholder);
+      opacity: 1;
+      font-size: 13.5px;
+    }
+
+    #ellora-enquiry-form-{{ section.id }} input:focus,
+    #ellora-enquiry-form-{{ section.id }} select:focus,
+    #ellora-enquiry-form-{{ section.id }} textarea:focus {
+      border-color: var(--el-input-focus);
+      background-color: #FFFFFF;
+      box-shadow: 0 0 0 1px var(--el-input-focus);
+    }
+
+    /* Submit Button */
+    #ellora-enquiry-form-{{ section.id }} .el-submit-btn-wrap {
+      grid-column: span 2;
+      margin-top: 6px;
+    }
+
+    #ellora-enquiry-form-{{ section.id }} .el-form-submit-btn {
+      width: 100%;
+      height: 48px;
+      background-color: var(--el-btn-bg);
+      color: var(--el-btn-text);
+      border: 1px solid var(--el-btn-bg);
+      border-radius: {{ section.settings.btn_radius | default: 3 }}px;
+      font-family: var(--el-font-sans);
+      font-size: 13.5px;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: background-color 0.25s ease, border-color 0.25s ease, transform 0.15s ease;
+    }
+
+    #ellora-enquiry-form-{{ section.id }} .el-form-submit-btn:hover {
+      background-color: var(--el-btn-hover);
+      border-color: var(--el-btn-hover);
+    }
+
+    #ellora-enquiry-form-{{ section.id }} .el-form-submit-btn:active {
+      transform: scale(0.995);
+    }
+
+    /* Success & Error notices */
+    #ellora-enquiry-form-{{ section.id }} .el-form-status-alert {
+      padding: 16px 20px;
+      border-radius: 4px;
+      margin-bottom: 24px;
+      font-size: 13.5px;
+      line-height: 1.5;
+    }
+    #ellora-enquiry-form-{{ section.id }} .el-alert-success {
+      background-color: #F1F6F2;
+      border: 1px solid #C4DFC8;
+      color: #265B33;
+    }
+    #ellora-enquiry-form-{{ section.id }} .el-alert-error {
+      background-color: #FDF2F2;
+      border: 1px solid #F5C6CB;
+      color: #8C262C;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 960px) {
+      #ellora-enquiry-form-{{ section.id }} .el-form-split-grid {
+        grid-template-columns: 1fr;
+        gap: 36px;
+      }
+      #ellora-enquiry-form-{{ section.id }} .el-form-narrative {
+        max-width: 100%;
+      }
+      #ellora-enquiry-form-{{ section.id }} .el-form-headline {
+        font-size: {{ section.settings.title_size_mobile | default: 30 }}px;
+        margin-bottom: 16px;
+      }
+      #ellora-enquiry-form-{{ section.id }} {
+        padding-top: {{ section.settings.padding_top_mobile | default: 40 }}px;
+        padding-bottom: {{ section.settings.padding_bottom_mobile | default: 48 }}px;
+      }
+    }
+
+    @media (max-width: 600px) {
+      #ellora-enquiry-form-{{ section.id }} .el-form-grid-inner {
+        grid-template-columns: 1fr;
+        gap: 14px;
+      }
+      #ellora-enquiry-form-{{ section.id }} .el-form-group.el-col-full,
+      #ellora-enquiry-form-{{ section.id }} .el-submit-btn-wrap {
+        grid-column: span 1;
+      }
+    }
+  </style>
+
+  <div class="el-form-container">
+    <div class="el-form-split-grid">
+      
+      <!-- Left Narrative Column -->
+      <div class="el-form-narrative">
+        <h2 class="el-form-headline">
+          {{ section.settings.title | default: 'Send the key details in<br>one place.' }}
+        </h2>
+        <p class="el-form-description">
+          {{ section.settings.description | default: 'Share a few project details so Ellora can guide you with the right tile, wallpaper or mural option. Add your room type, approximate wall or floor size, product interest and any specific requirement you have in mind.' }}
+        </p>
+      </div>
+
+      <!-- Right Form Column -->
+      <div class="el-form-fields-wrapper">
+        {% form 'contact', id: 'ElloraEnquiryForm', class: 'el-contact-form-tag' %}
+
+          {%- if form.posted_successfully? -%}
+            <div class="el-form-status-alert el-alert-success" role="status">
+              <strong>{{ section.settings.success_title | default: 'Thank you for reaching out.' }}</strong>
+              <p>{{ section.settings.success_message | default: 'Our design consultation team has received your project details and will be in touch shortly.' }}</p>
+            </div>
+          {%- endif -%}
+
+          {%- if form.errors -%}
+            <div class="el-form-status-alert el-alert-error" role="alert">
+              <strong>Please check the form:</strong>
+              <ul>
+                {%- for field in form.errors -%}
+                  <li>{{ form.errors.translated_fields[field] | capitalize }} {{ form.errors.messages[field] }}</li>
+                {%- endfor -%}
+              </ul>
+            </div>
+          {%- endif -%}
+
+          <div class="el-form-grid-inner">
+            
+            <!-- Field 1: Name -->
+            <div class="el-form-group">
+              <label for="ElloraForm-Name-{{ section.id }}" class="el-field-label">
+                {{ section.settings.name_label | default: 'Name' }}
+                {%- if section.settings.name_required -%}<span class="el-field-required">*</span>{%- endif -%}
+              </label>
+              <input
+                type="text"
+                id="ElloraForm-Name-{{ section.id }}"
+                name="contact[name]"
+                value="{% if form.name %}{{ form.name }}{% elsif customer %}{{ customer.name }}{% endif %}"
+                placeholder="{{ section.settings.name_placeholder | default: 'Your Name' }}"
+                {% if section.settings.name_required %}required{% endif %}
+                autocomplete="name"
+              >
+            </div>
+
+            <!-- Field 2: Email or Last Name (Configurable) -->
+            <div class="el-form-group">
+              <label for="ElloraForm-Email-{{ section.id }}" class="el-field-label">
+                {{ section.settings.email_label | default: 'Email' }}
+                {%- if section.settings.email_required -%}<span class="el-field-required">*</span>{%- endif -%}
+              </label>
+              <input
+                type="email"
+                id="ElloraForm-Email-{{ section.id }}"
+                name="contact[email]"
+                value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}"
+                placeholder="{{ section.settings.email_placeholder | default: 'Your Email' }}"
+                {% if section.settings.email_required %}required{% endif %}
+                spellcheck="false"
+                autocapitalize="off"
+                autocomplete="email"
+              >
+            </div>
+
+            <!-- Field 3: Phone -->
+            <div class="el-form-group">
+              <label for="ElloraForm-Phone-{{ section.id }}" class="el-field-label">
+                {{ section.settings.phone_label | default: 'Phone' }}
+                {%- if section.settings.phone_required -%}<span class="el-field-required">*</span>{%- endif -%}
+              </label>
+              <input
+                type="tel"
+                id="ElloraForm-Phone-{{ section.id }}"
+                name="contact[phone]"
+                value="{% if form.phone %}{{ form.phone }}{% elsif customer %}{{ customer.phone }}{% endif %}"
+                placeholder="{{ section.settings.phone_placeholder | default: 'Optional' }}"
+                {% if section.settings.phone_required %}required{% endif %}
+                autocomplete="tel"
+              >
+            </div>
+
+            <!-- Field 4: Project Type Dropdown -->
+            <div class="el-form-group">
+              <label for="ElloraForm-ProjectType-{{ section.id }}" class="el-field-label">
+                {{ section.settings.project_type_label | default: 'Project Type' }}
+                {%- if section.settings.project_type_required -%}<span class="el-field-required">*</span>{%- endif -%}
+              </label>
+              <select
+                id="ElloraForm-ProjectType-{{ section.id }}"
+                name="contact[project_type]"
+                {% if section.settings.project_type_required %}required{% endif %}
+              >
+                <option value="" disabled selected>{{ section.settings.select_placeholder | default: 'Select one' }}</option>
+                <option value="Residential Living Room">Residential Living Room</option>
+                <option value="Bathroom / Powder Room">Bathroom / Powder Room</option>
+                <option value="Kitchen / Splashback">Kitchen / Splashback</option>
+                <option value="Bedroom Feature Wall">Bedroom Feature Wall</option>
+                <option value="Commercial / Hospitality">Commercial / Hospitality</option>
+                <option value="Outdoor / Courtyard">Outdoor / Courtyard</option>
+                <option value="Full Residence Specification">Full Residence Specification</option>
+                <option value="Other Project">Other Project</option>
+              </select>
+            </div>
+
+            <!-- Field 5: Product Interest Dropdown -->
+            <div class="el-form-group">
+              <label for="ElloraForm-ProductInterest-{{ section.id }}" class="el-field-label">
+                {{ section.settings.product_interest_label | default: 'Product Interest' }}
+                {%- if section.settings.product_interest_required -%}<span class="el-field-required">*</span>{%- endif -%}
+              </label>
+              <select
+                id="ElloraForm-ProductInterest-{{ section.id }}"
+                name="contact[product_interest]"
+                {% if section.settings.product_interest_required %}required{% endif %}
+              >
+                <option value="" disabled selected>{{ section.settings.select_placeholder | default: 'Select one' }}</option>
+                <option value="Tiles & Large Slabs">Tiles & Large Slabs</option>
+                <option value="Wallpapers & Panoramic Murals">Wallpapers & Panoramic Murals</option>
+                <option value="Natural Stone & Marble">Natural Stone & Marble</option>
+                <option value="Fluted & Architectural Surfaces">Fluted & Architectural Surfaces</option>
+                <option value="Custom Pattern Sets">Custom Pattern Sets</option>
+                <option value="Curated Sample Box">Curated Sample Box</option>
+                <option value="Multiple Products">Multiple Products</option>
+              </select>
+            </div>
+
+            <!-- Field 6: Room or Wall Size -->
+            <div class="el-form-group">
+              <label for="ElloraForm-RoomSize-{{ section.id }}" class="el-field-label">
+                {{ section.settings.size_label | default: 'Room or Wall Size' }}
+                {%- if section.settings.size_required -%}<span class="el-field-required">*</span>{%- endif -%}
+              </label>
+              <input
+                type="text"
+                id="ElloraForm-RoomSize-{{ section.id }}"
+                name="contact[room_or_wall_size]"
+                placeholder="{{ section.settings.size_placeholder | default: 'Example 400 x 280cm' }}"
+                {% if section.settings.size_required %}required{% endif %}
+              >
+            </div>
+
+            <!-- Field 7: Message -->
+            <div class="el-form-group el-col-full">
+              <label for="ElloraForm-Message-{{ section.id }}" class="el-field-label">
+                {{ section.settings.message_label | default: 'Message' }}
+                {%- if section.settings.message_required -%}<span class="el-field-required">*</span>{%- endif -%}
+              </label>
+              <textarea
+                id="ElloraForm-Message-{{ section.id }}"
+                name="contact[body]"
+                placeholder="{{ section.settings.message_placeholder | default: 'Tell us what you are trying to create...' }}"
+                {% if section.settings.message_required %}required{% endif %}
+              ></textarea>
+            </div>
+
+            <!-- Field 8: Submit Button -->
+            <div class="el-submit-btn-wrap">
+              <button type="submit" class="el-form-submit-btn">
+                {{ section.settings.btn_text | default: 'Submit' }}
+              </button>
+            </div>
+
+          </div>
+        {% endform %}
+      </div>
+
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Ellora Enquiry Form",
+  "tag": "section",
+  "class": "section-ellora-enquiry-form",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Left Narrative Column"
+    },
+    {
+      "type": "html",
+      "id": "title",
+      "label": "Headline (supports <br>)",
+      "default": "Send the key details in<br>one place."
+    },
+    {
+      "type": "range",
+      "id": "title_size_desktop",
+      "label": "Headline Size Desktop",
+      "min": 26,
+      "max": 54,
+      "step": 2,
+      "unit": "px",
+      "default": 42
+    },
+    {
+      "type": "range",
+      "id": "title_size_mobile",
+      "label": "Headline Size Mobile",
+      "min": 22,
+      "max": 36,
+      "step": 2,
+      "unit": "px",
+      "default": 30
+    },
+    {
+      "type": "select",
+      "id": "title_weight",
+      "label": "Headline Font Weight",
+      "options": [
+        { "value": "300", "label": "300 - Light" },
+        { "value": "400", "label": "400 - Regular" },
+        { "value": "500", "label": "500 - Medium" }
+      ],
+      "default": "400"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Narrative Paragraph",
+      "default": "Share a few project details so Ellora can guide you with the right tile, wallpaper or mural option. Add your room type, approximate wall or floor size, product interest and any specific requirement you have in mind."
+    },
+    {
+      "type": "range",
+      "id": "desc_size",
+      "label": "Description Font Size",
+      "min": 11,
+      "max": 18,
+      "step": 0.5,
+      "unit": "px",
+      "default": 13.5
+    },
+    {
+      "type": "range",
+      "id": "left_col_width",
+      "label": "Left Column Width (%)",
+      "min": 25,
+      "max": 50,
+      "step": 1,
+      "unit": "%",
+      "default": 38
+    },
+    {
+      "type": "range",
+      "id": "column_gap",
+      "label": "Gap Between Columns",
+      "min": 20,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "header",
+      "content": "Form Labels & Placeholders"
+    },
+    {
+      "type": "text",
+      "id": "name_label",
+      "label": "Field 1 Label",
+      "default": "Name"
+    },
+    {
+      "type": "text",
+      "id": "name_placeholder",
+      "label": "Field 1 Placeholder",
+      "default": "Your Name"
+    },
+    {
+      "type": "checkbox",
+      "id": "name_required",
+      "label": "Field 1 Required",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "email_label",
+      "label": "Field 2 Label",
+      "default": "Name"
+    },
+    {
+      "type": "text",
+      "id": "email_placeholder",
+      "label": "Field 2 Placeholder",
+      "default": "Your Name"
+    },
+    {
+      "type": "checkbox",
+      "id": "email_required",
+      "label": "Field 2 Required",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "phone_label",
+      "label": "Phone Field Label",
+      "default": "Phone"
+    },
+    {
+      "type": "text",
+      "id": "phone_placeholder",
+      "label": "Phone Field Placeholder",
+      "default": "Optional"
+    },
+    {
+      "type": "checkbox",
+      "id": "phone_required",
+      "label": "Phone Required",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "project_type_label",
+      "label": "Project Type Label",
+      "default": "Project Type"
+    },
+    {
+      "type": "checkbox",
+      "id": "project_type_required",
+      "label": "Project Type Required",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "product_interest_label",
+      "label": "Product Interest Label",
+      "default": "Product Interest"
+    },
+    {
+      "type": "checkbox",
+      "id": "product_interest_required",
+      "label": "Product Interest Required",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "size_label",
+      "label": "Room / Wall Size Label",
+      "default": "Room or Wall Size"
+    },
+    {
+      "type": "text",
+      "id": "size_placeholder",
+      "label": "Size Placeholder",
+      "default": "Example 400 x 280cm"
+    },
+    {
+      "type": "checkbox",
+      "id": "size_required",
+      "label": "Size Required",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "message_label",
+      "label": "Message Label",
+      "default": "Message"
+    },
+    {
+      "type": "text",
+      "id": "message_placeholder",
+      "label": "Message Placeholder",
+      "default": "Tell us what you are trying to create..."
+    },
+    {
+      "type": "checkbox",
+      "id": "message_required",
+      "label": "Message Required",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "textarea_height",
+      "label": "Message Box Height",
+      "min": 80,
+      "max": 250,
+      "step": 5,
+      "unit": "px",
+      "default": 135
+    },
+    {
+      "type": "text",
+      "id": "select_placeholder",
+      "label": "Dropdown Default Label",
+      "default": "Select one"
+    },
+    {
+      "type": "text",
+      "id": "btn_text",
+      "label": "Submit Button Text",
+      "default": "Submit"
+    },
+    {
+      "type": "header",
+      "content": "Success Notification"
+    },
+    {
+      "type": "text",
+      "id": "success_title",
+      "label": "Success Title",
+      "default": "Thank you for reaching out."
+    },
+    {
+      "type": "textarea",
+      "id": "success_message",
+      "label": "Success Message",
+      "default": "Our design consultation team has received your project details and will be in touch shortly."
+    },
+    {
+      "type": "header",
+      "content": "Colors & Styling"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Section Background Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Headline Color",
+      "default": "#8E6356"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Narrative Text Color",
+      "default": "#5C5854"
+    },
+    {
+      "type": "color",
+      "id": "label_color",
+      "label": "Field Labels Color",
+      "default": "#45423E"
+    },
+    {
+      "type": "color",
+      "id": "input_bg",
+      "label": "Input Fields Background",
+      "default": "#FAF8F5"
+    },
+    {
+      "type": "color",
+      "id": "input_border",
+      "label": "Input Fields Border",
+      "default": "#EDE8E1"
+    },
+    {
+      "type": "color",
+      "id": "input_focus_border",
+      "label": "Input Focus Border Color",
+      "default": "#BA9587"
+    },
+    {
+      "type": "color",
+      "id": "input_text_color",
+      "label": "Input Text Color",
+      "default": "#1C1B19"
+    },
+    {
+      "type": "color",
+      "id": "placeholder_color",
+      "label": "Placeholder Color",
+      "default": "#A49F98"
+    },
+    {
+      "type": "range",
+      "id": "input_radius",
+      "label": "Input Border Radius",
+      "min": 0,
+      "max": 16,
+      "step": 1,
+      "unit": "px",
+      "default": 3
+    },
+    {
+      "type": "color",
+      "id": "btn_bg",
+      "label": "Submit Button Background",
+      "default": "#BA9587"
+    },
+    {
+      "type": "color",
+      "id": "btn_hover_bg",
+      "label": "Submit Button Hover Background",
+      "default": "#A58072"
+    },
+    {
+      "type": "color",
+      "id": "btn_text_color",
+      "label": "Submit Button Text Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "range",
+      "id": "btn_radius",
+      "label": "Button Corner Radius",
+      "min": 0,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "default": 3
+    },
+    {
+      "type": "header",
+      "content": "Section Spacing"
+    },
+    {
+      "type": "range",
+      "id": "container_max_width",
+      "label": "Container Max Width",
+      "min": 1000,
+      "max": 1800,
+      "step": 20,
+      "unit": "px",
+      "default": 1720
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding Top (Desktop)",
+      "min": 0,
+      "max": 140,
+      "step": 2,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding Bottom (Desktop)",
+      "min": 0,
+      "max": 140,
+      "step": 2,
+      "unit": "px",
+      "default": 70
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "label": "Padding Top (Mobile)",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "label": "Padding Bottom (Mobile)",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 48
+    }
+  ],
+  "presets": [
+    {
+      "name": "Ellora Enquiry Form"
+    }
+  ]
+}
+{% endschema %}

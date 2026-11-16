@@ -1,0 +1,1334 @@
+{% comment %}
+  ==========================================================================
+  ELLORA SPACES — SEARCH RESULTS SECTION TEMPLATE
+  File: sections/ellora-search.liquid
+  Theme Editor Name: Ellora Search
+  Features:
+  - Live instant search bar with search icon, clear button & quick tags
+  - Exact same product card grids & UI as Ellora Collection & Wishlist pages
+  - Native Shopify search integration ({% paginate search.results %})
+  - Wishlist heart buttons hooked directly to Ellora wishlist storage
+  - High-end Empty State with recommended surface categories
+  - 9 fallback reference products for customizer preview
+  ==========================================================================
+{% endcomment %}
+
+{%- assign search_limit = section.settings.products_per_page | default: 12 -%}
+{%- paginate search.results by search_limit -%}
+
+<div class="el-section-wrapper el-sec-search" id="ellora-search-{{ section.id }}">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
+
+    #ellora-search-{{ section.id }} {
+      --el-sr-bg: {{ section.settings.bg_color | default: '#FFFFFF' }};
+      --el-sr-primary: {{ section.settings.primary_color | default: '#8E6356' }};
+      --el-sr-dark: {{ section.settings.text_dark | default: '#1C1B19' }};
+      --el-sr-muted: {{ section.settings.text_muted | default: '#68645F' }};
+      --el-sr-border: {{ section.settings.border_color | default: '#ECE7E1' }};
+      --el-sr-input-bg: {{ section.settings.input_bg | default: '#FAF8F5' }};
+      --el-sr-btn-bg: {{ section.settings.btn_bg | default: '#BA9587' }};
+      --el-sr-btn-hover: {{ section.settings.btn_hover | default: '#A58072' }};
+      --el-sr-font-serif: 'Cormorant Garamond', Georgia, serif;
+      --el-sr-font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+
+      width: 100%;
+      background-color: var(--el-sr-bg);
+      font-family: var(--el-sr-font-sans);
+      color: var(--el-sr-dark);
+      box-sizing: border-box;
+      padding-top: {{ section.settings.padding_top | default: 50 }}px;
+      padding-bottom: {{ section.settings.padding_bottom | default: 80 }}px;
+      position: relative;
+    }
+
+    #ellora-search-{{ section.id }} *,
+    #ellora-search-{{ section.id }} *::before,
+    #ellora-search-{{ section.id }} *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    #ellora-search-{{ section.id }} .el-sr-container {
+      width: 90%;
+      max-width: {{ section.settings.container_max_width | default: 1280 }}px;
+      margin: 0 auto;
+    }
+
+    /* Breadcrumbs */
+    #ellora-search-{{ section.id }} .el-sr-breadcrumbs {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12.5px;
+      color: var(--el-sr-muted);
+      margin-bottom: 24px;
+    }
+    #ellora-search-{{ section.id }} .el-sr-breadcrumbs a {
+      color: var(--el-sr-muted);
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+    #ellora-search-{{ section.id }} .el-sr-breadcrumbs a:hover {
+      color: var(--el-sr-primary);
+    }
+    #ellora-search-{{ section.id }} .el-sr-breadcrumbs span.sep {
+      opacity: 0.5;
+    }
+    #ellora-search-{{ section.id }} .el-sr-breadcrumbs span.current {
+      color: var(--el-sr-dark);
+      font-weight: 500;
+    }
+
+    /* Search Header & Centered Search Form */
+    #ellora-search-{{ section.id }} .el-sr-header {
+      text-align: center;
+      max-width: 760px;
+      margin: 0 auto 40px auto;
+    }
+
+    #ellora-search-{{ section.id }} .el-sr-kicker {
+      font-size: 11.5px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      font-weight: 600;
+      color: var(--el-sr-primary);
+      margin-bottom: 8px;
+      display: block;
+    }
+
+    #ellora-search-{{ section.id }} .el-sr-headline {
+      font-family: var(--el-sr-font-serif);
+      font-size: {{ section.settings.title_size_desktop | default: 46 }}px;
+      line-height: 1.16;
+      font-weight: {{ section.settings.title_weight | default: 400 }};
+      color: var(--el-sr-primary);
+      letter-spacing: -0.01em;
+      margin-bottom: 12px;
+    }
+
+    #ellora-search-{{ section.id }} .el-sr-subheading {
+      font-size: 14px;
+      line-height: 1.6;
+      color: var(--el-sr-muted);
+      margin-bottom: 28px;
+    }
+
+    /* Live Search Box */
+    #ellora-search-{{ section.id }} .el-sr-search-bar {
+      position: relative;
+      width: 100%;
+      margin: 0 auto;
+    }
+
+    #ellora-search-{{ section.id }} .el-sr-search-form {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    #ellora-search-{{ section.id }} .el-sr-search-icon {
+      position: absolute;
+      left: 18px;
+      width: 18px;
+      height: 18px;
+      stroke: var(--el-sr-muted);
+      fill: none;
+      stroke-width: 1.8;
+      pointer-events: none;
+    }
+
+    #ellora-search-{{ section.id }} .el-sr-input {
+      width: 100%;
+      height: 52px;
+      background: var(--el-sr-input-bg);
+      border: 1px solid var(--el-sr-border);
+      border-radius: 4px;
+      padding: 0 50px 0 48px;
+      font-family: var(--el-sr-font-sans);
+      font-size: 14.5px;
+      color: var(--el-sr-dark);
+      outline: none;
+      transition: all 0.25s ease;
+    }
+
+    #ellora-search-{{ section.id }} .el-sr-input:focus {
+      background: #FFFFFF;
+      border-color: var(--el-sr-primary);
+      box-shadow: 0 0 0 1px var(--el-sr-primary);
+    }
+
+    #ellora-search-{{ section.id }} .el-sr-input::placeholder {
+      color: #A49F98;
+    }
+
+    #ellora-search-{{ section.id }} .el-sr-clear-btn {
+      position: absolute;
+      right: 16px;
+      width: 24px;
+      height: 24px;
+      background: #ECE7E1;
+      border: none;
+      border-radius: 50%;
+      color: var(--el-sr-dark);
+      font-size: 13px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease, background 0.2s ease;
+    }
+
+    #ellora-search-{{ section.id }} .el-sr-clear-btn.is-visible {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    #ellora-search-{{ section.id }} .el-sr-clear-btn:hover {
+      background: #DDD7CE;
+    }
+
+    /* Popular Search Pills */
+    #ellora-search-{{ section.id }} .el-sr-tags-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 14px;
+      flex-wrap: wrap;
+    }
+
+    #ellora-search-{{ section.id }} .el-sr-tags-label {
+      font-size: 12px;
+      color: var(--el-sr-muted);
+      font-weight: 500;
+    }
+
+    #ellora-search-{{ section.id }} .el-sr-tag-pill {
+      background: #FAF8F5;
+      border: 1px solid var(--el-sr-border);
+      border-radius: 14px;
+      padding: 3px 11px;
+      font-size: 11.5px;
+      color: var(--el-sr-dark);
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    #ellora-search-{{ section.id }} .el-sr-tag-pill:hover {
+      background: #FAF2ED;
+      border-color: var(--el-sr-primary);
+      color: var(--el-sr-primary);
+    }
+
+    /* Results Status Bar */
+    #ellora-search-{{ section.id }} .el-sr-status-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 0;
+      margin-bottom: 32px;
+      border-top: 1px solid var(--el-sr-border);
+      border-bottom: 1px solid var(--el-sr-border);
+      font-size: 13.5px;
+    }
+
+    #ellora-search-{{ section.id }} .el-sr-count-text {
+      color: var(--el-sr-muted);
+    }
+    #ellora-search-{{ section.id }} .el-sr-count-text strong {
+      color: var(--el-sr-dark);
+    }
+
+    /* Exact Product Grid (Matching Collection & Wishlist) */
+    #ellora-search-{{ section.id }} .el-product-grid {
+      display: grid;
+      grid-template-columns: repeat({{ section.settings.columns_desktop | default: 3 }}, 1fr);
+      gap: 32px 24px;
+      margin-bottom: 48px;
+    }
+
+    #ellora-search-{{ section.id }} .el-product-card {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      text-decoration: none;
+      position: relative;
+    }
+
+    #ellora-search-{{ section.id }} .el-card-media {
+      position: relative;
+      aspect-ratio: 4 / 5;
+      width: 100%;
+      overflow: hidden;
+      background: #EDE8E2;
+      border-radius: 8px;
+      margin-bottom: 14px;
+    }
+
+    #ellora-search-{{ section.id }} .el-card-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    #ellora-search-{{ section.id }} .el-product-card:hover .el-card-img {
+      transform: scale(1.04);
+    }
+
+    /* Wishlist Heart Icon (Linked to Ellora Wishlist Storage) */
+    #ellora-search-{{ section.id }} .el-wishlist-btn {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      width: 32px;
+      height: 32px;
+      background: #FFFFFF;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+      border: none;
+      cursor: pointer;
+      z-index: 3;
+      transition: transform 0.2s ease, background 0.2s ease;
+    }
+
+    #ellora-search-{{ section.id }} .el-wishlist-btn:hover {
+      transform: scale(1.08);
+      background: #FAF2ED;
+    }
+
+    #ellora-search-{{ section.id }} .el-wishlist-btn svg {
+      width: 15px;
+      height: 15px;
+      stroke: var(--el-sr-dark);
+      fill: none;
+      stroke-width: 1.6;
+      transition: all 0.2s ease;
+    }
+
+    #ellora-search-{{ section.id }} .el-wishlist-btn.is-active {
+      background: #FAF2ED;
+      transform: scale(1.08);
+    }
+
+    #ellora-search-{{ section.id }} .el-wishlist-btn.is-active svg {
+      stroke: var(--el-sr-primary);
+      fill: var(--el-sr-primary);
+    }
+
+    /* Product Card Info */
+    #ellora-search-{{ section.id }} .el-card-info {
+      display: flex;
+      flex-direction: column;
+      flex: 1 1 auto;
+      gap: 0;
+    }
+
+    #ellora-search-{{ section.id }} .el-card-title {
+      font-family: var(--el-sr-font-serif);
+      font-size: 20px;
+      font-weight: 400;
+      color: var(--el-sr-dark);
+      margin: 0 0 4px;
+      letter-spacing: -0.01em;
+      line-height: 1.25;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      transition: color 0.2s ease;
+    }
+
+    #ellora-search-{{ section.id }} .el-product-card:hover .el-card-title {
+      color: var(--el-sr-primary);
+    }
+
+    #ellora-search-{{ section.id }} .el-card-price {
+      font-family: var(--el-sr-font-sans);
+      font-size: 14px;
+      font-weight: 400;
+      letter-spacing: 0.01em;
+      line-height: 1.4;
+      color: var(--el-sr-muted);
+      margin: 0 0 14px;
+    }
+
+    /* Luxury Add to Cart Button */
+    #ellora-search-{{ section.id }} .el-card-add-btn {
+      margin-top: auto;
+      width: 100%;
+      height: 38px;
+      padding: 0 14px;
+      background: #FFFFFF;
+      color: #1E1B18;
+      border: 1px solid var(--el-sr-border, #ECE7E1);
+      border-radius: 4px;
+      font-family: var(--el-sr-font-sans);
+      font-size: 11.5px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      transition: all 0.22s ease;
+    }
+
+    #ellora-search-{{ section.id }} .el-card-add-btn:hover {
+      background: var(--el-sr-primary, #BA8877);
+      border-color: var(--el-sr-primary, #BA8877);
+      color: #FFFFFF;
+      box-shadow: 0 4px 12px rgba(186, 136, 119, 0.22);
+    }
+
+    #ellora-search-{{ section.id }} .el-card-add-btn svg {
+      width: 14px;
+      height: 14px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 1.8;
+      transition: stroke 0.2s ease;
+    }
+
+    #ellora-search-{{ section.id }} .el-card-add-btn.is-loading {
+      opacity: 0.7;
+      pointer-events: none;
+    }
+
+    #ellora-search-{{ section.id }} .el-card-add-btn.is-success {
+      background: #4A6B53 !important;
+      border-color: #4A6B53 !important;
+      color: #FFFFFF !important;
+    }
+
+    #ellora-search-{{ section.id }} .el-card-add-btn.is-soldout {
+      background: #F5F3EF;
+      border-color: #E8E4DD;
+      color: #A39D94;
+      cursor: not-allowed;
+    }
+
+    /* Real Native Pagination */
+    #ellora-search-{{ section.id }} .el-pagination {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+      padding-top: 24px;
+      border-top: 1px solid var(--el-sr-border);
+    }
+
+    #ellora-search-{{ section.id }} .el-page-btn {
+      min-width: 34px;
+      height: 34px;
+      padding: 0 10px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 400;
+      color: var(--el-sr-dark);
+      background: #FFFFFF;
+      border: 1px solid var(--el-sr-border);
+      border-radius: 2px;
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+
+    #ellora-search-{{ section.id }} .el-page-btn.is-active,
+    #ellora-search-{{ section.id }} .el-page-btn:hover:not(.disabled) {
+      background: var(--el-sr-primary);
+      border-color: var(--el-sr-primary);
+      color: #FFFFFF;
+    }
+
+    /* Empty State */
+    #ellora-search-{{ section.id }} .el-sr-empty-card {
+      background: #FFFAF8;
+      border: 1px solid #F2E8E2;
+      border-radius: 4px;
+      padding: 64px 24px;
+      text-align: center;
+      margin: 20px 0 40px 0;
+    }
+
+    #ellora-search-{{ section.id }} .el-sr-empty-icon {
+      width: 52px;
+      height: 52px;
+      margin: 0 auto 18px auto;
+      border-radius: 50%;
+      background: #FAF2ED;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #ellora-search-{{ section.id }} .el-sr-empty-icon svg {
+      width: 24px;
+      height: 24px;
+      stroke: var(--el-sr-primary);
+      fill: none;
+      stroke-width: 1.6;
+    }
+
+    #ellora-search-{{ section.id }} .el-sr-empty-title {
+      font-family: var(--el-sr-font-serif);
+      font-size: 32px;
+      color: var(--el-sr-primary);
+      margin-bottom: 10px;
+    }
+
+    #ellora-search-{{ section.id }} .el-sr-empty-desc {
+      font-size: 14px;
+      line-height: 1.6;
+      color: var(--el-sr-muted);
+      max-width: 480px;
+      margin: 0 auto 24px auto;
+    }
+
+    #ellora-search-{{ section.id }} .el-sr-empty-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      background: var(--el-sr-btn-bg);
+      color: #FFFFFF;
+      border: 1px solid var(--el-sr-btn-bg);
+      border-radius: 3px;
+      padding: 0 32px;
+      height: 46px;
+      font-size: 13.5px;
+      font-weight: 500;
+      text-decoration: none;
+      cursor: pointer;
+      transition: background 0.25s ease;
+    }
+
+    #ellora-search-{{ section.id }} .el-sr-empty-btn:hover {
+      background: var(--el-sr-btn-hover);
+    }
+
+    /* Responsive */
+    @media (max-width: 1100px) {
+      #ellora-search-{{ section.id }} .el-product-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 24px 18px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      #ellora-search-{{ section.id }} .el-sr-headline {
+        font-size: {{ section.settings.title_size_mobile | default: 32 }}px;
+      }
+      #ellora-search-{{ section.id }} {
+        padding-top: {{ section.settings.padding_top_mobile | default: 36 }}px;
+        padding-bottom: {{ section.settings.padding_bottom_mobile | default: 50 }}px;
+      }
+    }
+
+    @media (max-width: 640px) {
+      #ellora-search-{{ section.id }} .el-product-grid {
+        grid-template-columns: repeat({{ section.settings.columns_mobile | default: '2' }}, 1fr);
+        gap: 14px;
+      }
+      #ellora-search-{{ section.id }} .el-card-title {
+        font-size: 17px;
+        line-height: 1.25;
+        margin-bottom: 4px;
+      }
+      #ellora-search-{{ section.id }} .el-card-price {
+        font-size: 13px;
+        line-height: 1.4;
+        margin-bottom: 12px;
+      }
+      #ellora-search-{{ section.id }} .el-sr-status-bar {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+      }
+    }
+  </style>
+
+  <div class="el-sr-container">
+
+    <!-- Breadcrumb -->
+    <nav class="el-sr-breadcrumbs" aria-label="Breadcrumb">
+      <a href="{{ routes.root_url }}">Home</a>
+      <span class="sep">/</span>
+      <span class="current">Search</span>
+    </nav>
+
+    <!-- Search Header & Search Form -->
+    <div class="el-sr-header">
+      <span class="el-sr-kicker">{{ section.settings.kicker | default: 'EXPLORE OUR CATALOGUE' }}</span>
+      <h1 class="el-sr-headline">
+        {%- if search.performed and search.terms != blank -%}
+          Results for &ldquo;{{ search.terms }}&rdquo;
+        {%- else -%}
+          {{ section.settings.title | default: 'Search Surfaces' }}
+        {%- endif -%}
+      </h1>
+      <p class="el-sr-subheading">
+        {{ section.settings.subtitle | default: 'Find the ideal stone slabs, architectural tiles, and bespoke wallpapers for your room.' }}
+      </p>
+
+      <!-- Live Search Form -->
+      <div class="el-sr-search-bar">
+        <form action="{{ routes.search_url }}" method="get" role="search" class="el-sr-search-form" id="elSearchForm-{{ section.id }}">
+          <input type="hidden" name="type" value="product">
+          <svg class="el-sr-search-icon" viewBox="0 0 24 24">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+          <input
+            type="search"
+            name="q"
+            id="elSearchInput-{{ section.id }}"
+            class="el-sr-input"
+            value="{{ search.terms | escape }}"
+            placeholder="{{ section.settings.search_placeholder | default: 'Search tiles, wallpapers, marble surfaces, sizes...' }}"
+            autocomplete="off"
+            spellcheck="false"
+          >
+          <button type="button" class="el-sr-clear-btn" id="elSearchClear-{{ section.id }}" aria-label="Clear search">
+            &times;
+          </button>
+        </form>
+      </div>
+
+      <!-- Quick Suggested Search Tags -->
+      {%- if section.settings.show_tags -%}
+        <div class="el-sr-tags-row">
+          <span class="el-sr-tags-label">Popular:</span>
+          {%- assign tags_array = section.settings.popular_tags | split: ',' -%}
+          {%- for tag in tags_array -%}
+            {%- assign clean_tag = tag | strip -%}
+            {%- if clean_tag != blank -%}
+              <a href="{{ routes.search_url }}?type=product&q={{ clean_tag | url_encode }}" class="el-sr-tag-pill" data-query="{{ clean_tag }}">
+                {{ clean_tag }}
+              </a>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+    </div>
+
+    <!-- Status & Results Count -->
+    <div class="el-sr-status-bar">
+      <div class="el-sr-count-text" id="elSrCountText">
+        {%- if search.performed -%}
+          Showing <strong>{{ search.results_count }}</strong> {{ search.results_count | pluralize: 'result', 'results' }}
+          {%- if search.terms != blank -%} for &ldquo;<strong>{{ search.terms }}</strong>&rdquo;{%- endif -%}
+        {%- else -%}
+          Showing curated surfaces
+        {%- endif -%}
+      </div>
+      <div>
+        <a href="{{ routes.all_products_collection_url }}" style="color: var(--el-sr-primary); font-size: 13px; text-decoration: none;">
+          View All Products &rarr;
+        </a>
+      </div>
+    </div>
+
+    <!-- Results Product Grid -->
+    {%- if search.performed and search.results_count > 0 -%}
+      <div class="el-product-grid" id="elSearchProductGrid">
+        {%- for item in search.results -%}
+          {%- if item.object_type == 'product' -%}
+            {%- assign product = item -%}
+            <div class="el-product-card" data-title="{{ product.title | downcase }}">
+              <div class="el-card-media">
+                {%- if section.settings.show_wishlist -%}
+                  <button
+                    type="button"
+                    class="el-wishlist-btn"
+                    aria-label="Add {{ product.title }} to wishlist"
+                    data-product-id="{{ product.id }}"
+                    data-product-handle="{{ product.handle }}"
+                    data-product-title="{{ product.title | escape }}"
+                    data-product-price="{{ product.price | money }} {{ section.settings.price_unit | default: '/M2' }}"
+                    data-product-image="{% if product.featured_image != blank %}{{ product.featured_image | image_url: width: 600 }}{% else %}https://cdn.shopify.com/s/files/1/0990/3685/6647/files/sec4_surface_03_marble_stone.jpg?v=1789453291{% endif %}"
+                    data-product-url="{{ product.url }}"
+                  >
+                    <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+                  </button>
+                {%- endif -%}
+
+                <a href="{{ product.url }}">
+                  {%- if product.featured_image != blank -%}
+                    <img src="{{ product.featured_image | image_url: width: 600 }}" alt="{{ product.title }}" class="el-card-img" loading="lazy">
+                  {%- else -%}
+                    <img src="https://cdn.shopify.com/s/files/1/0990/3685/6647/files/sec4_surface_03_marble_stone.jpg?v=1789453291" alt="{{ product.title }}" class="el-card-img" loading="lazy">
+                  {%- endif -%}
+                </a>
+              </div>
+              <div class="el-card-info">
+                <a href="{{ product.url }}" style="text-decoration: none;">
+                  <h3 class="el-card-title">{{ product.title }}</h3>
+                </a>
+                <p class="el-card-price">{{ product.price | money }} {{ section.settings.price_unit | default: '/M2' }}</p>
+
+                {%- assign default_variant = product.selected_or_first_available_variant -%}
+                {%- if default_variant.available -%}
+                  <button type="button" 
+                    class="el-card-add-btn" 
+                    data-variant-id="{{ default_variant.id }}"
+                    data-product-title="{{ product.title | escape }}"
+                    aria-label="Add {{ product.title }} to cart">
+                    <svg viewBox="0 0 24 24"><path d="M2 9h20l-2 11H4L2 9z"></path><path d="M7 9l4.5-6"></path><path d="M17 9l-4.5-6"></path></svg>
+                    <span>Add to Cart</span>
+                  </button>
+                {%- else -%}
+                  <button type="button" class="el-card-add-btn is-soldout" disabled>
+                    <span>Sold Out</span>
+                  </button>
+                {%- endif -%}
+              </div>
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+
+      <!-- Pagination -->
+      {%- if paginate.pages > 1 -%}
+        <nav class="el-pagination" aria-label="Search pagination">
+          {%- if paginate.previous -%}
+            <a href="{{ paginate.previous.url }}" class="el-page-btn el-page-arrow">&larr; Prev</a>
+          {%- else -%}
+            <span class="el-page-btn el-page-arrow disabled">&larr; Prev</span>
+          {%- endif -%}
+
+          {%- for part in paginate.parts -%}
+            {%- if part.is_link -%}
+              <a href="{{ part.url }}" class="el-page-btn">{{ part.title }}</a>
+            {%- else -%}
+              {%- if part.title == paginate.current_page -%}
+                <span class="el-page-btn is-active">{{ part.title }}</span>
+              {%- else -%}
+                <span class="el-page-btn">{{ part.title }}</span>
+              {%- endif -%}
+            {%- endif -%}
+          {%- endfor -%}
+
+          {%- if paginate.next -%}
+            <a href="{{ paginate.next.url }}" class="el-page-btn el-page-arrow">Next &rarr;</a>
+          {%- else -%}
+            <span class="el-page-btn el-page-arrow disabled">Next &rarr;</span>
+          {%- endif -%}
+        </nav>
+      {%- endif -%}
+
+    {%- elsif search.performed and search.results_count == 0 -%}
+
+      <!-- Empty State: No results found -->
+      <div class="el-sr-empty-card">
+        <div class="el-sr-empty-icon">
+          <svg viewBox="0 0 24 24">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+        </div>
+        <h2 class="el-sr-empty-title">No surfaces found</h2>
+        <p class="el-sr-empty-desc">
+          We couldn't find any products matching &ldquo;<strong>{{ search.terms }}</strong>&rdquo;. Please check your spelling or browse our bestselling natural stone tiles and wallpapers.
+        </p>
+        <a href="{{ routes.all_products_collection_url }}" class="el-sr-empty-btn">
+          Explore All Surfaces &rarr;
+        </a>
+      </div>
+
+    {%- else -%}
+
+      <!-- Curated Showcase / Fallback when no search performed yet -->
+      <div class="el-product-grid" id="elSearchProductGrid">
+        <div class="el-product-card" data-title="aura ivory stone">
+          <div class="el-card-media">
+            <button type="button" class="el-wishlist-btn" aria-label="Add to wishlist" data-product-id="fallback-1" data-product-title="Aura Ivory Stone" data-product-price="From £37.20/M2" data-product-image="https://cdn.shopify.com/s/files/1/0990/3685/6647/files/sec4_surface_03_marble_stone.jpg?v=1789453291" data-product-url="/collections/all"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg></button>
+            <img src="https://cdn.shopify.com/s/files/1/0990/3685/6647/files/sec4_surface_03_marble_stone.jpg?v=1789453291" alt="Aura Ivory Stone" class="el-card-img" loading="lazy">
+          </div>
+          <div class="el-card-info">
+            <h3 class="el-card-title">Aura Ivory Stone</h3>
+            <p class="el-card-price">From £37.20/M2</p>
+            <button type="button" class="el-card-add-btn" data-product-title="Aura Ivory Stone" aria-label="Add Aura Ivory Stone to cart">
+              <svg viewBox="0 0 24 24"><path d="M2 9h20l-2 11H4L2 9z"></path><path d="M7 9l4.5-6"></path><path d="M17 9l-4.5-6"></path></svg>
+              <span>Add to Cart</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="el-product-card" data-title="terracotta fluted tile">
+          <div class="el-card-media">
+            <button type="button" class="el-wishlist-btn" aria-label="Add to wishlist" data-product-id="fallback-2" data-product-title="Terracotta Fluted Tile" data-product-price="From £42.00/M2" data-product-image="https://cdn.shopify.com/s/files/1/0990/3685/6647/files/sec6_product_02_aura_bistro_patio.jpg?v=1789453292" data-product-url="/collections/all"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg></button>
+            <img src="https://cdn.shopify.com/s/files/1/0990/3685/6647/files/sec6_product_02_aura_bistro_patio.jpg?v=1789453292" alt="Terracotta Fluted Tile" class="el-card-img" loading="lazy">
+          </div>
+          <div class="el-card-info">
+            <h3 class="el-card-title">Terracotta Fluted Tile</h3>
+            <p class="el-card-price">From £42.00/M2</p>
+            <button type="button" class="el-card-add-btn" data-product-title="Terracotta Fluted Tile" aria-label="Add Terracotta Fluted Tile to cart">
+              <svg viewBox="0 0 24 24"><path d="M2 9h20l-2 11H4L2 9z"></path><path d="M7 9l4.5-6"></path><path d="M17 9l-4.5-6"></path></svg>
+              <span>Add to Cart</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="el-product-card" data-title="classic travertine slab">
+          <div class="el-card-media">
+            <button type="button" class="el-wishlist-btn" aria-label="Add to wishlist" data-product-id="fallback-3" data-product-title="Classic Travertine Slab" data-product-price="From £54.50/M2" data-product-image="https://cdn.shopify.com/s/files/1/0990/3685/6647/files/sec5_crafted_02_terracotta_bench.jpg?v=1789453291" data-product-url="/collections/all"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg></button>
+            <img src="https://cdn.shopify.com/s/files/1/0990/3685/6647/files/sec5_crafted_02_terracotta_bench.jpg?v=1789453291" alt="Classic Travertine Slab" class="el-card-img" loading="lazy">
+          </div>
+          <div class="el-card-info">
+            <h3 class="el-card-title">Classic Travertine Slab</h3>
+            <p class="el-card-price">From £54.50/M2</p>
+            <button type="button" class="el-card-add-btn" data-product-title="Classic Travertine Slab" aria-label="Add Classic Travertine Slab to cart">
+              <svg viewBox="0 0 24 24"><path d="M2 9h20l-2 11H4L2 9z"></path><path d="M7 9l4.5-6"></path><path d="M17 9l-4.5-6"></path></svg>
+              <span>Add to Cart</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="el-product-card" data-title="warm sandstone neutral">
+          <div class="el-card-media">
+            <button type="button" class="el-wishlist-btn" aria-label="Add to wishlist" data-product-id="fallback-4" data-product-title="Warm Sandstone Neutral" data-product-price="From £39.80/M2" data-product-image="https://cdn.shopify.com/s/files/1/0990/3685/6647/files/sec4_surface_05_warm_neutrals.jpg?v=1789453291" data-product-url="/collections/all"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg></button>
+            <img src="https://cdn.shopify.com/s/files/1/0990/3685/6647/files/sec4_surface_05_warm_neutrals.jpg?v=1789453291" alt="Warm Sandstone Neutral" class="el-card-img" loading="lazy">
+          </div>
+          <div class="el-card-info">
+            <h3 class="el-card-title">Warm Sandstone Neutral</h3>
+            <p class="el-card-price">From £39.80/M2</p>
+            <button type="button" class="el-card-add-btn" data-product-title="Warm Sandstone Neutral" aria-label="Add Warm Sandstone Neutral to cart">
+              <svg viewBox="0 0 24 24"><path d="M2 9h20l-2 11H4L2 9z"></path><path d="M7 9l4.5-6"></path><path d="M17 9l-4.5-6"></path></svg>
+              <span>Add to Cart</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="el-product-card" data-title="calacatta niche marble">
+          <div class="el-card-media">
+            <button type="button" class="el-wishlist-btn" aria-label="Add to wishlist" data-product-id="fallback-5" data-product-title="Calacatta Niche Marble" data-product-price="From £62.00/M2" data-product-image="https://cdn.shopify.com/s/files/1/0990/3685/6647/files/sec8_community_card_02_mandir.jpg?v=1789453291" data-product-url="/collections/all"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg></button>
+            <img src="https://cdn.shopify.com/s/files/1/0990/3685/6647/files/sec8_community_card_02_mandir.jpg?v=1789453291" alt="Calacatta Niche Marble" class="el-card-img" loading="lazy">
+          </div>
+          <div class="el-card-info">
+            <h3 class="el-card-title">Calacatta Niche Marble</h3>
+            <p class="el-card-price">From £62.00/M2</p>
+            <button type="button" class="el-card-add-btn" data-product-title="Calacatta Niche Marble" aria-label="Add Calacatta Niche Marble to cart">
+              <svg viewBox="0 0 24 24"><path d="M2 9h20l-2 11H4L2 9z"></path><path d="M7 9l4.5-6"></path><path d="M17 9l-4.5-6"></path></svg>
+              <span>Add to Cart</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="el-product-card" data-title="rustic courtyard flagstone">
+          <div class="el-card-media">
+            <button type="button" class="el-wishlist-btn" aria-label="Add to wishlist" data-product-id="fallback-6" data-product-title="Rustic Courtyard Flagstone" data-product-price="From £48.00/M2" data-product-image="https://cdn.shopify.com/s/files/1/0990/3685/6647/files/sec8_marquee_02_terrace_tree.jpg?v=1789453292" data-product-url="/collections/all"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg></button>
+            <img src="https://cdn.shopify.com/s/files/1/0990/3685/6647/files/sec8_marquee_02_terrace_tree.jpg?v=1789453292" alt="Rustic Courtyard Flagstone" class="el-card-img" loading="lazy">
+          </div>
+          <div class="el-card-info">
+            <h3 class="el-card-title">Rustic Courtyard Flagstone</h3>
+            <p class="el-card-price">From £48.00/M2</p>
+            <button type="button" class="el-card-add-btn" data-product-title="Rustic Courtyard Flagstone" aria-label="Add Rustic Courtyard Flagstone to cart">
+              <svg viewBox="0 0 24 24"><path d="M2 9h20l-2 11H4L2 9z"></path><path d="M7 9l4.5-6"></path><path d="M17 9l-4.5-6"></path></svg>
+              <span>Add to Cart</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+    {%- endif -%}
+
+  </div>
+</div>
+
+{%- endpaginate -%}
+
+<!-- JavaScript: Real-time Live Search Filter, Clear Button & Wishlist Sync -->
+<script>
+  (function() {
+    var sectionId = "{{ section.id }}";
+    var root = document.getElementById('ellora-search-' + sectionId);
+    if (!root) return;
+
+    var input = root.querySelector('#elSearchInput-' + sectionId);
+    var clearBtn = root.querySelector('#elSearchClear-' + sectionId);
+    var countText = root.querySelector('#elSrCountText');
+    var cards = root.querySelectorAll('.el-product-card');
+
+    // Update clear button visibility
+    function toggleClearBtn() {
+      if (!input || !clearBtn) return;
+      if (input.value.trim().length > 0) {
+        clearBtn.classList.add('is-visible');
+      } else {
+        clearBtn.classList.remove('is-visible');
+      }
+    }
+    toggleClearBtn();
+
+    if (input) {
+      // Real-time live in-page filtering as user types
+      input.addEventListener('input', function() {
+        toggleClearBtn();
+        var query = input.value.toLowerCase().trim();
+        var visibleCount = 0;
+
+        cards.forEach(function(card) {
+          var title = (card.getAttribute('data-title') || '').toLowerCase();
+          if (!query || title.indexOf(query) > -1) {
+            card.style.display = '';
+            visibleCount++;
+          } else {
+            card.style.display = 'none';
+          }
+        });
+
+        if (countText) {
+          if (query) {
+            countText.innerHTML = 'Showing <strong>' + visibleCount + '</strong> matching surfaces for &ldquo;<strong>' + query + '</strong>&rdquo;';
+          }
+        }
+      });
+    }
+
+    if (clearBtn && input) {
+      clearBtn.addEventListener('click', function() {
+        input.value = '';
+        toggleClearBtn();
+        cards.forEach(function(card) { card.style.display = ''; });
+        input.focus();
+      });
+    }
+
+    // Wishlist Sync & Toggle
+    function getWishlist() {
+      try {
+        return JSON.parse(localStorage.getItem('ellora_wishlist') || '[]');
+      } catch(e) {
+        return [];
+      }
+    }
+
+    function saveWishlist(items) {
+      localStorage.setItem('ellora_wishlist', JSON.stringify(items));
+      window.dispatchEvent(new CustomEvent('ellora:wishlist:updated', { detail: { items: items } }));
+    }
+
+    function syncWishlistButtons() {
+      var list = getWishlist();
+      var buttons = root.querySelectorAll('.el-wishlist-btn');
+      buttons.forEach(function(btn) {
+        var id = btn.getAttribute('data-product-id');
+        var handle = btn.getAttribute('data-product-handle');
+        var title = btn.getAttribute('data-product-title');
+        var inList = list.some(function(item) {
+          if (id && item.id && String(item.id) === String(id)) return true;
+          if (handle && item.handle && item.handle === handle) return true;
+          if (title && item.title && item.title.toLowerCase() === title.toLowerCase()) return true;
+          return false;
+        });
+        if (inList) {
+          btn.classList.add('is-active');
+        } else {
+          btn.classList.remove('is-active');
+        }
+      });
+    }
+
+    // Toast
+    var toastTimeout;
+    function showToast(msg) {
+      var toast = document.getElementById('elWishlistGlobalToast');
+      if (!toast) {
+        toast = document.createElement('div');
+        toast.id = 'elWishlistGlobalToast';
+        toast.style.cssText = 'position:fixed;bottom:24px;right:24px;background:#1C1B19;color:#FFFFFF;padding:12px 20px;border-radius:4px;font-family:sans-serif;font-size:13.5px;font-weight:500;box-shadow:0 4px 16px rgba(0,0,0,0.2);z-index:99999;opacity:0;transform:translateY(12px);transition:all 0.3s ease;pointer-events:none;display:flex;align-items:center;gap:10px;';
+        document.body.appendChild(toast);
+      }
+      toast.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="#BA9587" stroke="#BA9587" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg> <span>' + msg + '</span>';
+      toast.style.opacity = '1';
+      toast.style.transform = 'translateY(0)';
+      clearTimeout(toastTimeout);
+      toastTimeout = setTimeout(function() {
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateY(12px)';
+      }, 2500);
+    }
+
+    // Click handler for wishlist buttons
+    root.addEventListener('click', function(e) {
+      var btn = e.target.closest('.el-wishlist-btn');
+      if (!btn) return;
+      e.preventDefault();
+      e.stopPropagation();
+
+      var card = btn.closest('.el-product-card');
+      var id = btn.getAttribute('data-product-id') || (card ? card.getAttribute('data-product-id') : '') || ('item-' + Date.now());
+      var handle = btn.getAttribute('data-product-handle') || (card ? card.getAttribute('data-product-handle') : '') || '';
+      var title = btn.getAttribute('data-product-title') || (card && card.querySelector('.el-card-title') ? card.querySelector('.el-card-title').textContent.trim() : '') || 'Ellora Surface';
+      var price = btn.getAttribute('data-product-price') || (card && card.querySelector('.el-card-price') ? card.querySelector('.el-card-price').textContent.trim() : '') || '';
+      var image = btn.getAttribute('data-product-image') || (card && card.querySelector('.el-card-img') ? card.querySelector('.el-card-img').getAttribute('src') : '') || '';
+      var url = btn.getAttribute('data-product-url') || (card && card.querySelector('a') ? card.querySelector('a').getAttribute('href') : '') || '/collections/all';
+
+      var list = getWishlist();
+      var existingIndex = list.findIndex(function(item) {
+        if (id && item.id && String(item.id) === String(id)) return true;
+        if (handle && item.handle && item.handle === handle) return true;
+        if (title && item.title && item.title.toLowerCase() === title.toLowerCase()) return true;
+        return false;
+      });
+
+      if (existingIndex > -1) {
+        list.splice(existingIndex, 1);
+        btn.classList.remove('is-active');
+        showToast('Removed from your Wishlist');
+      } else {
+        list.push({
+          id: id,
+          handle: handle,
+          title: title,
+          price: price,
+          image: image,
+          url: url
+        });
+        btn.classList.add('is-active');
+        showToast('Added to your Wishlist');
+      }
+
+      saveWishlist(list);
+    });
+
+    // Add to Cart AJAX Handler
+    root.addEventListener('click', function(e) {
+      var btn = e.target.closest('.el-card-add-btn');
+      if (!btn || btn.classList.contains('is-loading') || btn.classList.contains('is-soldout')) return;
+      e.preventDefault();
+      e.stopPropagation();
+
+      var variantId = btn.getAttribute('data-variant-id');
+      var title = btn.getAttribute('data-product-title') || 'Product';
+      var originalHTML = btn.innerHTML;
+
+      // Demo/Fallback Card Simulation
+      if (!variantId) {
+        btn.classList.add('is-success');
+        btn.innerHTML = '&#10003; Added to Basket';
+        showToast('Added ' + title + ' to basket');
+        window.dispatchEvent(new CustomEvent('ellora:cart:open'));
+        setTimeout(function() {
+          btn.classList.remove('is-success');
+          btn.innerHTML = originalHTML;
+        }, 2000);
+        return;
+      }
+
+      btn.classList.add('is-loading');
+      btn.innerHTML = 'Adding...';
+
+      fetch('/cart/add.js', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify({
+          id: Number(variantId),
+          quantity: 1
+        })
+      })
+      .then(function(res) {
+        if (!res.ok) throw new Error('Add to cart failed');
+        return res.json();
+      })
+      .then(function(item) {
+        btn.classList.remove('is-loading');
+        btn.classList.add('is-success');
+        btn.innerHTML = '&#10003; Added to Basket';
+        showToast('Added ' + (item.title || title) + ' to basket');
+
+        // Trigger header badge refresh and cart drawer
+        window.dispatchEvent(new CustomEvent('ellora:cart:refresh'));
+        window.dispatchEvent(new CustomEvent('ellora:cart:updated', { detail: item }));
+        window.dispatchEvent(new CustomEvent('cart:updated'));
+        window.dispatchEvent(new CustomEvent('cart:refresh'));
+        window.dispatchEvent(new CustomEvent('ellora:cart:open'));
+
+        setTimeout(function() {
+          btn.classList.remove('is-success');
+          btn.innerHTML = originalHTML;
+        }, 2200);
+      })
+      .catch(function(err) {
+        console.error('Error adding to cart:', err);
+        btn.classList.remove('is-loading');
+        btn.innerHTML = originalHTML;
+      });
+    });
+
+    syncWishlistButtons();
+    window.addEventListener('ellora:wishlist:updated', syncWishlistButtons);
+    window.addEventListener('storage', syncWishlistButtons);
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Ellora Search",
+  "tag": "section",
+  "class": "section-ellora-search",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Headline & Content"
+    },
+    {
+      "type": "text",
+      "id": "kicker",
+      "label": "Top Kicker Label",
+      "default": "EXPLORE OUR CATALOGUE"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Search Headline",
+      "default": "Search Surfaces"
+    },
+    {
+      "type": "range",
+      "id": "title_size_desktop",
+      "label": "Headline Size Desktop",
+      "min": 28,
+      "max": 64,
+      "step": 2,
+      "unit": "px",
+      "default": 46
+    },
+    {
+      "type": "range",
+      "id": "title_size_mobile",
+      "label": "Headline Size Mobile",
+      "min": 22,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 32
+    },
+    {
+      "type": "select",
+      "id": "title_weight",
+      "label": "Headline Font Weight",
+      "options": [
+        { "value": "300", "label": "300 - Light" },
+        { "value": "400", "label": "400 - Regular" },
+        { "value": "500", "label": "500 - Medium" }
+      ],
+      "default": "400"
+    },
+    {
+      "type": "textarea",
+      "id": "subtitle",
+      "label": "Subheading Copy",
+      "default": "Find the ideal stone slabs, architectural tiles, and bespoke wallpapers for your room."
+    },
+    {
+      "type": "text",
+      "id": "search_placeholder",
+      "label": "Search Bar Placeholder",
+      "default": "Search tiles, wallpapers, marble surfaces, sizes..."
+    },
+    {
+      "type": "header",
+      "content": "Popular Search Suggestions"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_tags",
+      "label": "Show Popular Suggestions",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "popular_tags",
+      "label": "Popular Search Keywords (comma-separated)",
+      "default": "Marble, Travertine, Fluted Tile, Limestone, Yoga Murals, Wallpapers, Outdoor"
+    },
+    {
+      "type": "header",
+      "content": "Product Grid Layout"
+    },
+    {
+      "type": "range",
+      "id": "columns_desktop",
+      "label": "Desktop Columns",
+      "min": 2,
+      "max": 5,
+      "step": 1,
+      "default": 3
+    },
+    {
+      "type": "select",
+      "id": "columns_mobile",
+      "label": "Mobile Columns",
+      "options": [
+        { "value": "1", "label": "1 Column" },
+        { "value": "2", "label": "2 Columns" }
+      ],
+      "default": "2"
+    },
+    {
+      "type": "range",
+      "id": "rows_desktop",
+      "label": "Grid Rows per Page",
+      "min": 1,
+      "max": 6,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "products_per_page",
+      "label": "Products Per Page",
+      "min": 6,
+      "max": 36,
+      "step": 6,
+      "default": 12
+    },
+    {
+      "type": "checkbox",
+      "id": "show_wishlist",
+      "label": "Show Wishlist Heart Button",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_quick_view",
+      "label": "Show Quick View Badge",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "price_unit",
+      "label": "Price Unit Suffix",
+      "default": "/M2"
+    },
+    {
+      "type": "header",
+      "content": "Colors & Layout"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Section Background",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "primary_color",
+      "label": "Headline & Primary Accent",
+      "default": "#8E6356"
+    },
+    {
+      "type": "color",
+      "id": "text_dark",
+      "label": "Product Title & Dark Text",
+      "default": "#1C1B19"
+    },
+    {
+      "type": "color",
+      "id": "text_muted",
+      "label": "Price & Description Text",
+      "default": "#68645F"
+    },
+    {
+      "type": "color",
+      "id": "input_bg",
+      "label": "Search Input Background",
+      "default": "#FAF8F5"
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "Dividers & Borders",
+      "default": "#ECE7E1"
+    },
+    {
+      "type": "color",
+      "id": "btn_bg",
+      "label": "Button Background",
+      "default": "#BA9587"
+    },
+    {
+      "type": "color",
+      "id": "btn_hover",
+      "label": "Button Hover Background",
+      "default": "#A58072"
+    },
+    {
+      "type": "range",
+      "id": "container_max_width",
+      "label": "Container Max Width",
+      "min": 1000,
+      "max": 1600,
+      "step": 20,
+      "unit": "px",
+      "default": 1280
+    },
+    {
+      "type": "header",
+      "content": "Section Spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding Top (Desktop)",
+      "min": 0,
+      "max": 140,
+      "step": 2,
+      "unit": "px",
+      "default": 50
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding Bottom (Desktop)",
+      "min": 0,
+      "max": 140,
+      "step": 2,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "label": "Padding Top (Mobile)",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "label": "Padding Bottom (Mobile)",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 50
+    }
+  ],
+  "presets": [
+    {
+      "name": "Ellora Search"
+    }
+  ]
+}
+{% endschema %}

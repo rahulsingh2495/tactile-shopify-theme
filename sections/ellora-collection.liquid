@@ -1,0 +1,2332 @@
+{% comment %}
+  ==========================================================================
+  ELLORA SPACES — SHOP / COLLECTION SECTION
+  File: sections/ellora-collection.liquid
+  Pixel-perfect implementation matching Ellora luxury editorial collection UI
+  Features:
+  - Editorial Breadcrumb & Collection Hero Banner (Split 2-col Title & Narrative)
+  - Native Shopify Facet Filters (fetches from Shopify Search & Discovery / Backend Filters)
+      * Form submits GET parameters directly to Shopify (?filter.v.option...=...)
+      * Automatic filter types: list (checkboxes), color swatches, size pills, price range
+      * Real-time "Clear all" button with active filters counter
+      * Category Quick Tree (All, Tiles, Wallpapers with active highlight)
+  - Right Main Area:
+      * Native Shopify Sort By dropdown (Best selling, Newest, Price low/high)
+      * Real-time in-page product search
+      * Products count tracker ("Showing 1–X of Y Products")
+      * 3-Column Luxury Product Grid with Wishlist heart button & Quick View badge
+      * Editorial Serif Product Title ("Aura Ivory Stone") & Price ("From £37.20/M2")
+  - Real Shopify OS 2.0 Pagination ({% paginate collection.products %})
+      * Prev / Next buttons and direct page links with active styling
+  ==========================================================================
+{% endcomment %}
+
+{%- assign default_cols = section.settings.columns_desktop | default: 3 -%}
+{%- assign default_rows = section.settings.rows_desktop | default: 3 -%}
+{%- assign calculated_limit = default_cols | times: default_rows -%}
+{%- assign products_limit = section.settings.products_per_page | default: calculated_limit -%}
+
+{%- paginate collection.products by products_limit -%}
+<div class="el-collection-wrapper" id="ellora-collection-{{ section.id }}">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
+
+    #ellora-collection-{{ section.id }} {
+      --el-col-bg: {{ section.settings.bg_color | default: '#FAF9F6' }};
+      --el-col-card-bg: {{ section.settings.card_bg | default: '#FFFFFF' }};
+      --el-col-primary: {{ section.settings.accent_color | default: '#BA8877' }};
+      --el-col-primary-hover: #A36F5F;
+      --el-col-primary-tint: #FAF2ED;
+      --el-col-dark: #1E1B18;
+      --el-col-text: #2D2A28;
+      --el-col-muted: #736E67;
+      --el-col-border: #ECE7E1;
+      --el-col-border-light: #F2EFEA;
+      --el-col-font-serif: 'Cormorant Garamond', Georgia, serif;
+      --el-col-font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+
+      background-color: var(--el-col-bg);
+      font-family: var(--el-col-font-sans);
+      color: var(--el-col-text);
+      padding-top: {{ section.settings.padding_top | default: 40 }}px;
+      padding-bottom: {{ section.settings.padding_bottom | default: 80 }}px;
+      width: 100%;
+      box-sizing: border-box;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    #ellora-collection-{{ section.id }} *,
+    #ellora-collection-{{ section.id }} *::before,
+    #ellora-collection-{{ section.id }} *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    #ellora-collection-{{ section.id }} .el-col-container {
+      width: 90%;
+      max-width: 1720px;
+      margin: 0 auto;
+    }
+
+    /* Breadcrumbs */
+    #ellora-collection-{{ section.id }} .el-col-breadcrumbs {
+      font-family: var(--el-col-font-sans);
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--el-col-muted);
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    #ellora-collection-{{ section.id }} .el-col-breadcrumbs a {
+      color: var(--el-col-muted);
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    #ellora-collection-{{ section.id }} .el-col-breadcrumbs a:hover {
+      color: var(--el-col-primary);
+    }
+
+    /* Split Hero Banner */
+    #ellora-collection-{{ section.id }} .el-col-hero {
+      display: grid;
+      grid-template-columns: 1fr 1.4fr;
+      gap: 48px;
+      align-items: baseline;
+      padding-bottom: 24px;
+      border-bottom: 1px solid var(--el-col-border);
+      margin-bottom: 24px;
+    }
+
+    #ellora-collection-{{ section.id }} .el-col-hero-title {
+      font-family: var(--el-col-font-serif);
+      font-size: clamp(38px, 4.5vw, 56px);
+      font-weight: 400;
+      color: var(--el-col-dark);
+      letter-spacing: -0.01em;
+      line-height: 1.05;
+      margin: 0;
+    }
+
+    #ellora-collection-{{ section.id }} .el-col-hero-desc {
+      font-family: var(--el-col-font-sans);
+      font-size: 14.5px;
+      line-height: 1.65;
+      color: var(--el-col-muted);
+      margin: 0;
+      max-width: 680px;
+    }
+
+    /* Main Grid Split */
+    #ellora-collection-{{ section.id }} .el-col-main-layout {
+      display: grid;
+      grid-template-columns: 290px 1fr;
+      gap: 40px;
+      align-items: start;
+    }
+
+    /* Left Sidebar Filter Card (Sticky on Desktop) */
+    #ellora-collection-{{ section.id }} .el-col-sidebar {
+      background: var(--el-col-card-bg);
+      border: 1px solid var(--el-col-border);
+      border-radius: 8px;
+      padding: 24px 20px;
+      box-shadow: 0 2px 14px rgba(0, 0, 0, 0.02);
+      position: sticky;
+      top: calc(var(--header-height, 0px) + {{ section.settings.sticky_top | default: 20 }}px);
+      max-height: calc(100vh - var(--header-height, 0px) - {{ section.settings.sticky_top | default: 20 | plus: 20 }}px);
+      overflow-y: auto;
+      scrollbar-width: thin;
+      z-index: 10;
+    }
+
+    #ellora-collection-{{ section.id }} .el-col-sidebar::-webkit-scrollbar {
+      width: 4px;
+    }
+
+    #ellora-collection-{{ section.id }} .el-col-sidebar::-webkit-scrollbar-thumb {
+      background: #D9D2C9;
+      border-radius: 4px;
+    }
+
+    #ellora-collection-{{ section.id }} .el-sidebar-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--el-col-border-light);
+      margin-bottom: 16px;
+    }
+
+    #ellora-collection-{{ section.id }} .el-sidebar-header-left {
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
+    }
+
+    #ellora-collection-{{ section.id }} .el-sidebar-title {
+      font-family: var(--el-col-font-sans);
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--el-col-dark);
+      margin: 0;
+    }
+
+    #ellora-collection-{{ section.id }} .el-sidebar-clear {
+      font-family: var(--el-col-font-sans);
+      font-size: 12px;
+      color: var(--el-col-muted);
+      text-decoration: underline;
+      cursor: pointer;
+      background: none;
+      border: none;
+    }
+
+    #ellora-collection-{{ section.id }} .el-sidebar-clear:hover {
+      color: var(--el-col-primary);
+    }
+
+    #ellora-collection-{{ section.id }} .el-col-sidebar-close {
+      display: none;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      background: none;
+      border: 1px solid var(--el-col-border);
+      border-radius: 50%;
+      cursor: pointer;
+      color: var(--el-col-dark);
+      padding: 0;
+      transition: all 0.2s ease;
+    }
+
+    #ellora-collection-{{ section.id }} .el-col-sidebar-close:hover {
+      background: #FAF9F6;
+      border-color: var(--el-col-primary);
+      color: var(--el-col-primary);
+    }
+
+    /* Category Tree */
+    #ellora-collection-{{ section.id }} .el-category-tree {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      padding-bottom: 18px;
+      border-bottom: 1px solid var(--el-col-border-light);
+      margin-bottom: 18px;
+    }
+
+    #ellora-collection-{{ section.id }} .el-cat-header-label {
+      font-family: var(--el-col-font-sans);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--el-col-muted);
+      padding: 0 12px 6px;
+    }
+
+    #ellora-collection-{{ section.id }} .el-cat-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 9px 12px;
+      border-radius: 6px;
+      font-family: var(--el-col-font-sans);
+      font-size: 13.5px;
+      color: var(--el-col-text);
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+
+    #ellora-collection-{{ section.id }} .el-cat-item:hover {
+      background-color: #FAF8F5;
+      color: var(--el-col-primary);
+    }
+
+    #ellora-collection-{{ section.id }} .el-cat-item.is-active {
+      background-color: var(--el-col-primary-tint);
+      color: var(--el-col-primary);
+      font-weight: 600;
+    }
+
+    #ellora-collection-{{ section.id }} .el-cat-count {
+      font-size: 12px;
+      color: var(--el-col-muted);
+      font-weight: 500;
+    }
+
+    #ellora-collection-{{ section.id }} .el-cat-item.is-active .el-cat-count {
+      color: var(--el-col-primary);
+      font-weight: 600;
+    }
+
+    /* Accordions */
+    #ellora-collection-{{ section.id }} .el-filter-accordion {
+      border-bottom: 1px solid var(--el-col-border-light);
+      padding: 14px 0;
+    }
+
+    #ellora-collection-{{ section.id }} .el-filter-accordion:last-child {
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+
+    #ellora-collection-{{ section.id }} .el-accordion-btn {
+      width: 100%;
+      background: none;
+      border: none;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0;
+      font-family: var(--el-col-font-sans);
+      font-size: 13.5px;
+      font-weight: 600;
+      color: var(--el-col-dark);
+      cursor: pointer;
+      text-align: left;
+    }
+
+    #ellora-collection-{{ section.id }} .el-accordion-btn svg {
+      width: 10px;
+      height: 6px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 1.8;
+      transition: transform 0.2s ease;
+    }
+
+    #ellora-collection-{{ section.id }} .el-accordion-btn.is-collapsed svg {
+      transform: rotate(-90deg);
+    }
+
+    #ellora-collection-{{ section.id }} .el-accordion-body {
+      padding-top: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    #ellora-collection-{{ section.id }} .el-accordion-body.is-hidden {
+      display: none;
+    }
+
+    /* Checkboxes */
+    #ellora-collection-{{ section.id }} .el-check-label {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: var(--el-col-font-sans);
+      font-size: 13px;
+      color: var(--el-col-text);
+      cursor: pointer;
+      user-select: none;
+    }
+
+    #ellora-collection-{{ section.id }} .el-check-input {
+      appearance: none;
+      -webkit-appearance: none;
+      width: 16px;
+      height: 16px;
+      border: 1px solid #C4BEB6;
+      border-radius: 3px;
+      background: #FFFFFF;
+      cursor: pointer;
+      display: grid;
+      place-content: center;
+      transition: all 0.2s ease;
+      flex-shrink: 0;
+    }
+
+    #ellora-collection-{{ section.id }} .el-check-input::before {
+      content: "";
+      width: 8px;
+      height: 8px;
+      transform: scale(0);
+      background-color: #FFFFFF;
+      clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
+      transition: transform 0.15s ease;
+    }
+
+    #ellora-collection-{{ section.id }} .el-check-input:checked {
+      background-color: var(--el-col-primary);
+      border-color: var(--el-col-primary);
+    }
+
+    #ellora-collection-{{ section.id }} .el-check-input:checked::before {
+      transform: scale(1);
+    }
+
+    /* Color Swatch Dot */
+    #ellora-collection-{{ section.id }} .el-swatch-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      display: inline-block;
+      flex-shrink: 0;
+      border: 1px solid rgba(0, 0, 0, 0.1);
+    }
+
+    /* Price Range Inputs */
+    #ellora-collection-{{ section.id }} .el-price-range-box {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      width: 100%;
+    }
+
+    #ellora-collection-{{ section.id }} .el-price-inputs-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      width: 100%;
+    }
+
+    #ellora-collection-{{ section.id }} .el-price-field {
+      display: flex;
+      align-items: center;
+      background: #FAF9F6;
+      border: 1px solid var(--el-col-border);
+      border-radius: 4px;
+      padding: 6px 10px;
+      flex: 1;
+      min-width: 0;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+    }
+
+    #ellora-collection-{{ section.id }} .el-price-field:focus-within {
+      border-color: var(--el-col-primary);
+      box-shadow: 0 0 0 1px var(--el-col-primary);
+      background: #FFFFFF;
+    }
+
+    #ellora-collection-{{ section.id }} .el-price-currency {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--el-col-muted);
+      margin-right: 4px;
+      user-select: none;
+      flex-shrink: 0;
+    }
+
+    #ellora-collection-{{ section.id }} .el-price-field input {
+      border: none;
+      background: transparent;
+      outline: none;
+      width: 100%;
+      min-width: 0;
+      flex: 1;
+      font-family: var(--el-col-font-sans);
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--el-col-dark);
+      padding: 0;
+    }
+
+    #ellora-collection-{{ section.id }} .el-price-sep {
+      font-size: 12px;
+      color: var(--el-col-muted);
+      flex-shrink: 0;
+      user-select: none;
+    }
+
+    #ellora-collection-{{ section.id }} .el-price-apply-btn {
+      width: 100%;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--el-col-primary);
+      color: #FFFFFF;
+      border: none;
+      border-radius: 4px;
+      font-family: var(--el-col-font-sans);
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background-color 0.2s ease, transform 0.1s ease;
+    }
+
+    #ellora-collection-{{ section.id }} .el-price-apply-btn:hover {
+      background-color: var(--el-col-primary-hover);
+    }
+
+    #ellora-collection-{{ section.id }} .el-price-apply-btn:active {
+      transform: scale(0.99);
+    }
+
+    /* Active Filter Pills */
+    #ellora-collection-{{ section.id }} .el-active-facets {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 20px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid var(--el-col-border-light);
+    }
+
+    #ellora-collection-{{ section.id }} .el-active-facet-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 12px;
+      background-color: var(--el-col-card-bg);
+      border: 1px solid var(--el-col-border);
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--el-col-text);
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+
+    #ellora-collection-{{ section.id }} .el-active-facet-pill:hover {
+      border-color: var(--el-col-primary);
+      color: var(--el-col-primary);
+      background-color: var(--el-col-primary-tint);
+    }
+
+    #ellora-collection-{{ section.id }} .el-active-facet-pill svg {
+      opacity: 0.6;
+      transition: opacity 0.2s ease;
+    }
+
+    #ellora-collection-{{ section.id }} .el-active-facet-pill:hover svg {
+      opacity: 1;
+    }
+
+    #ellora-collection-{{ section.id }} .el-active-facet-clear {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--el-col-primary);
+      text-decoration: underline;
+      margin-left: 6px;
+      cursor: pointer;
+    }
+
+    /* Right Main Content */
+    #ellora-collection-{{ section.id }} .el-col-content {
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Search Bar */
+    #ellora-collection-{{ section.id }} .el-col-search-box {
+      margin-bottom: 24px;
+      position: relative;
+      max-width: 440px;
+    }
+
+    #ellora-collection-{{ section.id }} .el-col-search-input {
+      width: 100%;
+      height: 42px;
+      background: #FFFFFF;
+      border: 1px solid var(--el-col-border);
+      border-radius: 4px;
+      padding: 0 14px 0 38px;
+      font-family: var(--el-col-font-sans);
+      font-size: 13.5px;
+      color: var(--el-col-dark);
+      outline: none;
+      transition: border-color 0.2s ease;
+    }
+
+    #ellora-collection-{{ section.id }} .el-col-search-input:focus {
+      border-color: var(--el-col-primary);
+    }
+
+    #ellora-collection-{{ section.id }} .el-col-search-icon {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 16px;
+      height: 16px;
+      stroke: var(--el-col-muted);
+      fill: none;
+      stroke-width: 1.8;
+      pointer-events: none;
+    }
+
+    /* Stats & Sort Row */
+    #ellora-collection-{{ section.id }} .el-col-stats-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--el-col-border-light);
+    }
+
+    #ellora-collection-{{ section.id }} .el-col-subheading {
+      font-family: var(--el-col-font-serif);
+      font-size: 24px;
+      font-weight: 400;
+      color: var(--el-col-dark);
+      margin: 0;
+    }
+
+    #ellora-collection-{{ section.id }} .el-col-sort-group {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+    }
+
+    #ellora-collection-{{ section.id }} .el-col-count-text {
+      font-family: var(--el-col-font-sans);
+      font-size: 13px;
+      color: var(--el-col-muted);
+    }
+
+    #ellora-collection-{{ section.id }} .el-col-sort-select {
+      font-family: var(--el-col-font-sans);
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--el-col-dark);
+      background: #FFFFFF;
+      border: 1px solid var(--el-col-border);
+      border-radius: 4px;
+      padding: 6px 12px;
+      cursor: pointer;
+      outline: none;
+    }
+
+    #ellora-collection-{{ section.id }} .el-col-filter-toggle-btn {
+      display: none;
+      align-items: center;
+      gap: 8px;
+      height: 38px;
+      padding: 0 16px;
+      background: #FFFFFF;
+      border: 1px solid var(--el-col-border);
+      border-radius: 4px;
+      font-family: var(--el-col-font-sans);
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--el-col-dark);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      box-sizing: border-box;
+    }
+
+    #ellora-collection-{{ section.id }} .el-col-filter-toggle-btn:hover {
+      border-color: var(--el-col-primary);
+      color: var(--el-col-primary);
+    }
+
+    #ellora-collection-{{ section.id }} .el-col-filter-toggle-btn svg {
+      flex-shrink: 0;
+    }
+
+    #ellora-collection-{{ section.id }} .el-col-filter-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 18px;
+      height: 18px;
+      padding: 0 5px;
+      background-color: var(--el-col-primary);
+      color: #FFFFFF;
+      border-radius: 10px;
+      font-size: 11px;
+      font-weight: 600;
+      line-height: 1;
+    }
+
+    /* Product Grid */
+    #ellora-collection-{{ section.id }} .el-product-grid {
+      display: grid;
+      grid-template-columns: repeat({{ section.settings.columns_desktop | default: 3 }}, 1fr);
+      gap: 32px 24px;
+      margin-bottom: 48px;
+    }
+
+    #ellora-collection-{{ section.id }} .el-product-card {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      text-decoration: none;
+      position: relative;
+    }
+
+    #ellora-collection-{{ section.id }} .el-card-media {
+      position: relative;
+      aspect-ratio: 4 / 5;
+      border-radius: 8px;
+      overflow: hidden;
+      background-color: #EDE8E2;
+      margin-bottom: 14px;
+    }
+
+    #ellora-collection-{{ section.id }} .el-card-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    #ellora-collection-{{ section.id }} .el-product-card:hover .el-card-img {
+      transform: scale(1.04);
+    }
+
+    /* Wishlist Heart Icon */
+    #ellora-collection-{{ section.id }} .el-wishlist-btn {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      width: 32px;
+      height: 32px;
+      background: #FFFFFF;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+      border: none;
+      cursor: pointer;
+      z-index: 3;
+      transition: transform 0.2s ease, background 0.2s ease;
+    }
+
+    #ellora-collection-{{ section.id }} .el-wishlist-btn:hover {
+      transform: scale(1.08);
+      background: #FAF2ED;
+    }
+
+    #ellora-collection-{{ section.id }} .el-wishlist-btn svg {
+      width: 15px;
+      height: 15px;
+      stroke: var(--el-col-dark);
+      fill: none;
+      stroke-width: 1.6;
+      transition: all 0.2s ease;
+    }
+
+    #ellora-collection-{{ section.id }} .el-wishlist-btn.is-active {
+      background: #FAF2ED;
+      transform: scale(1.08);
+    }
+
+    #ellora-collection-{{ section.id }} .el-wishlist-btn.is-active svg {
+      stroke: var(--el-col-primary, #8E6356);
+      fill: var(--el-col-primary, #8E6356);
+    }
+
+
+    /* Product Card Info */
+    #ellora-collection-{{ section.id }} .el-card-info {
+      display: flex;
+      flex-direction: column;
+      flex: 1 1 auto;
+      gap: 0;
+    }
+
+    #ellora-collection-{{ section.id }} .el-card-info > a {
+      display: block;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    #ellora-collection-{{ section.id }} .el-card-title {
+      font-family: var(--el-col-font-serif);
+      font-size: 20px;
+      font-weight: 400;
+      color: var(--el-col-dark);
+      margin: 0 0 4px;
+      letter-spacing: -0.01em;
+      line-height: 1.25;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      transition: color 0.2s ease;
+    }
+
+    #ellora-collection-{{ section.id }} .el-product-card:hover .el-card-title {
+      color: var(--el-col-primary);
+    }
+
+    #ellora-collection-{{ section.id }} .el-card-price {
+      font-family: var(--el-col-font-sans);
+      font-size: 14px;
+      font-weight: 400;
+      letter-spacing: 0.01em;
+      line-height: 1.4;
+      color: var(--el-col-muted);
+      margin: 0 0 14px;
+    }
+
+    #ellora-collection-{{ section.id }} .el-card-add-btn {
+      margin-top: auto;
+      width: 100%;
+      height: 38px;
+      padding: 0 14px;
+      background: var(--el-col-card-bg, #FFFFFF);
+      color: var(--el-col-dark, #1E1B18);
+      border: 1px solid var(--el-col-border, #ECE7E1);
+      border-radius: 4px;
+      font-family: var(--el-col-font-sans);
+      font-size: 11.5px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      transition: all 0.22s ease;
+    }
+
+    #ellora-collection-{{ section.id }} .el-card-add-btn:hover {
+      background: var(--el-col-primary, #BA8877);
+      border-color: var(--el-col-primary, #BA8877);
+      color: #FFFFFF;
+      box-shadow: 0 4px 12px rgba(186, 136, 119, 0.22);
+    }
+
+    #ellora-collection-{{ section.id }} .el-card-add-btn svg {
+      width: 14px;
+      height: 14px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 1.8;
+      transition: stroke 0.2s ease;
+    }
+
+    #ellora-collection-{{ section.id }} .el-card-add-btn.is-loading {
+      opacity: 0.7;
+      pointer-events: none;
+    }
+
+    #ellora-collection-{{ section.id }} .el-card-add-btn.is-success {
+      background: #4A6B53 !important;
+      border-color: #4A6B53 !important;
+      color: #FFFFFF !important;
+    }
+
+    #ellora-collection-{{ section.id }} .el-card-add-btn.is-soldout {
+      background: #F5F3EF;
+      border-color: #E8E4DD;
+      color: #A39D94;
+      cursor: not-allowed;
+    }
+
+    /* Real Native Pagination */
+    #ellora-collection-{{ section.id }} .el-pagination {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+      padding-top: 24px;
+      border-top: 1px solid var(--el-col-border-light);
+    }
+
+    #ellora-collection-{{ section.id }} .el-page-btn {
+      min-width: 34px;
+      height: 34px;
+      padding: 0 10px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--el-col-font-sans);
+      font-size: 13px;
+      color: var(--el-col-dark);
+      text-decoration: none;
+      border-radius: 4px;
+      transition: all 0.2s ease;
+    }
+
+    #ellora-collection-{{ section.id }} .el-page-btn:hover:not(.disabled) {
+      background-color: var(--el-col-primary-tint);
+      color: var(--el-col-primary);
+    }
+
+    #ellora-collection-{{ section.id }} .el-page-btn.is-active {
+      background-color: var(--el-col-primary);
+      color: #FFFFFF;
+      font-weight: 600;
+    }
+
+    #ellora-collection-{{ section.id }} .el-page-btn.disabled {
+      color: #C4BEB6;
+      cursor: not-allowed;
+      pointer-events: none;
+    }
+
+    #ellora-collection-{{ section.id }} .el-page-arrow {
+      color: var(--el-col-muted);
+      font-size: 12.5px;
+    }
+
+    /* Mobile Filter Backdrop & Drawer Footer */
+    #ellora-collection-{{ section.id }} .el-col-filter-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      width: 100% !important;
+      width: 100vw !important;
+      height: 100% !important;
+      height: 100vh !important;
+      height: 100dvh !important;
+      min-height: 100% !important;
+      background: rgba(0, 0, 0, 0.45);
+      backdrop-filter: blur(2px);
+      -webkit-backdrop-filter: blur(2px);
+      z-index: 99990 !important;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s ease, visibility 0.3s ease;
+    }
+
+    #ellora-collection-{{ section.id }} .el-col-filter-backdrop.is-open {
+      opacity: 1 !important;
+      visibility: visible !important;
+    }
+
+    #ellora-collection-{{ section.id }} .el-col-filter-drawer-footer {
+      display: none;
+    }
+
+    #ellora-collection-{{ section.id }} .el-col-sidebar-content {
+      display: block;
+    }
+
+    /* Responsive */
+    @media (max-width: 1100px) {
+      #ellora-collection-{{ section.id }} .el-col-main-layout {
+        grid-template-columns: 240px 1fr;
+        gap: 32px;
+      }
+      #ellora-collection-{{ section.id }} .el-product-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 24px 18px;
+      }
+    }
+
+    @media (max-width: 992px) {
+      #ellora-collection-{{ section.id }} .el-col-hero {
+        grid-template-columns: 1fr;
+        gap: 16px;
+      }
+      #ellora-collection-{{ section.id }} .el-col-main-layout {
+        grid-template-columns: 1fr;
+        gap: 0;
+      }
+
+      /* Show Filter Toggle Button on Smaller Screens */
+      #ellora-collection-{{ section.id }} .el-col-filter-toggle-btn {
+        display: inline-flex;
+      }
+
+      /* Enable Mobile Filter Backdrop */
+      #ellora-collection-{{ section.id }} .el-col-filter-backdrop {
+        display: block;
+      }
+
+      /* Transform Sidebar into Slide-out RIGHT Drawer on Mobile with FULL Height */
+      #ellora-collection-{{ section.id }} .el-col-sidebar {
+        position: fixed !important;
+        top: 0 !important;
+        bottom: 0 !important;
+        right: 0 !important;
+        left: auto !important;
+        width: 330px !important;
+        max-width: 88vw !important;
+        height: 100% !important;
+        height: 100vh !important;
+        height: 100dvh !important;
+        min-height: 100% !important;
+        min-height: 100vh !important;
+        min-height: 100dvh !important;
+        max-height: none !important;
+        background: #FFFFFF !important;
+        z-index: 99995 !important;
+        transform: translateX(100%) !important;
+        transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1) !important;
+        box-shadow: -4px 0 25px rgba(0, 0, 0, 0.15) !important;
+        padding: 0 !important;
+        overflow: hidden !important;
+        border: none !important;
+        border-radius: 0 !important;
+        display: flex !important;
+        flex-direction: column !important;
+        box-sizing: border-box !important;
+      }
+
+      #ellora-collection-{{ section.id }} .el-col-sidebar.is-open {
+        transform: translateX(0) !important;
+      }
+
+      #ellora-collection-{{ section.id }} .el-sidebar-header {
+        padding: 20px 20px 16px !important;
+        flex-shrink: 0 !important;
+        margin-bottom: 0 !important;
+        border-bottom: 1px solid var(--el-col-border-light) !important;
+      }
+
+      #ellora-collection-{{ section.id }} .el-col-sidebar-content {
+        flex: 1 1 auto !important;
+        overflow-y: auto !important;
+        -webkit-overflow-scrolling: touch !important;
+        padding: 18px 20px !important;
+      }
+
+      #ellora-collection-{{ section.id }} .el-col-sidebar-close {
+        display: inline-flex !important;
+      }
+
+      #ellora-collection-{{ section.id }} .el-col-filter-drawer-footer {
+        display: block !important;
+        flex-shrink: 0 !important;
+        position: static !important;
+        margin: 0 !important;
+        padding: 16px 20px !important;
+        background: #FFFFFF !important;
+        border-top: 1px solid var(--el-col-border-light) !important;
+        box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.05) !important;
+      }
+
+      #ellora-collection-{{ section.id }} .el-col-apply-filters-btn {
+        width: 100%;
+        height: 44px;
+        background-color: var(--el-col-primary);
+        color: #FFFFFF;
+        border: none;
+        border-radius: 4px;
+        font-family: var(--el-col-font-sans);
+        font-size: 13px;
+        font-weight: 600;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        cursor: pointer;
+        transition: background-color 0.2s ease;
+      }
+
+      #ellora-collection-{{ section.id }} .el-col-apply-filters-btn:hover {
+        background-color: #B48776;
+      }
+    }
+
+    @media (max-width: 580px) {
+      #ellora-collection-{{ section.id }} .el-product-grid {
+        grid-template-columns: repeat({{ section.settings.columns_mobile | default: '2' }}, 1fr);
+        gap: {% if section.settings.columns_mobile == '1' %}24px{% else %}16px 10px{% endif %};
+      }
+      #ellora-collection-{{ section.id }} .el-col-stats-row {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 14px;
+      }
+      #ellora-collection-{{ section.id }} .el-col-sort-group {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        gap: 12px;
+      }
+      #ellora-collection-{{ section.id }} .el-col-sort-group form {
+        flex: 1;
+      }
+      #ellora-collection-{{ section.id }} .el-col-sort-select {
+        width: 100%;
+      }
+      #ellora-collection-{{ section.id }} .el-col-filter-toggle-btn {
+        flex: 1;
+        justify-content: center;
+      }
+      #ellora-collection-{{ section.id }} .el-col-count-text {
+        display: none;
+      }
+      {% if section.settings.columns_mobile == '2' or section.settings.columns_mobile == blank %}
+      #ellora-collection-{{ section.id }} .el-card-title {
+        font-size: 17px;
+        line-height: 1.25;
+        margin-bottom: 4px;
+      }
+      #ellora-collection-{{ section.id }} .el-card-price {
+        font-size: 13px;
+        line-height: 1.4;
+        margin-bottom: 12px;
+      }
+      #ellora-collection-{{ section.id }} .el-card-add-btn {
+        font-size: 11px;
+        height: 35px;
+        padding: 0 8px;
+        gap: 5px;
+      }
+      #ellora-collection-{{ section.id }} .el-card-add-btn svg {
+        width: 13px;
+        height: 13px;
+      }
+      #ellora-collection-{{ section.id }} .el-wishlist-btn {
+        width: 28px;
+        height: 28px;
+        top: 8px;
+        right: 8px;
+      }
+      #ellora-collection-{{ section.id }} .el-wishlist-btn svg {
+        width: 13px;
+        height: 13px;
+      }
+      {% endif %}
+    }
+  </style>
+
+  <div class="el-col-container">
+    
+    <!-- Breadcrumbs -->
+    {%- if section.settings.show_breadcrumbs -%}
+      <div class="el-col-breadcrumbs">
+        <a href="{{ routes.collections_url }}">COLLECTIONS</a>
+        <span>&gt;</span>
+        <span>{{ collection.title | default: section.settings.fallback_title | default: 'TILES' | upcase }}</span>
+      </div>
+    {%- endif -%}
+
+    <!-- Hero Banner -->
+    <div class="el-col-hero">
+      <h1 class="el-col-hero-title">
+        {{ collection.title | default: section.settings.fallback_title | default: 'Tiles' }}
+      </h1>
+      <p class="el-col-hero-desc">
+        {%- if collection.description != blank -%}
+          {{ collection.description }}
+        {%- else -%}
+          {{ section.settings.fallback_desc | default: 'Every surface is selected for its tactile quality, tonal depth and architectural presence. From natural stone to contemporary porcelain, Ellora Living focuses on materials that age beautifully and create spaces with emotional warmth.' }}
+        {%- endif -%}
+      </p>
+    </div>
+
+    <!-- Main Split Layout -->
+    <div class="el-col-main-layout">
+      
+      <!-- Mobile Filter Drawer Backdrop -->
+      <div class="el-col-filter-backdrop" id="elFilterBackdrop-{{ section.id }}" aria-hidden="true"></div>
+
+      <!-- Left Filter Sidebar / Mobile Slide-out Drawer -->
+      <aside class="el-col-sidebar" id="elFilterSidebar-{{ section.id }}" aria-label="Product Filters">
+        
+        <!-- Active Filter Count & Clear All -->
+        {%- assign total_active_filters = 0 -%}
+        {%- for filter in collection.filters -%}
+          {%- assign total_active_filters = total_active_filters | plus: filter.active_values.size -%}
+          {%- if filter.type == 'price_range' -%}
+            {%- if filter.min_value.value or filter.max_value.value -%}
+              {%- assign total_active_filters = total_active_filters | plus: 1 -%}
+            {%- endif -%}
+          {%- endif -%}
+        {%- endfor -%}
+
+        <div class="el-sidebar-header">
+          <div class="el-sidebar-header-left">
+            <h2 class="el-sidebar-title">Filters</h2>
+            {%- if total_active_filters > 0 -%}
+              <a href="{{ collection.url }}?sort_by={{ collection.sort_by | default: collection.default_sort_by }}" class="el-sidebar-clear">
+                Clear all ({{ total_active_filters }})
+              </a>
+            {%- else -%}
+              <button type="button" class="el-sidebar-clear" id="elClearFilters">Clear all</button>
+            {%- endif -%}
+          </div>
+          <button type="button" class="el-col-sidebar-close" id="elFilterClose-{{ section.id }}" aria-label="Close filters">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+        </div>
+
+        <!-- Scrollable Filter Body -->
+        <div class="el-col-sidebar-content">
+
+          <!-- Dynamic Collections Navigation (All Backend Collections) -->
+        {%- if section.settings.show_categories -%}
+          <div class="el-category-tree" aria-label="Collections Navigation">
+            <div class="el-cat-header-label">Collections</div>
+
+            <a href="{{ routes.all_products_collection_url }}" class="el-cat-item {% if collection.handle == 'all' or collection.handle == blank %}is-active{% endif %}">
+              <span>All Products</span>
+              <span class="el-cat-count">({{ collections.all.all_products_count | default: all_products_count }})</span>
+            </a>
+
+            {%- if section.settings.collection_menu != blank and linklists[section.settings.collection_menu].links.size > 0 -%}
+              {%- for link in linklists[section.settings.collection_menu].links -%}
+                {%- assign link_col = link.object -%}
+                <a href="{{ link.url }}" class="el-cat-item {% if collection.url == link.url or collection.handle == link.handle %}is-active{% endif %}">
+                  <span>{{ link.title }}</span>
+                  {%- if link.type == 'collection_link' and link_col.all_products_count != blank -%}
+                    <span class="el-cat-count">({{ link_col.all_products_count }})</span>
+                  {%- else -%}
+                    <span>&rsaquo;</span>
+                  {%- endif -%}
+                </a>
+              {%- endfor -%}
+            {%- else -%}
+              {%- for col in collections -%}
+                {%- unless col.handle == 'frontpage' or col.handle == 'all' -%}
+                  <a href="{{ col.url }}" class="el-cat-item {% if collection.handle == col.handle %}is-active{% endif %}">
+                    <span>{{ col.title }}</span>
+                    {%- if col.all_products_count != blank and col.all_products_count > 0 -%}
+                      <span class="el-cat-count">({{ col.all_products_count }})</span>
+                    {%- else -%}
+                      <span>&rsaquo;</span>
+                    {%- endif -%}
+                  </a>
+                {%- endunless -%}
+              {%- endfor -%}
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+
+        <!-- Form for Dynamic Shopify Facets and Architectural Tag Filters -->
+        <form id="FacetFiltersForm" action="{{ collection.url }}" method="get">
+          <input type="hidden" name="sort_by" value="{{ collection.sort_by | default: collection.default_sort_by }}">
+
+          {%- comment -%} 1. Native Shopify Filters (Availability, Price, Search & Discovery facets) {%- endcomment -%}
+          {%- if collection.filters.size > 0 -%}
+            {%- for filter in collection.filters -%}
+              {%- assign filter_label_down = filter.label | downcase -%}
+
+              <div class="el-filter-accordion">
+                <button type="button" class="el-accordion-btn">
+                  <span>{{ filter.label }}</span>
+                  <svg viewBox="0 0 10 6"><polyline points="1 1 5 5 9 1"></polyline></svg>
+                </button>
+                <div class="el-accordion-body">
+                  {%- case filter.type -%}
+                    {%- when 'list', 'boolean' -%}
+                      {%- for value in filter.values -%}
+                        <label class="el-check-label" for="Filter-{{ filter.param_name }}-{{ forloop.index }}">
+                          <input 
+                            type="checkbox" 
+                            name="{{ value.param_name }}" 
+                            value="{{ value.value }}" 
+                            id="Filter-{{ filter.param_name }}-{{ forloop.index }}"
+                            class="el-check-input"
+                            {% if value.active %}checked{% endif %}>
+                          
+                          {%- if filter_label_down contains 'color' or filter_label_down contains 'colour' -%}
+                            {%- assign swatch_color = value.label | downcase -%}
+                            <span class="el-swatch-dot" style="background-color: {{ swatch_color }};"></span>
+                          {%- endif -%}
+
+                          <span>{{ value.label }} ({{ value.count }})</span>
+                        </label>
+                      {%- endfor -%}
+
+                    {%- when 'price_range' -%}
+                      {%- assign min_val = '' -%}
+                      {%- assign max_val = '' -%}
+                      {%- if filter.min_value.value -%}
+                        {%- assign min_val = filter.min_value.value | money_without_currency | replace: ',', '' -%}
+                      {%- endif -%}
+                      {%- if filter.max_value.value -%}
+                        {%- assign max_val = filter.max_value.value | money_without_currency | replace: ',', '' -%}
+                      {%- endif -%}
+                      {%- assign range_max_val = filter.range_max | money_without_currency | replace: ',', '' -%}
+
+                      <div class="el-price-range-box">
+                        <div class="el-price-inputs-row">
+                          <div class="el-price-field">
+                            <span class="el-price-currency">{{ cart.currency.symbol }}</span>
+                            <input 
+                              type="number" 
+                              name="{{ filter.min_value.param_name }}" 
+                              id="Filter-{{ filter.param_name }}-GTE"
+                              {% if filter.min_value.value %}value="{{ min_val }}"{% endif %} 
+                              placeholder="0" 
+                              min="0" 
+                              max="{{ range_max_val }}"
+                              step="0.01"
+                              aria-label="Minimum price">
+                          </div>
+                          <span class="el-price-sep">to</span>
+                          <div class="el-price-field">
+                            <span class="el-price-currency">{{ cart.currency.symbol }}</span>
+                            <input 
+                              type="number" 
+                              name="{{ filter.max_value.param_name }}" 
+                              id="Filter-{{ filter.param_name }}-LTE"
+                              {% if filter.max_value.value %}value="{{ max_val }}"{% endif %} 
+                              placeholder="{{ range_max_val }}" 
+                              min="0" 
+                              max="{{ range_max_val }}"
+                              step="0.01"
+                              aria-label="Maximum price">
+                          </div>
+                        </div>
+                        <button type="submit" class="el-price-apply-btn">Apply Price</button>
+                      </div>
+                  {%- endcase -%}
+                </div>
+              </div>
+            {%- endfor -%}
+          {%- endif -%}
+
+          {%- comment -%} 2. Dynamic Product Types from Collection {%- endcomment -%}
+          {%- assign existing_labels = collection.filters | map: 'label' | join: ',' | downcase -%}
+          {%- unless existing_labels contains 'type' or existing_labels contains 'product type' -%}
+            {%- if collection.all_types.size > 1 -%}
+              <div class="el-filter-accordion">
+                <button type="button" class="el-accordion-btn">
+                  <span>Product Type</span>
+                  <svg viewBox="0 0 10 6"><polyline points="1 1 5 5 9 1"></polyline></svg>
+                </button>
+                <div class="el-accordion-body">
+                  {%- for type in collection.all_types -%}
+                    {%- if type != blank -%}
+                      <label class="el-check-label">
+                        <input type="checkbox" class="el-check-input el-tag-filter" data-group="type" value="{{ type | downcase | escape }}">
+                        <span>{{ type }}</span>
+                      </label>
+                    {%- endif -%}
+                  {%- endfor -%}
+                </div>
+              </div>
+            {%- endif -%}
+          {%- endunless -%}
+
+          {%- comment -%} 3. Dynamic Materials & Surfaces from Tags {%- endcomment -%}
+          {%- unless existing_labels contains 'material' -%}
+            {%- assign all_tags_str = collection.all_tags | join: '||' | downcase -%}
+            {%- assign curated_materials = 'Marble,Travertine,Limestone,Porcelain,Terracotta,Cotto,Slate,Linen,Grasscloth,Metallic Foil' | split: ',' -%}
+            {%- assign has_any_mat = false -%}
+            {%- for mat in curated_materials -%}
+              {%- assign mat_low = mat | downcase -%}
+              {%- if all_tags_str contains mat_low -%}
+                {%- assign has_any_mat = true -%}
+                {%- break -%}
+              {%- endif -%}
+            {%- endfor -%}
+
+            {%- if has_any_mat -%}
+              <div class="el-filter-accordion">
+                <button type="button" class="el-accordion-btn">
+                  <span>Surface Materials</span>
+                  <svg viewBox="0 0 10 6"><polyline points="1 1 5 5 9 1"></polyline></svg>
+                </button>
+                <div class="el-accordion-body">
+                  {%- for mat in curated_materials -%}
+                    {%- assign mat_low = mat | downcase -%}
+                    {%- if all_tags_str contains mat_low -%}
+                      <label class="el-check-label">
+                        <input type="checkbox" class="el-check-input el-tag-filter" data-group="material" value="{{ mat_low | escape }}">
+                        <span>{{ mat }}</span>
+                      </label>
+                    {%- endif -%}
+                  {%- endfor -%}
+                </div>
+              </div>
+            {%- endif -%}
+          {%- endunless -%}
+
+          {%- comment -%} 4. Dynamic Spaces & Rooms from Tags {%- endcomment -%}
+          {%- unless existing_labels contains 'space' or existing_labels contains 'room' -%}
+            {%- assign curated_spaces = 'Bathroom,Kitchen,Living Room,Bedroom,Dining,Hallway,Outdoor,Patio,Feature Wall' | split: ',' -%}
+            {%- assign has_any_space = false -%}
+            {%- for spc in curated_spaces -%}
+              {%- assign spc_low = spc | downcase -%}
+              {%- if all_tags_str contains spc_low -%}
+                {%- assign has_any_space = true -%}
+                {%- break -%}
+              {%- endif -%}
+            {%- endfor -%}
+
+            {%- if has_any_space -%}
+              <div class="el-filter-accordion">
+                <button type="button" class="el-accordion-btn">
+                  <span>Application & Space</span>
+                  <svg viewBox="0 0 10 6"><polyline points="1 1 5 5 9 1"></polyline></svg>
+                </button>
+                <div class="el-accordion-body">
+                  {%- for spc in curated_spaces -%}
+                    {%- assign spc_low = spc | downcase -%}
+                    {%- if all_tags_str contains spc_low -%}
+                      <label class="el-check-label">
+                        <input type="checkbox" class="el-check-input el-tag-filter" data-group="space" value="{{ spc_low | escape }}">
+                        <span>{{ spc }}</span>
+                      </label>
+                    {%- endif -%}
+                  {%- endfor -%}
+                </div>
+              </div>
+            {%- endif -%}
+          {%- endunless -%}
+
+          {%- comment -%} 5. Dynamic Finishes from Tags {%- endcomment -%}
+          {%- unless existing_labels contains 'finish' or existing_labels contains 'style' -%}
+            {%- assign curated_finishes = 'Honed,Polished,Tumbled,Fluted,Matte,Mosaic,Mural,Peel and Stick' | split: ',' -%}
+            {%- assign has_any_fin = false -%}
+            {%- for fin in curated_finishes -%}
+              {%- assign fin_low = fin | downcase -%}
+              {%- if all_tags_str contains fin_low -%}
+                {%- assign has_any_fin = true -%}
+                {%- break -%}
+              {%- endif -%}
+            {%- endfor -%}
+
+            {%- if has_any_fin -%}
+              <div class="el-filter-accordion">
+                <button type="button" class="el-accordion-btn">
+                  <span>Finish & Style</span>
+                  <svg viewBox="0 0 10 6"><polyline points="1 1 5 5 9 1"></polyline></svg>
+                </button>
+                <div class="el-accordion-body">
+                  {%- for fin in curated_finishes -%}
+                    {%- assign fin_low = fin | downcase -%}
+                    {%- if all_tags_str contains fin_low -%}
+                      <label class="el-check-label">
+                        <input type="checkbox" class="el-check-input el-tag-filter" data-group="finish" value="{{ fin_low | escape }}">
+                        <span>{{ fin | replace: 'Peel and Stick', 'Peel & Stick' }}</span>
+                      </label>
+                    {%- endif -%}
+                  {%- endfor -%}
+                </div>
+              </div>
+            {%- endif -%}
+          {%- endunless -%}
+
+        </form>
+
+        </div><!-- /.el-col-sidebar-content -->
+
+        <!-- Mobile Drawer Apply Footer -->
+        <div class="el-col-filter-drawer-footer">
+          <button type="button" class="el-col-apply-filters-btn" id="elFilterApply-{{ section.id }}">
+            View Results
+          </button>
+        </div>
+
+      </aside>
+
+      <!-- Right Main Content Area -->
+      <section class="el-col-content">
+        
+        <!-- Search Bar with Live Filter -->
+        {%- if section.settings.show_search -%}
+          <div class="el-col-search-box">
+            <svg class="el-col-search-icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+            <input type="text" class="el-col-search-input" id="elCollectionSearch" placeholder="{{ section.settings.search_placeholder | default: 'Search products in this collection...' }}">
+          </div>
+        {%- endif -%}
+
+        <!-- Stats & Native Sorting Form -->
+        <div class="el-col-stats-row">
+          <h2 class="el-col-subheading">{{ collection.title | default: section.settings.fallback_title | default: 'Tiles' }}</h2>
+          <div class="el-col-sort-group">
+            <button type="button" class="el-col-filter-toggle-btn" id="elFilterToggle-{{ section.id }}" aria-label="Open filter sidebar">
+              <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="4" y1="21" x2="4" y2="14"></line>
+                <line x1="4" y1="10" x2="4" y2="3"></line>
+                <line x1="12" y1="21" x2="12" y2="12"></line>
+                <line x1="12" y1="8" x2="12" y2="3"></line>
+                <line x1="20" y1="21" x2="20" y2="16"></line>
+                <line x1="20" y1="12" x2="20" y2="3"></line>
+                <line x1="1" y1="14" x2="7" y2="14"></line>
+                <line x1="9" y1="8" x2="15" y2="8"></line>
+                <line x1="17" y1="16" x2="23" y2="16"></line>
+              </svg>
+              <span>Filters</span>
+              {%- if total_active_filters > 0 -%}
+                <span class="el-col-filter-badge">{{ total_active_filters }}</span>
+              {%- endif -%}
+            </button>
+
+            <span class="el-col-count-text">
+              {%- if collection.products_count > 0 -%}
+                Showing {{ paginate.current_offset | plus: 1 }}–{% if paginate.next %}{{ paginate.current_offset | plus: paginate.page_size }}{% else %}{{ collection.products_count }}{% endif %} of {{ collection.products_count }} Products
+              {%- elsif total_active_filters > 0 or collection.all_products_count > 0 -%}
+                0 Products match selected filters
+              {%- else -%}
+                Showing 1–9 of 9 Products
+              {%- endif -%}
+            </span>
+            
+            <form id="FacetSortForm" action="{{ collection.url }}" method="get">
+              {%- for filter in collection.filters -%}
+                {%- if filter.type == 'price_range' -%}
+                  {%- if filter.min_value.value -%}
+                    <input type="hidden" name="{{ filter.min_value.param_name }}" value="{{ filter.min_value.value | money_without_currency | replace: ',', '' }}">
+                  {%- endif -%}
+                  {%- if filter.max_value.value -%}
+                    <input type="hidden" name="{{ filter.max_value.param_name }}" value="{{ filter.max_value.value | money_without_currency | replace: ',', '' }}">
+                  {%- endif -%}
+                {%- else -%}
+                  {%- for value in filter.active_values -%}
+                    <input type="hidden" name="{{ value.param_name }}" value="{{ value.value }}">
+                  {%- endfor -%}
+                {%- endif -%}
+              {%- endfor -%}
+              
+              {%- assign sort_by = collection.sort_by | default: collection.default_sort_by -%}
+              <select name="sort_by" class="el-col-sort-select" id="SortBy" onchange="this.closest('form').submit();" aria-label="Sort products">
+                {%- for option in collection.sort_options -%}
+                  <option value="{{ option.value }}" {% if option.value == sort_by %}selected="selected"{% endif %}>
+                    {{ option.name }}
+                  </option>
+                {%- endfor -%}
+              </select>
+            </form>
+          </div>
+        </div>
+
+        {%- if total_active_filters > 0 -%}
+          <div class="el-active-facets">
+            {%- for filter in collection.filters -%}
+              {%- if filter.type == 'price_range' -%}
+                {%- if filter.min_value.value or filter.max_value.value -%}
+                  <a href="{{ filter.url_to_remove }}" class="el-active-facet-pill" aria-label="Remove price filter">
+                    <span>
+                      Price: 
+                      {%- if filter.min_value.value -%}{{ filter.min_value.value | money }}{%- else -%}{{ 0 | money }}{%- endif -%}
+                      &ndash;
+                      {%- if filter.max_value.value -%}{{ filter.max_value.value | money }}{%- else -%}{{ filter.range_max | money }}{%- endif -%}
+                    </span>
+                    <svg viewBox="0 0 24 24" width="11" height="11" stroke="currentColor" stroke-width="2" fill="none"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                  </a>
+                {%- endif -%}
+              {%- else -%}
+                {%- for value in filter.active_values -%}
+                  <a href="{{ value.url_to_remove }}" class="el-active-facet-pill" aria-label="Remove {{ value.label }} filter">
+                    <span>{{ filter.label }}: {{ value.label }}</span>
+                    <svg viewBox="0 0 24 24" width="11" height="11" stroke="currentColor" stroke-width="2" fill="none"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                  </a>
+                {%- endfor -%}
+              {%- endif -%}
+            {%- endfor -%}
+            <a href="{{ collection.url }}?sort_by={{ collection.sort_by | default: collection.default_sort_by }}" class="el-active-facet-clear">
+              Clear all
+            </a>
+          </div>
+        {%- endif -%}
+
+        <!-- Product Grid (3 Columns) -->
+        <div class="el-product-grid" id="elProductGrid">
+          
+          {%- if collection.products.size > 0 -%}
+            {%- for product in collection.products -%}
+              <div class="el-product-card" 
+                data-title="{{ product.title | downcase }}" 
+                data-product-id="{{ product.id }}" 
+                data-product-handle="{{ product.handle }}"
+                data-type="{{ product.type | downcase }}"
+                data-vendor="{{ product.vendor | downcase }}"
+                data-tags="{{ product.tags | join: ',' | downcase }}">
+                <div class="el-card-media">
+                  {%- if section.settings.show_wishlist -%}
+                    <button type="button" class="el-wishlist-btn" aria-label="Add {{ product.title }} to wishlist" data-product-id="{{ product.id }}" data-product-handle="{{ product.handle }}" data-product-title="{{ product.title | escape }}" data-product-price="{{ product.price | money }} {{ section.settings.price_unit | default: '/M2' }}" data-product-image="{% if product.featured_image != blank %}{{ product.featured_image | image_url: width: 600 }}{% else %}https://cdn.shopify.com/s/files/1/0990/3685/6647/files/sec4_surface_03_marble_stone.jpg?v=1789453291{% endif %}" data-product-url="{{ product.url }}">
+                      <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+                    </button>
+                  {%- endif -%}
+
+                  <a href="{{ product.url }}">
+                    {%- if product.featured_image != blank -%}
+                      <img src="{{ product.featured_image | image_url: width: 600 }}" alt="{{ product.title }}" class="el-card-img" loading="lazy">
+                    {%- else -%}
+                      <img src="https://cdn.shopify.com/s/files/1/0990/3685/6647/files/sec4_surface_03_marble_stone.jpg?v=1789453291" alt="{{ product.title }}" class="el-card-img" loading="lazy">
+                    {%- endif -%}
+                  </a>
+                </div>
+                <div class="el-card-info">
+                  <a href="{{ product.url }}" style="text-decoration: none;">
+                    <h3 class="el-card-title">{{ product.title }}</h3>
+                  </a>
+                  <p class="el-card-price">{{ product.price | money }} {{ section.settings.price_unit | default: '/M2' }}</p>
+
+                  {%- assign default_variant = product.selected_or_first_available_variant -%}
+                  {%- if default_variant.available -%}
+                    <button type="button" 
+                      class="el-card-add-btn" 
+                      data-variant-id="{{ default_variant.id }}"
+                      data-product-title="{{ product.title | escape }}"
+                      aria-label="Add {{ product.title }} to cart">
+                      <svg viewBox="0 0 24 24"><path d="M2 9h20l-2 11H4L2 9z"></path><path d="M7 9l4.5-6"></path><path d="M17 9l-4.5-6"></path></svg>
+                      <span>Add to Cart</span>
+                    </button>
+                  {%- else -%}
+                    <button type="button" class="el-card-add-btn is-soldout" disabled>
+                      <span>Sold Out</span>
+                    </button>
+                  {%- endif -%}
+                </div>
+              </div>
+            {%- endfor -%}
+
+          {%- elsif collection.all_products_count > 0 or total_active_filters > 0 -%}
+
+            <!-- When filters produce 0 results, show helpful Empty State with Reset button -->
+            <div class="el-col-empty-filter" style="grid-column: 1 / -1; text-align: center; padding: 70px 20px;">
+              <p style="font-family: var(--el-col-font-serif); font-size: 26px; color: var(--el-col-dark); margin: 0 0 10px;">No surfaces match your selected filters</p>
+              <p style="font-family: var(--el-col-font-sans); font-size: 14px; color: var(--el-col-muted); margin: 0 0 24px;">Try clearing one or more filters or expanding your price range.</p>
+              <a href="{{ collection.url }}?sort_by={{ collection.sort_by | default: collection.default_sort_by }}" class="el-price-apply-btn" style="display: inline-block; padding: 12px 28px; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; text-decoration: none; border-radius: 4px; color: #FFFFFF; background-color: var(--el-col-primary);">Clear Active Filters</a>
+            </div>
+
+          {%- else -%}
+
+            <!-- Exact 9 Fallback Reference Products from Figma ONLY when store has no collection products yet -->
+            <div class="el-product-card" data-title="aura ivory stone">
+              <div class="el-card-media">
+                <button type="button" class="el-wishlist-btn" aria-label="Add Aura Ivory Stone to wishlist" data-product-id="fallback-1" data-product-handle="aura-ivory-stone" data-product-title="Aura Ivory Stone" data-product-price="From £37.20/M2" data-product-image="https://cdn.shopify.com/s/files/1/0990/3685/6647/files/sec4_surface_03_marble_stone.jpg?v=1789453291" data-product-url="/collections/all"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg></button>
+                <img src="https://cdn.shopify.com/s/files/1/0990/3685/6647/files/sec4_surface_03_marble_stone.jpg?v=1789453291" alt="Aura Ivory Stone" class="el-card-img" loading="lazy">
+              </div>
+              <div class="el-card-info">
+                <h3 class="el-card-title">Aura Ivory Stone</h3>
+                <p class="el-card-price">From £37.20/M2</p>
+                <button type="button" class="el-card-add-btn" data-product-title="Aura Ivory Stone" aria-label="Add Aura Ivory Stone to cart">
+                  <svg viewBox="0 0 24 24"><path d="M2 9h20l-2 11H4L2 9z"></path><path d="M7 9l4.5-6"></path><path d="M17 9l-4.5-6"></path></svg>
+                  <span>Add to Cart</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="el-product-card" data-title="terracotta fluted tile">
+              <div class="el-card-media">
+                <button type="button" class="el-wishlist-btn" aria-label="Add Terracotta Fluted Tile to wishlist" data-product-id="fallback-2" data-product-handle="terracotta-fluted-tile" data-product-title="Terracotta Fluted Tile" data-product-price="From £42.00/M2" data-product-image="https://cdn.shopify.com/s/files/1/0990/3685/6647/files/sec6_product_02_aura_bistro_patio.jpg?v=1789453292" data-product-url="/collections/all"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg></button>
+                <img src="https://cdn.shopify.com/s/files/1/0990/3685/6647/files/sec6_product_02_aura_bistro_patio.jpg?v=1789453292" alt="Terracotta Fluted Tile" class="el-card-img" loading="lazy">
+              </div>
+              <div class="el-card-info">
+                <h3 class="el-card-title">Terracotta Fluted Tile</h3>
+                <p class="el-card-price">From £42.00/M2</p>
+                <button type="button" class="el-card-add-btn" data-product-title="Terracotta Fluted Tile" aria-label="Add Terracotta Fluted Tile to cart">
+                  <svg viewBox="0 0 24 24"><path d="M2 9h20l-2 11H4L2 9z"></path><path d="M7 9l4.5-6"></path><path d="M17 9l-4.5-6"></path></svg>
+                  <span>Add to Cart</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="el-product-card" data-title="classic travertine slab">
+              <div class="el-card-media">
+                <button type="button" class="el-wishlist-btn" aria-label="Add Classic Travertine Slab to wishlist" data-product-id="fallback-3" data-product-handle="classic-travertine-slab" data-product-title="Classic Travertine Slab" data-product-price="From £54.50/M2" data-product-image="https://cdn.shopify.com/s/files/1/0990/3685/6647/files/sec5_crafted_02_terracotta_bench.jpg?v=1789453291" data-product-url="/collections/all"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg></button>
+                <img src="https://cdn.shopify.com/s/files/1/0990/3685/6647/files/sec5_crafted_02_terracotta_bench.jpg?v=1789453291" alt="Classic Travertine Slab" class="el-card-img" loading="lazy">
+              </div>
+              <div class="el-card-info">
+                <h3 class="el-card-title">Classic Travertine Slab</h3>
+                <p class="el-card-price">From £54.50/M2</p>
+                <button type="button" class="el-card-add-btn" data-product-title="Classic Travertine Slab" aria-label="Add Classic Travertine Slab to cart">
+                  <svg viewBox="0 0 24 24"><path d="M2 9h20l-2 11H4L2 9z"></path><path d="M7 9l4.5-6"></path><path d="M17 9l-4.5-6"></path></svg>
+                  <span>Add to Cart</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="el-product-card" data-title="warm sandstone neutral">
+              <div class="el-card-media">
+                <button type="button" class="el-wishlist-btn" aria-label="Add Warm Sandstone Neutral to wishlist" data-product-id="fallback-4" data-product-handle="warm-sandstone-neutral" data-product-title="Warm Sandstone Neutral" data-product-price="From £39.80/M2" data-product-image="https://cdn.shopify.com/s/files/1/0990/3685/6647/files/sec4_surface_05_warm_neutrals.jpg?v=1789453291" data-product-url="/collections/all"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg></button>
+                <img src="https://cdn.shopify.com/s/files/1/0990/3685/6647/files/sec4_surface_05_warm_neutrals.jpg?v=1789453291" alt="Warm Sandstone Neutral" class="el-card-img" loading="lazy">
+              </div>
+              <div class="el-card-info">
+                <h3 class="el-card-title">Warm Sandstone Neutral</h3>
+                <p class="el-card-price">From £39.80/M2</p>
+                <button type="button" class="el-card-add-btn" data-product-title="Warm Sandstone Neutral" aria-label="Add Warm Sandstone Neutral to cart">
+                  <svg viewBox="0 0 24 24"><path d="M2 9h20l-2 11H4L2 9z"></path><path d="M7 9l4.5-6"></path><path d="M17 9l-4.5-6"></path></svg>
+                  <span>Add to Cart</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="el-product-card" data-title="calacatta niche marble">
+              <div class="el-card-media">
+                <button type="button" class="el-wishlist-btn" aria-label="Add Calacatta Niche Marble to wishlist" data-product-id="fallback-5" data-product-handle="calacatta-niche-marble" data-product-title="Calacatta Niche Marble" data-product-price="From £62.00/M2" data-product-image="https://cdn.shopify.com/s/files/1/0990/3685/6647/files/sec8_community_card_02_mandir.jpg?v=1789453291" data-product-url="/collections/all"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg></button>
+                <img src="https://cdn.shopify.com/s/files/1/0990/3685/6647/files/sec8_community_card_02_mandir.jpg?v=1789453291" alt="Calacatta Niche Marble" class="el-card-img" loading="lazy">
+              </div>
+              <div class="el-card-info">
+                <h3 class="el-card-title">Calacatta Niche Marble</h3>
+                <p class="el-card-price">From £62.00/M2</p>
+                <button type="button" class="el-card-add-btn" data-product-title="Calacatta Niche Marble" aria-label="Add Calacatta Niche Marble to cart">
+                  <svg viewBox="0 0 24 24"><path d="M2 9h20l-2 11H4L2 9z"></path><path d="M7 9l4.5-6"></path><path d="M17 9l-4.5-6"></path></svg>
+                  <span>Add to Cart</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="el-product-card" data-title="rustic courtyard flagstone">
+              <div class="el-card-media">
+                <button type="button" class="el-wishlist-btn" aria-label="Add Rustic Courtyard Flagstone to wishlist" data-product-id="fallback-6" data-product-handle="rustic-courtyard-flagstone" data-product-title="Rustic Courtyard Flagstone" data-product-price="From £48.00/M2" data-product-image="https://cdn.shopify.com/s/files/1/0990/3685/6647/files/sec8_marquee_02_terrace_tree.jpg?v=1789453292" data-product-url="/collections/all"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg></button>
+                <img src="https://cdn.shopify.com/s/files/1/0990/3685/6647/files/sec8_marquee_02_terrace_tree.jpg?v=1789453292" alt="Rustic Courtyard Flagstone" class="el-card-img" loading="lazy">
+              </div>
+              <div class="el-card-info">
+                <h3 class="el-card-title">Rustic Courtyard Flagstone</h3>
+                <p class="el-card-price">From £48.00/M2</p>
+                <button type="button" class="el-card-add-btn" data-product-title="Rustic Courtyard Flagstone" aria-label="Add Rustic Courtyard Flagstone to cart">
+                  <svg viewBox="0 0 24 24"><path d="M2 9h20l-2 11H4L2 9z"></path><path d="M7 9l4.5-6"></path><path d="M17 9l-4.5-6"></path></svg>
+                  <span>Add to Cart</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="el-product-card" data-title="natural grey sandstone">
+              <div class="el-card-media">
+                <button type="button" class="el-wishlist-btn" aria-label="Add Natural Grey Sandstone to wishlist" data-product-id="fallback-7" data-product-handle="natural-grey-sandstone" data-product-title="Natural Grey Sandstone" data-product-price="From £44.20/M2" data-product-image="https://cdn.shopify.com/s/files/1/0990/3685/6647/files/sec8_marquee_07_natural_flagstone.jpg?v=1789453292" data-product-url="/collections/all"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg></button>
+                <img src="https://cdn.shopify.com/s/files/1/0990/3685/6647/files/sec8_marquee_07_natural_flagstone.jpg?v=1789453292" alt="Natural Grey Sandstone" class="el-card-img" loading="lazy">
+              </div>
+              <div class="el-card-info">
+                <h3 class="el-card-title">Natural Grey Sandstone</h3>
+                <p class="el-card-price">From £44.20/M2</p>
+                <button type="button" class="el-card-add-btn" data-product-title="Natural Grey Sandstone" aria-label="Add Natural Grey Sandstone to cart">
+                  <svg viewBox="0 0 24 24"><path d="M2 9h20l-2 11H4L2 9z"></path><path d="M7 9l4.5-6"></path><path d="M17 9l-4.5-6"></path></svg>
+                  <span>Add to Cart</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="el-product-card" data-title="niche bathroom porcelain">
+              <div class="el-card-media">
+                <button type="button" class="el-wishlist-btn" aria-label="Add Niche Bathroom Porcelain to wishlist" data-product-id="fallback-8" data-product-handle="niche-bathroom-porcelain" data-product-title="Niche Bathroom Porcelain" data-product-price="From £36.90/M2" data-product-image="https://cdn.shopify.com/s/files/1/0990/3685/6647/files/sec8_marquee_08_niche_bathroom.jpg?v=1789453292" data-product-url="/collections/all"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg></button>
+                <img src="https://cdn.shopify.com/s/files/1/0990/3685/6647/files/sec8_marquee_08_niche_bathroom.jpg?v=1789453292" alt="Niche Bathroom Porcelain" class="el-card-img" loading="lazy">
+              </div>
+              <div class="el-card-info">
+                <h3 class="el-card-title">Niche Bathroom Porcelain</h3>
+                <p class="el-card-price">From £36.90/M2</p>
+                <button type="button" class="el-card-add-btn" data-product-title="Niche Bathroom Porcelain" aria-label="Add Niche Bathroom Porcelain to cart">
+                  <svg viewBox="0 0 24 24"><path d="M2 9h20l-2 11H4L2 9z"></path><path d="M7 9l4.5-6"></path><path d="M17 9l-4.5-6"></path></svg>
+                  <span>Add to Cart</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="el-product-card" data-title="zen mandir limestone">
+              <div class="el-card-media">
+                <button type="button" class="el-wishlist-btn" aria-label="Add Zen Mandir Limestone to wishlist" data-product-id="fallback-9" data-product-handle="zen-mandir-limestone" data-product-title="Zen Mandir Limestone" data-product-price="From £58.00/M2" data-product-image="https://cdn.shopify.com/s/files/1/0990/3685/6647/files/sec7_space_01_yoga_room.jpg?v=1789453289" data-product-url="/collections/all"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg></button>
+                <img src="https://cdn.shopify.com/s/files/1/0990/3685/6647/files/sec7_space_01_yoga_room.jpg?v=1789453289" alt="Zen Mandir Limestone" class="el-card-img" loading="lazy">
+              </div>
+              <div class="el-card-info">
+                <h3 class="el-card-title">Zen Mandir Limestone</h3>
+                <p class="el-card-price">From £58.00/M2</p>
+                <button type="button" class="el-card-add-btn" data-product-title="Zen Mandir Limestone" aria-label="Add Zen Mandir Limestone to cart">
+                  <svg viewBox="0 0 24 24"><path d="M2 9h20l-2 11H4L2 9z"></path><path d="M7 9l4.5-6"></path><path d="M17 9l-4.5-6"></path></svg>
+                  <span>Add to Cart</span>
+                </button>
+              </div>
+            </div>
+
+          {%- endif -%}
+
+          <!-- Empty Filter Results Message -->
+          <div class="el-col-empty-filter" id="elEmptyFilterState" style="display: none; grid-column: 1 / -1; text-align: center; padding: 60px 20px;">
+            <p style="font-family: var(--el-col-font-serif); font-size: 26px; color: var(--el-col-dark); margin: 0 0 10px;">No surfaces match your selected filters</p>
+            <p style="font-family: var(--el-col-font-sans); font-size: 14px; color: var(--el-col-muted); margin: 0 0 20px;">Try clearing one or more filters or browse all surfaces.</p>
+            <button type="button" id="elResetFiltersBtn" class="el-price-apply-btn" style="padding: 10px 24px; font-size: 13px; cursor: pointer;">Reset All Filters</button>
+          </div>
+
+        </div>
+
+        <!-- Real Native Shopify Pagination -->
+        {%- if paginate.pages > 1 -%}
+          <nav class="el-pagination" aria-label="Collection pagination">
+            {%- if paginate.previous -%}
+              <a href="{{ paginate.previous.url }}" class="el-page-btn el-page-arrow">&larr; Prev</a>
+            {%- else -%}
+              <span class="el-page-btn el-page-arrow disabled">&larr; Prev</span>
+            {%- endif -%}
+
+            {%- for part in paginate.parts -%}
+              {%- if part.is_link -%}
+                <a href="{{ part.url }}" class="el-page-btn">{{ part.title }}</a>
+              {%- else -%}
+                {%- if part.title == paginate.current_page -%}
+                  <span class="el-page-btn is-active">{{ part.title }}</span>
+                {%- else -%}
+                  <span class="el-page-btn disabled">{{ part.title }}</span>
+                {%- endif -%}
+              {%- endif -%}
+            {%- endfor -%}
+
+            {%- if paginate.next -%}
+              <a href="{{ paginate.next.url }}" class="el-page-btn el-page-arrow">Next &rarr;</a>
+            {%- else -%}
+              <span class="el-page-btn el-page-arrow disabled">Next &rarr;</span>
+            {%- endif -%}
+          </nav>
+        {%- else -%}
+          <!-- Preview Pagination fallback when viewing single page or sample -->
+          <nav class="el-pagination" aria-label="Collection pagination">
+            <span class="el-page-btn el-page-arrow disabled">&larr; Prev</span>
+            <span class="el-page-btn is-active">1</span>
+            <span class="el-page-btn">2</span>
+            <span class="el-page-btn">3</span>
+            <span class="el-page-btn">4</span>
+            <span class="el-page-btn el-page-arrow">Next &rarr;</span>
+          </nav>
+        {%- endif -%}
+
+      </section>
+
+    </div>
+
+  </div>
+</div>
+{%- endpaginate -%}
+
+<!-- ========================================================================
+     JAVASCRIPT: LIVE COLLECTION SEARCH, ACCORDION TOGGLES & CLEAR FILTERS
+     ======================================================================== -->
+<script>
+  (function() {
+    var sectionId = "{{ section.id }}";
+    var root = document.getElementById('ellora-collection-' + sectionId);
+    if (!root) return;
+
+    // Mobile Slide-out Filter Drawer Controls
+    var filterToggleBtn = root.querySelector('#elFilterToggle-' + sectionId);
+    var filterSidebar = root.querySelector('#elFilterSidebar-' + sectionId);
+    var filterBackdrop = root.querySelector('#elFilterBackdrop-' + sectionId);
+    var filterCloseBtn = root.querySelector('#elFilterClose-' + sectionId);
+    var filterApplyBtn = root.querySelector('#elFilterApply-' + sectionId);
+
+    function openFilterDrawer() {
+      if (filterSidebar) filterSidebar.classList.add('is-open');
+      if (filterBackdrop) filterBackdrop.classList.add('is-open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeFilterDrawer() {
+      if (filterSidebar) filterSidebar.classList.remove('is-open');
+      if (filterBackdrop) filterBackdrop.classList.remove('is-open');
+      document.body.style.overflow = '';
+    }
+
+    if (filterToggleBtn) filterToggleBtn.addEventListener('click', openFilterDrawer);
+    if (filterCloseBtn) filterCloseBtn.addEventListener('click', closeFilterDrawer);
+    if (filterBackdrop) filterBackdrop.addEventListener('click', closeFilterDrawer);
+
+    // Native Shopify Facet Form Sanitization & Change Handling
+    var facetForm = root.querySelector('#FacetFiltersForm');
+    function sanitizeFacetInputs(form) {
+      if (!form) return;
+      var inputs = form.querySelectorAll('input[type="number"], input[type="text"]:not([name="sort_by"])');
+      inputs.forEach(function(input) {
+        if (!input.value || !input.value.trim()) {
+          input.disabled = true;
+        }
+      });
+    }
+
+    if (facetForm) {
+      // Auto-submit native checkboxes (e.g. Availability, List filters) when toggled
+      facetForm.addEventListener('change', function(e) {
+        if (e.target && e.target.matches('input[type="checkbox"]:not(.el-tag-filter)')) {
+          sanitizeFacetInputs(facetForm);
+          if (facetForm.requestSubmit) {
+            facetForm.requestSubmit();
+          } else {
+            facetForm.submit();
+          }
+        }
+      });
+
+      // Intercept submit (e.g. Price "Go" button or pressing Enter) to strip empty price fields
+      facetForm.addEventListener('submit', function() {
+        sanitizeFacetInputs(facetForm);
+      });
+    }
+
+    if (filterApplyBtn) {
+      filterApplyBtn.addEventListener('click', function() {
+        closeFilterDrawer();
+        if (facetForm) {
+          sanitizeFacetInputs(facetForm);
+          if (facetForm.requestSubmit) {
+            facetForm.requestSubmit();
+          } else {
+            facetForm.submit();
+          }
+        }
+      });
+    }
+
+    // Close on Escape key
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape' && filterSidebar && filterSidebar.classList.contains('is-open')) {
+        closeFilterDrawer();
+      }
+    });
+
+    // Reset drawer state if window is resized to desktop
+    window.addEventListener('resize', function() {
+      if (window.innerWidth > 992 && filterSidebar && filterSidebar.classList.contains('is-open')) {
+        closeFilterDrawer();
+      }
+    });
+
+    // Filter Accordion Toggles
+    var accBtns = root.querySelectorAll('.el-accordion-btn');
+    accBtns.forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        var body = btn.nextElementSibling;
+        if (body) {
+          body.classList.toggle('is-hidden');
+          btn.classList.toggle('is-collapsed');
+        }
+      });
+    });
+
+    // Dynamic Filter & Search System
+    var searchInput = root.querySelector('#elCollectionSearch');
+    var tagCheckboxes = root.querySelectorAll('.el-tag-filter');
+    var countText = root.querySelector('.el-col-count-text');
+    var cards = root.querySelectorAll('.el-product-card');
+    var emptyFilterState = root.querySelector('#elEmptyFilterState');
+    var totalCards = cards.length;
+
+    function applyDynamicFilters() {
+      var searchTerm = (searchInput ? searchInput.value.toLowerCase().trim() : '');
+      
+      // Group active tag filters by data-group
+      var activeFiltersByGroup = {};
+      tagCheckboxes.forEach(function(cb) {
+        if (cb.checked) {
+          var grp = cb.getAttribute('data-group') || 'tag';
+          if (!activeFiltersByGroup[grp]) activeFiltersByGroup[grp] = [];
+          activeFiltersByGroup[grp].push(cb.value.toLowerCase());
+        }
+      });
+
+      var visibleCount = 0;
+
+      cards.forEach(function(card) {
+        var title = (card.getAttribute('data-title') || '').toLowerCase();
+        var cardType = (card.getAttribute('data-type') || '').toLowerCase();
+        var cardTags = (card.getAttribute('data-tags') || '').toLowerCase();
+
+        // 1. Search term check
+        var matchesSearch = true;
+        if (searchTerm) {
+          matchesSearch = (title.indexOf(searchTerm) > -1 || cardTags.indexOf(searchTerm) > -1 || cardType.indexOf(searchTerm) > -1);
+        }
+
+        // 2. Tag filter groups check (AND across groups, OR within group)
+        var matchesTags = true;
+        for (var grp in activeFiltersByGroup) {
+          var values = activeFiltersByGroup[grp];
+          if (values.length > 0) {
+            var groupMatched = false;
+            for (var i = 0; i < values.length; i++) {
+              var val = values[i];
+              if (grp === 'type') {
+                if (cardType === val || cardType.indexOf(val) > -1) {
+                  groupMatched = true;
+                  break;
+                }
+              } else {
+                if (cardTags.indexOf(val) > -1) {
+                  groupMatched = true;
+                  break;
+                }
+              }
+            }
+            if (!groupMatched) {
+              matchesTags = false;
+              break;
+            }
+          }
+        }
+
+        if (matchesSearch && matchesTags) {
+          card.style.display = '';
+          visibleCount++;
+        } else {
+          card.style.display = 'none';
+        }
+      });
+
+      // Update count text
+      if (countText) {
+        if (visibleCount === totalCards) {
+          countText.textContent = 'Showing ' + totalCards + ' Products';
+        } else {
+          countText.textContent = 'Showing ' + visibleCount + ' of ' + totalCards + ' Products';
+        }
+      }
+
+      // Empty State
+      if (emptyFilterState) {
+        if (visibleCount === 0 && totalCards > 0) {
+          emptyFilterState.style.display = 'block';
+        } else {
+          emptyFilterState.style.display = 'none';
+        }
+      }
+    }
+
+    if (searchInput) {
+      searchInput.addEventListener('input', applyDynamicFilters);
+    }
+
+    tagCheckboxes.forEach(function(cb) {
+      cb.addEventListener('change', applyDynamicFilters);
+    });
+
+    var resetBtn = root.querySelector('#elResetFiltersBtn');
+    if (resetBtn) {
+      resetBtn.addEventListener('click', function() {
+        if (searchInput) searchInput.value = '';
+        tagCheckboxes.forEach(function(cb) { cb.checked = false; });
+        applyDynamicFilters();
+      });
+    }
+
+    // Clear all filters
+    var clearBtn = root.querySelector('#elClearFilters');
+    if (clearBtn) {
+      clearBtn.addEventListener('click', function() {
+        if (searchInput) searchInput.value = '';
+        tagCheckboxes.forEach(function(cb) { cb.checked = false; });
+        applyDynamicFilters();
+        var form = root.querySelector('#FacetFiltersForm');
+        var cleanUrl = (form && form.getAttribute('action')) ? form.getAttribute('action') : window.location.pathname;
+        window.location.href = cleanUrl;
+      });
+    }
+
+    // Wishlist LocalStorage Integration
+    function getWishlist() {
+      try {
+        return JSON.parse(localStorage.getItem('ellora_wishlist') || '[]');
+      } catch(e) {
+        return [];
+      }
+    }
+
+    function saveWishlist(items) {
+      localStorage.setItem('ellora_wishlist', JSON.stringify(items));
+      window.dispatchEvent(new CustomEvent('ellora:wishlist:updated', { detail: { items: items } }));
+    }
+
+    function syncWishlistButtons() {
+      var list = getWishlist();
+      var buttons = root.querySelectorAll('.el-wishlist-btn');
+      buttons.forEach(function(btn) {
+        var id = btn.getAttribute('data-product-id');
+        var handle = btn.getAttribute('data-product-handle');
+        var title = btn.getAttribute('data-product-title');
+        var inList = list.some(function(item) {
+          if (id && item.id && String(item.id) === String(id)) return true;
+          if (handle && item.handle && item.handle === handle) return true;
+          if (title && item.title && item.title.toLowerCase() === title.toLowerCase()) return true;
+          return false;
+        });
+        if (inList) {
+          btn.classList.add('is-active');
+        } else {
+          btn.classList.remove('is-active');
+        }
+      });
+    }
+
+    var toastTimeout;
+    function showWishlistToast(msg) {
+      var toast = document.getElementById('elWishlistGlobalToast');
+      if (!toast) {
+        toast = document.createElement('div');
+        toast.id = 'elWishlistGlobalToast';
+        toast.className = 'el-wishlist-toast';
+        toast.style.cssText = 'position:fixed;bottom:24px;right:24px;background:#1C1B19;color:#FFFFFF;padding:12px 20px;border-radius:4px;font-family:sans-serif;font-size:13.5px;font-weight:500;box-shadow:0 4px 16px rgba(0,0,0,0.2);z-index:99999;opacity:0;transform:translateY(12px);transition:all 0.3s ease;pointer-events:none;display:flex;align-items:center;gap:10px;';
+        document.body.appendChild(toast);
+      }
+      toast.innerHTML = '<svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"#BA9587\" stroke=\"#BA9587\" stroke-width=\"1.5\"><path d=\"M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z\"></path></svg> <span>' + msg + '</span>';
+      toast.style.opacity = '1';
+      toast.style.transform = 'translateY(0)';
+      clearTimeout(toastTimeout);
+      toastTimeout = setTimeout(function() {
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateY(12px)';
+      }, 2500);
+    }
+
+    root.addEventListener('click', function(e) {
+      var btn = e.target.closest('.el-wishlist-btn');
+      if (!btn) return;
+      e.preventDefault();
+      e.stopPropagation();
+
+      var card = btn.closest('.el-product-card');
+      var id = btn.getAttribute('data-product-id') || (card ? card.getAttribute('data-product-id') : '') || ('item-' + Date.now());
+      var handle = btn.getAttribute('data-product-handle') || (card ? card.getAttribute('data-product-handle') : '') || '';
+      var title = btn.getAttribute('data-product-title') || (card && card.querySelector('.el-card-title') ? card.querySelector('.el-card-title').textContent.trim() : '') || 'Ellora Surface';
+      var price = btn.getAttribute('data-product-price') || (card && card.querySelector('.el-card-price') ? card.querySelector('.el-card-price').textContent.trim() : '') || '';
+      var image = btn.getAttribute('data-product-image') || (card && card.querySelector('.el-card-img') ? card.querySelector('.el-card-img').getAttribute('src') : '') || '';
+      var url = btn.getAttribute('data-product-url') || (card && card.querySelector('a') ? card.querySelector('a').getAttribute('href') : '') || '/collections/all';
+
+      var list = getWishlist();
+      var existingIndex = list.findIndex(function(item) {
+        if (id && item.id && String(item.id) === String(id)) return true;
+        if (handle && item.handle && item.handle === handle) return true;
+        if (title && item.title && item.title.toLowerCase() === title.toLowerCase()) return true;
+        return false;
+      });
+
+      if (existingIndex > -1) {
+        list.splice(existingIndex, 1);
+        btn.classList.remove('is-active');
+        showWishlistToast('Removed from your Wishlist');
+      } else {
+        list.push({
+          id: id,
+          handle: handle,
+          title: title,
+          price: price,
+          image: image,
+          url: url
+        });
+        btn.classList.add('is-active');
+        showWishlistToast('Added to your Wishlist');
+      }
+
+      saveWishlist(list);
+    });
+
+    // Add to Cart AJAX Handler
+    root.addEventListener('click', function(e) {
+      var btn = e.target.closest('.el-card-add-btn');
+      if (!btn || btn.classList.contains('is-loading') || btn.classList.contains('is-soldout')) return;
+      e.preventDefault();
+      e.stopPropagation();
+
+      var variantId = btn.getAttribute('data-variant-id');
+      var title = btn.getAttribute('data-product-title') || 'Product';
+      var originalHTML = btn.innerHTML;
+
+      // Demo/Fallback Card Simulation
+      if (!variantId) {
+        btn.classList.add('is-success');
+        btn.innerHTML = '&#10003; Added to Basket';
+        showWishlistToast('Added ' + title + ' to basket');
+        window.dispatchEvent(new CustomEvent('ellora:cart:open'));
+        setTimeout(function() {
+          btn.classList.remove('is-success');
+          btn.innerHTML = originalHTML;
+        }, 2000);
+        return;
+      }
+
+      btn.classList.add('is-loading');
+      btn.innerHTML = 'Adding...';
+
+      fetch('/cart/add.js', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify({
+          id: Number(variantId),
+          quantity: 1
+        })
+      })
+      .then(function(res) {
+        if (!res.ok) throw new Error('Add to cart failed');
+        return res.json();
+      })
+      .then(function(item) {
+        btn.classList.remove('is-loading');
+        btn.classList.add('is-success');
+        btn.innerHTML = '&#10003; Added to Basket';
+        showWishlistToast('Added ' + (item.title || title) + ' to basket');
+
+        // Trigger header badge refresh and cart drawer
+        window.dispatchEvent(new CustomEvent('ellora:cart:refresh'));
+        window.dispatchEvent(new CustomEvent('ellora:cart:updated', { detail: item }));
+        window.dispatchEvent(new CustomEvent('cart:updated'));
+        window.dispatchEvent(new CustomEvent('cart:refresh'));
+        window.dispatchEvent(new CustomEvent('ellora:cart:open'));
+
+        setTimeout(function() {
+          btn.classList.remove('is-success');
+          btn.innerHTML = originalHTML;
+        }, 2200);
+      })
+      .catch(function(err) {
+        console.error('Error adding to cart:', err);
+        btn.classList.remove('is-loading');
+        btn.innerHTML = originalHTML;
+      });
+    });
+
+    syncWishlistButtons();
+    window.addEventListener('ellora:wishlist:updated', syncWishlistButtons);
+    window.addEventListener('storage', syncWishlistButtons);
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Ellora Collection",
+  "tag": "section",
+  "class": "section-ellora-collection",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Breadcrumbs & Hero Banner"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_breadcrumbs",
+      "label": "Show Breadcrumbs",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "fallback_title",
+      "label": "Fallback Collection Title",
+      "default": "Tiles"
+    },
+    {
+      "type": "textarea",
+      "id": "fallback_desc",
+      "label": "Fallback Description",
+      "default": "Every surface is selected for its tactile quality, tonal depth and architectural presence. From natural stone to contemporary porcelain, Ellora Living focuses on materials that age beautifully and create spaces with emotional warmth."
+    },
+    {
+      "type": "header",
+      "content": "Sidebar Filters"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_categories",
+      "label": "Show Collections Nav",
+      "default": true
+    },
+    {
+      "type": "link_list",
+      "id": "collection_menu",
+      "label": "Custom Collections Menu",
+      "info": "Leave blank to list all collections from backend."
+    },
+    {
+      "type": "header",
+      "content": "Product Grid & Pagination"
+    },
+    {
+      "type": "range",
+      "id": "columns_desktop",
+      "min": 2,
+      "max": 5,
+      "step": 1,
+      "label": "Columns (Desktop)",
+      "default": 3
+    },
+    {
+      "type": "select",
+      "id": "columns_mobile",
+      "label": "Columns (Mobile)",
+      "options": [
+        { "value": "1", "label": "1 Column" },
+        { "value": "2", "label": "2 Columns" }
+      ],
+      "default": "2"
+    },
+    {
+      "type": "range",
+      "id": "rows_desktop",
+      "min": 1,
+      "max": 8,
+      "step": 1,
+      "label": "Rows per page",
+      "default": 3
+    },
+    {
+      "type": "range",
+      "id": "products_per_page",
+      "min": 4,
+      "max": 36,
+      "step": 2,
+      "label": "Products Per Page",
+      "default": 12
+    },
+    {
+      "type": "checkbox",
+      "id": "show_search",
+      "label": "Show Search Bar",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "search_placeholder",
+      "label": "Search Bar Placeholder",
+      "default": "Search products in this collection..."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_wishlist",
+      "label": "Show Wishlist Heart",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "price_unit",
+      "label": "Price Unit Suffix",
+      "default": "/M2"
+    },
+    {
+      "type": "header",
+      "content": "Colors & Spacing"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Page Background Color",
+      "default": "#FAF9F6"
+    },
+    {
+      "type": "color",
+      "id": "card_bg",
+      "label": "Filter Card Background",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Terracotta Accent Color",
+      "default": "#BA8877"
+    },
+    {
+      "type": "range",
+      "id": "sticky_top",
+      "min": 10,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Sticky Top Spacing",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 10,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Top Padding",
+      "default": 25
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 20,
+      "max": 120,
+      "step": 5,
+      "unit": "px",
+      "label": "Bottom Padding",
+      "default": 80
+    }
+  ],
+  "presets": [
+    {
+      "name": "Ellora Collection"
+    }
+  ]
+}
+{% endschema %}

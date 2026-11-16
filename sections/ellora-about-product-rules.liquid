@@ -1,0 +1,507 @@
+{% comment %}
+  ==========================================================================
+  ELLORA SPACES — ABOUT PAGE SECTION 4: PRODUCT PURCHASE RULES
+  File: sections/ellora-about-product-rules.liquid
+  Fully customizable via Shopify Theme Customizer
+  ==========================================================================
+{% endcomment %}
+
+<div class="el-section-wrapper el-sec-about-rules-wrapper" id="ellora-about-rules-{{ section.id }}">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
+
+    #ellora-about-rules-{{ section.id }} {
+      --el-sec-bg: {{ section.settings.sec_bg_color | default: '#FAF9F6' }};
+      --el-card-bg: {{ section.settings.card_bg_color | default: '#FAF7F2' }};
+      --el-card-border: {{ section.settings.card_border_color | default: '#EDE7DC' }};
+      --el-divider: {{ section.settings.divider_color | default: '#E4DDD0' }};
+      --el-heading-color: {{ section.settings.heading_color | default: '#8E6356' }};
+      --el-dark: {{ section.settings.dark_color | default: '#1C1B19' }};
+      --el-text: {{ section.settings.text_color | default: '#524C45' }};
+      --el-accent: {{ section.settings.accent_color | default: '#9E533D' }};
+      --el-font-serif: 'Cormorant Garamond', Georgia, serif;
+      --el-font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+
+      background-color: var(--el-sec-bg);
+      padding-top: {{ section.settings.padding_top_desktop | default: 60 }}px;
+      padding-bottom: {{ section.settings.padding_bottom_desktop | default: 72 }}px;
+      width: 100%;
+      font-family: var(--el-font-sans);
+      box-sizing: border-box;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    #ellora-about-rules-{{ section.id }} *,
+    #ellora-about-rules-{{ section.id }} *::before,
+    #ellora-about-rules-{{ section.id }} *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    #ellora-about-rules-{{ section.id }} .el-rules-container {
+      width: 90%;
+      max-width: {{ section.settings.container_max_width | default: 1720 }}px;
+      margin: 0 auto;
+    }
+
+    /* Outer Tinted Card */
+    #ellora-about-rules-{{ section.id }} .el-rules-card {
+      background-color: var(--el-card-bg);
+      border: 1px solid var(--el-card-border);
+      border-radius: {{ section.settings.card_radius | default: 4 }}px;
+      padding: {{ section.settings.card_padding_desktop | default: '64px 72px' }};
+      display: flex;
+      align-items: stretch;
+      gap: 56px;
+    }
+
+    /* Left Column: Heading, Narrative & CTA */
+    #ellora-about-rules-{{ section.id }} .el-rules-left-col {
+      flex: 0 0 42%;
+      max-width: 480px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      padding-right: 24px;
+    }
+
+    #ellora-about-rules-{{ section.id }} .el-rules-heading {
+      font-family: var(--el-font-serif);
+      font-size: clamp(32px, 3.4vw, {{ section.settings.heading_font_size | default: 44 }}px);
+      line-height: 1.14;
+      font-weight: 400;
+      color: var(--el-heading-color);
+      letter-spacing: -0.015em;
+      margin-bottom: 22px;
+    }
+
+    #ellora-about-rules-{{ section.id }} .el-rules-body {
+      font-family: var(--el-font-sans);
+      font-size: clamp(13.5px, 1.05vw, {{ section.settings.body_font_size | default: 14.5 }}px);
+      line-height: 1.66;
+      color: var(--el-text);
+      font-weight: 400;
+      margin-bottom: 32px;
+    }
+
+    #ellora-about-rules-{{ section.id }} .el-rules-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--el-font-sans);
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--el-dark);
+      text-decoration: none;
+      transition: color 0.25s ease;
+      margin-top: auto;
+    }
+
+    #ellora-about-rules-{{ section.id }} .el-rules-cta:hover {
+      color: var(--el-accent);
+    }
+
+    #ellora-about-rules-{{ section.id }} .el-rules-cta-icon {
+      width: 14px;
+      height: 14px;
+      transition: transform 0.25s ease;
+    }
+
+    #ellora-about-rules-{{ section.id }} .el-rules-cta:hover .el-rules-cta-icon {
+      transform: translate(2px, -2px);
+    }
+
+    /* Vertical Divider */
+    #ellora-about-rules-{{ section.id }} .el-rules-divider {
+      width: 1px;
+      background-color: var(--el-divider);
+      flex: 0 0 1px;
+    }
+
+    /* Right Column: Stacked Rule Items */
+    #ellora-about-rules-{{ section.id }} .el-rules-right-col {
+      flex: 1 1 auto;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 32px;
+      padding-left: 12px;
+    }
+
+    #ellora-about-rules-{{ section.id }} .el-rule-item {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    #ellora-about-rules-{{ section.id }} .el-rule-icon {
+      width: 26px;
+      height: 26px;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      color: var(--el-dark);
+    }
+
+    #ellora-about-rules-{{ section.id }} .el-rule-icon svg,
+    #ellora-about-rules-{{ section.id }} .el-rule-icon img {
+      width: 24px;
+      height: 24px;
+      object-fit: contain;
+    }
+
+    #ellora-about-rules-{{ section.id }} .el-rule-title {
+      font-family: var(--el-font-serif);
+      font-size: clamp(21px, 1.7vw, 24px);
+      font-weight: 400;
+      color: var(--el-dark);
+      margin-bottom: 8px;
+      line-height: 1.22;
+      letter-spacing: -0.01em;
+    }
+
+    #ellora-about-rules-{{ section.id }} .el-rule-desc {
+      font-family: var(--el-font-sans);
+      font-size: clamp(13px, 0.98vw, 13.5px);
+      line-height: 1.58;
+      color: var(--el-text);
+      font-weight: 400;
+      max-width: 620px;
+    }
+
+    /* Responsive Breakpoints */
+    @media (max-width: 1024px) {
+      #ellora-about-rules-{{ section.id }} {
+        padding-top: {{ section.settings.padding_top_mobile | default: 44 }}px;
+        padding-bottom: {{ section.settings.padding_bottom_mobile | default: 52 }}px;
+      }
+
+      #ellora-about-rules-{{ section.id }} .el-rules-card {
+        flex-direction: column;
+        gap: 36px;
+        padding: 44px 36px;
+      }
+
+      #ellora-about-rules-{{ section.id }} .el-rules-left-col {
+        max-width: 100%;
+        padding-right: 0;
+      }
+
+      #ellora-about-rules-{{ section.id }} .el-rules-divider {
+        width: 100%;
+        height: 1px;
+      }
+
+      #ellora-about-rules-{{ section.id }} .el-rules-right-col {
+        padding-left: 0;
+        gap: 28px;
+      }
+    }
+
+    @media (max-width: 640px) {
+      #ellora-about-rules-{{ section.id }} .el-rules-container {
+        width: 92%;
+      }
+
+      #ellora-about-rules-{{ section.id }} .el-rules-card {
+        padding: 32px 22px;
+      }
+
+      #ellora-about-rules-{{ section.id }} .el-rules-heading {
+        font-size: 28px;
+        line-height: 1.2;
+      }
+
+      #ellora-about-rules-{{ section.id }} .el-rule-title {
+        font-size: 20px;
+      }
+    }
+  </style>
+
+  <div class="el-rules-container">
+    <div class="el-rules-card">
+      
+      <!-- Left Column -->
+      <div class="el-rules-left-col">
+        <h2 class="el-rules-heading">
+          {{ section.settings.heading | default: "Simple product rules<br>before purchase." }}
+        </h2>
+        
+        <p class="el-rules-body">
+          {{ section.settings.body | default: "Ellora should clearly show whether a product is sold by single piece, minimum pattern set, or as a full set. This avoids confusion for large tiles and multi-panel wallpapers." }}
+        </p>
+
+        {%- if section.settings.cta_text != blank -%}
+          <a href="{{ section.settings.cta_link | default: '#' }}" class="el-rules-cta">
+            <span>{{ section.settings.cta_text }}</span>
+            <svg class="el-rules-cta-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="7" y1="17" x2="17" y2="7"></line>
+              <polyline points="7 7 17 7 17 17"></polyline>
+            </svg>
+          </a>
+        {%- endif -%}
+      </div>
+
+      <!-- Divider -->
+      <div class="el-rules-divider" aria-hidden="true"></div>
+
+      <!-- Right Column: Rule Items -->
+      <div class="el-rules-right-col">
+        {%- for block in section.blocks -%}
+          <div class="el-rule-item" {{ block.shopify_attributes }}>
+            <div class="el-rule-icon" aria-hidden="true">
+              {%- if block.settings.icon_image != blank -%}
+                {{ block.settings.icon_image | image_url: width: 60 | image_tag: loading: 'lazy', alt: block.settings.title }}
+              {%- elsif block.settings.custom_svg != blank -%}
+                {{ block.settings.custom_svg }}
+              {%- else -%}
+                <!-- Built-in Ellora Signature Hatch Icon -->
+                <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <line x1="3" y1="9" x2="9" y2="3" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"></line>
+                  <line x1="3" y1="16" x2="16" y2="3" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"></line>
+                  <line x1="3" y1="23" x2="23" y2="3" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"></line>
+                  <line x1="7" y1="27" x2="27" y2="7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"></line>
+                  <line x1="14" y1="27" x2="27" y2="14" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"></line>
+                  <line x1="21" y1="27" x2="27" y2="21" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"></line>
+                </svg>
+              {%- endif -%}
+            </div>
+            
+            <h3 class="el-rule-title">{{ block.settings.title }}</h3>
+            <p class="el-rule-desc">{{ block.settings.description }}</p>
+          </div>
+        {%- endfor -%}
+      </div>
+
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Product Rules Card",
+  "tag": "section",
+  "class": "section-ellora-about-rules",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Left Column Content"
+    },
+    {
+      "type": "html",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Simple product rules<br>before purchase."
+    },
+    {
+      "type": "textarea",
+      "id": "body",
+      "label": "Body Description",
+      "default": "Ellora should clearly show whether a product is sold by single piece, minimum pattern set, or as a full set. This avoids confusion for large tiles and multi-panel wallpapers."
+    },
+    {
+      "type": "text",
+      "id": "cta_text",
+      "label": "Link Text",
+      "default": "Explore Trade Services"
+    },
+    {
+      "type": "url",
+      "id": "cta_link",
+      "label": "Link Destination"
+    },
+    {
+      "type": "header",
+      "content": "Card Styling & Layout"
+    },
+    {
+      "type": "color",
+      "id": "sec_bg_color",
+      "label": "Outer Section Background",
+      "default": "#FAF9F6"
+    },
+    {
+      "type": "color",
+      "id": "card_bg_color",
+      "label": "Card Background Color",
+      "default": "#FAF7F2"
+    },
+    {
+      "type": "color",
+      "id": "card_border_color",
+      "label": "Card Border Color",
+      "default": "#EDE7DC"
+    },
+    {
+      "type": "color",
+      "id": "divider_color",
+      "label": "Center Divider Color",
+      "default": "#E4DDD0"
+    },
+    {
+      "type": "range",
+      "id": "card_radius",
+      "label": "Card Corner Radius (px)",
+      "min": 0,
+      "max": 24,
+      "step": 2,
+      "default": 4
+    },
+    {
+      "type": "header",
+      "content": "Typography & Colors"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading Color",
+      "default": "#8E6356"
+    },
+    {
+      "type": "color",
+      "id": "dark_color",
+      "label": "Title / Dark Color",
+      "default": "#1C1B19"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#524C45"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Hover Accent Color",
+      "default": "#9E533D"
+    },
+    {
+      "type": "range",
+      "id": "heading_font_size",
+      "label": "Heading Font Size (px)",
+      "min": 28,
+      "max": 56,
+      "step": 2,
+      "default": 44
+    },
+    {
+      "type": "range",
+      "id": "body_font_size",
+      "label": "Body Font Size (px)",
+      "min": 13,
+      "max": 18,
+      "step": 0.5,
+      "default": 14.5
+    },
+    {
+      "type": "header",
+      "content": "Padding"
+    },
+    {
+      "type": "range",
+      "id": "container_max_width",
+      "label": "Container Max Width (px)",
+      "min": 1100,
+      "max": 1920,
+      "step": 20,
+      "default": 1720
+    },
+    {
+      "type": "range",
+      "id": "padding_top_desktop",
+      "label": "Desktop Padding Top (px)",
+      "min": 20,
+      "max": 120,
+      "step": 4,
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_desktop",
+      "label": "Desktop Padding Bottom (px)",
+      "min": 20,
+      "max": 120,
+      "step": 4,
+      "default": 72
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "label": "Mobile Padding Top (px)",
+      "min": 10,
+      "max": 80,
+      "step": 2,
+      "default": 44
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "label": "Mobile Padding Bottom (px)",
+      "min": 10,
+      "max": 80,
+      "step": 2,
+      "default": 52
+    }
+  ],
+  "blocks": [
+    {
+      "type": "rule_item",
+      "name": "Product Rule Item",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "icon_image",
+          "label": "Custom Icon Image (Optional)"
+        },
+        {
+          "type": "html",
+          "id": "custom_svg",
+          "label": "Custom SVG Code (Optional)"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Rule Title",
+          "default": "Single Pieces"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Rule Description",
+          "default": "For standard tiles or wallpaper panels where customers can order the exact quantity they need."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product Rules Card",
+      "blocks": [
+        {
+          "type": "rule_item",
+          "settings": {
+            "title": "Single Pieces",
+            "description": "For standard tiles or wallpaper panels where customers can order the exact quantity they need."
+          }
+        },
+        {
+          "type": "rule_item",
+          "settings": {
+            "title": "Pattern Sets",
+            "description": "For paired wallpaper designs that need a minimum set, such as 4 or 8 pieces, so the pattern works correctly."
+          }
+        },
+        {
+          "type": "rule_item",
+          "settings": {
+            "title": "Mural Panel Sets",
+            "description": "For multi-wallpapers sold as complete mural sets. These cannot be purchased individually when the artwork depends on the full set."
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

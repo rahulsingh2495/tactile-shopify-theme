@@ -1,0 +1,250 @@
+{% comment %}
+  ==========================================================================
+  ELLORA SPACES — FAQ HERO SECTION
+  File: sections/ellora-faq-hero.liquid
+  Theme Editor Name: FAQ Hero
+  Features:
+  - Minimalist luxury header with kicker, Cormorant Garamond title, and subtitle
+  - Breadcrumb navigation
+  ==========================================================================
+{% endcomment %}
+
+<div class="el-section-wrapper el-sec-faq-hero" id="ellora-faq-hero-{{ section.id }}">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
+
+    #ellora-faq-hero-{{ section.id }} {
+      --el-fh-bg: {{ section.settings.bg_color | default: '#FFFFFF' }};
+      --el-fh-primary: {{ section.settings.primary_color | default: '#8E6356' }};
+      --el-fh-dark: {{ section.settings.text_dark | default: '#1C1B19' }};
+      --el-fh-muted: {{ section.settings.text_muted | default: '#68645F' }};
+      --el-fh-border: {{ section.settings.border_color | default: '#ECE7E1' }};
+      --el-fh-card-bg: {{ section.settings.card_bg | default: '#FAF8F5' }};
+
+      --el-fh-pt: {{ section.settings.padding_top | default: 60 }}px;
+      --el-fh-pb: {{ section.settings.padding_bottom | default: 40 }}px;
+
+      background-color: var(--el-fh-bg);
+      color: var(--el-fh-dark);
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      padding-top: var(--el-fh-pt);
+      padding-bottom: var(--el-fh-pb);
+      text-align: {{ section.settings.text_align | default: 'center' }};
+    }
+
+    #ellora-faq-hero-{{ section.id }} *,
+    #ellora-faq-hero-{{ section.id }} *::before,
+    #ellora-faq-hero-{{ section.id }} *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    #ellora-faq-hero-{{ section.id }} .el-fh-container {
+      width: 90%;
+      max-width: {{ section.settings.container_max_width | default: 1720 }}px;
+      margin: 0 auto;
+    }
+
+    /* Breadcrumbs */
+    #ellora-faq-hero-{{ section.id }} .el-fh-breadcrumbs {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12.5px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--el-fh-muted);
+      margin-bottom: 28px;
+      {% if section.settings.text_align == 'center' %}
+        justify-content: center;
+      {% endif %}
+    }
+
+    #ellora-faq-hero-{{ section.id }} .el-fh-breadcrumbs a {
+      color: var(--el-fh-muted);
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    #ellora-faq-hero-{{ section.id }} .el-fh-breadcrumbs a:hover {
+      color: var(--el-fh-primary);
+    }
+
+    #ellora-faq-hero-{{ section.id }} .el-fh-breadcrumbs span.sep {
+      opacity: 0.5;
+    }
+
+    #ellora-faq-hero-{{ section.id }} .el-fh-kicker {
+      font-size: 11.5px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      font-weight: 600;
+      color: var(--el-fh-primary);
+      margin-bottom: 12px;
+      display: inline-block;
+    }
+
+    #ellora-faq-hero-{{ section.id }} .el-fh-title {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 46px;
+      font-weight: 400;
+      color: var(--el-fh-dark);
+      line-height: 1.15;
+      letter-spacing: -0.01em;
+      margin-bottom: 16px;
+    }
+
+    #ellora-faq-hero-{{ section.id }} .el-fh-desc {
+      font-size: 15.5px;
+      color: var(--el-fh-muted);
+      max-width: 620px;
+      margin: 0 auto;
+      line-height: 1.65;
+    }
+
+    @media (max-width: 768px) {
+      #ellora-faq-hero-{{ section.id }} .el-fh-title {
+        font-size: 34px;
+      }
+      #ellora-faq-hero-{{ section.id }} .el-fh-desc {
+        font-size: 14.5px;
+      }
+    }
+  </style>
+
+  <div class="el-fh-container">
+    {%- if section.settings.show_breadcrumbs -%}
+      <div class="el-fh-breadcrumbs">
+        <a href="{{ routes.root_url }}">Home</a>
+        <span class="sep">/</span>
+        <span>Frequently Asked Questions</span>
+      </div>
+    {%- endif -%}
+
+    {%- if section.settings.kicker != blank -%}
+      <span class="el-fh-kicker">{{ section.settings.kicker }}</span>
+    {%- endif -%}
+
+    <h1 class="el-fh-title">{{ section.settings.title | default: 'Frequently Asked Questions' }}</h1>
+
+    {%- if section.settings.desc != blank -%}
+      <p class="el-fh-desc">
+        {{ section.settings.desc }}
+      </p>
+    {%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "FAQ Hero",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "kicker",
+      "label": "Kicker Subtitle",
+      "default": "HELP & FREQUENTLY ASKED QUESTIONS"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Frequently Asked Questions"
+    },
+    {
+      "type": "textarea",
+      "id": "desc",
+      "label": "Description",
+      "default": "Find clear guidance regarding stone characteristics, batch variation, sample kits, and pallet delivery."
+    },
+    {
+      "type": "select",
+      "id": "text_align",
+      "label": "Header Alignment",
+      "options": [
+        { "value": "center", "label": "Center" },
+        { "value": "left", "label": "Left" }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_breadcrumbs",
+      "label": "Show Breadcrumbs",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Colors & Layout"
+    },
+    {
+      "type": "range",
+      "id": "container_max_width",
+      "label": "Container Max Width",
+      "min": 1000,
+      "max": 1800,
+      "step": 20,
+      "unit": "px",
+      "default": 1720
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "primary_color",
+      "label": "Primary Accent Color",
+      "default": "#8E6356"
+    },
+    {
+      "type": "color",
+      "id": "text_dark",
+      "label": "Dark Text Color",
+      "default": "#1C1B19"
+    },
+    {
+      "type": "color",
+      "id": "text_muted",
+      "label": "Muted Text Color",
+      "default": "#68645F"
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "Border Color",
+      "default": "#ECE7E1"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding Top (Desktop)",
+      "min": 0,
+      "max": 140,
+      "step": 2,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding Bottom (Desktop)",
+      "min": 0,
+      "max": 140,
+      "step": 2,
+      "unit": "px",
+      "default": 40
+    }
+  ],
+  "presets": [
+    {
+      "name": "FAQ Hero"
+    }
+  ]
+}
+{% endschema %}

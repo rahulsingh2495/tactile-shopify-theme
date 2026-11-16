@@ -1,0 +1,523 @@
+{% comment %}
+  ==========================================================================
+  ELLORA SPACES — NEWSLETTER PAGE SECTION
+  File: sections/ellora-newsletter-page.liquid
+  Theme Editor Name: Newsletter Page
+  Features:
+  - Editorial newsletter signup page with Cormorant Garamond typography
+  - Native Shopify customer newsletter form with interest tags
+  - 3 subscriber perks cards (Essays, Quarry Releases, Zero Spam)
+  - Breadcrumb navigation
+  - Confirmation alert upon successful signup
+  ==========================================================================
+{% endcomment %}
+
+<div class="el-section-wrapper el-sec-newsletter-page" id="ellora-newsletter-{{ section.id }}">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
+
+    #ellora-newsletter-{{ section.id }} {
+      --el-nl-bg: {{ section.settings.bg_color | default: '#FAF8F5' }};
+      --el-nl-primary: {{ section.settings.primary_color | default: '#8E6356' }};
+      --el-nl-primary-hover: {{ section.settings.primary_hover | default: '#734E43' }};
+      --el-nl-dark: {{ section.settings.text_dark | default: '#1C1B19' }};
+      --el-nl-muted: {{ section.settings.text_muted | default: '#68645F' }};
+      --el-nl-border: {{ section.settings.border_color | default: '#ECE7E1' }};
+      --el-nl-card: {{ section.settings.card_bg | default: '#FFFFFF' }};
+
+      --el-nl-pt: {{ section.settings.padding_top | default: 70 }}px;
+      --el-nl-pb: {{ section.settings.padding_bottom | default: 100 }}px;
+
+      background-color: var(--el-nl-bg);
+      color: var(--el-nl-dark);
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      padding-top: var(--el-nl-pt);
+      padding-bottom: var(--el-nl-pb);
+    }
+
+    #ellora-newsletter-{{ section.id }} *,
+    #ellora-newsletter-{{ section.id }} *::before,
+    #ellora-newsletter-{{ section.id }} *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    #ellora-newsletter-{{ section.id }} .el-nl-container {
+      width: 90%;
+      max-width: {{ section.settings.container_max_width | default: 840 }}px;
+      margin: 0 auto;
+    }
+
+    /* Breadcrumbs */
+    #ellora-newsletter-{{ section.id }} .el-nl-breadcrumbs {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12.5px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--el-nl-muted);
+      margin-bottom: 32px;
+      justify-content: center;
+    }
+
+    #ellora-newsletter-{{ section.id }} .el-nl-breadcrumbs a {
+      color: var(--el-nl-muted);
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    #ellora-newsletter-{{ section.id }} .el-nl-breadcrumbs a:hover {
+      color: var(--el-nl-primary);
+    }
+
+    #ellora-newsletter-{{ section.id }} .el-nl-breadcrumbs span.sep {
+      opacity: 0.5;
+    }
+
+    /* Main Box */
+    #ellora-newsletter-{{ section.id }} .el-nl-card {
+      background: var(--el-nl-card);
+      border: 1px solid var(--el-nl-border);
+      border-radius: 2px;
+      padding: 56px 48px;
+      text-align: center;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
+      margin-bottom: 48px;
+    }
+
+    #ellora-newsletter-{{ section.id }} .el-nl-kicker {
+      font-size: 11.5px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      font-weight: 600;
+      color: var(--el-nl-primary);
+      margin-bottom: 12px;
+      display: block;
+    }
+
+    #ellora-newsletter-{{ section.id }} .el-nl-title {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 42px;
+      font-weight: 400;
+      color: var(--el-nl-dark);
+      line-height: 1.15;
+      letter-spacing: -0.01em;
+      margin-bottom: 16px;
+    }
+
+    #ellora-newsletter-{{ section.id }} .el-nl-desc {
+      font-size: 15.5px;
+      color: var(--el-nl-muted);
+      line-height: 1.7;
+      max-width: 580px;
+      margin: 0 auto 36px auto;
+    }
+
+    /* Form */
+    #ellora-newsletter-{{ section.id }} .el-nl-form {
+      max-width: 540px;
+      margin: 0 auto;
+      text-align: left;
+    }
+
+    #ellora-newsletter-{{ section.id }} .el-nl-grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+
+    #ellora-newsletter-{{ section.id }} .el-nl-input {
+      width: 100%;
+      background: var(--el-nl-bg);
+      border: 1px solid var(--el-nl-border);
+      border-radius: 2px;
+      padding: 13px 16px;
+      font-family: inherit;
+      font-size: 14px;
+      color: var(--el-nl-dark);
+      transition: border-color 0.2s, background 0.2s;
+    }
+
+    #ellora-newsletter-{{ section.id }} .el-nl-input:focus {
+      outline: none;
+      border-color: var(--el-nl-primary);
+      background: #FFFFFF;
+    }
+
+    #ellora-newsletter-{{ section.id }} .el-nl-interests-title {
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-weight: 600;
+      color: var(--el-nl-dark);
+      margin: 20px 0 12px 0;
+    }
+
+    #ellora-newsletter-{{ section.id }} .el-nl-checkboxes {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px 16px;
+      margin-bottom: 24px;
+    }
+
+    #ellora-newsletter-{{ section.id }} .el-nl-checkbox-label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      color: var(--el-nl-muted);
+      cursor: pointer;
+    }
+
+    #ellora-newsletter-{{ section.id }} .el-nl-checkbox-label input {
+      accent-color: var(--el-nl-primary);
+      width: 15px;
+      height: 15px;
+    }
+
+    #ellora-newsletter-{{ section.id }} .el-nl-submit-btn {
+      width: 100%;
+      padding: 16px 28px;
+      background: var(--el-nl-primary);
+      color: #FFFFFF;
+      border: none;
+      border-radius: 2px;
+      font-family: inherit;
+      font-size: 13.5px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background 0.2s ease;
+    }
+
+    #ellora-newsletter-{{ section.id }} .el-nl-submit-btn:hover {
+      background: var(--el-nl-primary-hover);
+    }
+
+    #ellora-newsletter-{{ section.id }} .el-nl-disclaimer {
+      font-size: 12px;
+      color: var(--el-nl-muted);
+      margin-top: 14px;
+      text-align: center;
+    }
+
+    /* Alerts */
+    #ellora-newsletter-{{ section.id }} .el-nl-success-box {
+      background: #F4F8F3;
+      border: 1px solid #C4DFC1;
+      color: #2F6F27;
+      padding: 20px;
+      border-radius: 2px;
+      font-size: 14.5px;
+      line-height: 1.6;
+    }
+
+    /* Perks Grid */
+    #ellora-newsletter-{{ section.id }} .el-nl-perks-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    #ellora-newsletter-{{ section.id }} .el-nl-perk-card {
+      background: var(--el-nl-card);
+      border: 1px solid var(--el-nl-border);
+      border-radius: 2px;
+      padding: 28px 24px;
+      text-align: center;
+    }
+
+    #ellora-newsletter-{{ section.id }} .el-nl-perk-icon {
+      width: 44px;
+      height: 44px;
+      margin: 0 auto 16px auto;
+      border-radius: 50%;
+      background: var(--el-nl-bg);
+      border: 1px solid var(--el-nl-border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #ellora-newsletter-{{ section.id }} .el-nl-perk-icon svg {
+      width: 20px;
+      height: 20px;
+      stroke: var(--el-nl-primary);
+    }
+
+    #ellora-newsletter-{{ section.id }} .el-nl-perk-title {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 20px;
+      font-weight: 500;
+      color: var(--el-nl-dark);
+      margin-bottom: 8px;
+    }
+
+    #ellora-newsletter-{{ section.id }} .el-nl-perk-desc {
+      font-size: 13px;
+      color: var(--el-nl-muted);
+      line-height: 1.6;
+    }
+
+    @media (max-width: 768px) {
+      #ellora-newsletter-{{ section.id }} .el-nl-card {
+        padding: 36px 20px;
+      }
+      #ellora-newsletter-{{ section.id }} .el-nl-title {
+        font-size: 32px;
+      }
+      #ellora-newsletter-{{ section.id }} .el-nl-grid-2,
+      #ellora-newsletter-{{ section.id }} .el-nl-checkboxes,
+      #ellora-newsletter-{{ section.id }} .el-nl-perks-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+
+  <div class="el-nl-container">
+    {%- if section.settings.show_breadcrumbs -%}
+      <div class="el-nl-breadcrumbs">
+        <a href="{{ routes.root_url }}">Home</a>
+        <span class="sep">/</span>
+        <span>The Ellora Archive</span>
+      </div>
+    {%- endif -%}
+
+    <!-- Main Card -->
+    <div class="el-nl-card">
+      {%- if section.settings.kicker != blank -%}
+        <span class="el-nl-kicker">{{ section.settings.kicker }}</span>
+      {%- endif -%}
+      
+      <h1 class="el-nl-title">{{ section.settings.title | default: 'Notes on Materials, Interiors & Atmosphere' }}</h1>
+      
+      <p class="el-nl-desc">
+        {{ section.settings.desc | default: 'Join our circle of architects, interior curators, and design enthusiasts. Receive occasional essays on material origin, newly opened quarry blocks, and trade previews.' }}
+      </p>
+
+      {%- form 'customer', class: 'el-nl-form' -%}
+        <input type="hidden" name="contact[tags]" value="newsletter, ellora_archive">
+
+        {%- if form.posted_successfully? -%}
+          <div class="el-nl-success-box">
+            Thank you for subscribing to The Ellora Archive. Please check your inbox shortly for our introductory welcome essay and material collection preview.
+          </div>
+        {%- else -%}
+          {%- if form.errors -%}
+            <div style="color: #A03224; margin-bottom: 16px; font-size: 13.5px;">
+              {{ form.errors | default_errors }}
+            </div>
+          {%- endif -%}
+
+          <div class="el-nl-grid-2">
+            <input type="text" name="contact[first_name]" class="el-nl-input" placeholder="Your First Name" required>
+            <input type="email" name="contact[email]" class="el-nl-input" placeholder="Your Email Address" required>
+          </div>
+
+          {%- if section.settings.show_interest_tags -%}
+            <div class="el-nl-interests-title">Areas of Interest (Optional)</div>
+            <div class="el-nl-checkboxes">
+              <label class="el-nl-checkbox-label">
+                <input type="checkbox" name="contact[interest_stone]" value="yes" checked>
+                <span>Natural Stone &amp; Travertine</span>
+              </label>
+              <label class="el-nl-checkbox-label">
+                <input type="checkbox" name="contact[interest_tiles]" value="yes" checked>
+                <span>Fluted &amp; Textured Tiles</span>
+              </label>
+              <label class="el-nl-checkbox-label">
+                <input type="checkbox" name="contact[interest_murals]" value="yes">
+                <span>Wall Murals &amp; Wallpaper</span>
+              </label>
+              <label class="el-nl-checkbox-label">
+                <input type="checkbox" name="contact[interest_trade]" value="yes">
+                <span>Architectural &amp; Trade News</span>
+              </label>
+            </div>
+          {%- endif -%}
+
+          <button type="submit" class="el-nl-submit-btn">
+            {{ section.settings.btn_text | default: 'Join The Archive' }} &rarr;
+          </button>
+
+          <p class="el-nl-disclaimer">
+            {{ section.settings.disclaimer | default: 'We respect your inbox. You may unsubscribe with a single click at any time.' }}
+          </p>
+        {%- endif -%}
+      {%- endform -%}
+    </div>
+
+    <!-- Subscriber Perks -->
+    {%- if section.settings.show_perks -%}
+      <div class="el-nl-perks-grid">
+        <div class="el-nl-perk-card">
+          <div class="el-nl-perk-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+          </div>
+          <h3 class="el-nl-perk-title">Curated Essays</h3>
+          <p class="el-nl-perk-desc">Occasional deep dives on geological stone formation, artisan extraction, and enduring interior composition.</p>
+        </div>
+
+        <div class="el-nl-perk-card">
+          <div class="el-nl-perk-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
+          </div>
+          <h3 class="el-nl-perk-title">Quarry Batch Alerts</h3>
+          <p class="el-nl-perk-desc">Early notifications when rare marble blocks or limited-run textured pattern tiles arrive in our distribution warehouse.</p>
+        </div>
+
+        <div class="el-nl-perk-card">
+          <div class="el-nl-perk-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+          </div>
+          <h3 class="el-nl-perk-title">Thoughtful Frequency</h3>
+          <p class="el-nl-perk-desc">Sent at most twice per month. No repetitive sales emails—strictly considered, meaningful design discourse.</p>
+        </div>
+      </div>
+    {%- endif -%}
+
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Newsletter Page",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "kicker",
+      "label": "Kicker Subtitle",
+      "default": "THE ELLORA ARCHIVE & ESSAYS"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Notes on Materials, Interiors & Atmosphere"
+    },
+    {
+      "type": "textarea",
+      "id": "desc",
+      "label": "Description",
+      "default": "Join our circle of architects, interior curators, and design enthusiasts. Receive occasional essays on material origin, newly opened quarry blocks, and trade previews."
+    },
+    {
+      "type": "text",
+      "id": "btn_text",
+      "label": "Submit Button Text",
+      "default": "Join The Archive"
+    },
+    {
+      "type": "text",
+      "id": "disclaimer",
+      "label": "Disclaimer Text",
+      "default": "We respect your inbox. You may unsubscribe with a single click at any time."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_breadcrumbs",
+      "label": "Show Breadcrumbs",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_interest_tags",
+      "label": "Show Interest Checkboxes",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_perks",
+      "label": "Show Subscriber Perks Cards",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Colors & Layout"
+    },
+    {
+      "type": "range",
+      "id": "container_max_width",
+      "label": "Container Max Width",
+      "min": 700,
+      "max": 1200,
+      "step": 20,
+      "unit": "px",
+      "default": 840
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#FAF8F5"
+    },
+    {
+      "type": "color",
+      "id": "card_bg",
+      "label": "Card Background",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "primary_color",
+      "label": "Primary Accent Color",
+      "default": "#8E6356"
+    },
+    {
+      "type": "color",
+      "id": "primary_hover",
+      "label": "Primary Accent Hover",
+      "default": "#734E43"
+    },
+    {
+      "type": "color",
+      "id": "text_dark",
+      "label": "Dark Text Color",
+      "default": "#1C1B19"
+    },
+    {
+      "type": "color",
+      "id": "text_muted",
+      "label": "Muted Text Color",
+      "default": "#68645F"
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "Border Color",
+      "default": "#ECE7E1"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding Top (Desktop)",
+      "min": 0,
+      "max": 140,
+      "step": 2,
+      "unit": "px",
+      "default": 70
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding Bottom (Desktop)",
+      "min": 0,
+      "max": 140,
+      "step": 2,
+      "unit": "px",
+      "default": 100
+    }
+  ],
+  "presets": [
+    {
+      "name": "Newsletter Page"
+    }
+  ]
+}
+{% endschema %}

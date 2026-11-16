@@ -1,0 +1,587 @@
+{% comment %}
+  ==========================================================================
+  ELLORA SPACES — SECTION 4: FIND YOUR SURFACE (CATEGORY GRID)
+  File: sections/ellora-find-your-surface.liquid
+  Pixel-perfect implementation matching the original editorial UI (Image 1)
+  Features:
+  - Floating white badge pills with Cormorant title & 'Shop Now ↗'
+  - Configurable grid gap (horizontal & vertical)
+  - True 3-column asymmetric layout with guaranteed row gaps
+  - Fully customizable in Shopify Theme Customizer
+  ==========================================================================
+{% endcomment %}
+
+<div class="el-section-wrapper el-sec-surfaces-wrapper" id="ellora-surfaces-{{ section.id }}">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
+
+    #ellora-surfaces-{{ section.id }} {
+      --el-bg-main: {{ section.settings.bg_color | default: '#FAF9F6' }};
+      --el-dark: #1C1B19;
+      --el-title-accent: {{ section.settings.title_accent_color | default: '#8E6356' }};
+      --el-primary: #B86B53;
+      --el-badge-bg: {{ section.settings.badge_bg | default: '#FFFFFF' }};
+      --el-badge-title: {{ section.settings.badge_title_color | default: '#8E6356' }};
+      --el-badge-action: {{ section.settings.badge_action_color | default: '#2D2A28' }};
+      --el-card-radius: {{ section.settings.card_radius | default: 12 }}px;
+      --el-badge-radius: {{ section.settings.badge_radius | default: 6 }}px;
+      --el-font-serif: 'Cormorant Garamond', Georgia, serif;
+      --el-font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+
+      background-color: var(--el-bg-main);
+      padding-top: {{ section.settings.padding_top | default: 50 }}px;
+      padding-bottom: {{ section.settings.padding_bottom | default: 50 }}px;
+      width: 100%;
+      font-family: var(--el-font-sans);
+      box-sizing: border-box;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    #ellora-surfaces-{{ section.id }} *,
+    #ellora-surfaces-{{ section.id }} *::before,
+    #ellora-surfaces-{{ section.id }} *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    #ellora-surfaces-{{ section.id }} .el-sec-surfaces-container {
+      width: 90%;
+      max-width: 1720px;
+      margin: 0 auto;
+    }
+
+    #ellora-surfaces-{{ section.id }} .el-section-header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      margin-bottom: 34px;
+    }
+
+    #ellora-surfaces-{{ section.id }} .el-section-title {
+      font-family: var(--el-font-serif);
+      font-size: {{ section.settings.heading_size | default: 48 }}px;
+      line-height: 1.15;
+      font-weight: 400;
+      letter-spacing: -0.01em;
+    }
+
+    #ellora-surfaces-{{ section.id }} .el-title-dark {
+      color: var(--el-dark);
+    }
+
+    #ellora-surfaces-{{ section.id }} .el-title-accent {
+      color: var(--el-title-accent);
+    }
+
+    #ellora-surfaces-{{ section.id }} .el-link-arrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13.5px;
+      font-weight: 500;
+      color: var(--el-dark);
+      letter-spacing: 0.02em;
+      text-decoration: none;
+      transition: color 0.25s ease;
+    }
+
+    #ellora-surfaces-{{ section.id }} .el-link-arrow svg {
+      transition: transform 0.25s ease;
+    }
+
+    #ellora-surfaces-{{ section.id }} .el-link-arrow:hover {
+      color: var(--el-primary);
+    }
+
+    #ellora-surfaces-{{ section.id }} .el-link-arrow:hover svg {
+      transform: translate(3px, -3px);
+    }
+
+    /* -----------------------------------------------------------------------
+       GRID LAYOUT: 3 Columns with guaranteed horizontal & vertical spacing
+       ----------------------------------------------------------------------- */
+    #ellora-surfaces-{{ section.id }} .el-surfaces-grid {
+      display: grid !important;
+      grid-template-columns: 1.12fr 1fr 1fr !important;
+      grid-template-rows: 1fr 1fr !important;
+      column-gap: {{ section.settings.grid_gap_x | default: 24 }}px !important;
+      row-gap: {{ section.settings.grid_gap_y | default: 24 }}px !important;
+      align-items: stretch !important;
+    }
+
+    #ellora-surfaces-{{ section.id }} .el-surface-card {
+      position: relative;
+      border-radius: var(--el-card-radius);
+      overflow: hidden;
+      background-color: #EFECE6;
+      display: flex;
+      flex-direction: column;
+      text-decoration: none;
+      width: 100%;
+      height: 100%;
+      min-height: 270px;
+      aspect-ratio: 16 / 10.6;
+      box-shadow: 0 4px 18px rgba(0, 0, 0, 0.04);
+      transition: box-shadow 0.35s ease;
+    }
+
+    #ellora-surfaces-{{ section.id }} .el-surface-card.el-surface-tall {
+      grid-column: 1;
+      grid-row: 1 / span 2;
+      aspect-ratio: auto;
+      height: 100%;
+      min-height: 564px;
+    }
+
+    #ellora-surfaces-{{ section.id }} .el-surface-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+      display: block;
+    }
+
+    #ellora-surfaces-{{ section.id }} .el-surface-card:hover img {
+      transform: scale(1.04);
+    }
+
+    /* -----------------------------------------------------------------------
+       FLOATING WHITE BADGE PILL (Pixel-Perfect from Image 1)
+       ----------------------------------------------------------------------- */
+    #ellora-surfaces-{{ section.id }} .el-surface-badge {
+      position: absolute;
+      bottom: {{ section.settings.badge_inset | default: 18 }}px;
+      left: {{ section.settings.badge_inset | default: 18 }}px;
+      right: {{ section.settings.badge_inset | default: 18 }}px;
+      background: var(--el-badge-bg);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      padding: 13px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-radius: var(--el-badge-radius);
+      box-shadow: 0 4px 18px rgba(0, 0, 0, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.6);
+      z-index: 3;
+      transition: background-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
+    }
+
+    #ellora-surfaces-{{ section.id }} .el-surface-card:hover .el-surface-badge {
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+      transform: translateY(-2px);
+    }
+
+    #ellora-surfaces-{{ section.id }} .el-surface-name {
+      font-family: var(--el-font-serif);
+      font-size: 20px;
+      font-weight: 400;
+      color: var(--el-badge-title);
+      letter-spacing: -0.01em;
+      line-height: 1.15;
+    }
+
+    #ellora-surfaces-{{ section.id }} .el-surface-action {
+      font-family: var(--el-font-sans);
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--el-badge-action);
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      letter-spacing: 0.01em;
+      transition: color 0.25s ease;
+    }
+
+    #ellora-surfaces-{{ section.id }} .el-surface-action svg {
+      width: 11px;
+      height: 11px;
+      stroke: currentColor;
+      stroke-width: 2.2;
+      transition: transform 0.25s ease;
+    }
+
+    #ellora-surfaces-{{ section.id }} .el-surface-card:hover .el-surface-action {
+      color: var(--el-primary);
+    }
+
+    #ellora-surfaces-{{ section.id }} .el-surface-card:hover .el-surface-action svg {
+      transform: translate(2px, -2px);
+    }
+
+    /* -----------------------------------------------------------------------
+       RESPONSIVE BREAKPOINTS
+       ----------------------------------------------------------------------- */
+    @media (max-width: 1024px) {
+      #ellora-surfaces-{{ section.id }} .el-surfaces-grid {
+        grid-template-columns: 1fr 1fr !important;
+        grid-template-rows: auto !important;
+      }
+      #ellora-surfaces-{{ section.id }} .el-surface-card.el-surface-tall {
+        grid-column: 1 / span 2;
+        grid-row: auto;
+        min-height: 420px;
+        aspect-ratio: 16 / 10;
+      }
+    }
+
+    @media (max-width: 640px) {
+      #ellora-surfaces-{{ section.id }} .el-section-title {
+        font-size: 34px;
+      }
+      #ellora-surfaces-{{ section.id }} .el-surfaces-grid {
+        grid-template-columns: 1fr !important;
+        grid-template-rows: auto !important;
+        gap: 16px !important;
+        row-gap: 16px !important;
+      }
+      #ellora-surfaces-{{ section.id }} .el-surface-card.el-surface-tall {
+        grid-column: 1;
+        min-height: 380px;
+        aspect-ratio: 4 / 3.8;
+      }
+      #ellora-surfaces-{{ section.id }} .el-surface-badge {
+        padding: 11px 16px;
+        bottom: 14px;
+        left: 14px;
+        right: 14px;
+      }
+      #ellora-surfaces-{{ section.id }} .el-surface-name {
+        font-size: 18px;
+      }
+    }
+  </style>
+
+  <div class="el-sec-surfaces-container">
+    <div class="el-section-header">
+      <h2 class="el-section-title">
+        <span class="el-title-dark">{{ section.settings.title_dark }} </span>
+        <span class="el-title-accent">{{ section.settings.title_accent }}</span>
+      </h2>
+      {%- if section.settings.show_view_all and section.settings.view_all_label != blank -%}
+        <a href="{{ section.settings.view_all_link | default: '/collections/all' }}" class="el-link-arrow">
+          <span>{{ section.settings.view_all_label }}</span>
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="7" y1="17" x2="17" y2="7"></line>
+            <polyline points="7 7 17 7 17 17"></polyline>
+          </svg>
+        </a>
+      {%- endif -%}
+    </div>
+
+    <div class="el-surfaces-grid">
+      <!-- 1. Tall Featured Card (Left Column) -->
+      <a href="{{ section.settings.tall_link | default: '/collections/all?sort_by=created-descending' }}" class="el-surface-card el-surface-tall">
+        {%- if section.settings.tall_image != blank -%}
+          {{ section.settings.tall_image | image_url: width: 1400 | image_tag: loading: 'lazy', alt: section.settings.tall_title }}
+        {%- else -%}
+          <img src="{{ section.settings.fallback_tall_image | default: 'https://cdn.shopify.com/s/files/1/0990/3685/6647/files/sec4_surface_01_tall_arrivals.jpg?v=1789453290' }}" alt="{{ section.settings.tall_title }}" loading="lazy">
+        {%- endif -%}
+        <div class="el-surface-badge">
+          <span class="el-surface-name">{{ section.settings.tall_title | default: 'New Arrivals' }}</span>
+          <span class="el-surface-action">
+            {{ section.settings.tall_btn_label | default: 'Shop Now' }}
+            <svg viewBox="0 0 24 24" fill="none"><path d="M7 17L17 7M17 7H7M17 7V17"></path></svg>
+          </span>
+        </div>
+      </a>
+
+      <!-- 4 Category Cards (Column 2 & Column 3 Stacked) -->
+      {%- for block in section.blocks -%}
+        <a href="{{ block.settings.link | default: '/collections/all' }}" class="el-surface-card" {{ block.shopify_attributes }}>
+          {%- if block.settings.image != blank -%}
+            {{ block.settings.image | image_url: width: 900 | image_tag: loading: 'lazy', alt: block.settings.title }}
+          {%- elsif block.settings.fallback_image != blank -%}
+            <img src="{{ block.settings.fallback_image }}" alt="{{ block.settings.title }}" loading="lazy">
+          {%- else -%}
+            <img src="https://cdn.shopify.com/s/files/1/0990/3685/6647/files/sec4_surface_02_bestsellers.jpg?v=1789453291" alt="{{ block.settings.title }}" loading="lazy">
+          {%- endif -%}
+          <div class="el-surface-badge">
+            <span class="el-surface-name">{{ block.settings.title }}</span>
+            <span class="el-surface-action">
+              {{ block.settings.action_label | default: 'Shop Now' }}
+              <svg viewBox="0 0 24 24" fill="none"><path d="M7 17L17 7M17 7H7M17 7V17"></path></svg>
+            </span>
+          </div>
+        </a>
+      {%- endfor -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Ellora Find Your Surface",
+  "tag": "section",
+  "class": "section-ellora-surfaces",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Section Heading"
+    },
+    {
+      "type": "text",
+      "id": "title_dark",
+      "label": "Heading Part 1 (Dark)",
+      "default": "Find Your"
+    },
+    {
+      "type": "text",
+      "id": "title_accent",
+      "label": "Heading Part 2 (Terracotta)",
+      "default": "Surface"
+    },
+    {
+      "type": "color",
+      "id": "title_accent_color",
+      "label": "Heading Accent Color",
+      "default": "#8E6356"
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "min": 32,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "label": "Heading Font Size",
+      "default": 48
+    },
+    {
+      "type": "checkbox",
+      "id": "show_view_all",
+      "label": "Show 'View All' Link on Right",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "view_all_label",
+      "label": "'View All' Label",
+      "default": "View All"
+    },
+    {
+      "type": "url",
+      "id": "view_all_link",
+      "label": "'View All' Link"
+    },
+    {
+      "type": "header",
+      "content": "Grid Spacing & Gaps (Manage Space Between Cards)"
+    },
+    {
+      "type": "range",
+      "id": "grid_gap_x",
+      "min": 8,
+      "max": 48,
+      "step": 2,
+      "unit": "px",
+      "label": "Horizontal Space Between Columns",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "grid_gap_y",
+      "min": 8,
+      "max": 48,
+      "step": 2,
+      "unit": "px",
+      "label": "Vertical Space Between Rows",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "card_radius",
+      "min": 0,
+      "max": 24,
+      "step": 2,
+      "unit": "px",
+      "label": "Card Corner Radius",
+      "default": 12
+    },
+    {
+      "type": "header",
+      "content": "Floating White Badge Settings"
+    },
+    {
+      "type": "color",
+      "id": "badge_bg",
+      "label": "Badge Background Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "badge_title_color",
+      "label": "Badge Title Color",
+      "default": "#8E6356"
+    },
+    {
+      "type": "color",
+      "id": "badge_action_color",
+      "label": "Badge 'Shop Now' Text Color",
+      "default": "#2D2A28"
+    },
+    {
+      "type": "range",
+      "id": "badge_radius",
+      "min": 0,
+      "max": 16,
+      "step": 1,
+      "unit": "px",
+      "label": "Badge Corner Radius",
+      "default": 6
+    },
+    {
+      "type": "range",
+      "id": "badge_inset",
+      "min": 10,
+      "max": 32,
+      "step": 2,
+      "unit": "px",
+      "label": "Badge Margin From Card Edge",
+      "default": 18
+    },
+    {
+      "type": "header",
+      "content": "Card 1: Tall Featured Card (Left)"
+    },
+    {
+      "type": "image_picker",
+      "id": "tall_image",
+      "label": "Tall Card Image"
+    },
+    {
+      "type": "text",
+      "id": "fallback_tall_image",
+      "label": "Fallback CDN Photo URL",
+      "default": "https://cdn.shopify.com/s/files/1/0990/3685/6647/files/sec4_surface_01_tall_arrivals.jpg?v=1789453290"
+    },
+    {
+      "type": "text",
+      "id": "tall_title",
+      "label": "Tall Card Title",
+      "default": "New Arrivals"
+    },
+    {
+      "type": "text",
+      "id": "tall_btn_label",
+      "label": "Tall Card Button Text",
+      "default": "Shop Now"
+    },
+    {
+      "type": "url",
+      "id": "tall_link",
+      "label": "Tall Card Link"
+    },
+    {
+      "type": "header",
+      "content": "Section Padding"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Section Background",
+      "default": "#FAF9F6"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 120,
+      "step": 5,
+      "unit": "px",
+      "label": "Top Padding",
+      "default": 50
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 120,
+      "step": 5,
+      "unit": "px",
+      "label": "Bottom Padding",
+      "default": 50
+    }
+  ],
+  "blocks": [
+    {
+      "type": "category_card",
+      "name": "Surface Category Card",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Card Photo"
+        },
+        {
+          "type": "text",
+          "id": "fallback_image",
+          "label": "Fallback CDN Photo URL"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Category Title",
+          "default": "Best Sellers"
+        },
+        {
+          "type": "text",
+          "id": "action_label",
+          "label": "Action Text",
+          "default": "Shop Now"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Collection Link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Ellora Find Your Surface",
+      "blocks": [
+        {
+          "type": "category_card",
+          "settings": {
+            "title": "Best Sellers",
+            "action_label": "Shop Now",
+            "fallback_image": "https://cdn.shopify.com/s/files/1/0990/3685/6647/files/sec4_surface_02_bestsellers.jpg?v=1789453291",
+            "link": "/collections/all?sort_by=best-selling"
+          }
+        },
+        {
+          "type": "category_card",
+          "settings": {
+            "title": "Marble & Stone Look",
+            "action_label": "Shop Now",
+            "fallback_image": "https://cdn.shopify.com/s/files/1/0990/3685/6647/files/sec4_surface_03_marble_stone.jpg?v=1789453290",
+            "link": "/collections/all"
+          }
+        },
+        {
+          "type": "category_card",
+          "settings": {
+            "title": "Shop By Room",
+            "action_label": "Shop Now",
+            "fallback_image": "https://cdn.shopify.com/s/files/1/0990/3685/6647/files/sec4_surface_04_checkered.jpg?v=1789453290",
+            "link": "/collections/all"
+          }
+        },
+        {
+          "type": "category_card",
+          "settings": {
+            "title": "Warm Neutrals",
+            "action_label": "Shop Now",
+            "fallback_image": "https://cdn.shopify.com/s/files/1/0990/3685/6647/files/sec4_surface_05_warm_neutrals.jpg?v=1789453290",
+            "link": "/collections/all"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

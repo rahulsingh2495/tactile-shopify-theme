@@ -1,0 +1,330 @@
+{% comment %}
+  ==========================================================================
+  ELLORA SPACES — ABOUT PAGE SECTION 5: CURATED SURFACE GALLERY STRIP
+  File: sections/ellora-about-gallery.liquid
+  Fully customizable via Shopify Theme Customizer
+  ==========================================================================
+{% endcomment %}
+
+<div class="el-section-wrapper el-sec-about-gallery-wrapper" id="ellora-about-gallery-{{ section.id }}">
+  <style>
+    #ellora-about-gallery-{{ section.id }} {
+      --el-bg: {{ section.settings.bg_color | default: '#FAF9F6' }};
+
+      background-color: var(--el-bg);
+      padding-top: {{ section.settings.padding_top_desktop | default: 0 }}px;
+      padding-bottom: {{ section.settings.padding_bottom_desktop | default: 0 }}px;
+      width: 100%;
+      overflow: hidden;
+      box-sizing: border-box;
+    }
+
+    #ellora-about-gallery-{{ section.id }} *,
+    #ellora-about-gallery-{{ section.id }} *::before,
+    #ellora-about-gallery-{{ section.id }} *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    #ellora-about-gallery-{{ section.id }} .el-gallery-container {
+      {% if section.settings.full_width %}
+        width: 100%;
+        max-width: 100%;
+        padding: 0;
+      {% else %}
+        width: 90%;
+        max-width: {{ section.settings.container_max_width | default: 1720 }}px;
+        margin: 0 auto;
+      {% endif %}
+    }
+
+    #ellora-about-gallery-{{ section.id }} .el-gallery-grid {
+      display: grid;
+      grid-template-columns: repeat({{ section.blocks.size | at_least: 5 }}, 1fr);
+      gap: {{ section.settings.image_gap | default: 0 }}px;
+      width: 100%;
+    }
+
+    #ellora-about-gallery-{{ section.id }} .el-gallery-item {
+      position: relative;
+      overflow: hidden;
+      display: block;
+      height: {{ section.settings.image_height_desktop | default: 320 }}px;
+      background-color: #EBE6DF;
+      text-decoration: none;
+    }
+
+    #ellora-about-gallery-{{ section.id }} .el-gallery-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      display: block;
+      {% if section.settings.enable_hover_zoom %}
+        transition: transform 0.65s cubic-bezier(0.25, 1, 0.5, 1);
+      {% endif %}
+    }
+
+    {% if section.settings.enable_hover_zoom %}
+    #ellora-about-gallery-{{ section.id }} .el-gallery-item:hover .el-gallery-img {
+      transform: scale(1.04);
+    }
+    {% endif %}
+
+    #ellora-about-gallery-{{ section.id }} .el-gallery-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0);
+      transition: background 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #FFFFFF;
+      opacity: 0;
+    }
+
+    #ellora-about-gallery-{{ section.id }} .el-gallery-item:hover .el-gallery-overlay {
+      background: rgba(0, 0, 0, 0.15);
+      opacity: 1;
+    }
+
+    /* Tablet breakpoint */
+    @media (max-width: 1024px) {
+      #ellora-about-gallery-{{ section.id }} .el-gallery-grid {
+        grid-template-columns: repeat(5, minmax(180px, 1fr));
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        scrollbar-width: none;
+        -webkit-overflow-scrolling: touch;
+      }
+
+      #ellora-about-gallery-{{ section.id }} .el-gallery-grid::-webkit-scrollbar {
+        display: none;
+      }
+
+      #ellora-about-gallery-{{ section.id }} .el-gallery-item {
+        scroll-snap-align: start;
+        height: {{ section.settings.image_height_mobile | default: 240 }}px;
+      }
+    }
+
+    /* Mobile breakpoint */
+    @media (max-width: 640px) {
+      #ellora-about-gallery-{{ section.id }} .el-gallery-grid {
+        grid-template-columns: repeat(5, minmax(160px, 1fr));
+      }
+
+      #ellora-about-gallery-{{ section.id }} .el-gallery-item {
+        height: 220px;
+      }
+    }
+  </style>
+
+  <div class="el-gallery-container">
+    <div class="el-gallery-grid">
+      {%- for block in section.blocks -%}
+        <{% if block.settings.link != blank %}a href="{{ block.settings.link }}"{% else %}div{% endif %} 
+          class="el-gallery-item" 
+          {{ block.shopify_attributes }}>
+          
+          {%- if block.settings.image != blank -%}
+            {{ block.settings.image | image_url: width: 800 | image_tag: 
+              class: 'el-gallery-img',
+              loading: 'lazy',
+              alt: block.settings.alt_text | default: 'Ellora surface curated gallery' | escape
+            }}
+          {%- elsif block.settings.fallback_image != blank -%}
+            <img 
+              src="{{ block.settings.fallback_image | asset_url }}" 
+              alt="{{ block.settings.alt_text | default: 'Ellora surface texture' | escape }}" 
+              class="el-gallery-img"
+              loading="lazy"
+            >
+          {%- else -%}
+            {%- assign default_img_index = forloop.index | modulo: 5 -%}
+            {%- case default_img_index -%}
+              {%- when 1 -%}
+                <img src="{{ 'sec8_marquee_01_stone_vase.jpg' | asset_url }}" alt="Ellora stone bathroom vanity" class="el-gallery-img" loading="lazy">
+              {%- when 2 -%}
+                <img src="{{ 'sec8_marquee_02_terrace_tree.jpg' | asset_url }}" alt="Ellora terrace courtyard tree" class="el-gallery-img" loading="lazy">
+              {%- when 3 -%}
+                <img src="{{ 'sec8_marquee_03_historic_courtyard.jpg' | asset_url }}" alt="Ellora historic stone courtyard" class="el-gallery-img" loading="lazy">
+              {%- when 4 -%}
+                <img src="{{ 'sec8_marquee_04_sandstone_slabs.jpg' | asset_url }}" alt="Ellora sandstone patio slabs" class="el-gallery-img" loading="lazy">
+              {%- else -%}
+                <img src="{{ 'sec8_marquee_05_rustic_chair.jpg' | asset_url }}" alt="Ellora rustic stone wall" class="el-gallery-img" loading="lazy">
+            {%- endcase -%}
+          {%- endif -%}
+
+          {%- if block.settings.link != blank -%}
+            <div class="el-gallery-overlay" aria-hidden="true">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="7" y1="17" x2="17" y2="7"></line>
+                <polyline points="7 7 17 7 17 17"></polyline>
+              </svg>
+            </div>
+          {%- endif -%}
+
+        </{% if block.settings.link != blank %}a{% else %}div{% endif %}>
+      {%- endfor -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "About — 05 Gallery Strip",
+  "tag": "section",
+  "class": "section-ellora-about-gallery",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "full_width",
+      "label": "Full Width (Edge-to-Edge)",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "image_gap",
+      "label": "Gap Between Images (px)",
+      "min": 0,
+      "max": 24,
+      "step": 2,
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "image_height_desktop",
+      "label": "Desktop Image Height (px)",
+      "min": 200,
+      "max": 500,
+      "step": 10,
+      "default": 320
+    },
+    {
+      "type": "range",
+      "id": "image_height_mobile",
+      "label": "Mobile Image Height (px)",
+      "min": 160,
+      "max": 340,
+      "step": 10,
+      "default": 240
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_hover_zoom",
+      "label": "Enable Hover Zoom Effect",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Section Background Color",
+      "default": "#FAF9F6"
+    },
+    {
+      "type": "range",
+      "id": "container_max_width",
+      "label": "Container Max Width (px if not full width)",
+      "min": 1100,
+      "max": 1920,
+      "step": 20,
+      "default": 1720
+    },
+    {
+      "type": "range",
+      "id": "padding_top_desktop",
+      "label": "Desktop Padding Top (px)",
+      "min": 0,
+      "max": 80,
+      "step": 4,
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_desktop",
+      "label": "Desktop Padding Bottom (px)",
+      "min": 0,
+      "max": 80,
+      "step": 4,
+      "default": 0
+    }
+  ],
+  "blocks": [
+    {
+      "type": "gallery_image",
+      "name": "Gallery Image",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "fallback_image",
+          "label": "Asset Image Filename (Fallback)",
+          "info": "e.g. sec8_marquee_01_stone_vase.jpg"
+        },
+        {
+          "type": "text",
+          "id": "alt_text",
+          "label": "Alt Text",
+          "default": "Ellora surface texture"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link (Optional)"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "About — 05 Gallery Strip",
+      "blocks": [
+        {
+          "type": "gallery_image",
+          "settings": {
+            "fallback_image": "sec8_marquee_01_stone_vase.jpg",
+            "alt_text": "Stone bathroom vanity with ceramic vase"
+          }
+        },
+        {
+          "type": "gallery_image",
+          "settings": {
+            "fallback_image": "sec8_marquee_02_terrace_tree.jpg",
+            "alt_text": "Terrace courtyard tree and bench"
+          }
+        },
+        {
+          "type": "gallery_image",
+          "settings": {
+            "fallback_image": "sec8_marquee_03_historic_courtyard.jpg",
+            "alt_text": "Historic stone courtyard pathway"
+          }
+        },
+        {
+          "type": "gallery_image",
+          "settings": {
+            "fallback_image": "sec8_marquee_04_sandstone_slabs.jpg",
+            "alt_text": "Golden sandstone patio floor"
+          }
+        },
+        {
+          "type": "gallery_image",
+          "settings": {
+            "fallback_image": "sec8_marquee_05_rustic_chair.jpg",
+            "alt_text": "Rustic stone wall and garden chair"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

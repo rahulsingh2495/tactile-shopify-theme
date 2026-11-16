@@ -1,0 +1,391 @@
+{% comment %}
+  ==========================================================================
+  ELLORA SPACES — SECTION 10: STORIES, MOMENTS & MILESTONES (JOURNAL)
+  File: sections/ellora-journal.liquid
+  Fully customizable via Shopify Theme Customizer
+  Supports Shopify Blog feed or Custom Journal Blocks
+  ==========================================================================
+{% endcomment %}
+
+<div class="el-section-wrapper el-sec-journal-wrapper" id="ellora-journal-{{ section.id }}">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
+
+    #ellora-journal-{{ section.id }} {
+      --el-bg-main: {{ section.settings.bg_color | default: '#FAF9F6' }};
+      --el-dark: #1C1B19;
+      --el-muted: #736E67;
+      --el-primary: #B86B53;
+      --el-border: #E8E3DC;
+      --el-font-serif: 'Cormorant Garamond', Georgia, serif;
+      --el-font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      --el-radius-sm: 4px;
+
+      background-color: var(--el-bg-main);
+      padding: {{ section.settings.padding_top | default: 50 }}px 0 {{ section.settings.padding_bottom | default: 80 }}px;
+      border-top: 1px solid var(--el-border);
+      width: 100%;
+      font-family: var(--el-font-sans);
+      box-sizing: border-box;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    #ellora-journal-{{ section.id }} *,
+    #ellora-journal-{{ section.id }} *::before,
+    #ellora-journal-{{ section.id }} *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    #ellora-journal-{{ section.id }} .el-sec-journal-container {
+      width: 90%;
+      max-width: 1720px;
+      margin: 0 auto;
+    }
+
+    #ellora-journal-{{ section.id }} .el-section-header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      margin-bottom: 36px;
+    }
+
+    #ellora-journal-{{ section.id }} .el-kicker {
+      font-family: var(--el-font-sans);
+      font-size: 11.5px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      font-weight: 600;
+      color: var(--el-muted);
+      margin-bottom: 14px;
+      display: inline-block;
+    }
+
+    #ellora-journal-{{ section.id }} .el-section-title {
+      font-family: var(--el-font-serif);
+      font-size: 48px;
+      line-height: 1.15;
+      font-weight: 400;
+      color: var(--el-dark);
+      letter-spacing: -0.01em;
+    }
+
+    #ellora-journal-{{ section.id }} .el-link-arrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13.5px;
+      font-weight: 500;
+      color: var(--el-dark);
+      letter-spacing: 0.02em;
+      text-decoration: none;
+      transition: color 0.25s ease;
+    }
+
+    #ellora-journal-{{ section.id }} .el-link-arrow svg {
+      transition: transform 0.25s ease;
+    }
+
+    #ellora-journal-{{ section.id }} .el-link-arrow:hover {
+      color: var(--el-primary);
+    }
+
+    #ellora-journal-{{ section.id }} .el-link-arrow:hover svg {
+      transform: translate(3px, -3px);
+    }
+
+    #ellora-journal-{{ section.id }} .el-journal-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 36px;
+    }
+
+    #ellora-journal-{{ section.id }} .el-article-card {
+      display: flex;
+      flex-direction: column;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    #ellora-journal-{{ section.id }} .el-article-thumb {
+      position: relative;
+      border-radius: var(--el-radius-sm);
+      overflow: hidden;
+      aspect-ratio: 16 / 10.5;
+      background-color: #EBE7E0;
+      margin-bottom: 20px;
+    }
+
+    #ellora-journal-{{ section.id }} .el-article-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.6s ease;
+      display: block;
+    }
+
+    #ellora-journal-{{ section.id }} .el-article-card:hover .el-article-thumb img {
+      transform: scale(1.04);
+    }
+
+    #ellora-journal-{{ section.id }} .el-article-meta {
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--el-primary);
+      margin-bottom: 10px;
+    }
+
+    #ellora-journal-{{ section.id }} .el-article-title {
+      font-family: var(--el-font-serif);
+      font-size: 26px;
+      line-height: 1.25;
+      color: var(--el-dark);
+      font-weight: 400;
+      letter-spacing: -0.01em;
+      margin-bottom: 12px;
+      transition: color 0.25s ease;
+    }
+
+    #ellora-journal-{{ section.id }} .el-article-card:hover .el-article-title {
+      color: var(--el-primary);
+    }
+
+    #ellora-journal-{{ section.id }} .el-article-excerpt {
+      font-size: 14.5px;
+      line-height: 1.62;
+      color: #55514C;
+    }
+
+    @media (max-width: 900px) {
+      #ellora-journal-{{ section.id }} .el-journal-grid {
+        grid-template-columns: 1fr;
+        gap: 30px;
+      }
+      #ellora-journal-{{ section.id }} .el-article-thumb {
+        aspect-ratio: 16 / 9;
+      }
+    }
+
+    @media (max-width: 640px) {
+      #ellora-journal-{{ section.id }} .el-section-title {
+        font-size: 34px;
+      }
+      #ellora-journal-{{ section.id }} .el-article-title {
+        font-size: 23px;
+      }
+    }
+  </style>
+
+  <div class="el-sec-journal-container">
+    <div class="el-section-header">
+      <div>
+        {%- if section.settings.kicker != blank -%}
+          <span class="el-kicker">{{ section.settings.kicker }}</span>
+        {%- endif -%}
+        <h2 class="el-section-title">{{ section.settings.heading }}</h2>
+      </div>
+      {%- if section.settings.view_all_label != blank -%}
+        <a href="{{ section.settings.blog.url | default: section.settings.view_all_link | default: '/pages/advice-hub' }}" class="el-link-arrow">
+          <span>{{ section.settings.view_all_label }}</span>
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="7" y1="17" x2="17" y2="7"></line>
+            <polyline points="7 7 17 7 17 17"></polyline>
+          </svg>
+        </a>
+      {%- endif -%}
+    </div>
+
+    <div class="el-journal-grid">
+      {%- if section.settings.blog != blank and section.settings.blog.articles.size > 0 -%}
+        {%- for article in section.settings.blog.articles limit: 3 -%}
+          <a href="{{ article.url }}" class="el-article-card">
+            <div class="el-article-thumb">
+              {%- if article.image != blank -%}
+                {{ article.image | image_url: width: 800 | image_tag: loading: 'lazy', alt: article.title }}
+              {%- else -%}
+                <img src="https://cdn.shopify.com/s/files/1/0990/3685/6647/files/sec10_journal1.jpg?v=1789453290" alt="{{ article.title }}" loading="lazy">
+              {%- endif -%}
+            </div>
+            <span class="el-article-meta">{{ article.published_at | date: '%B %d, %Y' }}</span>
+            <h3 class="el-article-title">{{ article.title }}</h3>
+            <p class="el-article-excerpt">{{ article.excerpt_or_content | strip_html | truncatewords: 22 }}</p>
+          </a>
+        {%- endfor -%}
+      {%- elsif section.blocks.size > 0 -%}
+        {%- for block in section.blocks -%}
+          <a href="{{ block.settings.link | default: '/pages/advice-hub' }}" class="el-article-card" {{ block.shopify_attributes }}>
+            <div class="el-article-thumb">
+              {%- if block.settings.image != blank -%}
+                {{ block.settings.image | image_url: width: 800 | image_tag: loading: 'lazy', alt: block.settings.title }}
+              {%- elsif block.settings.fallback_image != blank -%}
+                <img src="{{ block.settings.fallback_image }}" alt="{{ block.settings.title }}" loading="lazy">
+              {%- else -%}
+                <img src="https://cdn.shopify.com/s/files/1/0990/3685/6647/files/sec10_journal1.jpg?v=1789453290" alt="{{ block.settings.title }}" loading="lazy">
+              {%- endif -%}
+            </div>
+            <span class="el-article-meta">{{ block.settings.meta }}</span>
+            <h3 class="el-article-title">{{ block.settings.title }}</h3>
+            <p class="el-article-excerpt">{{ block.settings.excerpt }}</p>
+          </a>
+        {%- endfor -%}
+      {%- endif -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Ellora Journal & Stories",
+  "tag": "section",
+  "class": "section-ellora-journal",
+  "settings": [
+    {
+      "type": "text",
+      "id": "kicker",
+      "label": "Kicker Subtitle",
+      "default": "THE JOURNAL"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Stories, Moments & Milestones"
+    },
+    {
+      "type": "text",
+      "id": "view_all_label",
+      "label": "View All Link Label",
+      "default": "Read All Stories"
+    },
+    {
+      "type": "url",
+      "id": "view_all_link",
+      "label": "View All Link URL"
+    },
+    {
+      "type": "header",
+      "content": "Shopify Blog Feed (Optional)"
+    },
+    {
+      "type": "paragraph",
+      "content": "Select a Shopify blog to display its latest 3 articles automatically. If no blog is chosen, the custom blocks below will be shown."
+    },
+    {
+      "type": "blog",
+      "id": "blog",
+      "label": "Select Shopify Blog"
+    },
+    {
+      "type": "header",
+      "content": "Style & Spacing"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#FAF9F6"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 20,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Top Padding",
+      "default": 50
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 30,
+      "max": 120,
+      "step": 5,
+      "unit": "px",
+      "label": "Bottom Padding",
+      "default": 80
+    }
+  ],
+  "blocks": [
+    {
+      "type": "article_card",
+      "name": "Journal Article Card",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Article Thumbnail"
+        },
+        {
+          "type": "text",
+          "id": "fallback_image",
+          "label": "Fallback CDN Photo URL"
+        },
+        {
+          "type": "text",
+          "id": "meta",
+          "label": "Date & Reading Time Meta",
+          "default": "APRIL 24 • 4 MIN READ"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Article Title",
+          "default": "Caring for Living Stone in High-Traffic Spaces"
+        },
+        {
+          "type": "textarea",
+          "id": "excerpt",
+          "label": "Short Excerpt",
+          "default": "Expert guidance on sealing, daily maintenance, and honoring the natural patina of honed marble and travertine over decades of use."
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Article URL"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Ellora Journal & Stories",
+      "blocks": [
+        {
+          "type": "article_card",
+          "settings": {
+            "meta": "OCTOBER 12 • 4 MIN READ",
+            "title": "Caring for Living Stone in High-Traffic Spaces",
+            "excerpt": "Expert guidance on sealing, daily maintenance, and honoring the natural patina of honed marble and travertine over decades of use.",
+            "fallback_image": "https://cdn.shopify.com/s/files/1/0990/3685/6647/files/sec10_journal1.jpg?v=1789453290",
+            "link": "/pages/advice-hub"
+          }
+        },
+        {
+          "type": "article_card",
+          "settings": {
+            "meta": "SEPTEMBER 28 • 6 MIN READ",
+            "title": "A Tuscan Palette: Warm Minimalism Meets Historic Craft",
+            "excerpt": "Inside an Oxfordshire barn conversion defined by fluted limestone walls, raw oak joinery, and reclaimed cotto hearths.",
+            "fallback_image": "https://cdn.shopify.com/s/files/1/0990/3685/6647/files/sec10_journal2.jpg?v=1789453290",
+            "link": "/pages/advice-hub"
+          }
+        },
+        {
+          "type": "article_card",
+          "settings": {
+            "meta": "SEPTEMBER 14 • 5 MIN READ",
+            "title": "The Tactile Bath: Creating Spaces for Restoration",
+            "excerpt": "Why leading architects are moving away from sterile polish toward deep tactile relief, soft fluting, and grounded terracotta tones.",
+            "fallback_image": "https://cdn.shopify.com/s/files/1/0990/3685/6647/files/sec10_journal3.jpg?v=1789453290",
+            "link": "/pages/advice-hub"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

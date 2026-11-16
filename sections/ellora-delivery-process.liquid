@@ -1,0 +1,507 @@
+{% comment %}
+  ==========================================================================
+  ELLORA SPACES — DELIVERY PROCESS & RATES SECTION
+  File: sections/ellora-delivery-process.liquid
+  Theme Editor Name: Delivery Process & Rates
+  Features:
+  - 4-phase visual delivery timeline with step numbers & luxury cards
+  - Freight tiers comparison matrix (Samples, Pallet Freight, Bespoke Slabs)
+  - Crucial Site Access Checklist for pallet lorry delivery
+  - Bottom logistics assistance contact card
+  ==========================================================================
+{% endcomment %}
+
+<div class="el-section-wrapper el-sec-del-process" id="ellora-delivery-process-{{ section.id }}">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
+
+    #ellora-delivery-process-{{ section.id }} {
+      --el-dp-bg: {{ section.settings.bg_color | default: '#FAF8F5' }};
+      --el-dp-primary: {{ section.settings.primary_color | default: '#8E6356' }};
+      --el-dp-dark: {{ section.settings.text_dark | default: '#1C1B19' }};
+      --el-dp-muted: {{ section.settings.text_muted | default: '#68645F' }};
+      --el-dp-border: {{ section.settings.border_color | default: '#ECE7E1' }};
+      --el-dp-card: {{ section.settings.card_bg | default: '#FFFFFF' }};
+
+      --el-dp-pt: {{ section.settings.padding_top | default: 80 }}px;
+      --el-dp-pb: {{ section.settings.padding_bottom | default: 100 }}px;
+
+      background-color: var(--el-dp-bg);
+      color: var(--el-dp-dark);
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      padding-top: var(--el-dp-pt);
+      padding-bottom: var(--el-dp-pb);
+    }
+
+    #ellora-delivery-process-{{ section.id }} *,
+    #ellora-delivery-process-{{ section.id }} *::before,
+    #ellora-delivery-process-{{ section.id }} *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    #ellora-delivery-process-{{ section.id }} .el-dp-container {
+      width: 90%;
+      max-width: {{ section.settings.container_max_width | default: 1280 }}px;
+      margin: 0 auto;
+    }
+
+    /* Section Header */
+    #ellora-delivery-process-{{ section.id }} .el-dp-header {
+      text-align: center;
+      max-width: 680px;
+      margin: 0 auto 56px auto;
+    }
+
+    #ellora-delivery-process-{{ section.id }} .el-dp-kicker {
+      font-size: 11.5px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      font-weight: 600;
+      color: var(--el-dp-primary);
+      margin-bottom: 12px;
+      display: block;
+    }
+
+    #ellora-delivery-process-{{ section.id }} .el-dp-title {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 38px;
+      font-weight: 400;
+      color: var(--el-dp-dark);
+      line-height: 1.2;
+      margin-bottom: 16px;
+    }
+
+    #ellora-delivery-process-{{ section.id }} .el-dp-sub {
+      font-size: 15px;
+      color: var(--el-dp-muted);
+      line-height: 1.65;
+    }
+
+    /* 4-Step Process Grid */
+    #ellora-delivery-process-{{ section.id }} .el-dp-steps-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+      margin-bottom: 72px;
+    }
+
+    #ellora-delivery-process-{{ section.id }} .el-dp-step-card {
+      background: var(--el-dp-card);
+      border: 1px solid var(--el-dp-border);
+      border-radius: 2px;
+      padding: 32px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      position: relative;
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    #ellora-delivery-process-{{ section.id }} .el-dp-step-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.05);
+    }
+
+    #ellora-delivery-process-{{ section.id }} .el-dp-step-num {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 36px;
+      font-weight: 400;
+      color: var(--el-dp-primary);
+      line-height: 1;
+    }
+
+    #ellora-delivery-process-{{ section.id }} .el-dp-step-title {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 21px;
+      font-weight: 500;
+      color: var(--el-dp-dark);
+      line-height: 1.3;
+    }
+
+    #ellora-delivery-process-{{ section.id }} .el-dp-step-desc {
+      font-size: 13.5px;
+      color: var(--el-dp-muted);
+      line-height: 1.65;
+    }
+
+    /* Freight Rates Matrix */
+    #ellora-delivery-process-{{ section.id }} .el-dp-rates-section {
+      background: #FFFFFF;
+      border: 1px solid var(--el-dp-border);
+      border-radius: 2px;
+      padding: 48px;
+      margin-bottom: 64px;
+    }
+
+    #ellora-delivery-process-{{ section.id }} .el-dp-rates-title {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 28px;
+      font-weight: 500;
+      color: var(--el-dp-dark);
+      margin-bottom: 32px;
+      text-align: center;
+    }
+
+    #ellora-delivery-process-{{ section.id }} .el-dp-rates-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 28px;
+    }
+
+    #ellora-delivery-process-{{ section.id }} .el-dp-rate-col {
+      border: 1px solid var(--el-dp-border);
+      background: var(--el-dp-bg);
+      border-radius: 2px;
+      padding: 28px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    #ellora-delivery-process-{{ section.id }} .el-dp-rate-tier {
+      font-size: 12px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      font-weight: 600;
+      color: var(--el-dp-primary);
+      margin-bottom: 8px;
+    }
+
+    #ellora-delivery-process-{{ section.id }} .el-dp-rate-price {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 32px;
+      font-weight: 500;
+      color: var(--el-dp-dark);
+      margin-bottom: 12px;
+    }
+
+    #ellora-delivery-process-{{ section.id }} .el-dp-rate-time {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--el-dp-dark);
+      margin-bottom: 16px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--el-dp-border);
+    }
+
+    #ellora-delivery-process-{{ section.id }} .el-dp-rate-bullets {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      font-size: 13px;
+      color: var(--el-dp-muted);
+      line-height: 1.5;
+    }
+
+    #ellora-delivery-process-{{ section.id }} .el-dp-rate-bullets li::before {
+      content: '✓';
+      color: var(--el-dp-primary);
+      margin-right: 8px;
+      font-weight: bold;
+    }
+
+    /* Site Access Checklist */
+    #ellora-delivery-process-{{ section.id }} .el-dp-checklist-card {
+      background: #FFFFFF;
+      border: 1px solid var(--el-dp-border);
+      border-radius: 2px;
+      padding: 40px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      align-items: center;
+    }
+
+    #ellora-delivery-process-{{ section.id }} .el-dp-checklist-text h3 {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 26px;
+      font-weight: 500;
+      color: var(--el-dp-dark);
+      margin-bottom: 12px;
+    }
+
+    #ellora-delivery-process-{{ section.id }} .el-dp-checklist-text p {
+      font-size: 14px;
+      color: var(--el-dp-muted);
+      line-height: 1.65;
+      margin-bottom: 20px;
+    }
+
+    #ellora-delivery-process-{{ section.id }} .el-dp-check-items {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    #ellora-delivery-process-{{ section.id }} .el-dp-check-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      font-size: 13.5px;
+      color: var(--el-dp-dark);
+      line-height: 1.5;
+    }
+
+    #ellora-delivery-process-{{ section.id }} .el-dp-check-item svg {
+      width: 18px;
+      height: 18px;
+      stroke: var(--el-dp-primary);
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    @media (max-width: 1024px) {
+      #ellora-delivery-process-{{ section.id }} .el-dp-steps-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      #ellora-delivery-process-{{ section.id }} .el-dp-rates-grid {
+        grid-template-columns: 1fr;
+      }
+      #ellora-delivery-process-{{ section.id }} .el-dp-checklist-card {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 640px) {
+      #ellora-delivery-process-{{ section.id }} .el-dp-steps-grid {
+        grid-template-columns: 1fr;
+      }
+      #ellora-delivery-process-{{ section.id }} .el-dp-title {
+        font-size: 30px;
+      }
+      #ellora-delivery-process-{{ section.id }} .el-dp-rates-section,
+      #ellora-delivery-process-{{ section.id }} .el-dp-checklist-card {
+        padding: 24px;
+      }
+    }
+  </style>
+
+  <div class="el-dp-container">
+    <div class="el-dp-header">
+      {%- if section.settings.kicker != blank -%}
+        <span class="el-dp-kicker">{{ section.settings.kicker }}</span>
+      {%- endif -%}
+      <h2 class="el-dp-title">{{ section.settings.title | default: 'Our 4-Phase Delivery Journey' }}</h2>
+      {%- if section.settings.sub != blank -%}
+        <p class="el-dp-sub">{{ section.settings.sub }}</p>
+      {%- endif -%}
+    </div>
+
+    <!-- 4-Steps -->
+    <div class="el-dp-steps-grid">
+      <div class="el-dp-step-card">
+        <span class="el-dp-step-num">01</span>
+        <h3 class="el-dp-step-title">Timber Crate Packing</h3>
+        <p class="el-dp-step-desc">All tiles are secured in heavy-duty timber crates, shrink-wrapped with waterproof foil, and edge-corner braced for pallet stability.</p>
+      </div>
+
+      <div class="el-dp-step-card">
+        <span class="el-dp-step-num">02</span>
+        <h3 class="el-dp-step-title">Driver Pre-Call</h3>
+        <p class="el-dp-step-desc">Our freight logistics partner calls you or your project manager 24 hours in advance to agree on an offloading delivery window.</p>
+      </div>
+
+      <div class="el-dp-step-card">
+        <span class="el-dp-step-num">03</span>
+        <h3 class="el-dp-step-title">Tail-Lift Offloading</h3>
+        <p class="el-dp-step-desc">Pallets are unloaded via an electric tail-lift vehicle and positioned curb-side or onto your driveway using a heavy pallet truck.</p>
+      </div>
+
+      <div class="el-dp-step-card">
+        <span class="el-dp-step-num">04</span>
+        <h3 class="el-dp-step-title">48-Hour Inspection</h3>
+        <p class="el-dp-step-desc">Inspect crates upon delivery. In the rare event of transit breakage, our 48-hour coverage guarantee ensures swift replacement dispatch.</p>
+      </div>
+    </div>
+
+    <!-- Rates Matrix -->
+    {%- if section.settings.show_rates_table -%}
+      <div class="el-dp-rates-section">
+        <h3 class="el-dp-rates-title">Dispatch Methods &amp; Transit Times</h3>
+        
+        <div class="el-dp-rates-grid">
+          <div class="el-dp-rate-col">
+            <span class="el-dp-rate-tier">Sample Swatches</span>
+            <div class="el-dp-rate-price">Complimentary</div>
+            <div class="el-dp-rate-time">1 – 3 Business Days</div>
+            <ul class="el-dp-rate-bullets">
+              <li>Individual stone &amp; wallpaper swatches</li>
+              <li>Delivered direct to your letterbox</li>
+              <li>Tracked express courier dispatch</li>
+            </ul>
+          </div>
+
+          <div class="el-dp-rate-col" style="border-color: var(--el-dp-primary); background: #FAF8F5;">
+            <span class="el-dp-rate-tier">Pallet Freight</span>
+            <div class="el-dp-rate-price">Free over $300</div>
+            <div class="el-dp-rate-time">3 – 5 Business Days</div>
+            <ul class="el-dp-rate-bullets">
+              <li>Full tile orders &amp; heavy porcelain</li>
+              <li>Tail-lift curb-side delivery</li>
+              <li>Wooden pallet &amp; strap protection</li>
+              <li>Pre-booked delivery appointment</li>
+            </ul>
+          </div>
+
+          <div class="el-dp-rate-col">
+            <span class="el-dp-rate-tier">Architectural Slabs</span>
+            <div class="el-dp-rate-price">Bespoke Quote</div>
+            <div class="el-dp-rate-time">5 – 8 Business Days</div>
+            <ul class="el-dp-rate-bullets">
+              <li>Oversized 1200x600+ stone slabs</li>
+              <li>Specialized A-frame transport</li>
+              <li>Job-site staging coordination</li>
+              <li>Forklift / crane offloading support</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    {%- endif -%}
+
+    <!-- Site Access Checklist -->
+    {%- if section.settings.show_checklist -%}
+      <div class="el-dp-checklist-card">
+        <div class="el-dp-checklist-text">
+          <h3>Site Access Requirements</h3>
+          <p>Due to the substantial weight of stone pallets (up to 1,000 kg each), delivery vehicles require clear, level access to safely lower the tail-lift.</p>
+          <a href="/pages/contact" style="color: var(--el-dp-primary); font-size: 13.5px; font-weight: 600; text-decoration: underline; text-underline-offset: 3px;">
+            Have tricky site access? Message our freight team &rarr;
+          </a>
+        </div>
+
+        <div class="el-dp-check-items">
+          <div class="el-dp-check-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+            <span><strong>Hard, Solid Ground:</strong> Tarmac, concrete, or paved driveway. Pallet jacks cannot roll on loose gravel, grass, or steep inclines.</span>
+          </div>
+          <div class="el-dp-check-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+            <span><strong>Vehicle Clearance:</strong> Delivery is conducted by an 18-tonne lorry requiring at least 3m road width and no low-hanging trees.</span>
+          </div>
+          <div class="el-dp-check-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+            <span><strong>Signee Required:</strong> An authorized adult must be present to inspect external wrapping and sign the carrier Proof of Delivery (POD).</span>
+          </div>
+        </div>
+      </div>
+    {%- endif -%}
+
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Delivery Process & Rates",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "kicker",
+      "label": "Kicker Subtitle",
+      "default": "HOW IT WORKS"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Our 4-Phase Delivery Journey"
+    },
+    {
+      "type": "textarea",
+      "id": "sub",
+      "label": "Subtitle",
+      "default": "Every consignment of stone is crated, tracked, and offloaded with rigorous care to ensure pristine site delivery."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_rates_table",
+      "label": "Show Freight Rates Table",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_checklist",
+      "label": "Show Site Access Checklist",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Colors & Layout"
+    },
+    {
+      "type": "range",
+      "id": "container_max_width",
+      "label": "Container Max Width",
+      "min": 1000,
+      "max": 1600,
+      "step": 20,
+      "unit": "px",
+      "default": 1280
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#FAF8F5"
+    },
+    {
+      "type": "color",
+      "id": "card_bg",
+      "label": "Card Background",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "primary_color",
+      "label": "Primary Accent Color",
+      "default": "#8E6356"
+    },
+    {
+      "type": "color",
+      "id": "text_dark",
+      "label": "Dark Text Color",
+      "default": "#1C1B19"
+    },
+    {
+      "type": "color",
+      "id": "text_muted",
+      "label": "Muted Text Color",
+      "default": "#68645F"
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "Border Color",
+      "default": "#ECE7E1"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding Top (Desktop)",
+      "min": 0,
+      "max": 140,
+      "step": 2,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding Bottom (Desktop)",
+      "min": 0,
+      "max": 140,
+      "step": 2,
+      "unit": "px",
+      "default": 100
+    }
+  ],
+  "presets": [
+    {
+      "name": "Delivery Process & Rates"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,606 @@
+{% comment %}
+  ==========================================================================
+  ELLORA SPACES — ABOUT PAGE SECTION 3: EXPLORE BY SPACE
+  File: sections/ellora-about-explore-spaces.liquid
+  Fully customizable via Shopify Theme Customizer
+  ==========================================================================
+{% endcomment %}
+
+<div class="el-section-wrapper el-sec-about-explore-wrapper" id="ellora-about-explore-{{ section.id }}">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
+
+    #ellora-about-explore-{{ section.id }} {
+      --el-bg: {{ section.settings.bg_color | default: '#FAF9F6' }};
+      --el-dark: {{ section.settings.title_color | default: '#1C1B19' }};
+      --el-text: {{ section.settings.text_color | default: '#5C554E' }};
+      --el-card-bg: {{ section.settings.card_bg | default: 'transparent' }};
+      --el-accent: {{ section.settings.accent_color | default: '#B86B53' }};
+      --el-arrow-color: {{ section.settings.arrow_color | default: '#A36854' }};
+      --el-font-serif: 'Cormorant Garamond', Georgia, serif;
+      --el-font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+
+      background-color: var(--el-bg);
+      padding-top: {{ section.settings.padding_top_desktop | default: 60 }}px;
+      padding-bottom: {{ section.settings.padding_bottom_desktop | default: 64 }}px;
+      width: 100%;
+      position: relative;
+      font-family: var(--el-font-sans);
+      box-sizing: border-box;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    #ellora-about-explore-{{ section.id }} *,
+    #ellora-about-explore-{{ section.id }} *::before,
+    #ellora-about-explore-{{ section.id }} *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    #ellora-about-explore-{{ section.id }} .el-explore-container {
+      width: 90%;
+      max-width: {{ section.settings.container_max_width | default: 1720 }}px;
+      margin: 0 auto;
+      position: relative;
+    }
+
+    /* Section Header */
+    #ellora-about-explore-{{ section.id }} .el-explore-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 36px;
+      margin-bottom: {{ section.settings.gap_below_header | default: 32 }}px;
+    }
+
+    #ellora-about-explore-{{ section.id }} .el-explore-title-wrap {
+      flex: 1 1 50%;
+    }
+
+    #ellora-about-explore-{{ section.id }} .el-explore-title {
+      font-family: var(--el-font-serif);
+      font-size: clamp(32px, 3.8vw, {{ section.settings.title_font_size | default: 48 }}px);
+      font-weight: 400;
+      color: var(--el-dark);
+      letter-spacing: -0.015em;
+      line-height: 1.15;
+    }
+
+    #ellora-about-explore-{{ section.id }} .el-explore-desc-wrap {
+      flex: 1 1 45%;
+      max-width: 540px;
+      padding-top: 6px;
+    }
+
+    #ellora-about-explore-{{ section.id }} .el-explore-desc {
+      font-family: var(--el-font-sans);
+      font-size: clamp(13.5px, 1.1vw, {{ section.settings.desc_font_size | default: 14.5 }}px);
+      line-height: 1.62;
+      color: var(--el-text);
+      font-weight: 400;
+    }
+
+    /* Slider / Grid Area */
+    #ellora-about-explore-{{ section.id }} .el-explore-carousel-wrapper {
+      position: relative;
+      width: 100%;
+    }
+
+    #ellora-about-explore-{{ section.id }} .el-explore-grid {
+      display: grid;
+      grid-template-columns: repeat({{ section.blocks.size | at_least: 2 }}, 1fr);
+      gap: {{ section.settings.card_gap | default: 28 }}px;
+      overflow-x: auto;
+      scroll-behavior: smooth;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+      padding-bottom: 4px;
+    }
+
+    #ellora-about-explore-{{ section.id }} .el-explore-grid::-webkit-scrollbar {
+      display: none;
+    }
+
+    /* Individual Card */
+    #ellora-about-explore-{{ section.id }} .el-explore-card {
+      display: flex;
+      flex-direction: column;
+      background-color: var(--el-card-bg);
+      text-decoration: none;
+      color: inherit;
+      position: relative;
+      group: card;
+    }
+
+    #ellora-about-explore-{{ section.id }} .el-explore-card-media {
+      width: 100%;
+      height: {{ section.settings.card_image_height_desktop | default: 380 }}px;
+      overflow: hidden;
+      border-radius: {{ section.settings.card_radius | default: 2 }}px;
+      background-color: #EBE5DD;
+      position: relative;
+      margin-bottom: 20px;
+    }
+
+    #ellora-about-explore-{{ section.id }} .el-explore-card-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.7s cubic-bezier(0.25, 1, 0.5, 1);
+    }
+
+    #ellora-about-explore-{{ section.id }} .el-explore-card:hover .el-explore-card-img {
+      transform: scale(1.03);
+    }
+
+    /* Card Details Row: Text Left, Arrow Right */
+    #ellora-about-explore-{{ section.id }} .el-explore-card-body {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 16px;
+    }
+
+    #ellora-about-explore-{{ section.id }} .el-explore-card-text {
+      flex: 1 1 auto;
+      padding-right: 8px;
+    }
+
+    #ellora-about-explore-{{ section.id }} .el-explore-card-title {
+      font-family: var(--el-font-serif);
+      font-size: clamp(22px, 1.8vw, 26px);
+      font-weight: 400;
+      color: var(--el-dark);
+      margin-bottom: 8px;
+      line-height: 1.2;
+      transition: color 0.25s ease;
+    }
+
+    #ellora-about-explore-{{ section.id }} .el-explore-card:hover .el-explore-card-title {
+      color: var(--el-accent);
+    }
+
+    #ellora-about-explore-{{ section.id }} .el-explore-card-desc {
+      font-family: var(--el-font-sans);
+      font-size: clamp(13px, 0.95vw, 13.5px);
+      line-height: 1.58;
+      color: var(--el-text);
+      font-weight: 400;
+    }
+
+    #ellora-about-explore-{{ section.id }} .el-explore-arrow-btn {
+      flex: 0 0 36px;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--el-arrow-color);
+      transition: all 0.3s ease;
+      margin-top: 4px;
+    }
+
+    #ellora-about-explore-{{ section.id }} .el-explore-arrow-btn svg {
+      width: 20px;
+      height: 20px;
+      transition: transform 0.3s ease;
+    }
+
+    #ellora-about-explore-{{ section.id }} .el-explore-card:hover .el-explore-arrow-btn {
+      color: var(--el-accent);
+    }
+
+    #ellora-about-explore-{{ section.id }} .el-explore-card:hover .el-explore-arrow-btn svg {
+      transform: translate(3px, -3px);
+    }
+
+    /* Carousel Nav Arrows on Left/Right Edges */
+    #ellora-about-explore-{{ section.id }} .el-explore-nav-arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 44px;
+      height: 44px;
+      background: rgba(255, 255, 255, 0.85);
+      border: 1px solid #E4DFD7;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--el-dark);
+      cursor: pointer;
+      z-index: 10;
+      backdrop-filter: blur(4px);
+      transition: all 0.25s ease;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    }
+
+    #ellora-about-explore-{{ section.id }} .el-explore-nav-arrow:hover {
+      background: #FFFFFF;
+      color: var(--el-accent);
+      transform: translateY(-50%) scale(1.08);
+    }
+
+    #ellora-about-explore-{{ section.id }} .el-explore-nav-prev {
+      left: -22px;
+    }
+
+    #ellora-about-explore-{{ section.id }} .el-explore-nav-next {
+      right: -22px;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 1024px) {
+      #ellora-about-explore-{{ section.id }} {
+        padding-top: {{ section.settings.padding_top_mobile | default: 44 }}px;
+        padding-bottom: {{ section.settings.padding_bottom_mobile | default: 48 }}px;
+      }
+
+      #ellora-about-explore-{{ section.id }} .el-explore-header {
+        flex-direction: column;
+        gap: 16px;
+        margin-bottom: 24px;
+      }
+
+      #ellora-about-explore-{{ section.id }} .el-explore-desc-wrap {
+        max-width: 100%;
+        padding-top: 0;
+      }
+
+      #ellora-about-explore-{{ section.id }} .el-explore-card-media {
+        height: 300px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      #ellora-about-explore-{{ section.id }} .el-explore-grid {
+        grid-template-columns: 1fr;
+        gap: 32px;
+      }
+
+      #ellora-about-explore-{{ section.id }} .el-explore-nav-arrow {
+        display: none;
+      }
+
+      #ellora-about-explore-{{ section.id }} .el-explore-card-media {
+        height: 250px;
+      }
+    }
+
+    @media (max-width: 600px) {
+      #ellora-about-explore-{{ section.id }} .el-explore-container {
+        width: 92%;
+      }
+    }
+  </style>
+
+  <div class="el-explore-container">
+    <div class="el-explore-header">
+      <div class="el-explore-title-wrap">
+        <h2 class="el-explore-title">{{ section.settings.title | default: "Explore by Space" }}</h2>
+      </div>
+      <div class="el-explore-desc-wrap">
+        <p class="el-explore-desc">
+          {{ section.settings.description | default: "Stone, porcelain and ceramic surfaces designed for wellness-oriented interiors and contemporary living." }}
+        </p>
+      </div>
+    </div>
+
+    <div class="el-explore-carousel-wrapper">
+      {%- if section.settings.show_nav_arrows -%}
+        <button type="button" class="el-explore-nav-arrow el-explore-nav-prev" aria-label="Previous spaces" onclick="document.getElementById('ellora-explore-grid-{{ section.id }}').scrollBy({left: -400, behavior: 'smooth'})">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="15 18 9 12 15 6"></polyline>
+          </svg>
+        </button>
+      {%- endif -%}
+
+      <div class="el-explore-grid" id="ellora-explore-grid-{{ section.id }}">
+        {%- for block in section.blocks -%}
+          <{% if block.settings.link != blank %}a href="{{ block.settings.link }}"{% else %}div{% endif %} 
+            class="el-explore-card" 
+            {{ block.shopify_attributes }}>
+            
+            <div class="el-explore-card-media">
+              {%- if block.settings.image != blank -%}
+                {{ block.settings.image | image_url: width: 1200 | image_tag: 
+                  class: 'el-explore-card-img',
+                  loading: 'lazy',
+                  alt: block.settings.title | escape
+                }}
+              {%- elsif block.settings.fallback_image != blank -%}
+                <img 
+                  src="{{ block.settings.fallback_image | asset_url }}" 
+                  alt="{{ block.settings.title | escape }}" 
+                  class="el-explore-card-img"
+                  loading="lazy"
+                >
+              {%- else -%}
+                {%- if forloop.first -%}
+                  <img 
+                    src="{{ 'sec7_space_01_yoga_room.jpg' | asset_url }}" 
+                    alt="{{ block.settings.title | escape }}" 
+                    class="el-explore-card-img"
+                    loading="lazy"
+                    onerror="this.src='https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=1000&q=80'"
+                  >
+                {%- else -%}
+                  <img 
+                    src="{{ 'sec7_space_02_meditation.jpg' | asset_url }}" 
+                    alt="{{ block.settings.title | escape }}" 
+                    class="el-explore-card-img"
+                    loading="lazy"
+                    onerror="this.src='https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&w=1000&q=80'"
+                  >
+                {%- endif -%}
+              {%- endif -%}
+            </div>
+
+            <div class="el-explore-card-body">
+              <div class="el-explore-card-text">
+                <h3 class="el-explore-card-title">{{ block.settings.title }}</h3>
+                <p class="el-explore-card-desc">{{ block.settings.description }}</p>
+              </div>
+              <div class="el-explore-arrow-btn" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                  <polyline points="12 5 19 12 12 19"></polyline>
+                </svg>
+              </div>
+            </div>
+
+          </{% if block.settings.link != blank %}a{% else %}div{% endif %}>
+        {%- endfor -%}
+      </div>
+
+      {%- if section.settings.show_nav_arrows -%}
+        <button type="button" class="el-explore-nav-arrow el-explore-nav-next" aria-label="Next spaces" onclick="document.getElementById('ellora-explore-grid-{{ section.id }}').scrollBy({left: 400, behavior: 'smooth'})">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+        </button>
+      {%- endif -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "About 03 - Explore Space",
+  "tag": "section",
+  "class": "section-ellora-about-explore",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Header Text"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Explore by Space"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description",
+      "default": "Stone, porcelain and ceramic surfaces designed for wellness-oriented interiors and contemporary living."
+    },
+    {
+      "type": "range",
+      "id": "title_font_size",
+      "label": "Title Font Size (px)",
+      "min": 28,
+      "max": 64,
+      "step": 2,
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "desc_font_size",
+      "label": "Description Font Size (px)",
+      "min": 13,
+      "max": 18,
+      "step": 0.5,
+      "default": 14.5
+    },
+    {
+      "type": "header",
+      "content": "Card Styling & Dimensions"
+    },
+    {
+      "type": "range",
+      "id": "card_image_height_desktop",
+      "label": "Card Image Height Desktop (px)",
+      "min": 260,
+      "max": 540,
+      "step": 20,
+      "default": 380
+    },
+    {
+      "type": "range",
+      "id": "card_gap",
+      "label": "Space Between Cards (px)",
+      "min": 16,
+      "max": 48,
+      "step": 4,
+      "default": 28
+    },
+    {
+      "type": "range",
+      "id": "card_radius",
+      "label": "Card Corner Radius (px)",
+      "min": 0,
+      "max": 20,
+      "step": 2,
+      "default": 2
+    },
+    {
+      "type": "checkbox",
+      "id": "show_nav_arrows",
+      "label": "Show Slider Prev/Next Arrows",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Section Background Color",
+      "default": "#FAF9F6"
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Title Color",
+      "default": "#1C1B19"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#5C554E"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Hover Accent Color",
+      "default": "#B86B53"
+    },
+    {
+      "type": "color",
+      "id": "arrow_color",
+      "label": "Arrow Icon Color",
+      "default": "#A36854"
+    },
+    {
+      "type": "color",
+      "id": "card_bg",
+      "label": "Card Background (Optional)",
+      "default": "transparent"
+    },
+    {
+      "type": "header",
+      "content": "Section Layout & Padding"
+    },
+    {
+      "type": "range",
+      "id": "container_max_width",
+      "label": "Container Max Width (px)",
+      "min": 1100,
+      "max": 1920,
+      "step": 20,
+      "default": 1720
+    },
+    {
+      "type": "range",
+      "id": "gap_below_header",
+      "label": "Gap Below Header (px)",
+      "min": 16,
+      "max": 60,
+      "step": 4,
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "padding_top_desktop",
+      "label": "Desktop Padding Top (px)",
+      "min": 20,
+      "max": 120,
+      "step": 4,
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_desktop",
+      "label": "Desktop Padding Bottom (px)",
+      "min": 20,
+      "max": 120,
+      "step": 4,
+      "default": 64
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "label": "Mobile Padding Top (px)",
+      "min": 10,
+      "max": 80,
+      "step": 2,
+      "default": 44
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "label": "Mobile Padding Bottom (px)",
+      "min": 10,
+      "max": 80,
+      "step": 2,
+      "default": 48
+    }
+  ],
+  "blocks": [
+    {
+      "type": "space_item",
+      "name": "Space Card",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Space Image"
+        },
+        {
+          "type": "text",
+          "id": "fallback_image",
+          "label": "Asset Image Filename (Fallback)",
+          "info": "e.g. sec7_space_01_yoga_room.jpg"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Tiles"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Description",
+          "default": "Stone textures, patterned and large format tile options for verandhs, yoga rooms, meditation areas and calm residential interiors."
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link Destination"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "About 03 - Explore Space",
+      "blocks": [
+        {
+          "type": "space_item",
+          "settings": {
+            "title": "Tiles",
+            "description": "Stone textures, patterned and large format tile options for verandhs, yoga rooms, meditation areas and calm residential interiors.",
+            "fallback_image": "sec7_space_01_yoga_room.jpg"
+          }
+        },
+        {
+          "type": "space_item",
+          "settings": {
+            "title": "Wallpaper",
+            "description": "Soft repetitive papers, decorative panels and large scale whole wall murals designed to complete through multiple matching panels.",
+            "fallback_image": "sec7_space_02_meditation.jpg"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

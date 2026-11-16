@@ -1,0 +1,738 @@
+{% comment %}
+  ==========================================================================
+  ELLORA SPACES — UNIVERSAL POLICY & PAGE TEMPLATE
+  File: sections/ellora-policy.liquid
+  Theme Editor Name: Ellora Policy / Page
+  Features:
+  - Universal for Terms of Service, Privacy Policy, Shipping, Refund, FAQs & custom pages
+  - Renders content directly from Shopify backend ({{ page.title }} and {{ page.content }})
+  - Fallback sample policy content when previewing in theme customizer
+  - Full luxury styling controls: typography (font size, weight, line-height), colors, width & spacing
+  - Styled rich text: H1-H4, blockquotes, lists, tables, callout notes, links
+  - Optional kicker, last-updated badge, and breadcrumb
+  ==========================================================================
+{% endcomment %}
+
+<div class="el-section-wrapper el-sec-policy" id="ellora-policy-{{ section.id }}">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
+
+    #ellora-policy-{{ section.id }} {
+      --el-pol-bg: {{ section.settings.bg_color | default: '#FFFFFF' }};
+      --el-pol-heading: {{ section.settings.heading_color | default: '#1C1B19' }};
+      --el-pol-text: {{ section.settings.text_color | default: '#4A4641' }};
+      --el-pol-muted: {{ section.settings.muted_color | default: '#8C8780' }};
+      --el-pol-link: {{ section.settings.link_color | default: '#8E6356' }};
+      --el-pol-link-hover: {{ section.settings.link_hover_color | default: '#6D493E' }};
+      --el-pol-border: {{ section.settings.border_color | default: '#ECE7E1' }};
+      --el-pol-card-bg: {{ section.settings.card_bg | default: '#FAF8F5' }};
+
+      --el-pol-title-size: {{ section.settings.title_font_size | default: 44 }}px;
+      --el-pol-title-size-mob: {{ section.settings.title_font_size_mobile | default: 32 }}px;
+      --el-pol-title-weight: {{ section.settings.title_font_weight | default: '400' }};
+
+      --el-pol-body-size: {{ section.settings.body_font_size | default: 16 }}px;
+      --el-pol-body-size-mob: {{ section.settings.body_font_size_mobile | default: 15 }}px;
+      --el-pol-body-weight: {{ section.settings.body_font_weight | default: '400' }};
+      --el-pol-body-lh: {{ section.settings.body_line_height | default: 18 | divided_by: 10.0 }};
+
+      --el-pol-pt: {{ section.settings.padding_top | default: 60 }}px;
+      --el-pol-pb: {{ section.settings.padding_bottom | default: 100 }}px;
+
+      background-color: var(--el-pol-bg);
+      color: var(--el-pol-text);
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      padding-top: var(--el-pol-pt);
+      padding-bottom: var(--el-pol-pb);
+      line-height: var(--el-pol-body-lh);
+    }
+
+    #ellora-policy-{{ section.id }} * {
+      box-sizing: border-box;
+    }
+
+    #ellora-policy-{{ section.id }} .el-policy-container {
+      width: 90%;
+      max-width: {{ section.settings.container_max_width | default: 1280 }}px;
+      margin: 0 auto;
+      padding: 0;
+    }
+
+    /* Breadcrumbs */
+    #ellora-policy-{{ section.id }} .el-policy-breadcrumb {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12.5px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--el-pol-muted);
+      margin-bottom: 24px;
+    }
+
+    #ellora-policy-{{ section.id }} .el-policy-breadcrumb a {
+      color: var(--el-pol-muted);
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    #ellora-policy-{{ section.id }} .el-policy-breadcrumb a:hover {
+      color: var(--el-pol-link);
+    }
+
+    #ellora-policy-{{ section.id }} .el-policy-breadcrumb span.sep {
+      opacity: 0.5;
+    }
+
+    /* Header */
+    #ellora-policy-{{ section.id }} .el-policy-header {
+      text-align: {{ section.settings.header_alignment | default: 'left' }};
+      margin-bottom: 44px;
+      padding-bottom: 32px;
+      border-bottom: 1px solid var(--el-pol-border);
+    }
+
+    #ellora-policy-{{ section.id }} .el-policy-kicker {
+      display: inline-block;
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      font-weight: 600;
+      color: var(--el-pol-link);
+      margin-bottom: 12px;
+    }
+
+    #ellora-policy-{{ section.id }} .el-policy-title {
+      font-family: {% if section.settings.heading_font_family == 'sans' %}'Plus Jakarta Sans', sans-serif{% else %}'Cormorant Garamond', Georgia, serif{% endif %};
+      font-size: var(--el-pol-title-size);
+      font-weight: var(--el-pol-title-weight);
+      color: var(--el-pol-heading);
+      line-height: 1.15;
+      letter-spacing: -0.01em;
+      margin: 0 0 16px 0;
+    }
+
+    #ellora-policy-{{ section.id }} .el-policy-meta {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      font-size: 13px;
+      color: var(--el-pol-muted);
+      {% if section.settings.header_alignment == 'center' %}
+        justify-content: center;
+      {% endif %}
+    }
+
+    #ellora-policy-{{ section.id }} .el-policy-meta-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--el-pol-card-bg);
+      padding: 4px 12px;
+      border-radius: 999px;
+      border: 1px solid var(--el-pol-border);
+      font-size: 12px;
+      letter-spacing: 0.02em;
+    }
+
+    #ellora-policy-{{ section.id }} .el-policy-meta-badge::before {
+      content: '';
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background-color: var(--el-pol-link);
+    }
+
+    /* Rich Text Content Formatting */
+    #ellora-policy-{{ section.id }} .el-policy-content {
+      font-size: var(--el-pol-body-size);
+      font-weight: var(--el-pol-body-weight);
+      color: var(--el-pol-text);
+      line-height: var(--el-pol-body-lh);
+    }
+
+    #ellora-policy-{{ section.id }} .el-policy-content > *:first-child {
+      margin-top: 0 !important;
+    }
+
+    #ellora-policy-{{ section.id }} .el-policy-content p {
+      margin: 0 0 20px 0;
+    }
+
+    #ellora-policy-{{ section.id }} .el-policy-content h2 {
+      font-family: {% if section.settings.heading_font_family == 'sans' %}'Plus Jakarta Sans', sans-serif{% else %}'Cormorant Garamond', Georgia, serif{% endif %};
+      font-size: 28px;
+      font-weight: 500;
+      color: var(--el-pol-heading);
+      line-height: 1.25;
+      margin: 44px 0 16px 0;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--el-pol-border);
+    }
+
+    #ellora-policy-{{ section.id }} .el-policy-content h3 {
+      font-family: {% if section.settings.heading_font_family == 'sans' %}'Plus Jakarta Sans', sans-serif{% else %}'Cormorant Garamond', Georgia, serif{% endif %};
+      font-size: 22px;
+      font-weight: 500;
+      color: var(--el-pol-heading);
+      line-height: 1.3;
+      margin: 32px 0 12px 0;
+    }
+
+    #ellora-policy-{{ section.id }} .el-policy-content h4 {
+      font-size: 16px;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      color: var(--el-pol-heading);
+      margin: 24px 0 8px 0;
+    }
+
+    #ellora-policy-{{ section.id }} .el-policy-content ul,
+    #ellora-policy-{{ section.id }} .el-policy-content ol {
+      margin: 0 0 24px 0;
+      padding-left: 24px;
+    }
+
+    #ellora-policy-{{ section.id }} .el-policy-content li {
+      margin-bottom: 10px;
+      line-height: var(--el-pol-body-lh);
+    }
+
+    #ellora-policy-{{ section.id }} .el-policy-content ul li {
+      list-style-type: disc;
+    }
+
+    #ellora-policy-{{ section.id }} .el-policy-content ul li::marker {
+      color: var(--el-pol-link);
+    }
+
+    #ellora-policy-{{ section.id }} .el-policy-content ol li::marker {
+      color: var(--el-pol-link);
+      font-weight: 600;
+    }
+
+    #ellora-policy-{{ section.id }} .el-policy-content a {
+      color: var(--el-pol-link);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      transition: color 0.2s ease, text-decoration-color 0.2s ease;
+    }
+
+    #ellora-policy-{{ section.id }} .el-policy-content a:hover {
+      color: var(--el-pol-link-hover);
+    }
+
+    #ellora-policy-{{ section.id }} .el-policy-content strong,
+    #ellora-policy-{{ section.id }} .el-policy-content b {
+      color: var(--el-pol-heading);
+      font-weight: 600;
+    }
+
+    #ellora-policy-{{ section.id }} .el-policy-content blockquote {
+      margin: 28px 0;
+      padding: 20px 24px;
+      background: var(--el-pol-card-bg);
+      border-left: 3px solid var(--el-pol-link);
+      border-radius: 2px;
+      font-style: italic;
+      color: var(--el-pol-heading);
+    }
+
+    #ellora-policy-{{ section.id }} .el-policy-content blockquote p:last-child {
+      margin-bottom: 0;
+    }
+
+    #ellora-policy-{{ section.id }} .el-policy-content table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 28px 0;
+      font-size: 14.5px;
+    }
+
+    #ellora-policy-{{ section.id }} .el-policy-content th,
+    #ellora-policy-{{ section.id }} .el-policy-content td {
+      padding: 12px 16px;
+      border: 1px solid var(--el-pol-border);
+      text-align: left;
+    }
+
+    #ellora-policy-{{ section.id }} .el-policy-content th {
+      background: var(--el-pol-card-bg);
+      font-weight: 600;
+      color: var(--el-pol-heading);
+      letter-spacing: 0.02em;
+    }
+
+    #ellora-policy-{{ section.id }} .el-policy-content tr:nth-child(even) td {
+      background: rgba(250, 248, 245, 0.4);
+    }
+
+    #ellora-policy-{{ section.id }} .el-policy-content hr {
+      border: none;
+      border-top: 1px solid var(--el-pol-border);
+      margin: 40px 0;
+    }
+
+    /* Optional Bottom Support Card */
+    #ellora-policy-{{ section.id }} .el-policy-support-card {
+      margin-top: 56px;
+      padding: 28px 32px;
+      background: var(--el-pol-card-bg);
+      border: 1px solid var(--el-pol-border);
+      border-radius: 2px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+
+    #ellora-policy-{{ section.id }} .el-policy-support-text h4 {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 22px;
+      font-weight: 500;
+      color: var(--el-pol-heading);
+      margin: 0 0 6px 0;
+    }
+
+    #ellora-policy-{{ section.id }} .el-policy-support-text p {
+      font-size: 13.5px;
+      color: var(--el-pol-muted);
+      margin: 0;
+    }
+
+    #ellora-policy-{{ section.id }} .el-policy-support-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 11px 22px;
+      background: var(--el-pol-link);
+      color: #FFFFFF;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      border-radius: 2px;
+      transition: background 0.2s ease;
+      white-space: nowrap;
+    }
+
+    #ellora-policy-{{ section.id }} .el-policy-support-btn:hover {
+      background: var(--el-pol-link-hover);
+      color: #FFFFFF;
+    }
+
+    /* Mobile Responsive */
+    @media (max-width: 768px) {
+      #ellora-policy-{{ section.id }} {
+        padding-top: {{ section.settings.padding_top_mobile | default: 36 }}px;
+        padding-bottom: {{ section.settings.padding_bottom_mobile | default: 50 }}px;
+      }
+
+      #ellora-policy-{{ section.id }} .el-policy-title {
+        font-size: var(--el-pol-title-size-mob);
+      }
+
+      #ellora-policy-{{ section.id }} .el-policy-content {
+        font-size: var(--el-pol-body-size-mob);
+      }
+
+      #ellora-policy-{{ section.id }} .el-policy-content h2 {
+        font-size: 23px;
+        margin: 32px 0 12px 0;
+      }
+
+      #ellora-policy-{{ section.id }} .el-policy-content h3 {
+        font-size: 19px;
+        margin: 24px 0 10px 0;
+      }
+
+      #ellora-policy-{{ section.id }} .el-policy-support-card {
+        padding: 20px;
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      #ellora-policy-{{ section.id }} .el-policy-support-btn {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+  </style>
+
+  <div class="el-policy-container">
+
+    {%- if section.settings.show_breadcrumb -%}
+      <div class="el-policy-breadcrumb">
+        <a href="{{ routes.root_url }}">Home</a>
+        <span class="sep">/</span>
+        <span>{{ page.title | default: section.settings.fallback_title | default: 'Policy' }}</span>
+      </div>
+    {%- endif -%}
+
+    <header class="el-policy-header">
+      {%- if section.settings.show_kicker and section.settings.kicker_text != blank -%}
+        <div class="el-policy-kicker">{{ section.settings.kicker_text }}</div>
+      {%- endif -%}
+
+      <h1 class="el-policy-title">
+        {{ page.title | default: section.settings.fallback_title | default: 'Terms of Service' }}
+      </h1>
+
+      {%- if section.settings.show_last_updated -%}
+        <div class="el-policy-meta">
+          <span class="el-policy-meta-badge">
+            {{ section.settings.last_updated_prefix | default: 'Last updated: ' }}
+            {{ section.settings.last_updated_date | default: 'October 2026' }}
+          </span>
+        </div>
+      {%- endif -%}
+    </header>
+
+    <div class="el-policy-content">
+      {%- if page.content != blank -%}
+        {{ page.content }}
+      {%- else -%}
+        {% comment %} Fallback luxury demo content for Theme Editor preview {% endcomment %}
+        <p>
+          Welcome to Ellora Spaces. This policy outlines our terms, ordering procedures, shipping guidelines, and material care instructions. Please review these details carefully before ordering bespoke surfaces, marble slabs, or architectural wall murals.
+        </p>
+
+        <h2>1. Material Variations & Authenticity</h2>
+        <p>
+          Natural stones—including travertine, marble, limestone, and hand-finished terracotta—exhibit natural organic variations in veining, colour tone, and porous surface texture. These characteristics are hallmarks of authentic geological stone and are not considered defects.
+        </p>
+        <ul>
+          <li><strong>Batch Variation:</strong> Slight tonal differences can occur between production batches. We strongly recommend ordering all required surface area plus 10–15% cutting allowance in a single order.</li>
+          <li><strong>Handmade Finishes:</strong> Hand-cast tiles and fluted panels carry subtle artisan markings unique to each piece.</li>
+        </ul>
+
+        <h2>2. Delivery & Site Handling</h2>
+        <p>
+          All stone and architectural surfaces are delivered via specialized pallet freight. Deliveries are curb-side to accessible locations. Please inspect pallets upon arrival prior to signing transit documents.
+        </p>
+
+        <blockquote>
+          <p>
+            "Due to the weight and fragility of architectural slabs, offloading must be conducted on level ground with appropriate handling gear."
+          </p>
+        </blockquote>
+
+        <h2>3. Returns & Shortlists</h2>
+        <p>
+          Standard catalog pieces in unopened, undamaged packaging may be returned within 14 days of receipt. Custom-cut slabs, bespoke mural prints, and pattern sets crafted to individual room measurements are non-refundable once cutting has commenced.
+        </p>
+      {%- endif -%}
+    </div>
+
+    {%- if section.settings.show_support_card -%}
+      <div class="el-policy-support-card">
+        <div class="el-policy-support-text">
+          <h4>{{ section.settings.support_card_title | default: 'Have questions about our terms?' }}</h4>
+          <p>{{ section.settings.support_card_subtitle | default: 'Our trade and client support specialists are available Monday to Friday to assist.' }}</p>
+        </div>
+        <a href="{{ section.settings.support_card_link | default: '/pages/contact' }}" class="el-policy-support-btn">
+          {{ section.settings.support_card_btn | default: 'Contact Support' }} &rarr;
+        </a>
+      </div>
+    {%- endif -%}
+
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Ellora Policy / Page",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Page Header Settings"
+    },
+    {
+      "type": "text",
+      "id": "fallback_title",
+      "label": "Fallback Title (if page has no title)",
+      "default": "Terms & Policies"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_breadcrumb",
+      "label": "Show Breadcrumb",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_kicker",
+      "label": "Show Kicker",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "kicker_text",
+      "label": "Kicker Text",
+      "default": "LEGAL & POLICIES"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_last_updated",
+      "label": "Show Last Updated Badge",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "last_updated_prefix",
+      "label": "Last Updated Prefix",
+      "default": "Last updated: "
+    },
+    {
+      "type": "text",
+      "id": "last_updated_date",
+      "label": "Last Updated Date",
+      "default": "October 2026"
+    },
+    {
+      "type": "select",
+      "id": "header_alignment",
+      "label": "Header Alignment",
+      "options": [
+        { "value": "left", "label": "Left Aligned" },
+        { "value": "center", "label": "Centered" }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "header",
+      "content": "Typography & Font Controls"
+    },
+    {
+      "type": "select",
+      "id": "heading_font_family",
+      "label": "Headings Font Family",
+      "options": [
+        { "value": "serif", "label": "Cormorant Garamond (Serif)" },
+        { "value": "sans", "label": "Plus Jakarta Sans (Sans-Serif)" }
+      ],
+      "default": "serif"
+    },
+    {
+      "type": "range",
+      "id": "title_font_size",
+      "label": "Page Title Font Size (Desktop)",
+      "min": 28,
+      "max": 64,
+      "step": 2,
+      "unit": "px",
+      "default": 44
+    },
+    {
+      "type": "range",
+      "id": "title_font_size_mobile",
+      "label": "Page Title Font Size (Mobile)",
+      "min": 22,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 32
+    },
+    {
+      "type": "select",
+      "id": "title_font_weight",
+      "label": "Title Font Weight",
+      "options": [
+        { "value": "300", "label": "300 (Light)" },
+        { "value": "400", "label": "400 (Regular)" },
+        { "value": "500", "label": "500 (Medium)" },
+        { "value": "600", "label": "600 (Semi-bold)" }
+      ],
+      "default": "400"
+    },
+    {
+      "type": "range",
+      "id": "body_font_size",
+      "label": "Body Text Font Size (Desktop)",
+      "min": 13,
+      "max": 22,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "body_font_size_mobile",
+      "label": "Body Text Font Size (Mobile)",
+      "min": 12,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "default": 15
+    },
+    {
+      "type": "range",
+      "id": "body_line_height",
+      "label": "Body Line Height (18 = 1.8)",
+      "min": 14,
+      "max": 24,
+      "step": 1,
+      "default": 18
+    },
+    {
+      "type": "select",
+      "id": "body_font_weight",
+      "label": "Body Text Font Weight",
+      "options": [
+        { "value": "300", "label": "300 (Light)" },
+        { "value": "400", "label": "400 (Regular)" },
+        { "value": "500", "label": "500 (Medium)" }
+      ],
+      "default": "400"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading Text Color",
+      "default": "#1C1B19"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Body Text Color",
+      "default": "#4A4641"
+    },
+    {
+      "type": "color",
+      "id": "muted_color",
+      "label": "Muted Text Color",
+      "default": "#8C8780"
+    },
+    {
+      "type": "color",
+      "id": "link_color",
+      "label": "Link & Accent Color",
+      "default": "#8E6356"
+    },
+    {
+      "type": "color",
+      "id": "link_hover_color",
+      "label": "Link Hover Color",
+      "default": "#6D493E"
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "Border & Divider Color",
+      "default": "#ECE7E1"
+    },
+    {
+      "type": "color",
+      "id": "card_bg",
+      "label": "Callout & Quote Background",
+      "default": "#FAF8F5"
+    },
+    {
+      "type": "header",
+      "content": "Layout & Container Spacing"
+    },
+    {
+      "type": "range",
+      "id": "container_max_width",
+      "label": "Container Max Width",
+      "min": 1000,
+      "max": 1600,
+      "step": 20,
+      "unit": "px",
+      "default": 1280
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding Top (Desktop)",
+      "min": 0,
+      "max": 140,
+      "step": 2,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding Bottom (Desktop)",
+      "min": 0,
+      "max": 140,
+      "step": 2,
+      "unit": "px",
+      "default": 100
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "label": "Padding Top (Mobile)",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "label": "Padding Bottom (Mobile)",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 50
+    },
+    {
+      "type": "header",
+      "content": "Bottom Support Card (Optional)"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_support_card",
+      "label": "Show Bottom Support / Contact Card",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "support_card_title",
+      "label": "Support Card Title",
+      "default": "Have questions about our terms?"
+    },
+    {
+      "type": "text",
+      "id": "support_card_subtitle",
+      "label": "Support Card Subtitle",
+      "default": "Our trade and client support specialists are available Monday to Friday to assist."
+    },
+    {
+      "type": "text",
+      "id": "support_card_btn",
+      "label": "Support Button Text",
+      "default": "Contact Support"
+    },
+    {
+      "type": "url",
+      "id": "support_card_link",
+      "label": "Support Button Link"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Ellora Policy / Page"
+    }
+  ]
+}
+{% endschema %}

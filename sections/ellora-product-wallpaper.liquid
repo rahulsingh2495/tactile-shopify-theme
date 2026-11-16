@@ -1,0 +1,1258 @@
+{% comment %}
+  ==========================================================================
+  ELLORA SPACES — WALLPAPER PRODUCT TEMPLATE SECTION
+  File: sections/ellora-product-wallpaper.liquid
+  Theme Editor Name: Product - Wallpaper Details
+  Features:
+  - 4:5 mural gallery with room-scene & texture close-up switches
+  - Custom Wall Dimension Calculator (Width cm x Height cm = Panels & Drops calculation)
+  - Substrate selector (Non-Woven Matte, Textured Linen, Peel & Stick Vinyl)
+  - Selling rule badges ("Full Mural Set", "Minimum Pattern Set", "Printed to Measure")
+  - Dual action buttons: Add to Basket + Order A4 Swatch ($5.00)
+  - Architectural specifications table (Substrate, Fire Rating, Washability, Lightfastness)
+  - Accordion tabs for sequential panel hanging and bespoke lead times
+  ==========================================================================
+{% endcomment %}
+
+<div class="el-section-wrapper el-sec-prod-wp" id="ellora-prod-wp-{{ section.id }}" data-section-id="{{ section.id }}">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
+
+    #ellora-prod-wp-{{ section.id }} {
+      --el-pw-bg: {{ section.settings.bg_color | default: '#FFFFFF' }};
+      --el-pw-primary: {{ section.settings.primary_color | default: '#8E6356' }};
+      --el-pw-primary-hover: {{ section.settings.primary_hover | default: '#734E43' }};
+      --el-pw-dark: {{ section.settings.text_dark | default: '#1C1B19' }};
+      --el-pw-muted: {{ section.settings.text_muted | default: '#68645F' }};
+      --el-pw-border: {{ section.settings.border_color | default: '#ECE7E1' }};
+      --el-pw-card: {{ section.settings.card_bg | default: '#FAF8F5' }};
+
+      --el-pw-pt: {{ section.settings.padding_top | default: 40 }}px;
+      --el-pw-pb: {{ section.settings.padding_bottom | default: 80 }}px;
+
+      background-color: var(--el-pw-bg);
+      color: var(--el-pw-dark);
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      padding-top: var(--el-pw-pt);
+      padding-bottom: var(--el-pw-pb);
+    }
+
+    #ellora-prod-wp-{{ section.id }} *,
+    #ellora-prod-wp-{{ section.id }} *::before,
+    #ellora-prod-wp-{{ section.id }} *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    #ellora-prod-wp-{{ section.id }} .el-pw-container {
+      width: 90%;
+      max-width: {{ section.settings.container_max_width | default: 1280 }}px;
+      margin: 0 auto;
+    }
+
+    /* Breadcrumbs */
+    #ellora-prod-wp-{{ section.id }} .el-pw-breadcrumbs {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 11.5px;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: var(--el-pw-muted);
+      margin-bottom: 24px;
+      white-space: nowrap;
+      overflow-x: auto;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+      -webkit-overflow-scrolling: touch;
+      padding-bottom: 4px;
+      max-width: 100%;
+    }
+
+    #ellora-prod-wp-{{ section.id }} .el-pw-breadcrumbs::-webkit-scrollbar {
+      display: none;
+    }
+
+    #ellora-prod-wp-{{ section.id }} .el-pw-breadcrumbs a,
+    #ellora-prod-wp-{{ section.id }} .el-pw-breadcrumbs span {
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    #ellora-prod-wp-{{ section.id }} .el-pw-breadcrumbs a {
+      color: var(--el-pw-muted);
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    #ellora-prod-wp-{{ section.id }} .el-pw-breadcrumbs a:hover {
+      color: var(--el-pw-primary);
+    }
+
+    #ellora-prod-wp-{{ section.id }} .el-pw-breadcrumbs span.sep {
+      opacity: 0.4;
+      padding: 0 2px;
+    }
+
+    #ellora-prod-wp-{{ section.id }} .el-pw-breadcrumbs span.current-page {
+      max-width: 260px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      color: var(--el-pw-dark);
+      font-weight: 500;
+    }
+
+    /* Grid Layout */
+    #ellora-prod-wp-{{ section.id }} .el-pw-grid {
+      display: grid;
+      grid-template-columns: 1.15fr 1fr;
+      gap: 64px;
+      align-items: flex-start;
+    }
+
+    /* Left Gallery */
+    #ellora-prod-wp-{{ section.id }} .el-pw-gallery {
+      display: flex;
+      gap: 16px;
+      position: sticky;
+      top: 100px;
+    }
+
+    #ellora-prod-wp-{{ section.id }} .el-pw-thumbs {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      width: 80px;
+      flex-shrink: 0;
+    }
+
+    #ellora-prod-wp-{{ section.id }} .el-pw-thumb {
+      width: 100%;
+      aspect-ratio: 4 / 5;
+      border: 1px solid var(--el-pw-border);
+      border-radius: 2px;
+      overflow: hidden;
+      cursor: pointer;
+      background: #F0ECE7;
+      opacity: 0.7;
+      transition: all 0.2s ease;
+    }
+
+    #ellora-prod-wp-{{ section.id }} .el-pw-thumb.is-active,
+    #ellora-prod-wp-{{ section.id }} .el-pw-thumb:hover {
+      border-color: var(--el-pw-primary);
+      opacity: 1;
+    }
+
+    #ellora-prod-wp-{{ section.id }} .el-pw-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    #ellora-prod-wp-{{ section.id }} .el-pw-main-media {
+      flex: 1;
+      aspect-ratio: 4 / 5;
+      background: #F0ECE7;
+      border-radius: 2px;
+      overflow: hidden;
+      border: 1px solid var(--el-pw-border);
+      position: relative;
+    }
+
+    #ellora-prod-wp-{{ section.id }} .el-pw-main-media img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.4s ease;
+    }
+
+    #ellora-prod-wp-{{ section.id }} .el-pw-main-media:hover img {
+      transform: scale(1.03);
+    }
+
+    #ellora-prod-wp-{{ section.id }} .el-pw-wishlist-btn {
+      position: absolute;
+      top: 18px;
+      right: 18px;
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(4px);
+      border: 1px solid var(--el-pw-border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: var(--el-pw-dark);
+      transition: all 0.2s ease;
+      z-index: 10;
+    }
+
+    #ellora-prod-wp-{{ section.id }} .el-pw-wishlist-btn svg {
+      width: 20px;
+      height: 20px;
+      stroke: currentColor;
+      fill: none;
+      transition: fill 0.2s, stroke 0.2s;
+    }
+
+    #ellora-prod-wp-{{ section.id }} .el-pw-wishlist-btn.is-active svg {
+      fill: var(--el-pw-primary);
+      stroke: var(--el-pw-primary);
+    }
+
+    /* Right Info */
+    #ellora-prod-wp-{{ section.id }} .el-pw-info {
+      display: flex;
+      flex-direction: column;
+    }
+
+    #ellora-prod-wp-{{ section.id }} .el-pw-kicker-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 8px;
+      flex-wrap: nowrap;
+    }
+
+    #ellora-prod-wp-{{ section.id }} .el-pw-kicker {
+      font-size: 11.5px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      font-weight: 600;
+      color: var(--el-pw-primary);
+      flex: 1 1 auto;
+      min-width: 0;
+      line-height: 1.35;
+    }
+
+    #ellora-prod-wp-{{ section.id }} .el-pw-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      background: var(--el-pw-card);
+      border: 1px solid var(--el-pw-border);
+      padding: 5px 12px;
+      border-radius: 999px;
+      color: var(--el-pw-dark);
+      white-space: nowrap;
+      flex-shrink: 0;
+      line-height: 1.2;
+    }
+
+    #ellora-prod-wp-{{ section.id }} .el-pw-title {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 40px;
+      font-weight: 400;
+      color: var(--el-pw-dark);
+      line-height: 1.15;
+      letter-spacing: -0.01em;
+      margin-bottom: 14px;
+    }
+
+    #ellora-prod-wp-{{ section.id }} .el-pw-price-wrap {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+      margin-bottom: 20px;
+      padding-bottom: 18px;
+      border-bottom: 1px solid var(--el-pw-border);
+    }
+
+    #ellora-prod-wp-{{ section.id }} .el-pw-price {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 32px;
+      font-weight: 500;
+      color: var(--el-pw-dark);
+    }
+
+    #ellora-prod-wp-{{ section.id }} .el-pw-price-unit {
+      font-size: 13.5px;
+      color: var(--el-pw-muted);
+      letter-spacing: 0.04em;
+    }
+
+    /* Wall Dimension Calculator */
+    #ellora-prod-wp-{{ section.id }} .el-pw-calc-box {
+      background: var(--el-pw-card);
+      border: 1px solid var(--el-pw-border);
+      border-radius: 2px;
+      padding: 22px 24px;
+      margin-bottom: 28px;
+    }
+
+    #ellora-prod-wp-{{ section.id }} .el-pw-calc-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 14px;
+    }
+
+    #ellora-prod-wp-{{ section.id }} .el-pw-calc-title {
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--el-pw-dark);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    #ellora-prod-wp-{{ section.id }} .el-pw-calc-title svg {
+      width: 15px;
+      height: 15px;
+      stroke: var(--el-pw-primary);
+    }
+
+    #ellora-prod-wp-{{ section.id }} .el-pw-calc-inputs {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    #ellora-prod-wp-{{ section.id }} .el-pw-calc-field label {
+      display: block;
+      font-size: 11.5px;
+      color: var(--el-pw-muted);
+      margin-bottom: 4px;
+    }
+
+    #ellora-prod-wp-{{ section.id }} .el-pw-calc-input {
+      width: 100%;
+      background: #FFFFFF;
+      border: 1px solid var(--el-pw-border);
+      border-radius: 2px;
+      padding: 9px 12px;
+      font-size: 13.5px;
+      font-family: inherit;
+      color: var(--el-pw-dark);
+    }
+
+    #ellora-prod-wp-{{ section.id }} .el-pw-calc-note {
+      font-size: 12px;
+      color: var(--el-pw-muted);
+      line-height: 1.5;
+      margin-bottom: 12px;
+    }
+
+    #ellora-prod-wp-{{ section.id }} .el-pw-calc-result {
+      background: #FFFFFF;
+      border: 1px dashed var(--el-pw-border);
+      padding: 10px 14px;
+      border-radius: 2px;
+      font-size: 13px;
+      color: var(--el-pw-dark);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    #ellora-prod-wp-{{ section.id }} .el-pw-calc-result strong {
+      color: var(--el-pw-primary);
+    }
+
+    /* Substrate / Material Options */
+    #ellora-prod-wp-{{ section.id }} .el-pw-options {
+      margin-bottom: 28px;
+    }
+
+    #ellora-prod-wp-{{ section.id }} .el-pw-option-group {
+      margin-bottom: 18px;
+    }
+
+    #ellora-prod-wp-{{ section.id }} .el-pw-opt-header {
+      display: flex;
+      align-items: baseline;
+      gap: 6px;
+      margin-bottom: 10px;
+    }
+
+    #ellora-prod-wp-{{ section.id }} .el-pw-opt-title {
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-weight: 600;
+      color: var(--el-pw-dark);
+    }
+
+    #ellora-prod-wp-{{ section.id }} .el-pw-opt-selected {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--el-pw-primary);
+    }
+
+    #ellora-prod-wp-{{ section.id }} .el-pw-pills {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    #ellora-prod-wp-{{ section.id }} .el-pw-pill {
+      padding: 10px 18px;
+      background: #FFFFFF;
+      border: 1px solid var(--el-pw-border);
+      border-radius: 2px;
+      font-size: 13px;
+      font-family: inherit;
+      color: var(--el-pw-dark);
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    #ellora-prod-wp-{{ section.id }} .el-pw-pill:hover {
+      border-color: var(--el-pw-primary);
+      color: var(--el-pw-primary);
+    }
+
+    #ellora-prod-wp-{{ section.id }} .el-pw-pill.is-active {
+      border-color: var(--el-pw-primary);
+      background: var(--el-pw-primary);
+      color: #FFFFFF;
+      font-weight: 600;
+      box-shadow: 0 2px 6px rgba(142, 99, 86, 0.25);
+    }
+
+    /* Buttons */
+    #ellora-prod-wp-{{ section.id }} .el-pw-actions-row {
+      display: flex;
+      gap: 14px;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+
+    #ellora-prod-wp-{{ section.id }} .el-pw-stepper {
+      display: inline-flex;
+      align-items: center;
+      border: 1px solid var(--el-pw-border);
+      border-radius: 2px;
+      background: #FFFFFF;
+      height: 48px;
+      width: 120px;
+      flex-shrink: 0;
+    }
+
+    #ellora-prod-wp-{{ section.id }} .el-pw-step-btn {
+      width: 36px;
+      height: 100%;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 18px;
+      color: var(--el-pw-dark);
+      font-family: inherit;
+    }
+
+    #ellora-prod-wp-{{ section.id }} .el-pw-step-input {
+      width: 48px;
+      height: 100%;
+      border: none;
+      text-align: center;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--el-pw-dark);
+      background: transparent;
+      font-family: inherit;
+    }
+
+    #ellora-prod-wp-{{ section.id }} .el-pw-add-btn {
+      flex: 1;
+      height: 48px;
+      background: var(--el-pw-primary);
+      color: #FFFFFF;
+      border: none;
+      border-radius: 2px;
+      font-family: inherit;
+      font-size: 13.5px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      white-space: nowrap;
+      padding: 0 16px;
+      transition: background 0.2s ease;
+    }
+
+    #ellora-prod-wp-{{ section.id }} .el-pw-add-btn:hover {
+      background: var(--el-pw-primary-hover);
+    }
+
+    #ellora-prod-wp-{{ section.id }} .el-pw-sample-btn {
+      width: 100%;
+      height: 44px;
+      background: transparent;
+      border: 1px solid var(--el-pw-border);
+      color: var(--el-pw-dark);
+      border-radius: 2px;
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 28px;
+      transition: border-color 0.2s, color 0.2s;
+    }
+
+    #ellora-prod-wp-{{ section.id }} .el-pw-sample-btn:hover {
+      border-color: var(--el-pw-dark);
+      color: var(--el-pw-primary);
+    }
+
+    /* Specs */
+    #ellora-prod-wp-{{ section.id }} .el-pw-specs-card {
+      border-top: 1px solid var(--el-pw-border);
+      padding-top: 24px;
+      margin-bottom: 24px;
+    }
+
+    #ellora-prod-wp-{{ section.id }} .el-pw-specs-title {
+      font-size: 12px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      font-weight: 600;
+      color: var(--el-pw-dark);
+      margin-bottom: 14px;
+    }
+
+    #ellora-prod-wp-{{ section.id }} .el-pw-specs-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px 20px;
+      font-size: 13px;
+    }
+
+    #ellora-prod-wp-{{ section.id }} .el-pw-spec-item {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    #ellora-prod-wp-{{ section.id }} .el-pw-spec-label {
+      color: var(--el-pw-muted);
+      font-size: 11.5px;
+    }
+
+    #ellora-prod-wp-{{ section.id }} .el-pw-spec-val {
+      color: var(--el-pw-dark);
+      font-weight: 500;
+    }
+
+    /* Accordions */
+    #ellora-prod-wp-{{ section.id }} .el-pw-acc-list {
+      border-top: 1px solid var(--el-pw-border);
+    }
+
+    #ellora-prod-wp-{{ section.id }} .el-pw-acc-item {
+      border-bottom: 1px solid var(--el-pw-border);
+    }
+
+    #ellora-prod-wp-{{ section.id }} .el-pw-acc-trigger {
+      width: 100%;
+      padding: 16px 0;
+      background: none;
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--el-pw-dark);
+      text-align: left;
+    }
+
+    #ellora-prod-wp-{{ section.id }} .el-pw-acc-body {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease, padding 0.3s ease;
+      font-size: 13.5px;
+      color: var(--el-pw-muted);
+      line-height: 1.65;
+    }
+
+    #ellora-prod-wp-{{ section.id }} .el-pw-acc-item.is-open .el-pw-acc-body {
+      max-height: 400px;
+      padding-bottom: 18px;
+    }
+
+    @media (max-width: 900px) {
+      #ellora-prod-wp-{{ section.id }} .el-pw-grid {
+        grid-template-columns: 1fr;
+        gap: 36px;
+      }
+      #ellora-prod-wp-{{ section.id }} .el-pw-gallery {
+        position: static;
+        flex-direction: column-reverse;
+      }
+      #ellora-prod-wp-{{ section.id }} .el-pw-thumbs {
+        flex-direction: row;
+        width: 100%;
+        overflow-x: auto;
+      }
+      #ellora-prod-wp-{{ section.id }} .el-pw-thumb {
+        width: 70px;
+      }
+      #ellora-prod-wp-{{ section.id }} .el-pw-title {
+        font-size: 32px;
+      }
+    }
+
+    @media (max-width: 600px) {
+      #ellora-prod-wp-{{ section.id }} .el-pw-breadcrumbs {
+        font-size: 11px;
+        gap: 6px;
+        margin-bottom: 18px;
+      }
+      #ellora-prod-wp-{{ section.id }} .el-pw-breadcrumbs span.current-page {
+        max-width: 170px;
+      }
+      #ellora-prod-wp-{{ section.id }} .el-pw-kicker-row {
+        gap: 8px;
+        margin-bottom: 10px;
+      }
+      #ellora-prod-wp-{{ section.id }} .el-pw-kicker {
+        font-size: 10.5px;
+        letter-spacing: 0.12em;
+      }
+      #ellora-prod-wp-{{ section.id }} .el-pw-badge {
+        font-size: 10px;
+        padding: 4px 10px;
+        letter-spacing: 0.05em;
+      }
+    }
+  </style>
+
+  <div class="el-pw-container">
+
+    <!-- Breadcrumbs -->
+    <div class="el-pw-breadcrumbs">
+      <a href="{{ routes.root_url }}">Home</a>
+      <span class="sep">/</span>
+      <a href="/collections/all">Wallpapers &amp; Murals</a>
+      <span class="sep">/</span>
+      <span class="current-page">{{ product.title | default: 'Zen Mineral Garden Mural' }}</span>
+    </div>
+
+    <div class="el-pw-grid">
+
+      <!-- Left Gallery -->
+      <div class="el-pw-gallery">
+        <div class="el-pw-thumbs">
+          {%- if product.images.size > 0 -%}
+            {%- for image in product.images limit: 4 -%}
+              <div class="el-pw-thumb {% if forloop.first %}is-active{% endif %}" data-src="{{ image | image_url: width: 1200 }}">
+                <img src="{{ image | image_url: width: 160 }}" alt="{{ image.alt | default: product.title | escape }}" loading="lazy">
+              </div>
+            {%- endfor -%}
+          {%- else -%}
+            <div class="el-pw-thumb is-active" data-src="https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?q=80&w=1200&auto=format&fit=crop">
+              <img src="https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?q=80&w=160&auto=format&fit=crop" alt="Demo Wallpaper 1">
+            </div>
+            <div class="el-pw-thumb" data-src="https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?q=80&w=1200&auto=format&fit=crop">
+              <img src="https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?q=80&w=160&auto=format&fit=crop" alt="Demo Wallpaper 2">
+            </div>
+            <div class="el-pw-thumb" data-src="https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?q=80&w=1200&auto=format&fit=crop">
+              <img src="https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?q=80&w=160&auto=format&fit=crop" alt="Demo Wallpaper 3">
+            </div>
+          {%- endif -%}
+        </div>
+
+        <div class="el-pw-main-media">
+          <img id="elPwMainImage-{{ section.id }}" 
+               src="{% if product.featured_image %}{{ product.featured_image | image_url: width: 1200 }}{% else %}https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?q=80&w=1200&auto=format&fit=crop{% endif %}" 
+               alt="{{ product.title | default: 'Zen Mineral Garden Mural' | escape }}" 
+               loading="eager">
+
+          <button type="button" class="el-pw-wishlist-btn" 
+                  data-product-id="{{ product.id | default: 'demo-wp' }}" 
+                  data-product-title="{{ product.title | default: 'Zen Mineral Garden Mural' | escape }}" 
+                  data-product-price="{% if product.price %}{{ product.price | money }}{% else %}$340.00{% endif %}"
+                  data-product-image="{% if product.featured_image %}{{ product.featured_image | image_url: width: 400 }}{% else %}https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?q=80&w=400&auto=format&fit=crop{% endif %}"
+                  aria-label="Add to Wishlist">
+            <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Right Info -->
+      <div class="el-pw-info">
+
+        <div class="el-pw-kicker-row">
+          <span class="el-pw-kicker">{{ section.settings.kicker | default: 'ARCHITECTURAL WALL COVERINGS & MURALS' }}</span>
+          <span class="el-pw-badge">{{ section.settings.selling_badge | default: 'Full Mural Set' }}</span>
+        </div>
+
+        <h1 class="el-pw-title">{{ product.title | default: 'Zen Mineral Garden Mural' }}</h1>
+
+        <div class="el-pw-price-wrap">
+          <span class="el-pw-price" id="elPwPrice-{{ section.id }}">
+            {% if product.price %}{{ product.price | money }}{% else %}$340.00{% endif %}
+          </span>
+          <span class="el-pw-price-unit">{{ section.settings.price_unit | default: '/ Complete Mural Set' }}</span>
+        </div>
+
+        <!-- Custom Wall Dimension Calculator -->
+        {%- if section.settings.show_dimension_calculator -%}
+          <div class="el-pw-calc-box">
+            <div class="el-pw-calc-header">
+              <span class="el-pw-calc-title">
+                <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path></svg>
+                Custom Wall Sizing Calculator
+              </span>
+              <span style="font-size: 11px; color: var(--el-pw-muted);">Panel Drops Estimator</span>
+            </div>
+
+            <div class="el-pw-calc-inputs">
+              <div class="el-pw-calc-field">
+                <label for="elWpWidth">Wall Width (cm)</label>
+                <input type="number" id="elWpWidth" class="el-pw-calc-input" placeholder="e.g. 350" min="50" step="10" value="350">
+              </div>
+              <div class="el-pw-calc-field">
+                <label for="elWpHeight">Wall Height (cm)</label>
+                <input type="number" id="elWpHeight" class="el-pw-calc-input" placeholder="e.g. 260" min="50" step="5" value="260">
+              </div>
+            </div>
+
+            <p class="el-pw-calc-note">
+              Murals are printed sequentially into numbered drops (Panels A, B, C...) with a 5cm trimming allowance on all sides.
+            </p>
+
+            <div class="el-pw-calc-result" id="elWpCalcResult">
+              <span>Required: <strong>5 Sequential Panels</strong> (9.1 M²)</span>
+              <span id="elWpCostEstimate">Approx. $340.00</span>
+            </div>
+          </div>
+        {%- endif -%}
+
+        <!-- Dynamic Variant Options -->
+        <div class="el-pw-options" id="elWpOptions-{{ section.id }}">
+          {%- unless product.has_only_default_variant -%}
+            {%- for option in product.options_with_values -%}
+              <div class="el-pw-option-group" data-option-index="{{ forloop.index0 }}">
+                <div class="el-pw-opt-header">
+                  <span class="el-pw-opt-title">{{ option.name }}</span>
+                  <span class="el-pw-opt-selected" data-header-val="{{ forloop.index0 }}">: {{ option.selected_value }}</span>
+                </div>
+                <div class="el-pw-pills" role="radiogroup" aria-label="{{ option.name }}">
+                  {%- for value in option.values -%}
+                    <button type="button" 
+                            class="el-pw-pill {% if option.selected_value == value %}is-active{% endif %}" 
+                            data-option-index="{{ forloop.parentloop.index0 }}" 
+                            data-value="{{ value | escape }}">
+                      {{ value }}
+                    </button>
+                  {%- endfor -%}
+                </div>
+              </div>
+            {%- endfor -%}
+          {%- else -%}
+            <!-- Fallback Substrate / Paper Type -->
+            <div class="el-pw-option-group" data-option-index="0">
+              <div class="el-pw-opt-header">
+                <span class="el-pw-opt-title">Select Substrate / Finish</span>
+                <span class="el-pw-opt-selected" data-header-val="0">: Non-Woven Smooth Matte</span>
+              </div>
+              <div class="el-pw-pills">
+                <button type="button" class="el-pw-pill is-active" data-option-index="0" data-value="Non-Woven Smooth Matte">Non-Woven Smooth Matte</button>
+                <button type="button" class="el-pw-pill" data-option-index="0" data-value="Heavyweight Linen Weave">Heavyweight Linen Weave</button>
+                <button type="button" class="el-pw-pill" data-option-index="0" data-value="Peel & Stick Vinyl">Peel &amp; Stick Vinyl</button>
+              </div>
+            </div>
+          {%- endunless -%}
+        </div>
+
+        <!-- Hidden Native Variant Select for Shopify Cart -->
+        <select name="id" id="elWpMasterSelect-{{ section.id }}" style="display: none;">
+          {%- for variant in product.variants -%}
+            <option value="{{ variant.id }}"
+              {% if variant == product.selected_or_first_available_variant %}selected="selected"{% endif %}
+              data-price="{% if variant.price %}{{ variant.price | money }}{% endif %}"
+              data-price-raw="{{ variant.price }}"
+              data-available="{{ variant.available }}"
+              data-opt1="{{ variant.option1 | escape }}"
+              data-opt2="{{ variant.option2 | escape }}"
+              data-opt3="{{ variant.option3 | escape }}"
+              data-img="{% if variant.featured_image %}{{ variant.featured_image | image_url: width: 1200 }}{% endif %}">
+              {{ variant.title }}
+            </option>
+          {%- endfor -%}
+        </select>
+
+        <!-- Purchase Actions -->
+        <div class="el-pw-actions-row">
+          <div class="el-pw-stepper">
+            <button type="button" class="el-pw-step-btn" id="elWpMinus">&minus;</button>
+            <input type="number" id="elWpQty" class="el-pw-step-input" value="1" min="1">
+            <button type="button" class="el-pw-step-btn" id="elWpPlus">&plus;</button>
+          </div>
+
+          <button type="button" class="el-pw-add-btn" id="elWpAddToCart">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 9h20l-2 11H4L2 9z"></path><path d="M7 9l4.5-6"></path><path d="M17 9l-4.5-6"></path></svg>
+            Add to Cart
+          </button>
+        </div>
+
+        <!-- Architectural Specifications Table -->
+        <div class="el-pw-specs-card">
+          <h3 class="el-pw-specs-title">Mural &amp; Paper Specifications</h3>
+          <div class="el-pw-specs-grid">
+            <div class="el-pw-spec-item">
+              <span class="el-pw-spec-label">Substrate Base</span>
+              <span class="el-pw-spec-val">{{ section.settings.spec_substrate | default: 'FSC-Certified Non-Woven (180 gsm)' }}</span>
+            </div>
+            <div class="el-pw-spec-item">
+              <span class="el-pw-spec-label">Panel Width</span>
+              <span class="el-pw-spec-val">{{ section.settings.spec_panel_width | default: '70 cm Custom Drops' }}</span>
+            </div>
+            <div class="el-pw-spec-item">
+              <span class="el-pw-spec-label">Washability</span>
+              <span class="el-pw-spec-val">{{ section.settings.spec_washability | default: 'Spongeable with damp cloth' }}</span>
+            </div>
+            <div class="el-pw-spec-item">
+              <span class="el-pw-spec-label">Application Method</span>
+              <span class="el-pw-spec-val">{{ section.settings.spec_application | default: 'Paste the Wall (Easy hanging)' }}</span>
+            </div>
+            <div class="el-pw-spec-item">
+              <span class="el-pw-spec-label">Fire Rating</span>
+              <span class="el-pw-spec-val">{{ section.settings.spec_fire | default: 'Euroclass B-s1, d0 / Class A ASTM' }}</span>
+            </div>
+            <div class="el-pw-spec-item">
+              <span class="el-pw-spec-label">Lightfastness</span>
+              <span class="el-pw-spec-val">Excellent UV Resistance (7/8)</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Accordions -->
+        <div class="el-pw-acc-list">
+          <div class="el-pw-acc-item is-open">
+            <button type="button" class="el-pw-acc-trigger">
+              <span>Hanging &amp; Sequential Panel Alignment</span>
+              <span>&plus;</span>
+            </button>
+            <div class="el-pw-acc-body">
+              <p>Mural drops are pre-numbered at the top of each roll (Drop 1, Drop 2...). Hang from left to right using edge-to-edge butt joins. Apply ready-mixed wallpaper adhesive directly to the wall surface for bubble-free positioning.</p>
+            </div>
+          </div>
+
+          <div class="el-pw-acc-item">
+            <button type="button" class="el-pw-acc-trigger">
+              <span>Bespoke Printing &amp; Dispatch Lead Time</span>
+              <span>&plus;</span>
+            </button>
+            <div class="el-pw-acc-body">
+              <p>Each mural is digitally printed to order using VOC-free, odor-free archival inks. Custom mural orders are printed, precision-trimmed, and dispatched in heavy protective cardboard cylinders within 5 to 7 business days.</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+<script>
+  (function() {
+    var root = document.getElementById('ellora-prod-wp-{{ section.id }}');
+    if (!root) return;
+
+    // Thumbnail switcher
+    var thumbs = root.querySelectorAll('.el-pw-thumb');
+    var mainImg = document.getElementById('elPwMainImage-{{ section.id }}');
+    thumbs.forEach(function(thumb) {
+      thumb.addEventListener('click', function() {
+        thumbs.forEach(function(t) { t.classList.remove('is-active'); });
+        thumb.classList.add('is-active');
+        if (mainImg) mainImg.src = thumb.getAttribute('data-src');
+      });
+    });
+
+    // Dynamic Variant Pill Selection
+    var masterSelect = root.querySelector('#elWpMasterSelect-{{ section.id }}');
+    var priceDisplay = root.querySelector('.el-pw-price');
+    var currentVariantId = {{ product.selected_or_first_available_variant.id | default: 0 }};
+
+    function updateMatchedVariant() {
+      if (!masterSelect) return;
+      var optionGroups = root.querySelectorAll('.el-pw-option-group');
+      var selectedVals = [];
+      optionGroups.forEach(function(group) {
+        var active = group.querySelector('.el-pw-pill.is-active');
+        selectedVals.push(active ? active.getAttribute('data-value') : '');
+      });
+
+      var matchedOpt = null;
+      for (var i = 0; i < masterSelect.options.length; i++) {
+        var opt = masterSelect.options[i];
+        var o1 = opt.getAttribute('data-opt1') || '';
+        var o2 = opt.getAttribute('data-opt2') || '';
+        var o3 = opt.getAttribute('data-opt3') || '';
+
+        var matches = true;
+        if (selectedVals[0] !== undefined && o1 !== selectedVals[0]) matches = false;
+        if (selectedVals[1] !== undefined && o2 !== selectedVals[1]) matches = false;
+        if (selectedVals[2] !== undefined && o3 !== selectedVals[2]) matches = false;
+
+        if (matches) {
+          matchedOpt = opt;
+          break;
+        }
+      }
+
+      if (matchedOpt) {
+        masterSelect.value = matchedOpt.value;
+        currentVariantId = parseInt(matchedOpt.value, 10);
+
+        // Update live price text
+        var pText = matchedOpt.getAttribute('data-price');
+        if (pText && priceDisplay) {
+          priceDisplay.textContent = pText;
+        }
+
+        // Update availability
+        var isAvail = matchedOpt.getAttribute('data-available') === 'true';
+        if (addBtn) {
+          if (isAvail) {
+            addBtn.removeAttribute('disabled');
+            addBtn.style.opacity = '1';
+            addBtn.style.pointerEvents = 'auto';
+            addBtn.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 9h20l-2 11H4L2 9z"></path><path d="M7 9l4.5-6"></path><path d="M17 9l-4.5-6"></path></svg> Add to Cart';
+          } else {
+            addBtn.setAttribute('disabled', 'disabled');
+            addBtn.style.opacity = '0.5';
+            addBtn.style.pointerEvents = 'none';
+            addBtn.textContent = 'Sold Out';
+          }
+        }
+
+        // Update main image if variant has one
+        var vImg = matchedOpt.getAttribute('data-img');
+        if (vImg && mainImg) {
+          mainImg.src = vImg;
+        }
+
+        // Recalculate cost
+        calculateWallpaper();
+      }
+    }
+
+    root.querySelectorAll('.el-pw-pill').forEach(function(pill) {
+      pill.addEventListener('click', function(e) {
+        e.preventDefault();
+        var group = pill.closest('.el-pw-option-group');
+        if (!group) return;
+
+        group.querySelectorAll('.el-pw-pill').forEach(function(p) {
+          p.classList.remove('is-active');
+        });
+        pill.classList.add('is-active');
+
+        var labelDisplay = group.querySelector('[data-header-val]');
+        if (labelDisplay) {
+          labelDisplay.textContent = ': ' + pill.getAttribute('data-value');
+        }
+
+        updateMatchedVariant();
+      });
+    });
+
+    // Wall Dimension Calculator
+    var widthInput = root.querySelector('#elWpWidth');
+    var heightInput = root.querySelector('#elWpHeight');
+    var resultText = root.querySelector('#elWpCalcResult');
+    var costEstimate = root.querySelector('#elWpCostEstimate');
+    var qtyInput = root.querySelector('#elWpQty');
+
+    function calculateWallpaper() {
+      var w = parseFloat(widthInput ? widthInput.value : 350) || 350;
+      var h = parseFloat(heightInput ? heightInput.value : 260) || 260;
+
+      var dropWidth = 70; // 70cm standard drop
+      var panelCount = Math.ceil(w / dropWidth);
+      if (panelCount < 1) panelCount = 1;
+
+      var sqm = ((w * h) / 10000).toFixed(1);
+      var unitPrice = masterSelect && masterSelect.selectedOptions && masterSelect.selectedOptions[0] ? (parseFloat(masterSelect.selectedOptions[0].getAttribute('data-price-raw')) / 100) : {{ product.price | default: 22000 | divided_by: 100.0 }};
+      var estimatedCost = (panelCount * (unitPrice || 68.00)).toFixed(2);
+
+      if (resultText) {
+        resultText.querySelector('strong').textContent = panelCount + ' Sequential Panels (' + sqm + ' M²)';
+      }
+      if (costEstimate) {
+        costEstimate.textContent = 'Approx. $' + estimatedCost;
+      }
+    }
+
+    if (widthInput) widthInput.addEventListener('input', calculateWallpaper);
+    if (heightInput) heightInput.addEventListener('input', calculateWallpaper);
+
+    // Quantity buttons
+    var minusBtn = root.querySelector('#elWpMinus');
+    var plusBtn = root.querySelector('#elWpPlus');
+    if (minusBtn && qtyInput) {
+      minusBtn.addEventListener('click', function() {
+        var v = parseInt(qtyInput.value, 10) || 1;
+        if (v > 1) qtyInput.value = v - 1;
+      });
+    }
+    if (plusBtn && qtyInput) {
+      plusBtn.addEventListener('click', function() {
+        var v = parseInt(qtyInput.value, 10) || 1;
+        qtyInput.value = v + 1;
+      });
+    }
+
+    // Accordions
+    var accTriggers = root.querySelectorAll('.el-pw-acc-trigger');
+    accTriggers.forEach(function(trig) {
+      trig.addEventListener('click', function() {
+        var item = trig.closest('.el-pw-acc-item');
+        item.classList.toggle('is-open');
+      });
+    });
+
+    // Add to Cart
+    var addBtn = root.querySelector('#elWpAddToCart');
+    if (addBtn) {
+      addBtn.addEventListener('click', function() {
+        addBtn.textContent = 'Adding...';
+        var variantId = currentVariantId || {{ product.selected_or_first_available_variant.id | default: 0 }};
+        var qty = parseInt(qtyInput ? qtyInput.value : 1, 10);
+
+        if (!variantId) {
+          setTimeout(function() {
+            addBtn.innerHTML = '&#10003; Added to Cart';
+            window.dispatchEvent(new CustomEvent('ellora:cart:open'));
+            setTimeout(function() { addBtn.innerHTML = 'Add to Cart'; }, 2000);
+          }, 400);
+          return;
+        }
+
+        fetch('/cart/add.js', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+          body: JSON.stringify({ id: variantId, quantity: qty })
+        })
+        .then(function(r) { return r.json(); })
+        .then(function() {
+          addBtn.innerHTML = '&#10003; Added to Cart';
+          window.dispatchEvent(new CustomEvent('ellora:cart:refresh'));
+          window.dispatchEvent(new CustomEvent('ellora:cart:open'));
+          setTimeout(function() { addBtn.innerHTML = 'Add to Cart'; }, 2000);
+        })
+        .catch(function(err) {
+          console.error(err);
+          addBtn.innerHTML = 'Add to Cart';
+        });
+      });
+    }
+
+    // Wishlist Toggle
+    var wishBtn = root.querySelector('.el-pw-wishlist-btn');
+    if (wishBtn) {
+      var prodId = wishBtn.getAttribute('data-product-id');
+      try {
+        var list = JSON.parse(localStorage.getItem('ellora_wishlist') || '[]');
+        if (list.some(function(x) { return x.id === prodId; })) {
+          wishBtn.classList.add('is-active');
+        }
+      } catch(e){}
+
+      wishBtn.addEventListener('click', function() {
+        var list = JSON.parse(localStorage.getItem('ellora_wishlist') || '[]');
+        var idx = list.findIndex(function(x) { return x.id === prodId; });
+        if (idx > -1) {
+          list.splice(idx, 1);
+          wishBtn.classList.remove('is-active');
+        } else {
+          list.push({
+            id: prodId,
+            title: wishBtn.getAttribute('data-product-title'),
+            price: wishBtn.getAttribute('data-product-price'),
+            image: wishBtn.getAttribute('data-product-image'),
+            url: window.location.pathname
+          });
+          wishBtn.classList.add('is-active');
+        }
+        localStorage.setItem('ellora_wishlist', JSON.stringify(list));
+        window.dispatchEvent(new CustomEvent('ellora:wishlist:updated'));
+      });
+    }
+
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Product - Wallpaper",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "kicker",
+      "label": "Kicker Subtitle",
+      "default": "ARCHITECTURAL WALL COVERINGS & MURALS"
+    },
+    {
+      "type": "text",
+      "id": "selling_badge",
+      "label": "Selling Rule Badge",
+      "default": "Full Mural Set"
+    },
+    {
+      "type": "text",
+      "id": "price_unit",
+      "label": "Price Unit Suffix",
+      "default": "/ Complete Mural Set"
+    },
+    {
+      "type": "header",
+      "content": "Wall Dimension Calculator"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_dimension_calculator",
+      "label": "Enable Wall Dimension Calculator",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Specifications Defaults"
+    },
+    {
+      "type": "text",
+      "id": "spec_substrate",
+      "label": "Substrate Material",
+      "default": "FSC-Certified Non-Woven (180 gsm)"
+    },
+    {
+      "type": "text",
+      "id": "spec_panel_width",
+      "label": "Standard Drop Width",
+      "default": "70 cm Custom Drops"
+    },
+    {
+      "type": "text",
+      "id": "spec_washability",
+      "label": "Washability",
+      "default": "Spongeable with damp cloth"
+    },
+    {
+      "type": "text",
+      "id": "spec_application",
+      "label": "Application Method",
+      "default": "Paste the Wall (Easy hanging)"
+    },
+    {
+      "type": "text",
+      "id": "spec_fire",
+      "label": "Fire Certification",
+      "default": "Euroclass B-s1, d0 / Class A ASTM"
+    },
+    {
+      "type": "header",
+      "content": "Colors & Layout"
+    },
+    {
+      "type": "range",
+      "id": "container_max_width",
+      "label": "Container Max Width",
+      "min": 1000,
+      "max": 1600,
+      "step": 20,
+      "unit": "px",
+      "default": 1280
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "card_bg",
+      "label": "Calculator & Card Background",
+      "default": "#FAF8F5"
+    },
+    {
+      "type": "color",
+      "id": "primary_color",
+      "label": "Primary Accent Color",
+      "default": "#8E6356"
+    },
+    {
+      "type": "color",
+      "id": "primary_hover",
+      "label": "Primary Accent Hover",
+      "default": "#734E43"
+    },
+    {
+      "type": "color",
+      "id": "text_dark",
+      "label": "Dark Text Color",
+      "default": "#1C1B19"
+    },
+    {
+      "type": "color",
+      "id": "text_muted",
+      "label": "Muted Text Color",
+      "default": "#68645F"
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "Border Color",
+      "default": "#ECE7E1"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding Top (Desktop)",
+      "min": 0,
+      "max": 140,
+      "step": 2,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding Bottom (Desktop)",
+      "min": 0,
+      "max": 140,
+      "step": 2,
+      "unit": "px",
+      "default": 80
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product - Wallpaper"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,375 @@
+{% comment %}
+  ==========================================================================
+  ELLORA SPACES — SECTION 3: EDITORIAL MANIFESTO (STICKY SCROLL TEXT FILL)
+  File: sections/ellora-manifesto.liquid
+  Fully customizable via Shopify Theme Customizer
+  Includes Top & Bottom Padding Controls + Compact Height Options
+  ==========================================================================
+{% endcomment %}
+
+<div class="el-section-wrapper el-sec-manifesto-wrapper" id="ellora-manifesto-{{ section.id }}">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
+
+    #ellora-manifesto-{{ section.id }} {
+      --el-bg-main: {{ section.settings.bg_color | default: '#FAF9F6' }};
+      --el-dark: #1C1B19;
+      --el-highlight: {{ section.settings.highlight_color | default: '#8E6356' }};
+      --el-dim: #DDD7CE;
+      --el-font-serif: 'Cormorant Garamond', Georgia, serif;
+      --el-font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+
+      width: 100%;
+      position: relative;
+      font-family: var(--el-font-sans);
+      box-sizing: border-box;
+      -webkit-font-smoothing: antialiased;
+      background-color: var(--el-bg-main);
+    }
+
+    #ellora-manifesto-{{ section.id }} *,
+    #ellora-manifesto-{{ section.id }} *::before,
+    #ellora-manifesto-{{ section.id }} *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    {%- if section.settings.enable_sticky_scroll -%}
+      #ellora-manifesto-{{ section.id }} .el-manifesto-sticky-wrapper {
+        position: relative;
+        height: {{ section.settings.scroll_depth | default: '160vh' }};
+        background-color: var(--el-bg-main);
+      }
+
+      #ellora-manifesto-{{ section.id }} .el-manifesto-sticky-container {
+        position: -webkit-sticky;
+        position: sticky;
+        top: 0;
+        height: {{ section.settings.section_height | default: '65vh' }};
+        min-height: {{ section.settings.min_height | default: 360 }}px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: var(--el-bg-main);
+        z-index: 5;
+        box-sizing: border-box;
+        padding-top: {{ section.settings.padding_top | default: 30 }}px;
+        padding-bottom: {{ section.settings.padding_bottom | default: 30 }}px;
+      }
+    {%- else -%}
+      #ellora-manifesto-{{ section.id }} .el-manifesto-sticky-wrapper {
+        position: relative;
+        height: auto;
+        background-color: var(--el-bg-main);
+      }
+
+      #ellora-manifesto-{{ section.id }} .el-manifesto-sticky-container {
+        position: relative;
+        height: auto;
+        min-height: auto;
+        display: block;
+        background-color: var(--el-bg-main);
+        padding-top: {{ section.settings.padding_top | default: 50 }}px;
+        padding-bottom: {{ section.settings.padding_bottom | default: 50 }}px;
+      }
+    {%- endif -%}
+
+    #ellora-manifesto-{{ section.id }} .el-manifesto-container {
+      width: 90%;
+      max-width: 1720px;
+      margin: 0 auto;
+      padding: 0;
+    }
+
+    #ellora-manifesto-{{ section.id }} .el-manifesto-kicker {
+      font-family: var(--el-font-sans);
+      font-size: 13.5px;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--el-dark);
+      margin-bottom: {{ section.settings.kicker_margin | default: 28 }}px;
+      display: block;
+    }
+
+    #ellora-manifesto-{{ section.id }} .el-manifesto-heading {
+      font-family: var(--el-font-serif);
+      font-size: {{ section.settings.font_size | default: 46 }}px;
+      line-height: 1.34;
+      letter-spacing: -0.01em;
+      font-weight: 400;
+      margin: 0;
+      text-indent: 42%;
+    }
+
+    #ellora-manifesto-{{ section.id }} .el-manifesto-lead {
+      color: var(--el-highlight);
+      display: inline;
+    }
+
+    #ellora-manifesto-{{ section.id }} .el-manifesto-body {
+      display: inline;
+    }
+
+    #ellora-manifesto-{{ section.id }} .el-scroll-word {
+      {%- if section.settings.enable_sticky_scroll -%}
+        color: var(--el-dim);
+        transition: color 0.38s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      {%- else -%}
+        color: var(--el-highlight);
+      {%- endif -%}
+      display: inline;
+    }
+
+    #ellora-manifesto-{{ section.id }} .el-scroll-word.is-active {
+      color: var(--el-highlight);
+    }
+
+    @media (max-width: 900px) {
+      {%- if section.settings.enable_sticky_scroll -%}
+        #ellora-manifesto-{{ section.id }} .el-manifesto-sticky-wrapper {
+          height: 150vh;
+        }
+        #ellora-manifesto-{{ section.id }} .el-manifesto-sticky-container {
+          height: auto;
+          min-height: 340px;
+        }
+      {%- endif -%}
+      #ellora-manifesto-{{ section.id }} .el-manifesto-heading {
+        font-size: 34px !important;
+        line-height: 1.4;
+        text-indent: 0;
+      }
+      #ellora-manifesto-{{ section.id }} .el-manifesto-kicker {
+        margin-bottom: 20px;
+      }
+    }
+
+    @media (max-width: 640px) {
+      {%- if section.settings.enable_sticky_scroll -%}
+        #ellora-manifesto-{{ section.id }} .el-manifesto-sticky-wrapper {
+          height: 130vh;
+        }
+      {%- endif -%}
+      #ellora-manifesto-{{ section.id }} .el-manifesto-heading {
+        font-size: 26px !important;
+        line-height: 1.45;
+        text-indent: 0;
+      }
+    }
+  </style>
+
+  <div class="el-manifesto-sticky-wrapper" id="elStickyWrapper-{{ section.id }}">
+    <div class="el-manifesto-sticky-container">
+      <div class="el-manifesto-container" id="about">
+        {%- if section.settings.kicker != blank -%}
+          <span class="el-manifesto-kicker">{{ section.settings.kicker }}</span>
+        {%- endif -%}
+        <h2 class="el-manifesto-heading">
+          <span class="el-manifesto-lead">{{ section.settings.lead_text }} </span>
+          <span class="el-manifesto-body" id="elManifestoBody-{{ section.id }}">
+            {%- assign words = section.settings.scroll_body | split: ' ' -%}
+            {%- for word in words -%}
+              <span class="el-scroll-word">{{ word }} </span>
+            {%- endfor -%}
+          </span>
+        </h2>
+      </div>
+    </div>
+  </div>
+
+  {%- if section.settings.enable_sticky_scroll -%}
+    <script>
+      (function() {
+        const wrapper = document.getElementById('elStickyWrapper-{{ section.id }}');
+        const body = document.getElementById('elManifestoBody-{{ section.id }}');
+        if (!wrapper || !body) return;
+
+        const words = body.querySelectorAll('.el-scroll-word');
+        const totalWords = words.length;
+        if (totalWords === 0) return;
+
+        let ticking = false;
+
+        function updateFill() {
+          const rect = wrapper.getBoundingClientRect();
+          const windowH = window.innerHeight;
+          const totalDistance = rect.height - windowH;
+
+          if (totalDistance <= 0) {
+            words.forEach(w => w.classList.add('is-active'));
+            ticking = false;
+            return;
+          }
+
+          const scrolled = -rect.top;
+          const rawProgress = scrolled / totalDistance;
+          const progress = Math.min(Math.max(rawProgress, 0), 1);
+
+          const activeCount = Math.floor(progress * (totalWords + 1));
+
+          for (let i = 0; i < totalWords; i++) {
+            if (i < activeCount) {
+              words[i].classList.add('is-active');
+            } else {
+              words[i].classList.remove('is-active');
+            }
+          }
+
+          ticking = false;
+        }
+
+        window.addEventListener('scroll', function() {
+          if (!ticking) {
+            window.requestAnimationFrame(updateFill);
+            ticking = true;
+          }
+        }, { passive: true });
+
+        updateFill();
+      })();
+    </script>
+  {%- endif -%}
+</div>
+
+{% schema %}
+{
+  "name": "Ellora Brand Manifesto",
+  "tag": "section",
+  "class": "section-ellora-manifesto",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Section Padding & Spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 140,
+      "step": 5,
+      "unit": "px",
+      "label": "Top Padding",
+      "default": 35
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 140,
+      "step": 5,
+      "unit": "px",
+      "label": "Bottom Padding",
+      "default": 35
+    },
+    {
+      "type": "range",
+      "id": "kicker_margin",
+      "min": 10,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "label": "Kicker Bottom Spacing",
+      "default": 26
+    },
+    {
+      "type": "header",
+      "content": "Layout & Height"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_sticky_scroll",
+      "label": "Enable Sticky Scroll Text-Fill Effect",
+      "default": true,
+      "info": "If disabled, section acts as a standard static editorial block with regular padding."
+    },
+    {
+      "type": "select",
+      "id": "section_height",
+      "label": "Section Height (When Sticky Enabled)",
+      "options": [
+        { "value": "55vh", "label": "Very Compact (55vh)" },
+        { "value": "65vh", "label": "Compact & Balanced (65vh)" },
+        { "value": "80vh", "label": "Standard (80vh)" },
+        { "value": "100vh", "label": "Full Screen (100vh)" }
+      ],
+      "default": "65vh"
+    },
+    {
+      "type": "range",
+      "id": "min_height",
+      "min": 250,
+      "max": 600,
+      "step": 10,
+      "unit": "px",
+      "label": "Minimum Container Height",
+      "default": 360
+    },
+    {
+      "type": "select",
+      "id": "scroll_depth",
+      "label": "Scroll Animation Duration",
+      "options": [
+        { "value": "130vh", "label": "Snappy & Quick (130vh)" },
+        { "value": "160vh", "label": "Standard (160vh)" },
+        { "value": "220vh", "label": "Extended (220vh)" }
+      ],
+      "default": "160vh"
+    },
+    {
+      "type": "header",
+      "content": "Typography & Content"
+    },
+    {
+      "type": "text",
+      "id": "kicker",
+      "label": "Kicker Subtitle",
+      "default": "ABOUT ELLORA"
+    },
+    {
+      "type": "range",
+      "id": "font_size",
+      "min": 28,
+      "max": 64,
+      "step": 2,
+      "unit": "px",
+      "label": "Heading Font Size (Desktop)",
+      "default": 46
+    },
+    {
+      "type": "textarea",
+      "id": "lead_text",
+      "label": "Lead-in Highlighted Text",
+      "default": "Ellora was created to bring warmth, texture, and lasting beauty into everyday spaces."
+    },
+    {
+      "type": "textarea",
+      "id": "scroll_body",
+      "label": "Body Text (Fills in on Scroll)",
+      "default": "From understated neutrals to rich, expressive surfaces, our collection is thoughtfully curated to help you create environments that feel grounded, refined, and enduring."
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Canvas Background",
+      "default": "#FAF9F6"
+    },
+    {
+      "type": "color",
+      "id": "highlight_color",
+      "label": "Highlight Text Color",
+      "default": "#8E6356"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Ellora Brand Manifesto"
+    }
+  ]
+}
+{% endschema %}

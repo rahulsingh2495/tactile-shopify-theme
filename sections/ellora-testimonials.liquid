@@ -1,0 +1,551 @@
+{% comment %}
+  ==========================================================================
+  ELLORA SPACES — SECTION 9: CONSUMER LOVE LETTERS (TESTIMONIALS SLIDER)
+  File: sections/ellora-testimonials.liquid
+  Pixel-perfect implementation matching the UI reference image
+  Features:
+  - 'CONSUMER LOVE LETTERS' kicker with solid dark underline
+  - Large decorative quote icon at top right
+  - Middle-right aligned italic serif editorial quote
+  - Bottom bar with live slide counter (1 / N), client avatar & role, and square nav buttons
+  - Interactive vanilla JS slider with smooth transitions
+  ==========================================================================
+{% endcomment %}
+
+<div class="el-section-wrapper el-sec-testimonials-wrapper" id="ellora-testimonials-{{ section.id }}">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
+
+    #ellora-testimonials-{{ section.id }} {
+      --el-bg-main: {{ section.settings.bg_color | default: '#FAF9F6' }};
+      --el-dark: #1C1B19;
+      --el-muted: #736E67;
+      --el-primary: #B86B53;
+      --el-quote-color: {{ section.settings.quote_color | default: '#4A453F' }};
+      --el-font-serif: 'Cormorant Garamond', Georgia, serif;
+      --el-font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+
+      background-color: var(--el-bg-main);
+      padding-top: {{ section.settings.padding_top | default: 80 }}px;
+      padding-bottom: {{ section.settings.padding_bottom | default: 90 }}px;
+      width: 100%;
+      position: relative;
+      font-family: var(--el-font-sans);
+      box-sizing: border-box;
+      -webkit-font-smoothing: antialiased;
+      overflow: hidden;
+    }
+
+    #ellora-testimonials-{{ section.id }} *,
+    #ellora-testimonials-{{ section.id }} *::before,
+    #ellora-testimonials-{{ section.id }} *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    #ellora-testimonials-{{ section.id }} .el-sec-testimonials-container {
+      width: 90%;
+      max-width: 1720px;
+      margin: 0 auto;
+    }
+
+    #ellora-testimonials-{{ section.id }} .el-testimonial-box {
+      width: 100%;
+      position: relative;
+    }
+
+    /* -----------------------------------------------------------------------
+       TOP HEADER: Kicker with underline (Left) & Giant Quote Mark (Right)
+       ----------------------------------------------------------------------- */
+    #ellora-testimonials-{{ section.id }} .el-testimonial-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin-bottom: 20px;
+      width: 100%;
+    }
+
+    #ellora-testimonials-{{ section.id }} .el-testimonial-kicker {
+      font-family: var(--el-font-sans);
+      font-size: 13.5px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--el-dark);
+      padding-bottom: 8px;
+      border-bottom: 1.5px solid var(--el-dark);
+      display: inline-block;
+    }
+
+    #ellora-testimonials-{{ section.id }} .el-quote-icon {
+      font-family: var(--el-font-serif);
+      font-size: 140px;
+      line-height: 0.55;
+      color: #EFEBE4;
+      user-select: none;
+      pointer-events: none;
+      margin-top: 10px;
+    }
+
+    /* -----------------------------------------------------------------------
+       MAIN QUOTE TEXT: Offset / Indented Italic Serif
+       ----------------------------------------------------------------------- */
+    #ellora-testimonials-{{ section.id }} .el-testimonial-quote-wrap {
+      width: 100%;
+      display: flex;
+      justify-content: flex-end;
+      margin: 30px 0 65px;
+    }
+
+    #ellora-testimonials-{{ section.id }} .el-testimonial-quote {
+      font-family: var(--el-font-serif);
+      font-size: {{ section.settings.quote_size | default: 38 }}px;
+      line-height: 1.35;
+      font-weight: 400;
+      color: var(--el-quote-color);
+      font-style: italic;
+      max-width: 980px;
+      width: 100%;
+      text-indent: 36%;
+      text-align: left;
+      margin: 0;
+      border: none !important;
+      border-left: none !important;
+      padding: 0 !important;
+      outline: none !important;
+      transition: opacity 0.25s ease, transform 0.25s ease;
+    }
+
+    /* -----------------------------------------------------------------------
+       FOOTER: Counter (Left), Avatar & Author (Center-Left), Buttons (Right)
+       ----------------------------------------------------------------------- */
+    #ellora-testimonials-{{ section.id }} .el-testimonial-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+    }
+
+    #ellora-testimonials-{{ section.id }} .el-testimonial-footer-left {
+      display: flex;
+      align-items: center;
+      gap: 120px;
+    }
+
+    #ellora-testimonials-{{ section.id }} .el-testimonial-counter {
+      font-family: var(--el-font-sans);
+      font-size: 18px;
+      font-weight: 400;
+      color: var(--el-dark);
+      letter-spacing: 0.04em;
+      min-width: 60px;
+    }
+
+    #ellora-testimonials-{{ section.id }} .el-testimonial-author {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      text-align: left;
+    }
+
+    #ellora-testimonials-{{ section.id }} .el-author-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      object-fit: cover;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+      display: block;
+      background-color: #E8E3DC;
+      transition: opacity 0.25s ease;
+    }
+
+    #ellora-testimonials-{{ section.id }} .el-author-info {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    #ellora-testimonials-{{ section.id }} .el-author-name {
+      font-family: var(--el-font-serif);
+      font-size: 19px;
+      font-weight: 600;
+      color: var(--el-dark);
+      line-height: 1.15;
+      letter-spacing: -0.01em;
+      transition: opacity 0.25s ease;
+    }
+
+    #ellora-testimonials-{{ section.id }} .el-author-role {
+      font-family: var(--el-font-sans);
+      font-size: 10.5px;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--el-muted);
+      font-weight: 600;
+      transition: opacity 0.25s ease;
+    }
+
+    #ellora-testimonials-{{ section.id }} .el-testimonial-nav {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    #ellora-testimonials-{{ section.id }} .el-nav-btn {
+      width: 38px;
+      height: 38px;
+      border-radius: 4px;
+      border: 1px solid #E4DFD7;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--el-dark);
+      background: transparent;
+      cursor: pointer;
+      transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+    }
+
+    #ellora-testimonials-{{ section.id }} .el-nav-btn:hover {
+      background-color: #FFF9F8;
+      border-color: #8E6356;
+      color: #8E6356;
+    }
+
+    #ellora-testimonials-{{ section.id }} .el-nav-btn svg {
+      width: 16px;
+      height: 16px;
+      stroke: currentColor;
+      stroke-width: 2;
+    }
+
+    /* -----------------------------------------------------------------------
+       RESPONSIVE BREAKPOINTS
+       ----------------------------------------------------------------------- */
+    @media (max-width: 900px) {
+      #ellora-testimonials-{{ section.id }} .el-quote-icon {
+        font-size: 100px;
+      }
+      #ellora-testimonials-{{ section.id }} .el-testimonial-quote-wrap {
+        margin: 25px 0 45px;
+      }
+      #ellora-testimonials-{{ section.id }} .el-testimonial-quote {
+        font-size: 28px;
+        text-indent: 16%;
+      }
+      #ellora-testimonials-{{ section.id }} .el-testimonial-footer-left {
+        gap: 50px;
+      }
+    }
+
+    @media (max-width: 640px) {
+      #ellora-testimonials-{{ section.id }} {
+        padding-top: 50px;
+        padding-bottom: 60px;
+      }
+      #ellora-testimonials-{{ section.id }} .el-quote-icon {
+        font-size: 70px;
+      }
+      #ellora-testimonials-{{ section.id }} .el-testimonial-quote {
+        font-size: 22px;
+        line-height: 1.42;
+        text-indent: 0;
+      }
+      #ellora-testimonials-{{ section.id }} .el-testimonial-footer {
+        flex-wrap: wrap;
+        gap: 20px;
+      }
+      #ellora-testimonials-{{ section.id }} .el-testimonial-footer-left {
+        gap: 24px;
+      }
+    }
+  </style>
+
+  <div class="el-sec-testimonials-container">
+    <div class="el-testimonial-box">
+      <!-- Top Row: Kicker & Giant Quote Mark -->
+      <div class="el-testimonial-header">
+        <span class="el-testimonial-kicker">{{ section.settings.kicker | default: 'CONSUMER LOVE LETTERS' }}</span>
+        <div class="el-quote-icon" aria-hidden="true">&ldquo;</div>
+      </div>
+
+      <!-- Main Quote -->
+      {%- assign first_review = section.blocks.first -%}
+      <div class="el-testimonial-quote-wrap">
+        <p class="el-testimonial-quote" id="elQuoteText-{{ section.id }}">
+          {{ first_review.settings.quote | default: 'Working with Ellora completely changed how our brand feels online. The attention to detail, visual direction, and user experience made our platform feel premium without losing simplicity.' }}
+        </p>
+      </div>
+
+      <!-- Footer Controls -->
+      <div class="el-testimonial-footer">
+        <div class="el-testimonial-footer-left">
+          <!-- Counter -->
+          <div class="el-testimonial-counter">
+            <span id="elQuoteIndex-{{ section.id }}">1</span> / <span id="elQuoteTotal-{{ section.id }}">{{ section.blocks.size | default: 1 }}</span>
+          </div>
+
+          <!-- Avatar & Author Name -->
+          <div class="el-testimonial-author">
+            {%- capture avatar_src -%}
+              {%- if first_review.settings.avatar != blank -%}
+                {{ first_review.settings.avatar | image_url: width: 100 }}
+              {%- elsif first_review.settings.fallback_avatar != blank -%}
+                {{ first_review.settings.fallback_avatar }}
+              {%- else -%}
+                https://cdn.shopify.com/s/files/1/0990/3685/6647/files/sec9_review_author_priya.jpg?v=1789453286
+              {%- endif -%}
+            {%- endcapture -%}
+
+            <img 
+              class="el-author-avatar" 
+              id="elAuthorAvatar-{{ section.id }}" 
+              src="{{ avatar_src | strip }}" 
+              alt="{{ first_review.settings.author | default: 'Priya Mehta' }}"
+              loading="lazy">
+            <div class="el-author-info">
+              <div class="el-author-name" id="elAuthorName-{{ section.id }}">{{ first_review.settings.author | default: 'Priya Mehta' }}</div>
+              <div class="el-author-role" id="elAuthorRole-{{ section.id }}">{{ first_review.settings.role | default: 'FOUNDER' }}</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Square Nav Buttons -->
+        <div class="el-testimonial-nav">
+          <button class="el-nav-btn" id="elPrevTestimonial-{{ section.id }}" aria-label="Previous testimonial" type="button">
+            <svg viewBox="0 0 24 24" fill="none"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+          </button>
+          <button class="el-nav-btn" id="elNextTestimonial-{{ section.id }}" aria-label="Next testimonial" type="button">
+            <svg viewBox="0 0 24 24" fill="none"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {%- comment -%} Hidden JSON Data for Smooth Vanilla JS Slider {%- endcomment -%}
+  <script type="application/json" id="elTestimonialData-{{ section.id }}">
+    [
+      {%- for block in section.blocks -%}
+        {%- capture b_avatar -%}
+          {%- if block.settings.avatar != blank -%}
+            {{ block.settings.avatar | image_url: width: 100 }}
+          {%- elsif block.settings.fallback_avatar != blank -%}
+            {{ block.settings.fallback_avatar }}
+          {%- else -%}
+            https://cdn.shopify.com/s/files/1/0990/3685/6647/files/sec9_review_author_priya.jpg?v=1789453286
+          {%- endif -%}
+        {%- endcapture -%}
+        {
+          "quote": {{ block.settings.quote | json }},
+          "author": {{ block.settings.author | json }},
+          "role": {{ block.settings.role | json }},
+          "avatar": {{ b_avatar | strip | json }}
+        }{%- unless forloop.last -%},{%- endunless -%}
+      {%- endfor -%}
+    ]
+  </script>
+
+  <script>
+    (function() {
+      const dataEl = document.getElementById('elTestimonialData-{{ section.id }}');
+      if (!dataEl) return;
+
+      let reviews = [];
+      try {
+        reviews = JSON.parse(dataEl.textContent);
+      } catch (e) {
+        return;
+      }
+
+      if (!reviews || reviews.length <= 1) return;
+
+      let currentIndex = 0;
+      const quoteEl = document.getElementById('elQuoteText-{{ section.id }}');
+      const nameEl = document.getElementById('elAuthorName-{{ section.id }}');
+      const roleEl = document.getElementById('elAuthorRole-{{ section.id }}');
+      const avatarEl = document.getElementById('elAuthorAvatar-{{ section.id }}');
+      const indexEl = document.getElementById('elQuoteIndex-{{ section.id }}');
+      const prevBtn = document.getElementById('elPrevTestimonial-{{ section.id }}');
+      const nextBtn = document.getElementById('elNextTestimonial-{{ section.id }}');
+
+      function updateSlide(idx) {
+        if (!quoteEl) return;
+        quoteEl.style.opacity = '0';
+        quoteEl.style.transform = 'translateY(6px)';
+        if (nameEl) nameEl.style.opacity = '0';
+        if (roleEl) roleEl.style.opacity = '0';
+        if (avatarEl) avatarEl.style.opacity = '0';
+
+        setTimeout(() => {
+          const r = reviews[idx];
+          quoteEl.textContent = r.quote;
+          if (nameEl) nameEl.textContent = r.author;
+          if (roleEl) roleEl.textContent = r.role;
+          if (avatarEl && r.avatar) avatarEl.src = r.avatar;
+          if (indexEl) indexEl.textContent = idx + 1;
+
+          quoteEl.style.opacity = '1';
+          quoteEl.style.transform = 'translateY(0)';
+          if (nameEl) nameEl.style.opacity = '1';
+          if (roleEl) roleEl.style.opacity = '1';
+          if (avatarEl) avatarEl.style.opacity = '1';
+        }, 180);
+      }
+
+      if (prevBtn) {
+        prevBtn.addEventListener('click', () => {
+          currentIndex = (currentIndex - 1 + reviews.length) % reviews.length;
+          updateSlide(currentIndex);
+        });
+      }
+
+      if (nextBtn) {
+        nextBtn.addEventListener('click', () => {
+          currentIndex = (currentIndex + 1) % reviews.length;
+          updateSlide(currentIndex);
+        });
+      }
+    })();
+  </script>
+</div>
+
+{% schema %}
+{
+  "name": "Ellora Testimonials",
+  "tag": "section",
+  "class": "section-ellora-testimonials",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Section Header"
+    },
+    {
+      "type": "text",
+      "id": "kicker",
+      "label": "Kicker Subtitle",
+      "default": "CONSUMER LOVE LETTERS"
+    },
+    {
+      "type": "header",
+      "content": "Typography & Colors"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#FAF9F6"
+    },
+    {
+      "type": "color",
+      "id": "quote_color",
+      "label": "Quote Text Color",
+      "default": "#4A453F"
+    },
+    {
+      "type": "range",
+      "id": "quote_size",
+      "min": 24,
+      "max": 50,
+      "step": 2,
+      "unit": "px",
+      "label": "Quote Font Size",
+      "default": 38
+    },
+    {
+      "type": "header",
+      "content": "Section Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 140,
+      "step": 5,
+      "unit": "px",
+      "label": "Top Padding",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 140,
+      "step": 5,
+      "unit": "px",
+      "label": "Bottom Padding",
+      "default": 90
+    }
+  ],
+  "blocks": [
+    {
+      "type": "review",
+      "name": "Customer Review",
+      "settings": [
+        {
+          "type": "textarea",
+          "id": "quote",
+          "label": "Review Quote Text",
+          "default": "Working with Ellora completely changed how our brand feels online. The attention to detail, visual direction, and user experience made our platform feel premium without losing simplicity."
+        },
+        {
+          "type": "text",
+          "id": "author",
+          "label": "Author Name",
+          "default": "Priya Mehta"
+        },
+        {
+          "type": "text",
+          "id": "role",
+          "label": "Author Role / Title",
+          "default": "FOUNDER"
+        },
+        {
+          "type": "image_picker",
+          "id": "avatar",
+          "label": "Author Avatar Photo"
+        },
+        {
+          "type": "text",
+          "id": "fallback_avatar",
+          "label": "Fallback Avatar CDN URL"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Ellora Testimonials",
+      "blocks": [
+        {
+          "type": "review",
+          "settings": {
+            "quote": "Working with Ellora completely changed how our brand feels online. The attention to detail, visual direction, and user experience made our platform feel premium without losing simplicity.",
+            "author": "Priya Mehta",
+            "role": "FOUNDER",
+            "fallback_avatar": "https://cdn.shopify.com/s/files/1/0990/3685/6647/files/sec9_review_author_priya.jpg?v=1789453286"
+          }
+        },
+        {
+          "type": "review",
+          "settings": {
+            "quote": "The travertine pavers completely transformed our terrace into a tranquil sunlit sanctuary. The natural surface depth and quality are unrivaled in the architectural stone market.",
+            "author": "Sophia M.",
+            "role": "INTERIOR ARCHITECT",
+            "fallback_avatar": "https://cdn.shopify.com/s/files/1/0990/3685/6647/files/sec9_review_author_priya.jpg?v=1789453286"
+          }
+        },
+        {
+          "type": "review",
+          "settings": {
+            "quote": "Ellora stone samples arrived within two days in gorgeous packaging. Seeing the real Calacatta Viola in our bathroom lighting sealed our choice instantly.",
+            "author": "Marcus & Elena H.",
+            "role": "HOMEOWNERS • LONDON",
+            "fallback_avatar": "https://cdn.shopify.com/s/files/1/0990/3685/6647/files/sec9_review_author_priya.jpg?v=1789453286"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

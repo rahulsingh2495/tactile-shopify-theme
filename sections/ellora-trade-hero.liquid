@@ -1,0 +1,472 @@
+{% comment %}
+  ==========================================================================
+  ELLORA SPACES — TRADE HERO SECTION
+  File: sections/ellora-trade-hero.liquid
+  Theme Editor Name: Trade Hero
+  Features:
+  - Editorial split header with Cormorant Garamond headline & narrative copy
+  - 4 quick trade privilege highlight tags
+  - Full-width architectural banner image with height & radius sliders
+  - Call to action buttons linking to Trade Application Form
+  ==========================================================================
+{% endcomment %}
+
+<div class="el-section-wrapper el-sec-trade-hero" id="ellora-trade-hero-{{ section.id }}">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
+
+    #ellora-trade-hero-{{ section.id }} {
+      --el-th-bg: {{ section.settings.bg_color | default: '#FFFFFF' }};
+      --el-th-primary: {{ section.settings.primary_color | default: '#8E6356' }};
+      --el-th-primary-hover: {{ section.settings.primary_hover | default: '#734E43' }};
+      --el-th-dark: {{ section.settings.text_dark | default: '#1C1B19' }};
+      --el-th-muted: {{ section.settings.text_muted | default: '#68645F' }};
+      --el-th-border: {{ section.settings.border_color | default: '#ECE7E1' }};
+      --el-th-card-bg: {{ section.settings.card_bg | default: '#FAF8F5' }};
+
+      --el-th-pt: {{ section.settings.padding_top | default: 60 }}px;
+      --el-th-pb: {{ section.settings.padding_bottom | default: 60 }}px;
+
+      background-color: var(--el-th-bg);
+      color: var(--el-th-dark);
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      padding-top: var(--el-th-pt);
+      padding-bottom: var(--el-th-pb);
+    }
+
+    #ellora-trade-hero-{{ section.id }} *,
+    #ellora-trade-hero-{{ section.id }} *::before,
+    #ellora-trade-hero-{{ section.id }} *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    #ellora-trade-hero-{{ section.id }} .el-th-container {
+      width: 90%;
+      max-width: {{ section.settings.container_max_width | default: 1720 }}px;
+      margin: 0 auto;
+    }
+
+    /* Breadcrumbs */
+    #ellora-trade-hero-{{ section.id }} .el-th-breadcrumbs {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12.5px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--el-th-muted);
+      margin-bottom: 24px;
+    }
+
+    #ellora-trade-hero-{{ section.id }} .el-th-breadcrumbs a {
+      color: var(--el-th-muted);
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    #ellora-trade-hero-{{ section.id }} .el-th-breadcrumbs a:hover {
+      color: var(--el-th-primary);
+    }
+
+    #ellora-trade-hero-{{ section.id }} .el-th-breadcrumbs span.sep {
+      opacity: 0.5;
+    }
+
+    /* Split Header */
+    #ellora-trade-hero-{{ section.id }} .el-th-split-header {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 48px;
+      align-items: end;
+      margin-bottom: 40px;
+    }
+
+    #ellora-trade-hero-{{ section.id }} .el-th-kicker {
+      font-size: 11.5px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      font-weight: 600;
+      color: var(--el-th-primary);
+      margin-bottom: 12px;
+      display: block;
+    }
+
+    #ellora-trade-hero-{{ section.id }} .el-th-title {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 46px;
+      font-weight: 400;
+      color: var(--el-th-dark);
+      line-height: 1.12;
+      letter-spacing: -0.01em;
+    }
+
+    #ellora-trade-hero-{{ section.id }} .el-th-desc {
+      font-size: 15.5px;
+      color: var(--el-th-muted);
+      line-height: 1.7;
+      margin-bottom: 24px;
+    }
+
+    #ellora-trade-hero-{{ section.id }} .el-th-actions {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    #ellora-trade-hero-{{ section.id }} .el-th-btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 13px 26px;
+      background: var(--el-th-primary);
+      color: #FFFFFF;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      border-radius: 2px;
+      transition: background 0.2s ease;
+    }
+
+    #ellora-trade-hero-{{ section.id }} .el-th-btn-primary:hover {
+      background: var(--el-th-primary-hover);
+      color: #FFFFFF;
+    }
+
+    #ellora-trade-hero-{{ section.id }} .el-th-btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 24px;
+      background: transparent;
+      color: var(--el-th-dark);
+      border: 1px solid var(--el-th-border);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      border-radius: 2px;
+      transition: border-color 0.2s, color 0.2s;
+    }
+
+    #ellora-trade-hero-{{ section.id }} .el-th-btn-secondary:hover {
+      border-color: var(--el-th-dark);
+      color: var(--el-th-primary);
+    }
+
+    /* Privileges Pills Strip */
+    #ellora-trade-hero-{{ section.id }} .el-th-pills {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 32px;
+    }
+
+    #ellora-trade-hero-{{ section.id }} .el-th-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--el-th-card-bg);
+      border: 1px solid var(--el-th-border);
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-size: 12.5px;
+      color: var(--el-th-dark);
+    }
+
+    #ellora-trade-hero-{{ section.id }} .el-th-pill svg {
+      width: 14px;
+      height: 14px;
+      stroke: var(--el-th-primary);
+    }
+
+    /* Banner Frame */
+    #ellora-trade-hero-{{ section.id }} .el-th-banner {
+      width: 100%;
+      height: {{ section.settings.banner_height | default: 460 }}px;
+      border-radius: {{ section.settings.banner_radius | default: 2 }}px;
+      overflow: hidden;
+      background-color: #F0ECE7;
+      position: relative;
+    }
+
+    #ellora-trade-hero-{{ section.id }} .el-th-banner img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    @media (max-width: 900px) {
+      #ellora-trade-hero-{{ section.id }} .el-th-split-header {
+        grid-template-columns: 1fr;
+        gap: 20px;
+      }
+      #ellora-trade-hero-{{ section.id }} .el-th-title {
+        font-size: 34px;
+      }
+      #ellora-trade-hero-{{ section.id }} .el-th-banner {
+        height: {{ section.settings.banner_height_mobile | default: 300 }}px;
+      }
+    }
+  </style>
+
+  <div class="el-th-container">
+
+    {%- if section.settings.show_breadcrumbs -%}
+      <div class="el-th-breadcrumbs">
+        <a href="{{ routes.root_url }}">Home</a>
+        <span class="sep">/</span>
+        <span>Trade &amp; Architecture</span>
+      </div>
+    {%- endif -%}
+
+    <div class="el-th-split-header">
+      <div>
+        {%- if section.settings.kicker != blank -%}
+          <span class="el-th-kicker">{{ section.settings.kicker }}</span>
+        {%- endif -%}
+        <h1 class="el-th-title">{{ section.settings.title | default: 'Trade & Architectural Partnership' }}</h1>
+      </div>
+
+      <div>
+        <p class="el-th-desc">
+          {{ section.settings.desc | default: 'We collaborate with architects, interior studios, and bespoke residential builders to supply authentic natural stone, fluted surfaces, and custom-scale murals.' }}
+        </p>
+
+        <div class="el-th-actions">
+          <a href="#trade-form" class="el-th-btn-primary">
+            {{ section.settings.btn1_text | default: 'Apply for Trade Account' }} &rarr;
+          </a>
+          {%- if section.settings.show_btn2 -%}
+            <a href="{{ section.settings.btn2_link | default: '/collections/all' }}" class="el-th-btn-secondary">
+              {{ section.settings.btn2_text | default: 'Explore Surfaces' }}
+            </a>
+          {%- endif -%}
+        </div>
+      </div>
+    </div>
+
+    <!-- Privilege Pills -->
+    {%- if section.settings.show_pills -%}
+      <div class="el-th-pills">
+        <div class="el-th-pill">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+          <span>Exclusive Trade Tier Discounts</span>
+        </div>
+        <div class="el-th-pill">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+          <span>Complimentary Large-Format Swatches</span>
+        </div>
+        <div class="el-th-pill">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+          <span>Dedicated Stone Specification Concierge</span>
+        </div>
+        <div class="el-th-pill">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+          <span>Priority Job-Site Pallet Freight</span>
+        </div>
+      </div>
+    {%- endif -%}
+
+    <!-- Architectural Banner -->
+    <div class="el-th-banner">
+      {%- if section.settings.image != blank -%}
+        <img src="{{ section.settings.image | image_url: width: 2000 }}" alt="{{ section.settings.title | escape }}" loading="lazy">
+      {%- else -%}
+        <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=1800&auto=format&fit=crop" alt="Ellora Architectural Stone" loading="lazy">
+      {%- endif -%}
+    </div>
+
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Trade Hero",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "kicker",
+      "label": "Kicker Subtitle",
+      "default": "COMMERCIAL & RESIDENTIAL TRADE"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Page Title",
+      "default": "Trade & Architectural Partnership"
+    },
+    {
+      "type": "textarea",
+      "id": "desc",
+      "label": "Description",
+      "default": "We collaborate with architects, interior studios, and bespoke residential builders to supply authentic natural stone, fluted surfaces, and custom-scale murals."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_breadcrumbs",
+      "label": "Show Breadcrumbs",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_pills",
+      "label": "Show Trade Privilege Pills",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Action Buttons"
+    },
+    {
+      "type": "text",
+      "id": "btn1_text",
+      "label": "Primary Button Text",
+      "default": "Apply for Trade Account"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_btn2",
+      "label": "Show Secondary Button",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "btn2_text",
+      "label": "Secondary Button Text",
+      "default": "Explore Surfaces"
+    },
+    {
+      "type": "url",
+      "id": "btn2_link",
+      "label": "Secondary Button Link"
+    },
+    {
+      "type": "header",
+      "content": "Banner Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Hero Banner Image"
+    },
+    {
+      "type": "range",
+      "id": "banner_height",
+      "label": "Banner Height (Desktop)",
+      "min": 300,
+      "max": 650,
+      "step": 10,
+      "unit": "px",
+      "default": 460
+    },
+    {
+      "type": "range",
+      "id": "banner_height_mobile",
+      "label": "Banner Height (Mobile)",
+      "min": 200,
+      "max": 400,
+      "step": 10,
+      "unit": "px",
+      "default": 300
+    },
+    {
+      "type": "range",
+      "id": "banner_radius",
+      "label": "Banner Corner Radius",
+      "min": 0,
+      "max": 16,
+      "step": 2,
+      "unit": "px",
+      "default": 2
+    },
+    {
+      "type": "header",
+      "content": "Colors & Layout"
+    },
+    {
+      "type": "range",
+      "id": "container_max_width",
+      "label": "Container Max Width",
+      "min": 1000,
+      "max": 1800,
+      "step": 20,
+      "unit": "px",
+      "default": 1720
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color"
+    },
+    {
+      "type": "color",
+      "id": "primary_color",
+      "label": "Primary Accent Color",
+      "default": "#8E6356"
+    },
+    {
+      "type": "color",
+      "id": "primary_hover",
+      "label": "Primary Accent Hover",
+      "default": "#734E43"
+    },
+    {
+      "type": "color",
+      "id": "text_dark",
+      "label": "Dark Text Color",
+      "default": "#1C1B19"
+    },
+    {
+      "type": "color",
+      "id": "text_muted",
+      "label": "Muted Text Color",
+      "default": "#68645F"
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "Border Color",
+      "default": "#ECE7E1"
+    },
+    {
+      "type": "color",
+      "id": "card_bg",
+      "label": "Pill & Card Background",
+      "default": "#FAF8F5"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding Top (Desktop)",
+      "min": 0,
+      "max": 140,
+      "step": 2,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding Bottom (Desktop)",
+      "min": 0,
+      "max": 140,
+      "step": 2,
+      "unit": "px",
+      "default": 60
+    }
+  ],
+  "presets": [
+    {
+      "name": "Trade Hero"
+    }
+  ]
+}
+{% endschema %}

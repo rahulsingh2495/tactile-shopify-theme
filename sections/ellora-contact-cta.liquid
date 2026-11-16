@@ -1,0 +1,520 @@
+{% comment %}
+  ==========================================================================
+  ELLORA SPACES — CONTACT SECTION 3: SHORTLIST CALL-TO-ACTION CARD
+  File: sections/ellora-contact-cta.liquid
+  Theme Editor Name: Ellora Contact CTA
+  Fully customizable via Shopify Theme Customizer
+  ==========================================================================
+{% endcomment %}
+
+<div class="el-section-wrapper el-sec-contact-cta" id="ellora-contact-cta-{{ section.id }}">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
+
+    #ellora-contact-cta-{{ section.id }} {
+      --el-bg: {{ section.settings.section_bg | default: '#FFFFFF' }};
+      --el-card-bg: {{ section.settings.card_bg | default: '#FFFAF8' }};
+      --el-card-border: {{ section.settings.card_border | default: '#F2E8E2' }};
+      --el-title-color: {{ section.settings.title_color | default: '#8E6356' }};
+      --el-text-color: {{ section.settings.text_color | default: '#5C5854' }};
+      --el-btn1-bg: {{ section.settings.btn1_bg | default: '#BA9587' }};
+      --el-btn1-hover-bg: {{ section.settings.btn1_hover_bg | default: '#A58072' }};
+      --el-btn1-text: {{ section.settings.btn1_text_color | default: '#FFFFFF' }};
+      --el-btn2-border: {{ section.settings.btn2_border_color | default: '#BA9587' }};
+      --el-btn2-text: {{ section.settings.btn2_text_color | default: '#8E6356' }};
+      --el-btn2-hover-bg: {{ section.settings.btn2_hover_bg | default: '#8E6356' }};
+      --el-btn2-hover-text: {{ section.settings.btn2_hover_text | default: '#FFFFFF' }};
+      --el-font-serif: 'Cormorant Garamond', Georgia, serif;
+      --el-font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+
+      width: 100%;
+      background-color: var(--el-bg);
+      font-family: var(--el-font-sans);
+      box-sizing: border-box;
+      padding-top: {{ section.settings.padding_top | default: 40 }}px;
+      padding-bottom: {{ section.settings.padding_bottom | default: 80 }}px;
+      position: relative;
+    }
+
+    #ellora-contact-cta-{{ section.id }} *,
+    #ellora-contact-cta-{{ section.id }} *::before,
+    #ellora-contact-cta-{{ section.id }} *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    #ellora-contact-cta-{{ section.id }} .el-cta-container {
+      width: 90%;
+      max-width: {{ section.settings.container_max_width | default: 1720 }}px;
+      margin: 0 auto;
+    }
+
+    #ellora-contact-cta-{{ section.id }} .el-cta-card {
+      background-color: var(--el-card-bg);
+      border: 1px solid var(--el-card-border);
+      border-radius: {{ section.settings.card_radius | default: 4 }}px;
+      padding: {{ section.settings.card_padding_desktop | default: 64 }}px 40px;
+      text-align: center;
+      box-shadow: 0 4px 20px rgba(142, 99, 86, 0.03);
+      position: relative;
+    }
+
+    #ellora-contact-cta-{{ section.id }} .el-cta-headline {
+      font-family: var(--el-font-serif);
+      font-size: {{ section.settings.title_size_desktop | default: 40 }}px;
+      line-height: 1.22;
+      font-weight: {{ section.settings.title_weight | default: 400 }};
+      color: var(--el-title-color);
+      letter-spacing: -0.01em;
+      margin-bottom: 16px;
+    }
+
+    #ellora-contact-cta-{{ section.id }} .el-cta-description {
+      font-family: var(--el-font-sans);
+      font-size: {{ section.settings.desc_size | default: 13.5 }}px;
+      line-height: 1.65;
+      font-weight: 400;
+      color: var(--el-text-color);
+      max-width: {{ section.settings.desc_max_width | default: 620 }}px;
+      margin: 0 auto 32px auto;
+      letter-spacing: 0.005em;
+    }
+
+    #ellora-contact-cta-{{ section.id }} .el-cta-buttons-wrap {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    /* Primary Solid Button */
+    #ellora-contact-cta-{{ section.id }} .el-cta-btn-primary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      background-color: var(--el-btn1-bg);
+      color: var(--el-btn1-text);
+      border: 1px solid var(--el-btn1-bg);
+      border-radius: {{ section.settings.button_radius | default: 2 }}px;
+      padding: 0 28px;
+      height: 46px;
+      font-family: var(--el-font-sans);
+      font-size: 13.5px;
+      font-weight: 400;
+      text-decoration: none;
+      letter-spacing: 0.02em;
+      cursor: pointer;
+      transition: background-color 0.25s ease, border-color 0.25s ease, transform 0.15s ease;
+    }
+
+    #ellora-contact-cta-{{ section.id }} .el-cta-btn-primary:hover {
+      background-color: var(--el-btn1-hover-bg);
+      border-color: var(--el-btn1-hover-bg);
+    }
+
+    #ellora-contact-cta-{{ section.id }} .el-cta-btn-primary:active {
+      transform: scale(0.99);
+    }
+
+    /* Secondary Outlined Button */
+    #ellora-contact-cta-{{ section.id }} .el-cta-btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      background-color: transparent;
+      color: var(--el-btn2-text);
+      border: 1px solid var(--el-btn2-border);
+      border-radius: {{ section.settings.button_radius | default: 2 }}px;
+      padding: 0 28px;
+      height: 46px;
+      font-family: var(--el-font-sans);
+      font-size: 13.5px;
+      font-weight: 400;
+      text-decoration: none;
+      letter-spacing: 0.02em;
+      cursor: pointer;
+      transition: background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease, transform 0.15s ease;
+    }
+
+    #ellora-contact-cta-{{ section.id }} .el-cta-btn-secondary:hover {
+      background-color: var(--el-btn2-hover-bg);
+      color: var(--el-btn2-hover-text);
+      border-color: var(--el-btn2-hover-bg);
+    }
+
+    #ellora-contact-cta-{{ section.id }} .el-cta-btn-secondary:active {
+      transform: scale(0.99);
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      #ellora-contact-cta-{{ section.id }} .el-cta-card {
+        padding: {{ section.settings.card_padding_mobile | default: 44 }}px 20px;
+      }
+      #ellora-contact-cta-{{ section.id }} .el-cta-headline {
+        font-size: {{ section.settings.title_size_mobile | default: 28 }}px;
+      }
+      #ellora-contact-cta-{{ section.id }} .el-cta-buttons-wrap {
+        flex-direction: column;
+        width: 100%;
+        gap: 12px;
+      }
+      #ellora-contact-cta-{{ section.id }} .el-cta-btn-primary,
+      #ellora-contact-cta-{{ section.id }} .el-cta-btn-secondary {
+        width: 100%;
+      }
+      #ellora-contact-cta-{{ section.id }} {
+        padding-top: {{ section.settings.padding_top_mobile | default: 28 }}px;
+        padding-bottom: {{ section.settings.padding_bottom_mobile | default: 50 }}px;
+      }
+    }
+  </style>
+
+  <div class="el-cta-container">
+    <div class="el-cta-card">
+      <h2 class="el-cta-headline">
+        {{ section.settings.title | default: 'Ready to shortlist the right surface?' }}
+      </h2>
+      <p class="el-cta-description">
+        {{ section.settings.description | default: 'Ellora should clearly show whether a product is sold by single piece, minimum pattern set, or complete mural set. This avoids confusion for large tiles and multi-panel wallpapers.' }}
+      </p>
+
+      <div class="el-cta-buttons-wrap">
+        {%- if section.settings.btn1_text != blank -%}
+          {%- capture whatsapp_href -%}
+            {%- if section.settings.btn1_whatsapp_number != blank -%}
+              https://wa.me/{{ section.settings.btn1_whatsapp_number | remove: '+' | remove: ' ' | remove: '-' }}?text={{ section.settings.btn1_whatsapp_message | url_encode }}
+            {%- else -%}
+              {{ section.settings.btn1_link | default: '#' }}
+            {%- endif -%}
+          {%- endcapture -%}
+          <a
+            href="{{ whatsapp_href }}"
+            class="el-cta-btn-primary"
+            {% if section.settings.btn1_whatsapp_number != blank or section.settings.btn1_open_new_tab %}target="_blank" rel="noopener noreferrer"{% endif %}
+          >
+            {{ section.settings.btn1_text | default: 'Ask on Whatsapp' }}
+          </a>
+        {%- endif -%}
+
+        {%- if section.settings.btn2_text != blank -%}
+          <a
+            href="{{ section.settings.btn2_link | default: '/collections/all' }}"
+            class="el-cta-btn-secondary"
+            {% if section.settings.btn2_open_new_tab %}target="_blank" rel="noopener noreferrer"{% endif %}
+          >
+            {{ section.settings.btn2_text | default: 'Explore the Collection' }}
+          </a>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Ellora Contact CTA",
+  "tag": "section",
+  "class": "section-ellora-contact-cta",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Typography & Messaging"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Ready to shortlist the right surface?"
+    },
+    {
+      "type": "range",
+      "id": "title_size_desktop",
+      "label": "Heading Size Desktop",
+      "min": 24,
+      "max": 54,
+      "step": 2,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "title_size_mobile",
+      "label": "Heading Size Mobile",
+      "min": 20,
+      "max": 36,
+      "step": 2,
+      "unit": "px",
+      "default": 28
+    },
+    {
+      "type": "select",
+      "id": "title_weight",
+      "label": "Heading Font Weight",
+      "options": [
+        { "value": "300", "label": "300 - Light" },
+        { "value": "400", "label": "400 - Regular" },
+        { "value": "500", "label": "500 - Medium" }
+      ],
+      "default": "400"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Subheading / Clarification Paragraph",
+      "default": "Ellora should clearly show whether a product is sold by single piece, minimum pattern set, or complete mural set. This avoids confusion for large tiles and multi-panel wallpapers."
+    },
+    {
+      "type": "range",
+      "id": "desc_size",
+      "label": "Description Font Size",
+      "min": 11,
+      "max": 18,
+      "step": 0.5,
+      "unit": "px",
+      "default": 13.5
+    },
+    {
+      "type": "range",
+      "id": "desc_max_width",
+      "label": "Description Max Width",
+      "min": 400,
+      "max": 800,
+      "step": 20,
+      "unit": "px",
+      "default": 620
+    },
+    {
+      "type": "header",
+      "content": "Button 1: Solid (WhatsApp)"
+    },
+    {
+      "type": "text",
+      "id": "btn1_text",
+      "label": "Button 1 Text",
+      "default": "Ask on Whatsapp"
+    },
+    {
+      "type": "url",
+      "id": "btn1_link",
+      "label": "Button 1 Link (if not using WhatsApp number)"
+    },
+    {
+      "type": "text",
+      "id": "btn1_whatsapp_number",
+      "label": "WhatsApp Phone Number (with Country Code)",
+      "info": "e.g. +919876543210. When filled, clicking opens WhatsApp chat directly."
+    },
+    {
+      "type": "text",
+      "id": "btn1_whatsapp_message",
+      "label": "WhatsApp Pre-filled Text"
+    },
+    {
+      "type": "checkbox",
+      "id": "btn1_open_new_tab",
+      "label": "Open in new window",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "btn1_bg",
+      "label": "Button 1 Background",
+      "default": "#BA9587"
+    },
+    {
+      "type": "color",
+      "id": "btn1_hover_bg",
+      "label": "Button 1 Hover Background",
+      "default": "#A58072"
+    },
+    {
+      "type": "color",
+      "id": "btn1_text_color",
+      "label": "Button 1 Text Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "header",
+      "content": "Button 2: Outlined (Collection)"
+    },
+    {
+      "type": "text",
+      "id": "btn2_text",
+      "label": "Button 2 Text",
+      "default": "Explore the Collection"
+    },
+    {
+      "type": "url",
+      "id": "btn2_link",
+      "label": "Button 2 Link"
+    },
+    {
+      "type": "checkbox",
+      "id": "btn2_open_new_tab",
+      "label": "Open in new window",
+      "default": false
+    },
+    {
+      "type": "color",
+      "id": "btn2_border_color",
+      "label": "Button 2 Border Color"
+    },
+    {
+      "type": "color",
+      "id": "btn2_text_color",
+      "label": "Button 2 Text Color",
+      "default": "#8E6356"
+    },
+    {
+      "type": "color",
+      "id": "btn2_hover_bg",
+      "label": "Button 2 Hover Background",
+      "default": "#8E6356"
+    },
+    {
+      "type": "color",
+      "id": "btn2_hover_text",
+      "label": "Button 2 Hover Text Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "range",
+      "id": "button_radius",
+      "label": "Buttons Corner Radius",
+      "min": 0,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "default": 2
+    },
+    {
+      "type": "header",
+      "content": "Card Styling & Colors"
+    },
+    {
+      "type": "color",
+      "id": "section_bg",
+      "label": "Section Background",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "card_bg",
+      "label": "Card Background Color",
+      "default": "#FFFAF8"
+    },
+    {
+      "type": "color",
+      "id": "card_border",
+      "label": "Card Border Color",
+      "default": "#F2E8E2"
+    },
+    {
+      "type": "range",
+      "id": "card_radius",
+      "label": "Card Corner Radius",
+      "min": 0,
+      "max": 24,
+      "step": 2,
+      "unit": "px",
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "card_padding_desktop",
+      "label": "Card Padding Top/Bottom (Desktop)",
+      "min": 30,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "default": 64
+    },
+    {
+      "type": "range",
+      "id": "card_padding_mobile",
+      "label": "Card Padding Top/Bottom (Mobile)",
+      "min": 24,
+      "max": 70,
+      "step": 2,
+      "unit": "px",
+      "default": 44
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Heading Color",
+      "default": "#8E6356"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Description Color",
+      "default": "#5C5854"
+    },
+    {
+      "type": "header",
+      "content": "Section Spacing"
+    },
+    {
+      "type": "range",
+      "id": "container_max_width",
+      "label": "Container Max Width",
+      "min": 900,
+      "max": 1800,
+      "step": 20,
+      "unit": "px",
+      "default": 1720
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding Top (Desktop)",
+      "min": 0,
+      "max": 120,
+      "step": 2,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding Bottom (Desktop)",
+      "min": 0,
+      "max": 140,
+      "step": 2,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "label": "Padding Top (Mobile)",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 28
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "label": "Padding Bottom (Mobile)",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 50
+    }
+  ],
+  "presets": [
+    {
+      "name": "Ellora Contact CTA"
+    }
+  ]
+}
+{% endschema %}

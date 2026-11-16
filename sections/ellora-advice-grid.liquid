@@ -1,0 +1,624 @@
+{% comment %}
+  ==========================================================================
+  ELLORA SPACES — ADVICE HUB GUIDES GRID
+  File: sections/ellora-advice-grid.liquid
+  Theme Editor Name: Advice Hub Guides Grid
+  Features:
+  - 3-column luxury editorial guides grid (4:5 or 16:10 thumbnails)
+  - Supports direct Shopify Blog selection OR repeatable custom guide blocks
+  - Real-time client-side topic filtering synced with Advice Hub Hero tabs
+  - Bottom design consultation concierge card
+  ==========================================================================
+{% endcomment %}
+
+<div class="el-section-wrapper el-sec-advice-grid" id="ellora-advice-grid-{{ section.id }}">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
+
+    #ellora-advice-grid-{{ section.id }} {
+      --el-ag-bg: {{ section.settings.bg_color | default: '#FFFFFF' }};
+      --el-ag-primary: {{ section.settings.primary_color | default: '#8E6356' }};
+      --el-ag-primary-hover: {{ section.settings.primary_hover | default: '#734E43' }};
+      --el-ag-dark: {{ section.settings.text_dark | default: '#1C1B19' }};
+      --el-ag-muted: {{ section.settings.text_muted | default: '#68645F' }};
+      --el-ag-border: {{ section.settings.border_color | default: '#ECE7E1' }};
+      --el-ag-card-bg: {{ section.settings.card_bg | default: '#FAF8F5' }};
+
+      --el-ag-pt: {{ section.settings.padding_top | default: 20 }}px;
+      --el-ag-pb: {{ section.settings.padding_bottom | default: 100 }}px;
+
+      background-color: var(--el-ag-bg);
+      color: var(--el-ag-dark);
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      padding-top: var(--el-ag-pt);
+      padding-bottom: var(--el-ag-pb);
+    }
+
+    #ellora-advice-grid-{{ section.id }} *,
+    #ellora-advice-grid-{{ section.id }} *::before,
+    #ellora-advice-grid-{{ section.id }} *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    #ellora-advice-grid-{{ section.id }} .el-ag-container {
+      width: 90%;
+      max-width: {{ section.settings.container_max_width | default: 1720 }}px;
+      margin: 0 auto;
+    }
+
+    /* Grid */
+    #ellora-advice-grid-{{ section.id }} .el-ag-grid {
+      display: grid;
+      grid-template-columns: repeat({{ section.settings.columns_desktop | default: 3 }}, 1fr);
+      gap: 36px 28px;
+      margin-bottom: 64px;
+    }
+
+    #ellora-advice-grid-{{ section.id }} .el-ag-card {
+      display: flex;
+      flex-direction: column;
+      border: 1px solid var(--el-ag-border);
+      background: #FFFFFF;
+      border-radius: 2px;
+      overflow: hidden;
+      transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+    }
+
+    #ellora-advice-grid-{{ section.id }} .el-ag-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.05);
+      border-color: var(--el-ag-primary);
+    }
+
+    #ellora-advice-grid-{{ section.id }} .el-ag-card.is-hidden {
+      display: none !important;
+    }
+
+    #ellora-advice-grid-{{ section.id }} .el-ag-media {
+      width: 100%;
+      aspect-ratio: 16 / 10;
+      overflow: hidden;
+      background: #F0ECE7;
+      position: relative;
+    }
+
+    #ellora-advice-grid-{{ section.id }} .el-ag-media img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.5s ease;
+    }
+
+    #ellora-advice-grid-{{ section.id }} .el-ag-card:hover .el-ag-media img {
+      transform: scale(1.05);
+    }
+
+    #ellora-advice-grid-{{ section.id }} .el-ag-badge {
+      position: absolute;
+      top: 14px;
+      left: 14px;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(4px);
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--el-ag-primary);
+      border: 1px solid rgba(0,0,0,0.06);
+    }
+
+    #ellora-advice-grid-{{ section.id }} .el-ag-body {
+      padding: 24px 24px 28px 24px;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+
+    #ellora-advice-grid-{{ section.id }} .el-ag-meta {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 12px;
+      color: var(--el-ag-muted);
+      margin-bottom: 10px;
+    }
+
+    #ellora-advice-grid-{{ section.id }} .el-ag-title {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 22px;
+      font-weight: 500;
+      color: var(--el-ag-dark);
+      line-height: 1.3;
+      margin-bottom: 12px;
+      text-decoration: none;
+      display: block;
+      transition: color 0.2s ease;
+    }
+
+    #ellora-advice-grid-{{ section.id }} .el-ag-title:hover {
+      color: var(--el-ag-primary);
+    }
+
+    #ellora-advice-grid-{{ section.id }} .el-ag-excerpt {
+      font-size: 13.5px;
+      color: var(--el-ag-muted);
+      line-height: 1.65;
+      margin-bottom: 20px;
+      flex: 1;
+    }
+
+    #ellora-advice-grid-{{ section.id }} .el-ag-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12.5px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--el-ag-primary);
+      text-decoration: none;
+      transition: gap 0.2s ease, color 0.2s ease;
+    }
+
+    #ellora-advice-grid-{{ section.id }} .el-ag-link:hover {
+      gap: 10px;
+      color: var(--el-ag-primary-hover);
+    }
+
+    /* Bottom Consultation Card */
+    #ellora-advice-grid-{{ section.id }} .el-ag-consult-card {
+      background: var(--el-ag-card-bg);
+      border: 1px solid var(--el-ag-border);
+      border-radius: 2px;
+      padding: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 32px;
+      flex-wrap: wrap;
+    }
+
+    #ellora-advice-grid-{{ section.id }} .el-ag-consult-text h3 {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 28px;
+      font-weight: 400;
+      color: var(--el-ag-dark);
+      margin-bottom: 8px;
+    }
+
+    #ellora-advice-grid-{{ section.id }} .el-ag-consult-text p {
+      font-size: 14.5px;
+      color: var(--el-ag-muted);
+      max-width: 580px;
+    }
+
+    #ellora-advice-grid-{{ section.id }} .el-ag-consult-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 13px 26px;
+      background: var(--el-ag-primary);
+      color: #FFFFFF;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      border-radius: 2px;
+      transition: background 0.2s ease;
+      white-space: nowrap;
+    }
+
+    #ellora-advice-grid-{{ section.id }} .el-ag-consult-btn:hover {
+      background: var(--el-ag-primary-hover);
+    }
+
+    @media (max-width: 900px) {
+      #ellora-advice-grid-{{ section.id }} .el-ag-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 600px) {
+      #ellora-advice-grid-{{ section.id }} .el-ag-grid {
+        grid-template-columns: 1fr;
+      }
+      #ellora-advice-grid-{{ section.id }} .el-ag-consult-card {
+        padding: 24px;
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      #ellora-advice-grid-{{ section.id }} .el-ag-consult-btn {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+  </style>
+
+  <div class="el-ag-container">
+    <div class="el-ag-grid" id="elAdviceGrid-{{ section.id }}">
+      
+      {%- if section.blocks.size > 0 -%}
+        {%- for block in section.blocks -%}
+          <article class="el-ag-card" data-topic="{{ block.settings.topic | default: 'all' }}" {{ block.shopify_attributes }}>
+            <div class="el-ag-media">
+              {%- if block.settings.image != blank -%}
+                <img src="{{ block.settings.image | image_url: width: 600 }}" alt="{{ block.settings.title | escape }}" loading="lazy">
+              {%- else -%}
+                <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=600&auto=format&fit=crop" alt="Surface guide" loading="lazy">
+              {%- endif -%}
+              <span class="el-ag-badge">{{ block.settings.badge | default: 'Guide' }}</span>
+            </div>
+            <div class="el-ag-body">
+              <div class="el-ag-meta">
+                <span>{{ block.settings.read_time | default: '5 min read' }}</span>
+                <span>&bull;</span>
+                <span>{{ block.settings.date | default: 'October 2026' }}</span>
+              </div>
+              <a href="{{ block.settings.link | default: '/pages/contact' }}" class="el-ag-title">{{ block.settings.title }}</a>
+              <p class="el-ag-excerpt">{{ block.settings.excerpt }}</p>
+              <a href="{{ block.settings.link | default: '/pages/contact' }}" class="el-ag-link">Read Full Guide &rarr;</a>
+            </div>
+          </article>
+        {%- endfor -%}
+
+      {%- elsif section.settings.blog != blank and blogs[section.settings.blog].articles.size > 0 -%}
+        {%- for article in blogs[section.settings.blog].articles limit: 6 -%}
+          <article class="el-ag-card" data-topic="all">
+            <div class="el-ag-media">
+              {%- if article.image -%}
+                <img src="{{ article.image | image_url: width: 600 }}" alt="{{ article.title | escape }}" loading="lazy">
+              {%- else -%}
+                <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=600&auto=format&fit=crop" alt="Guide image" loading="lazy">
+              {%- endif -%}
+              <span class="el-ag-badge">{{ article.tags.first | default: 'Guide' }}</span>
+            </div>
+            <div class="el-ag-body">
+              <div class="el-ag-meta">
+                <span>{{ article.published_at | date: "%B %Y" }}</span>
+              </div>
+              <a href="{{ article.url }}" class="el-ag-title">{{ article.title }}</a>
+              <p class="el-ag-excerpt">{{ article.excerpt_or_content | strip_html | truncatewords: 24 }}</p>
+              <a href="{{ article.url }}" class="el-ag-link">Read Full Guide &rarr;</a>
+            </div>
+          </article>
+        {%- endfor -%}
+
+      {%- else -%}
+        <!-- Default Pre-populated Architectural Stone Guides -->
+        <article class="el-ag-card" data-topic="care">
+          <div class="el-ag-media">
+            <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=600&auto=format&fit=crop" alt="Sealing Travertine" loading="lazy">
+            <span class="el-ag-badge">Stone Care</span>
+          </div>
+          <div class="el-ag-body">
+            <div class="el-ag-meta">
+              <span>6 min read</span> &bull; <span>Technical Guide</span>
+            </div>
+            <h3 class="el-ag-title">How to Seal &amp; Maintain Roman Travertine</h3>
+            <p class="el-ag-excerpt">Understanding porous stone breathability, penetrating impregnators vs surface coatings, and everyday pH-neutral cleaning protocols.</p>
+            <a href="/pages/contact" class="el-ag-link">Read Full Guide &rarr;</a>
+          </div>
+        </article>
+
+        <article class="el-ag-card" data-topic="sizing">
+          <div class="el-ag-media">
+            <img src="https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?q=80&w=600&auto=format&fit=crop" alt="Pattern sets calculation" loading="lazy">
+            <span class="el-ag-badge">Calculations</span>
+          </div>
+          <div class="el-ag-body">
+            <div class="el-ag-meta">
+              <span>4 min read</span> &bull; <span>Measurement</span>
+            </div>
+            <h3 class="el-ag-title">Calculating Wastage: Single Pieces vs Pattern Sets</h3>
+            <p class="el-ag-excerpt">Why architectural pattern sets require custom cutting formulas, and how to avoid running short between distinct quarry batches.</p>
+            <a href="/pages/contact" class="el-ag-link">Read Full Guide &rarr;</a>
+          </div>
+        </article>
+
+        <article class="el-ag-card" data-topic="installation">
+          <div class="el-ag-media">
+            <img src="https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?q=80&w=600&auto=format&fit=crop" alt="Substrate preparation" loading="lazy">
+            <span class="el-ag-badge">Installation</span>
+          </div>
+          <div class="el-ag-body">
+            <div class="el-ag-meta">
+              <span>8 min read</span> &bull; <span>Site Preparation</span>
+            </div>
+            <h3 class="el-ag-title">Substrate &amp; Wet Room Waterproofing for Stone</h3>
+            <p class="el-ag-excerpt">Essential guidelines on deflection tolerances, decoupling mats, and tanking systems prior to laying large-format natural stone slabs.</p>
+            <a href="/pages/contact" class="el-ag-link">Read Full Guide &rarr;</a>
+          </div>
+        </article>
+
+        <article class="el-ag-card" data-topic="finishes">
+          <div class="el-ag-media">
+            <img src="https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?q=80&w=600&auto=format&fit=crop" alt="Stone finishes" loading="lazy">
+            <span class="el-ag-badge">Materials</span>
+          </div>
+          <div class="el-ag-body">
+            <div class="el-ag-meta">
+              <span>5 min read</span> &bull; <span>Specification</span>
+            </div>
+            <h3 class="el-ag-title">Honed, Fluted or Brushed: Choosing the Right Texture</h3>
+            <p class="el-ag-excerpt">Compare tactile surface finishes across wet spaces, kitchen splashbacks, and outdoor entertaining areas for lasting durability.</p>
+            <a href="/pages/contact" class="el-ag-link">Read Full Guide &rarr;</a>
+          </div>
+        </article>
+
+        <article class="el-ag-card" data-topic="care">
+          <div class="el-ag-media">
+            <img src="https://images.unsplash.com/photo-1616046229478-9901c5536a45?q=80&w=600&auto=format&fit=crop" alt="Marble etching" loading="lazy">
+            <span class="el-ag-badge">Stone Care</span>
+          </div>
+          <div class="el-ag-body">
+            <div class="el-ag-meta">
+              <span>7 min read</span> &bull; <span>Maintenance</span>
+            </div>
+            <h3 class="el-ag-title">Managing Etching &amp; Patina on Calacatta Marble</h3>
+            <p class="el-ag-excerpt">How natural marble develops an authentic, lived-in patina, and professional techniques to lift acidic spills without damaging stone integrity.</p>
+            <a href="/pages/contact" class="el-ag-link">Read Full Guide &rarr;</a>
+          </div>
+        </article>
+
+        <article class="el-ag-card" data-topic="installation">
+          <div class="el-ag-media">
+            <img src="https://images.unsplash.com/photo-1513694203232-719a280e022f?q=80&w=600&auto=format&fit=crop" alt="Grout selection" loading="lazy">
+            <span class="el-ag-badge">Specification</span>
+          </div>
+          <div class="el-ag-body">
+            <div class="el-ag-meta">
+              <span>4 min read</span> &bull; <span>Finishing</span>
+            </div>
+            <h3 class="el-ag-title">Grout Widths &amp; Color Harmonization for Slabs</h3>
+            <p class="el-ag-excerpt">Selecting flexible polymer-modified grouts and matching tonal pigments to achieve seamless continuous surface planes.</p>
+            <a href="/pages/contact" class="el-ag-link">Read Full Guide &rarr;</a>
+          </div>
+        </article>
+      {%- endif -%}
+
+    </div>
+
+    <!-- Consultation Banner -->
+    {%- if section.settings.show_consult_card -%}
+      <div class="el-ag-consult-card">
+        <div class="el-ag-consult-text">
+          <h3>{{ section.settings.consult_title | default: 'Planning a bespoke architectural installation?' }}</h3>
+          <p>{{ section.settings.consult_desc | default: 'Our surface specialists review architectural drawings, calculate layout formulas, and recommend stone finishes tailored to your space.' }}</p>
+        </div>
+        <a href="{{ section.settings.consult_link | default: '/pages/contact' }}" class="el-ag-consult-btn">
+          {{ section.settings.consult_btn_text | default: 'Book Design Consultation' }} &rarr;
+        </a>
+      </div>
+    {%- endif -%}
+
+  </div>
+</div>
+
+<script>
+  (function() {
+    var root = document.getElementById('ellora-advice-grid-{{ section.id }}');
+    if (!root) return;
+
+    var grid = root.querySelector('#elAdviceGrid-{{ section.id }}');
+    if (!grid) return;
+
+    window.addEventListener('ellora:advice:filter', function(e) {
+      var topic = e.detail && e.detail.topic;
+      if (!topic) return;
+
+      var cards = grid.querySelectorAll('.el-ag-card');
+      cards.forEach(function(card) {
+        var cardTopic = card.getAttribute('data-topic');
+        if (topic === 'all' || cardTopic === topic || cardTopic === 'all') {
+          card.classList.remove('is-hidden');
+        } else {
+          card.classList.add('is-hidden');
+        }
+      });
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Advice Hub Guides Grid",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "blog",
+      "id": "blog",
+      "label": "Or connect Shopify Blog (Optional)",
+      "info": "Leave blank to use the custom editorial blocks below."
+    },
+    {
+      "type": "range",
+      "id": "columns_desktop",
+      "label": "Columns on Desktop",
+      "min": 2,
+      "max": 4,
+      "step": 1,
+      "default": 3
+    },
+    {
+      "type": "header",
+      "content": "Bottom Consultation Card"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_consult_card",
+      "label": "Show Consultation Card",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "consult_title",
+      "label": "Card Title",
+      "default": "Planning a bespoke architectural installation?"
+    },
+    {
+      "type": "textarea",
+      "id": "consult_desc",
+      "label": "Card Description",
+      "default": "Our surface specialists review architectural drawings, calculate layout formulas, and recommend stone finishes tailored to your space."
+    },
+    {
+      "type": "text",
+      "id": "consult_btn_text",
+      "label": "Button Text",
+      "default": "Book Design Consultation"
+    },
+    {
+      "type": "url",
+      "id": "consult_link",
+      "label": "Button Link"
+    },
+    {
+      "type": "header",
+      "content": "Colors & Layout"
+    },
+    {
+      "type": "range",
+      "id": "container_max_width",
+      "label": "Container Max Width",
+      "min": 1000,
+      "max": 1800,
+      "step": 20,
+      "unit": "px",
+      "default": 1720
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color"
+    },
+    {
+      "type": "color",
+      "id": "card_bg",
+      "label": "Consultation Card Background",
+      "default": "#FAF8F5"
+    },
+    {
+      "type": "color",
+      "id": "primary_color",
+      "label": "Primary Accent Color",
+      "default": "#8E6356"
+    },
+    {
+      "type": "color",
+      "id": "primary_hover",
+      "label": "Primary Accent Hover",
+      "default": "#734E43"
+    },
+    {
+      "type": "color",
+      "id": "text_dark",
+      "label": "Dark Text Color",
+      "default": "#1C1B19"
+    },
+    {
+      "type": "color",
+      "id": "text_muted",
+      "label": "Muted Text Color",
+      "default": "#68645F"
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "Border Color",
+      "default": "#ECE7E1"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding Top (Desktop)",
+      "min": 0,
+      "max": 140,
+      "step": 2,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding Bottom (Desktop)",
+      "min": 0,
+      "max": 140,
+      "step": 2,
+      "unit": "px",
+      "default": 100
+    }
+  ],
+  "blocks": [
+    {
+      "type": "guide",
+      "name": "Custom Guide Article",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Thumbnail Image"
+        },
+        {
+          "type": "select",
+          "id": "topic",
+          "label": "Topic Category",
+          "options": [
+            { "value": "care", "label": "Sealing & Stone Care" },
+            { "value": "installation", "label": "Substrate & Laying" },
+            { "value": "sizing", "label": "Wastage & Sizing" },
+            { "value": "finishes", "label": "Material Finishes" }
+          ],
+          "default": "care"
+        },
+        {
+          "type": "text",
+          "id": "badge",
+          "label": "Badge Label",
+          "default": "Stone Care"
+        },
+        {
+          "type": "text",
+          "id": "read_time",
+          "label": "Reading Time",
+          "default": "5 min read"
+        },
+        {
+          "type": "text",
+          "id": "date",
+          "label": "Date / Edition",
+          "default": "October 2026"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Article Title",
+          "default": "How to Seal & Maintain Roman Travertine"
+        },
+        {
+          "type": "textarea",
+          "id": "excerpt",
+          "label": "Summary Excerpt",
+          "default": "Understanding porous stone breathability, penetrating impregnators vs surface coatings, and everyday pH-neutral cleaning protocols."
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Article Link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Advice Hub Guides Grid"
+    }
+  ]
+}
+{% endschema %}

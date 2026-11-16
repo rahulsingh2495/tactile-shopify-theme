@@ -1,0 +1,376 @@
+{% comment %}
+  ==========================================================================
+  ELLORA SPACES — ADVICE HUB HERO SECTION
+  File: sections/ellora-advice-hero.liquid
+  Theme Editor Name: Advice Hub Hero
+  Features:
+  - Editorial header with Cormorant Garamond serif title & narrative kicker
+  - Interactive topic filter tags for guide categories
+  - Clean breadcrumb navigation
+  ==========================================================================
+{% endcomment %}
+
+<div class="el-section-wrapper el-sec-advice-hero" id="ellora-advice-hero-{{ section.id }}">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
+
+    #ellora-advice-hero-{{ section.id }} {
+      --el-ah-bg: {{ section.settings.bg_color | default: '#FAF8F5' }};
+      --el-ah-primary: {{ section.settings.primary_color | default: '#8E6356' }};
+      --el-ah-dark: {{ section.settings.text_dark | default: '#1C1B19' }};
+      --el-ah-muted: {{ section.settings.text_muted | default: '#68645F' }};
+      --el-ah-border: {{ section.settings.border_color | default: '#ECE7E1' }};
+      --el-ah-pill-bg: {{ section.settings.pill_bg | default: '#FFFFFF' }};
+
+      --el-ah-pt: {{ section.settings.padding_top | default: 60 }}px;
+      --el-ah-pb: {{ section.settings.padding_bottom | default: 50 }}px;
+
+      background-color: var(--el-ah-bg);
+      color: var(--el-ah-dark);
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      padding-top: var(--el-ah-pt);
+      padding-bottom: var(--el-ah-pb);
+      text-align: {{ section.settings.text_align | default: 'center' }};
+    }
+
+    #ellora-advice-hero-{{ section.id }} *,
+    #ellora-advice-hero-{{ section.id }} *::before,
+    #ellora-advice-hero-{{ section.id }} *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    #ellora-advice-hero-{{ section.id }} .el-ah-container {
+      width: 90%;
+      max-width: {{ section.settings.container_max_width | default: 1720 }}px;
+      margin: 0 auto;
+    }
+
+    /* Breadcrumbs */
+    #ellora-advice-hero-{{ section.id }} .el-ah-breadcrumbs {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12.5px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--el-ah-muted);
+      margin-bottom: 28px;
+      {% if section.settings.text_align == 'center' %}
+        justify-content: center;
+      {% endif %}
+    }
+
+    #ellora-advice-hero-{{ section.id }} .el-ah-breadcrumbs a {
+      color: var(--el-ah-muted);
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    #ellora-advice-hero-{{ section.id }} .el-ah-breadcrumbs a:hover {
+      color: var(--el-ah-primary);
+    }
+
+    #ellora-advice-hero-{{ section.id }} .el-ah-breadcrumbs span.sep {
+      opacity: 0.5;
+    }
+
+    #ellora-advice-hero-{{ section.id }} .el-ah-kicker {
+      font-size: 11.5px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      font-weight: 600;
+      color: var(--el-ah-primary);
+      margin-bottom: 12px;
+      display: inline-block;
+    }
+
+    #ellora-advice-hero-{{ section.id }} .el-ah-title {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 46px;
+      font-weight: 400;
+      color: var(--el-ah-dark);
+      line-height: 1.15;
+      letter-spacing: -0.01em;
+      margin-bottom: 16px;
+    }
+
+    #ellora-advice-hero-{{ section.id }} .el-ah-desc {
+      font-size: 15.5px;
+      color: var(--el-ah-muted);
+      max-width: 660px;
+      margin: 0 auto 36px auto;
+      line-height: 1.7;
+    }
+
+    /* Topic Pills */
+    #ellora-advice-hero-{{ section.id }} .el-ah-pills {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    #ellora-advice-hero-{{ section.id }} .el-ah-pill-btn {
+      padding: 9px 20px;
+      border: 1px solid var(--el-ah-border);
+      border-radius: 999px;
+      background: var(--el-ah-pill-bg);
+      color: var(--el-ah-dark);
+      font-size: 13px;
+      letter-spacing: 0.03em;
+      cursor: pointer;
+      font-family: inherit;
+      white-space: nowrap;
+      transition: all 0.2s ease;
+    }
+
+    #ellora-advice-hero-{{ section.id }} .el-ah-pill-btn:hover {
+      border-color: var(--el-ah-primary);
+      color: var(--el-ah-primary);
+    }
+
+    #ellora-advice-hero-{{ section.id }} .el-ah-pill-btn.is-active {
+      background: var(--el-ah-primary);
+      border-color: var(--el-ah-primary);
+      color: #FFFFFF;
+    }
+
+    @media (max-width: 768px) {
+      #ellora-advice-hero-{{ section.id }} .el-ah-title {
+        font-size: 34px;
+      }
+      #ellora-advice-hero-{{ section.id }} .el-ah-desc {
+        font-size: 14.5px;
+        margin-bottom: 24px;
+      }
+
+      /* Horizontal Scroll by default on mobile so tags never stack 1-by-1 */
+      #ellora-advice-hero-{{ section.id }} .el-ah-pills.layout-scroll {
+        display: flex;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        justify-content: flex-start;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        padding: 4px 16px 12px 16px;
+        margin: 0 -5%;
+        width: calc(100% + 10%);
+        gap: 8px;
+        scroll-snap-type: x mandatory;
+      }
+      #ellora-advice-hero-{{ section.id }} .el-ah-pills.layout-scroll::-webkit-scrollbar {
+        display: none;
+      }
+      #ellora-advice-hero-{{ section.id }} .el-ah-pills.layout-scroll .el-ah-pill-btn {
+        flex: 0 0 auto;
+        white-space: nowrap;
+        scroll-snap-align: start;
+        padding: 8px 16px;
+        font-size: 12.5px;
+      }
+
+      /* Compact Wrap mode (packs 2-3 tags per line if wrapping is selected) */
+      #ellora-advice-hero-{{ section.id }} .el-ah-pills.layout-wrap {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 8px 6px;
+      }
+      #ellora-advice-hero-{{ section.id }} .el-ah-pills.layout-wrap .el-ah-pill-btn {
+        padding: 7px 13px;
+        font-size: 12px;
+      }
+    }
+  </style>
+
+  <div class="el-ah-container">
+    {%- if section.settings.show_breadcrumbs -%}
+      <div class="el-ah-breadcrumbs">
+        <a href="{{ routes.root_url }}">Home</a>
+        <span class="sep">/</span>
+        <span>Surface Advice Hub</span>
+      </div>
+    {%- endif -%}
+
+    {%- if section.settings.kicker != blank -%}
+      <span class="el-ah-kicker">{{ section.settings.kicker }}</span>
+    {%- endif -%}
+
+    <h1 class="el-ah-title">{{ section.settings.title | default: 'The Surface Advice Hub' }}</h1>
+
+    <p class="el-ah-desc">
+      {{ section.settings.desc | default: 'Technical guidance, substrate preparation rules, and artisan care essays compiled by our stone specialists.' }}
+    </p>
+
+    {%- if section.settings.show_filter_tabs -%}
+      <div class="el-ah-pills layout-{{ section.settings.mobile_pills_layout | default: 'scroll' }}" id="elAdvicePills-{{ section.id }}">
+        <button type="button" class="el-ah-pill-btn is-active" data-topic="all">All Articles</button>
+        <button type="button" class="el-ah-pill-btn" data-topic="care">Sealing &amp; Stone Care</button>
+        <button type="button" class="el-ah-pill-btn" data-topic="installation">Substrate &amp; Laying</button>
+        <button type="button" class="el-ah-pill-btn" data-topic="sizing">Wastage &amp; Measurement</button>
+        <button type="button" class="el-ah-pill-btn" data-topic="finishes">Material Finishes</button>
+      </div>
+    {%- endif -%}
+  </div>
+</div>
+
+<script>
+  (function() {
+    var container = document.getElementById('elAdvicePills-{{ section.id }}');
+    if (!container) return;
+
+    container.addEventListener('click', function(e) {
+      var btn = e.target.closest('.el-ah-pill-btn');
+      if (!btn) return;
+
+      container.querySelectorAll('.el-ah-pill-btn').forEach(function(b) {
+        b.classList.remove('is-active');
+      });
+      btn.classList.add('is-active');
+
+      if (container.classList.contains('layout-scroll')) {
+        btn.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+      }
+
+      var topic = btn.getAttribute('data-topic');
+      window.dispatchEvent(new CustomEvent('ellora:advice:filter', { detail: { topic: topic } }));
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Advice Hub Hero",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "kicker",
+      "label": "Kicker Subtitle",
+      "default": "SURFACE KNOWLEDGE & GUIDES"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "The Surface Advice Hub"
+    },
+    {
+      "type": "textarea",
+      "id": "desc",
+      "label": "Description",
+      "default": "Technical guidance, substrate preparation rules, and artisan care essays compiled by our stone specialists."
+    },
+    {
+      "type": "select",
+      "id": "text_align",
+      "label": "Header Alignment",
+      "options": [
+        { "value": "center", "label": "Center" },
+        { "value": "left", "label": "Left" }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_breadcrumbs",
+      "label": "Show Breadcrumbs",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_filter_tabs",
+      "label": "Show Topic Filter Pills",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "mobile_pills_layout",
+      "label": "Mobile Pills Layout",
+      "options": [
+        { "value": "scroll", "label": "Horizontal Scroll (Recommended)" },
+        { "value": "wrap", "label": "Compact Wrap" }
+      ],
+      "default": "scroll"
+    },
+    {
+      "type": "header",
+      "content": "Colors & Layout"
+    },
+    {
+      "type": "range",
+      "id": "container_max_width",
+      "label": "Container Max Width",
+      "min": 1000,
+      "max": 1800,
+      "step": 20,
+      "unit": "px",
+      "default": 1720
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#FAF8F5"
+    },
+    {
+      "type": "color",
+      "id": "pill_bg",
+      "label": "Pill Background",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "primary_color",
+      "label": "Primary Accent Color",
+      "default": "#8E6356"
+    },
+    {
+      "type": "color",
+      "id": "text_dark",
+      "label": "Dark Text Color",
+      "default": "#1C1B19"
+    },
+    {
+      "type": "color",
+      "id": "text_muted",
+      "label": "Muted Text Color",
+      "default": "#68645F"
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "Border Color",
+      "default": "#ECE7E1"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding Top (Desktop)",
+      "min": 0,
+      "max": 140,
+      "step": 2,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding Bottom (Desktop)",
+      "min": 0,
+      "max": 140,
+      "step": 2,
+      "unit": "px",
+      "default": 50
+    }
+  ],
+  "presets": [
+    {
+      "name": "Advice Hub Hero"
+    }
+  ]
+}
+{% endschema %}

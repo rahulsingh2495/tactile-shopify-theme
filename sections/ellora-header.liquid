@@ -1,0 +1,2697 @@
+{% comment %}
+  ==========================================================================
+  ELLORA SPACES — HEADER & ANNOUNCEMENT BAR SECTION
+  File: sections/ellora-header.liquid
+  Pixel-perfect implementation matching Ellora luxury editorial design
+  Features:
+  - Dynamic Shopify Menu Picker (choose any menu created in Online Store > Navigation)
+  - Multi-level dropdowns & Multi-column Mega Menu support for backend menu items
+  - Built-in luxury interactive Mega Menu option for "Shop" (Tiles + Wallpapers tabs, Collections)
+  - Top Announcement Bar: Dusty rose/terracotta background (#C59B8B), left banner text, right utility links / menu
+  - Center Logo: Official Ellora final logo CDN with desktop & mobile width sliders + image picker
+  - Right Utility Icons: Search, Wishlist, Shopping Basket with real-time cart badge, Customer Account
+  - Fully Responsive: Mobile hamburger button with smooth slide-left drawer navigation & multi-accordion
+  - Full Shopify Theme Customizer controls for all texts, colors, links, and toggles
+  ==========================================================================
+{% endcomment %}
+
+<div class="el-header-wrapper" id="ellora-header-{{ section.id }}" data-sticky="{{ section.settings.enable_sticky }}">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
+
+    #ellora-header-{{ section.id }} {
+      --el-hd-top-bg: {{ section.settings.top_bg | default: '#C59B8B' }};
+      --el-hd-top-text: {{ section.settings.top_text_color | default: '#FFFFFF' }};
+      --el-hd-bg: {{ section.settings.header_bg | default: '#FFFFFF' }};
+      --el-hd-primary: {{ section.settings.accent_color | default: '#C59B8B' }};
+      --el-hd-primary-hover: #B48776;
+      --el-hd-dark: {{ section.settings.text_color | default: '#1C1B19' }};
+      --el-hd-text: #44403B;
+      --el-hd-muted: #736E67;
+      --el-hd-border: #E8E3DC;
+      --el-hd-border-light: #EFEAE4;
+      --el-hd-sidebar-bg: #FAF4EF;
+      --el-hd-font-serif: 'Cormorant Garamond', Georgia, serif;
+      --el-hd-font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+
+      width: 100%;
+      position: relative;
+      z-index: 999;
+      font-family: var(--el-hd-font-sans);
+      color: var(--el-hd-dark);
+      box-sizing: border-box;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    #ellora-header-{{ section.id }}[data-sticky="true"] {
+      position: sticky;
+      top: 0;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+    }
+
+    #ellora-header-{{ section.id }} *,
+    #ellora-header-{{ section.id }} *::before,
+    #ellora-header-{{ section.id }} *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    #ellora-header-{{ section.id }} .el-hd-container {
+      width: 90%;
+      max-width: 1720px;
+      margin: 0 auto;
+      position: relative;
+    }
+
+    /* -----------------------------------------------------------------------
+       1. TOP ANNOUNCEMENT BAR
+       ----------------------------------------------------------------------- */
+    #ellora-header-{{ section.id }} .el-announcement-bar {
+      background-color: var(--el-hd-top-bg);
+      color: var(--el-hd-top-text);
+      min-height: 32px;
+      padding: 6px 0;
+      display: flex;
+      align-items: center;
+      font-size: 12.5px;
+      letter-spacing: 0.01em;
+      transition: background-color 0.3s ease;
+    }
+
+    #ellora-header-{{ section.id }} .el-announcement-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      gap: 16px;
+    }
+
+    #ellora-header-{{ section.id }} .el-announcement-left {
+      font-family: var(--el-hd-font-sans);
+      font-weight: 400;
+      color: var(--el-hd-top-text);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      text-decoration: none;
+    }
+
+    #ellora-header-{{ section.id }} .el-announcement-links {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+    }
+
+    #ellora-header-{{ section.id }} .el-announcement-links a {
+      color: var(--el-hd-top-text);
+      text-decoration: none;
+      font-size: 12.5px;
+      font-weight: 400;
+      transition: opacity 0.2s ease;
+      white-space: nowrap;
+    }
+
+    #ellora-header-{{ section.id }} .el-announcement-links a:hover {
+      opacity: 0.8;
+    }
+
+    /* -----------------------------------------------------------------------
+       2. MAIN HEADER
+       ----------------------------------------------------------------------- */
+    #ellora-header-{{ section.id }} .el-main-header {
+      background-color: var(--el-hd-bg);
+      {% if section.settings.show_bottom_border %}
+        border-bottom: 1px solid var(--el-hd-border);
+      {% endif %}
+      padding-top: {{ section.settings.header_padding_y | default: 16 }}px;
+      padding-bottom: {{ section.settings.header_padding_y | default: 16 }}px;
+      display: flex;
+      align-items: center;
+      position: relative;
+    }
+
+    #ellora-header-{{ section.id }} .el-main-header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      position: relative;
+    }
+
+    /* Left Navigation */
+    #ellora-header-{{ section.id }} .el-header-left {
+      display: flex;
+      align-items: center;
+      gap: 30px;
+      flex: 1;
+    }
+
+    #ellora-header-{{ section.id }} .el-nav-item {
+      display: inline-flex;
+      align-items: center;
+      position: relative;
+    }
+
+    #ellora-header-{{ section.id }} .el-nav-link {
+      font-family: var(--el-hd-font-sans);
+      font-size: 14.5px;
+      font-weight: 500;
+      color: var(--el-hd-dark);
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 10px 0;
+      transition: color 0.2s ease;
+      cursor: pointer;
+      background: none;
+      border: none;
+      white-space: nowrap;
+    }
+
+    #ellora-header-{{ section.id }} .el-nav-link:hover {
+      color: var(--el-hd-primary);
+    }
+
+    #ellora-header-{{ section.id }} .el-chevron-icon {
+      width: 9px;
+      height: 6px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      transition: transform 0.25s ease;
+    }
+
+    #ellora-header-{{ section.id }} .el-has-dropdown:hover > .el-nav-link .el-chevron-icon,
+    #ellora-header-{{ section.id }} .el-has-megamenu:hover > .el-nav-link .el-chevron-icon,
+    #ellora-header-{{ section.id }} .el-has-megamenu.is-open > .el-nav-link .el-chevron-icon {
+      transform: rotate(180deg);
+    }
+
+    /* Standard Dropdown Menu */
+    #ellora-header-{{ section.id }} .el-has-dropdown {
+      position: relative;
+    }
+
+    #ellora-header-{{ section.id }} .el-dropdown-menu {
+      position: absolute;
+      top: calc(100% + 2px);
+      left: 0;
+      min-width: 210px;
+      background: #FFFFFF;
+      border: 1px solid var(--el-hd-border);
+      border-radius: 4px;
+      box-shadow: 0 12px 36px rgba(0, 0, 0, 0.08);
+      padding: 8px 0;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(6px);
+      transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s;
+      z-index: 1000;
+      list-style: none;
+    }
+
+    #ellora-header-{{ section.id }} .el-has-dropdown:hover > .el-dropdown-menu {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+
+    #ellora-header-{{ section.id }} .el-dropdown-menu li a {
+      display: block;
+      padding: 9px 20px;
+      font-family: var(--el-hd-font-sans);
+      font-size: 13.5px;
+      color: var(--el-hd-dark);
+      text-decoration: none;
+      transition: color 0.15s ease, background-color 0.15s ease;
+    }
+
+    #ellora-header-{{ section.id }} .el-dropdown-menu li a:hover {
+      color: var(--el-hd-primary);
+      background-color: #FAF8F5;
+    }
+
+    /* Multi-Column Mega Dropdown (for 3-level Backend Menus) */
+    #ellora-header-{{ section.id }} .el-mega-dropdown {
+      position: absolute;
+      top: calc(100% + 2px);
+      left: 0;
+      min-width: 540px;
+      max-width: 860px;
+      background: #FFFFFF;
+      border: 1px solid var(--el-hd-border);
+      border-radius: 4px;
+      box-shadow: 0 16px 42px rgba(0, 0, 0, 0.08);
+      padding: 24px 28px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 24px;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(6px);
+      transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s;
+      z-index: 1000;
+    }
+
+    #ellora-header-{{ section.id }} .el-has-megamenu:hover > .el-mega-dropdown {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+
+    #ellora-header-{{ section.id }} .el-mega-col-heading {
+      font-family: var(--el-hd-font-serif);
+      font-size: 16.5px;
+      font-weight: 600;
+      color: var(--el-hd-dark);
+      text-decoration: none;
+      display: block;
+      margin-bottom: 12px;
+      transition: color 0.2s ease;
+    }
+
+    #ellora-header-{{ section.id }} .el-mega-col-heading:hover {
+      color: var(--el-hd-primary);
+    }
+
+    #ellora-header-{{ section.id }} .el-mega-col-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+    }
+
+    #ellora-header-{{ section.id }} .el-mega-col-list a {
+      font-family: var(--el-hd-font-sans);
+      font-size: 13px;
+      color: var(--el-hd-muted);
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    #ellora-header-{{ section.id }} .el-mega-col-list a:hover {
+      color: var(--el-hd-primary);
+    }
+
+    /* Center Brand Logo */
+    #ellora-header-{{ section.id }} .el-header-center {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+
+    #ellora-header-{{ section.id }} .el-header-logo-link {
+      display: inline-block;
+      text-decoration: none;
+      transition: opacity 0.25s ease;
+    }
+
+    #ellora-header-{{ section.id }} .el-header-logo-link:hover {
+      opacity: 0.85;
+    }
+
+    #ellora-header-{{ section.id }} .el-header-logo-img {
+      width: {{ section.settings.logo_width | default: 110 }}px;
+      height: auto;
+      display: block;
+      margin: 0 auto;
+    }
+
+    /* Right Utility Icons */
+    #ellora-header-{{ section.id }} .el-header-right {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 20px;
+      flex: 1;
+    }
+
+    #ellora-header-{{ section.id }} .el-header-icon-btn {
+      background: none;
+      border: none;
+      padding: 6px;
+      cursor: pointer;
+      color: var(--el-hd-dark);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      text-decoration: none;
+      transition: color 0.2s ease, transform 0.2s ease;
+    }
+
+    #ellora-header-{{ section.id }} .el-header-icon-btn:hover {
+      color: var(--el-hd-primary);
+      transform: translateY(-1px);
+    }
+
+    #ellora-header-{{ section.id }} .el-header-icon-btn svg {
+      width: 20px;
+      height: 20px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 1.6;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      display: block;
+    }
+
+    #ellora-header-{{ section.id }} .el-header-cart-badge,
+    #ellora-header-{{ section.id }} .el-header-wishlist-badge {
+      position: absolute;
+      top: 0;
+      right: -3px;
+      background: var(--el-hd-primary);
+      color: #FFFFFF;
+      font-size: 9px;
+      font-weight: 600;
+      min-width: 16px;
+      height: 16px;
+      padding: 0 4px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 1;
+    }
+
+    /* Mobile Hamburger Button */
+    #ellora-header-{{ section.id }} .el-mobile-toggle {
+      display: none;
+      background: none;
+      border: none;
+      padding: 8px;
+      cursor: pointer;
+      color: var(--el-hd-dark);
+      margin-left: -8px;
+    }
+
+    #ellora-header-{{ section.id }} .el-mobile-toggle svg {
+      width: 24px;
+      height: 24px;
+      stroke: currentColor;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      display: block;
+    }
+
+    /* -----------------------------------------------------------------------
+       3. LUXURY TABBED MEGA MENU (FOR "SHOP")
+       ----------------------------------------------------------------------- */
+    #ellora-header-{{ section.id }} .el-megamenu-panel {
+      position: absolute;
+      top: calc(100% + 2px);
+      left: 0;
+      width: 940px;
+      max-width: 90vw;
+      background: #FFFFFF;
+      border: 1px solid var(--el-hd-border);
+      border-radius: 4px;
+      box-shadow: 0 16px 42px rgba(0, 0, 0, 0.08);
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(8px);
+      transition: opacity 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+                  transform 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+                  visibility 0.25s;
+      z-index: 1000;
+      overflow: hidden;
+    }
+
+    #ellora-header-{{ section.id }} .el-megamenu-panel::before {
+      content: '';
+      position: absolute;
+      top: -16px;
+      left: 0;
+      right: 0;
+      height: 16px;
+      background: transparent;
+    }
+
+    #ellora-header-{{ section.id }} .el-has-megamenu:hover > .el-megamenu-panel,
+    #ellora-header-{{ section.id }} .el-has-megamenu.is-open > .el-megamenu-panel {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+
+    #ellora-header-{{ section.id }} .el-megamenu-header {
+      height: 50px;
+      padding: 0 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--el-hd-border-light);
+      background: #FFFFFF;
+    }
+
+    #ellora-header-{{ section.id }} .el-megamenu-title {
+      font-family: var(--el-hd-font-serif);
+      font-size: 20px;
+      font-weight: 500;
+      color: var(--el-hd-dark);
+      margin: 0;
+      letter-spacing: 0.01em;
+    }
+
+    #ellora-header-{{ section.id }} .el-megamenu-close {
+      background: none;
+      border: none;
+      font-size: 16px;
+      line-height: 1;
+      color: var(--el-hd-muted);
+      cursor: pointer;
+      padding: 6px;
+      border-radius: 4px;
+      transition: color 0.2s ease, background-color 0.2s ease;
+    }
+
+    #ellora-header-{{ section.id }} .el-megamenu-close:hover {
+      color: var(--el-hd-dark);
+      background-color: #F5F2EC;
+    }
+
+    #ellora-header-{{ section.id }} .el-megamenu-body {
+      display: grid;
+      grid-template-columns: 215px 1fr;
+      min-height: 330px;
+    }
+
+    #ellora-header-{{ section.id }} .el-megamenu-sidebar {
+      background: var(--el-hd-sidebar-bg);
+      padding: 24px 22px 28px;
+      border-right: 1px solid #F0ECE6;
+      display: flex;
+      flex-direction: column;
+      max-height: 440px;
+      overflow-y: auto;
+    }
+
+    #ellora-header-{{ section.id }} .el-megamenu-sidebar::-webkit-scrollbar {
+      width: 4px;
+    }
+
+    #ellora-header-{{ section.id }} .el-megamenu-sidebar::-webkit-scrollbar-thumb {
+      background: #D9D2C9;
+      border-radius: 4px;
+    }
+
+    #ellora-header-{{ section.id }} .el-sidebar-count {
+      font-size: 11.5px;
+      color: var(--el-hd-muted);
+      margin-left: 3px;
+    }
+
+    #ellora-header-{{ section.id }} .el-sidebar-heading {
+      font-family: var(--el-hd-font-serif);
+      font-size: 17px;
+      font-weight: 600;
+      color: var(--el-hd-dark);
+      margin: 0 0 16px 0;
+      letter-spacing: -0.01em;
+    }
+
+    #ellora-header-{{ section.id }} .el-sidebar-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 13px;
+    }
+
+    #ellora-header-{{ section.id }} .el-sidebar-list a {
+      font-family: var(--el-hd-font-sans);
+      font-size: 13px;
+      font-weight: 400;
+      color: var(--el-hd-text);
+      text-decoration: none;
+      transition: color 0.2s ease, transform 0.2s ease;
+      display: inline-block;
+    }
+
+    #ellora-header-{{ section.id }} .el-sidebar-list a:hover {
+      color: var(--el-hd-primary);
+      transform: translateX(2px);
+    }
+
+    #ellora-header-{{ section.id }} .el-megamenu-content {
+      padding: 22px 30px 28px;
+      background: #FFFFFF;
+      display: flex;
+      flex-direction: column;
+    }
+
+    #ellora-header-{{ section.id }} .el-megamenu-tabs {
+      display: flex;
+      gap: 26px;
+      border-bottom: 1px solid var(--el-hd-border-light);
+      margin-bottom: 22px;
+      padding-bottom: 8px;
+    }
+
+    #ellora-header-{{ section.id }} .el-megamenu-tab {
+      font-family: var(--el-hd-font-sans);
+      font-size: 13.5px;
+      font-weight: 500;
+      color: var(--el-hd-muted);
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0 0 8px 0;
+      position: relative;
+      transition: color 0.2s ease;
+    }
+
+    #ellora-header-{{ section.id }} .el-megamenu-tab:hover {
+      color: var(--el-hd-dark);
+    }
+
+    #ellora-header-{{ section.id }} .el-megamenu-tab.is-active {
+      color: var(--el-hd-dark);
+      font-weight: 600;
+      border-bottom: 2px solid var(--el-hd-dark);
+      margin-bottom: -9px;
+    }
+
+    #ellora-header-{{ section.id }} .el-tab-pane {
+      display: none;
+      grid-template-columns: 1.2fr 1fr 1fr 1fr;
+      gap: 22px;
+      align-items: start;
+    }
+
+    #ellora-header-{{ section.id }} .el-tab-pane.is-active {
+      display: grid;
+    }
+
+    #ellora-header-{{ section.id }} .el-pane-col {
+      display: flex;
+      flex-direction: column;
+    }
+
+    #ellora-header-{{ section.id }} .el-col-bordered {
+      border-left: 1px solid var(--el-hd-border-light);
+      padding-left: 20px;
+    }
+
+    #ellora-header-{{ section.id }} .el-pane-heading {
+      font-family: var(--el-hd-font-serif);
+      font-size: 26px;
+      font-weight: 400;
+      color: var(--el-hd-dark);
+      margin: 0 0 8px 0;
+      line-height: 1.15;
+    }
+
+    #ellora-header-{{ section.id }} .el-pane-desc {
+      font-family: var(--el-hd-font-sans);
+      font-size: 13px;
+      line-height: 1.45;
+      color: var(--el-hd-muted);
+      margin: 0 0 18px 0;
+      max-width: 175px;
+    }
+
+    #ellora-header-{{ section.id }} .el-pane-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      align-self: flex-start;
+      padding: 9px 18px;
+      background-color: var(--el-hd-primary);
+      color: #FFFFFF !important;
+      border-radius: 3px;
+      font-family: var(--el-hd-font-sans);
+      font-size: 12.5px;
+      font-weight: 500;
+      text-decoration: none;
+      transition: background-color 0.2s ease;
+    }
+
+    #ellora-header-{{ section.id }} .el-pane-btn:hover {
+      background-color: var(--el-hd-primary-hover);
+    }
+
+    #ellora-header-{{ section.id }} .el-col-subheading {
+      font-family: var(--el-hd-font-serif);
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--el-hd-dark);
+      margin: 0 0 14px 0;
+      letter-spacing: -0.01em;
+    }
+
+    #ellora-header-{{ section.id }} .el-col-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 11px;
+    }
+
+    #ellora-header-{{ section.id }} .el-col-list a {
+      font-family: var(--el-hd-font-sans);
+      font-size: 13px;
+      color: var(--el-hd-text);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      transition: color 0.2s ease, transform 0.2s ease;
+    }
+
+    #ellora-header-{{ section.id }} .el-col-list a:hover {
+      color: var(--el-hd-primary);
+      transform: translateX(2px);
+    }
+
+    #ellora-header-{{ section.id }} .el-color-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      display: inline-block;
+    }
+
+    /* -----------------------------------------------------------------------
+       4. MOBILE SLIDE-OUT DRAWER NAVIGATION (SLIDES LEFT)
+       ----------------------------------------------------------------------- */
+    /* Header elevation when mobile drawer is open to stay above all page elements */
+    body.el-mobile-drawer-open .shopify-section-group-header-group,
+    body.el-mobile-drawer-open .shopify-section-header,
+    body.el-mobile-drawer-open .section-header,
+    body.el-mobile-drawer-open header,
+    body.el-mobile-drawer-open #ellora-header-{{ section.id }},
+    #ellora-header-{{ section.id }}.has-drawer-open {
+      z-index: 9999999 !important;
+    }
+
+    #ellora-header-{{ section.id }} .el-mobile-drawer {
+      position: fixed !important;
+      top: 0 !important;
+      bottom: 0 !important;
+      left: 0 !important;
+      right: auto !important;
+      width: 320px !important;
+      max-width: 85vw !important;
+      height: 100% !important;
+      height: 100vh !important;
+      height: 100dvh !important;
+      min-height: 100% !important;
+      min-height: 100vh !important;
+      min-height: 100dvh !important;
+      max-height: none !important;
+      background-color: #FFFFFF !important;
+      box-shadow: 4px 0 25px rgba(0, 0, 0, 0.15) !important;
+      z-index: 9999999 !important;
+      transform: translateX(-100%);
+      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      display: flex !important;
+      flex-direction: column !important;
+      overflow-y: auto !important;
+      -webkit-overflow-scrolling: touch;
+      box-sizing: border-box !important;
+    }
+
+    #ellora-header-{{ section.id }} .el-mobile-drawer.is-open {
+      transform: translateX(0) !important;
+    }
+
+    #ellora-header-{{ section.id }} .el-drawer-overlay {
+      position: fixed !important;
+      top: 0 !important;
+      bottom: 0 !important;
+      left: 0 !important;
+      right: 0 !important;
+      width: 100% !important;
+      width: 100vw !important;
+      height: 100% !important;
+      height: 100vh !important;
+      height: 100dvh !important;
+      min-height: 100% !important;
+      background: rgba(0, 0, 0, 0.45);
+      backdrop-filter: blur(2px);
+      -webkit-backdrop-filter: blur(2px);
+      z-index: 9999998 !important;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s ease, visibility 0.3s ease;
+    }
+
+    #ellora-header-{{ section.id }} .el-drawer-overlay.is-open {
+      opacity: 1 !important;
+      visibility: visible !important;
+    }
+
+    #ellora-header-{{ section.id }} .el-drawer-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 22px;
+      border-bottom: 1px solid var(--el-hd-border);
+    }
+
+    #ellora-header-{{ section.id }} .el-drawer-logo-img {
+      width: {{ section.settings.logo_width_mobile | default: 95 }}px;
+      height: auto;
+      display: block;
+    }
+
+    #ellora-header-{{ section.id }} .el-drawer-close-btn {
+      background: none;
+      border: none;
+      font-size: 22px;
+      line-height: 1;
+      cursor: pointer;
+      color: var(--el-hd-dark);
+      padding: 6px;
+    }
+
+    #ellora-header-{{ section.id }} .el-drawer-nav {
+      padding: 20px 22px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      flex: 1;
+    }
+
+    #ellora-header-{{ section.id }} .el-drawer-accordion-btn {
+      width: 100%;
+      text-align: left;
+      font-family: var(--el-hd-font-sans);
+      font-size: 15.5px;
+      font-weight: 500;
+      color: var(--el-hd-dark);
+      background: none;
+      border: none;
+      padding: 12px 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      border-bottom: 1px solid rgba(232, 227, 220, 0.6);
+    }
+
+    #ellora-header-{{ section.id }} .el-drawer-accordion-btn svg {
+      width: 11px;
+      height: 6px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 2;
+      transition: transform 0.25s ease;
+    }
+
+    #ellora-header-{{ section.id }} .el-drawer-accordion-btn.is-active svg {
+      transform: rotate(180deg);
+    }
+
+    #ellora-header-{{ section.id }} .el-drawer-accordion-content {
+      display: none;
+      padding: 10px 0 16px 12px;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    #ellora-header-{{ section.id }} .el-drawer-accordion-content.is-open {
+      display: flex;
+    }
+
+    #ellora-header-{{ section.id }} .el-drawer-subheading {
+      font-family: var(--el-hd-font-serif);
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--el-hd-dark);
+      margin: 8px 0 4px 0;
+    }
+
+    #ellora-header-{{ section.id }} .el-drawer-accordion-content a {
+      font-size: 13.5px;
+      color: var(--el-hd-muted);
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    #ellora-header-{{ section.id }} .el-drawer-accordion-content a:hover {
+      color: var(--el-hd-primary);
+    }
+
+    #ellora-header-{{ section.id }} .el-drawer-link {
+      font-size: 15.5px;
+      font-weight: 500;
+      color: var(--el-hd-dark);
+      text-decoration: none;
+      padding: 12px 0;
+      display: block;
+      border-bottom: 1px solid rgba(232, 227, 220, 0.6);
+      transition: color 0.2s ease;
+    }
+
+    #ellora-header-{{ section.id }} .el-drawer-link:hover {
+      color: var(--el-hd-primary);
+    }
+
+    #ellora-header-{{ section.id }} .el-drawer-footer {
+      padding: 20px 22px;
+      border-top: 1px solid var(--el-hd-border);
+      background-color: #FAF8F5;
+      font-size: 12px;
+      color: var(--el-hd-muted);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    #ellora-header-{{ section.id }} .el-drawer-footer a {
+      color: var(--el-hd-muted);
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    #ellora-header-{{ section.id }} .el-drawer-footer a:hover {
+      color: var(--el-hd-primary);
+    }
+
+    /* -----------------------------------------------------------------------
+       5. RESPONSIVE BREAKPOINTS
+       ----------------------------------------------------------------------- */
+    @media (max-width: 991px) {
+      #ellora-header-{{ section.id }} .el-header-left {
+        display: none !important;
+      }
+      #ellora-header-{{ section.id }} .el-mobile-toggle {
+        display: inline-flex !important;
+        flex: 1;
+        justify-content: flex-start;
+      }
+      #ellora-header-{{ section.id }} .el-header-center {
+        flex: 2;
+      }
+      #ellora-header-{{ section.id }} .el-announcement-links {
+        gap: 16px;
+      }
+      #ellora-header-{{ section.id }} .el-megamenu-panel,
+      #ellora-header-{{ section.id }} .el-mega-dropdown,
+      #ellora-header-{{ section.id }} .el-dropdown-menu {
+        display: none !important;
+      }
+    }
+
+    @media (max-width: 640px) {
+      #ellora-header-{{ section.id }} .el-announcement-links {
+        display: none;
+      }
+      #ellora-header-{{ section.id }} .el-announcement-inner {
+        justify-content: center;
+        text-align: center;
+      }
+      #ellora-header-{{ section.id }} .el-announcement-bar {
+        font-size: 11px;
+      }
+      #ellora-header-{{ section.id }} .el-header-logo-img {
+        width: {{ section.settings.logo_width_mobile | default: 95 }}px;
+      }
+      #ellora-header-{{ section.id }} .el-header-right {
+        gap: 12px;
+      }
+      #ellora-header-{{ section.id }} .el-header-icon-account {
+        display: none;
+      }
+    }
+
+    /* -----------------------------------------------------------------------
+       6. ELLORA SLIDE CART DRAWER
+       ----------------------------------------------------------------------- */
+    #ellora-header-{{ section.id }} .el-cart-drawer-wrapper,
+    .el-cart-drawer-wrapper {
+      position: relative;
+    }
+
+    #ellora-header-{{ section.id }} .el-cart-drawer-wrapper .el-cd-overlay,
+    .el-cart-drawer-wrapper .el-cd-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(28, 27, 25, 0.5);
+      backdrop-filter: blur(3px);
+      -webkit-backdrop-filter: blur(3px);
+      z-index: 999998;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.3s ease;
+    }
+
+    #ellora-header-{{ section.id }} .el-cart-drawer-wrapper.is-open .el-cd-overlay,
+    .el-cart-drawer-wrapper.is-open .el-cd-overlay {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    #ellora-header-{{ section.id }} .el-cart-drawer-wrapper .el-cd-panel,
+    .el-cart-drawer-wrapper .el-cd-panel {
+      position: fixed;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      width: 460px;
+      max-width: 92vw;
+      height: 100%;
+      height: -webkit-fill-available;
+      height: 100dvh;
+      max-height: 100dvh;
+      background: #FFFFFF !important;
+      color: #1C1B19 !important;
+      z-index: 999999;
+      display: flex;
+      flex-direction: column;
+      box-shadow: -12px 0 40px rgba(28, 27, 25, 0.16);
+      transform: translateX(100%);
+      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      font-family: var(--el-hd-font-sans, -apple-system, BlinkMacSystemFont, sans-serif);
+      box-sizing: border-box;
+      overflow: hidden;
+    }
+
+    #ellora-header-{{ section.id }} .el-cart-drawer-wrapper.is-open .el-cd-panel,
+    .el-cart-drawer-wrapper.is-open .el-cd-panel {
+      transform: translateX(0);
+    }
+
+    /* Drawer Header */
+    #ellora-header-{{ section.id }} .el-cart-drawer-wrapper .el-cd-header,
+    .el-cart-drawer-wrapper .el-cd-header {
+      padding: 24px 28px !important;
+      border-bottom: 1px solid #ECE7E1 !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: space-between !important;
+      flex-shrink: 0 !important;
+      background: #FFFFFF !important;
+      box-sizing: border-box !important;
+    }
+
+    #ellora-header-{{ section.id }} .el-cart-drawer-wrapper .el-cd-header-title,
+    .el-cart-drawer-wrapper .el-cd-header-title {
+      font-family: var(--el-hd-font-serif, 'Cormorant Garamond', Georgia, serif) !important;
+      font-size: 26px !important;
+      font-weight: 500 !important;
+      color: #1C1B19 !important;
+      letter-spacing: -0.01em !important;
+      margin: 0 !important;
+      display: flex !important;
+      align-items: baseline !important;
+      gap: 8px !important;
+    }
+
+    #ellora-header-{{ section.id }} .el-cart-drawer-wrapper .el-cd-header-count,
+    .el-cart-drawer-wrapper .el-cd-header-count {
+      font-family: var(--el-hd-font-sans, sans-serif) !important;
+      font-size: 14px !important;
+      font-weight: 400 !important;
+      color: #736E67 !important;
+    }
+
+    #ellora-header-{{ section.id }} .el-cart-drawer-wrapper .el-cd-close-btn,
+    .el-cart-drawer-wrapper .el-cd-close-btn {
+      width: 36px !important;
+      height: 36px !important;
+      border-radius: 50% !important;
+      background: transparent !important;
+      border: 1px solid #ECE7E1 !important;
+      font-size: 18px !important;
+      line-height: 1 !important;
+      color: #1C1B19 !important;
+      cursor: pointer !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      padding: 0 !important;
+      transition: all 0.22s ease !important;
+    }
+
+    #ellora-header-{{ section.id }} .el-cart-drawer-wrapper .el-cd-close-btn:hover,
+    .el-cart-drawer-wrapper .el-cd-close-btn:hover {
+      background: #FAF8F5 !important;
+      border-color: #C59B8B !important;
+      color: #C59B8B !important;
+      transform: rotate(90deg) !important;
+    }
+
+    /* Scrollable Items Body */
+    #ellora-header-{{ section.id }} .el-cart-drawer-wrapper .el-cd-items-body,
+    .el-cart-drawer-wrapper .el-cd-items-body {
+      flex: 1 1 auto !important;
+      overflow-y: auto !important;
+      padding: 24px 28px !important;
+      display: flex !important;
+      flex-direction: column !important;
+      gap: 20px !important;
+      background: #FFFFFF !important;
+      box-sizing: border-box !important;
+      transition: opacity 0.2s ease !important;
+    }
+
+    #ellora-header-{{ section.id }} .el-cart-drawer-wrapper .el-cd-item,
+    .el-cart-drawer-wrapper .el-cd-item {
+      display: grid !important;
+      grid-template-columns: 80px 1fr !important;
+      gap: 18px !important;
+      padding-bottom: 20px !important;
+      border-bottom: 1px solid #ECE7E1 !important;
+      align-items: start !important;
+      box-sizing: border-box !important;
+    }
+
+    #ellora-header-{{ section.id }} .el-cart-drawer-wrapper .el-cd-item-media,
+    .el-cart-drawer-wrapper .el-cd-item-media {
+      width: 80px !important;
+      height: 80px !important;
+      border-radius: 6px !important;
+      overflow: hidden !important;
+      background: #F4EFEB !important;
+      display: block !important;
+      flex-shrink: 0 !important;
+      border: 1px solid #EFEAE4 !important;
+    }
+
+    #ellora-header-{{ section.id }} .el-cart-drawer-wrapper .el-cd-item-media img,
+    .el-cart-drawer-wrapper .el-cd-item-media img {
+      width: 100% !important;
+      height: 100% !important;
+      object-fit: cover !important;
+      display: block !important;
+    }
+
+    #ellora-header-{{ section.id }} .el-cart-drawer-wrapper .el-cd-item-info,
+    .el-cart-drawer-wrapper .el-cd-item-info {
+      display: flex !important;
+      flex-direction: column !important;
+      justify-content: space-between !important;
+      min-height: 80px !important;
+      gap: 6px !important;
+      box-sizing: border-box !important;
+    }
+
+    #ellora-header-{{ section.id }} .el-cart-drawer-wrapper .el-cd-item-title,
+    .el-cart-drawer-wrapper .el-cd-item-title {
+      font-family: var(--el-hd-font-serif, 'Cormorant Garamond', Georgia, serif) !important;
+      font-size: 18px !important;
+      font-weight: 500 !important;
+      color: #1C1B19 !important;
+      text-decoration: none !important;
+      line-height: 1.25 !important;
+      display: -webkit-box !important;
+      -webkit-line-clamp: 2 !important;
+      -webkit-box-orient: vertical !important;
+      overflow: hidden !important;
+      margin: 0 0 3px !important;
+      transition: color 0.2s ease !important;
+    }
+
+    #ellora-header-{{ section.id }} .el-cart-drawer-wrapper .el-cd-item-title:hover,
+    .el-cart-drawer-wrapper .el-cd-item-title:hover {
+      color: #C59B8B !important;
+    }
+
+    #ellora-header-{{ section.id }} .el-cart-drawer-wrapper .el-cd-item-variant,
+    .el-cart-drawer-wrapper .el-cd-item-variant {
+      font-size: 12.5px !important;
+      color: #736E67 !important;
+      margin: 0 0 4px !important;
+      line-height: 1.35 !important;
+    }
+
+    #ellora-header-{{ section.id }} .el-cart-drawer-wrapper .el-cd-item-price,
+    .el-cart-drawer-wrapper .el-cd-item-price {
+      font-size: 14.5px !important;
+      font-weight: 600 !important;
+      color: #1C1B19 !important;
+      margin: 0 0 8px !important;
+      letter-spacing: 0.01em !important;
+    }
+
+    #ellora-header-{{ section.id }} .el-cart-drawer-wrapper .el-cd-item-actions,
+    .el-cart-drawer-wrapper .el-cd-item-actions {
+      display: flex !important;
+      align-items: center !important;
+      justify-content: space-between !important;
+      gap: 12px !important;
+      margin-top: auto !important;
+    }
+
+    #ellora-header-{{ section.id }} .el-cart-drawer-wrapper .el-cd-stepper,
+    .el-cart-drawer-wrapper .el-cd-stepper {
+      display: inline-flex !important;
+      align-items: center !important;
+      border: 1px solid #D8D2CA !important;
+      border-radius: 4px !important;
+      background: #FFFFFF !important;
+      overflow: hidden !important;
+      height: 32px !important;
+      box-sizing: border-box !important;
+    }
+
+    #ellora-header-{{ section.id }} .el-cart-drawer-wrapper .el-cd-stepper-btn,
+    .el-cart-drawer-wrapper .el-cd-stepper-btn {
+      width: 32px !important;
+      height: 32px !important;
+      background: transparent !important;
+      border: none !important;
+      font-size: 15px !important;
+      color: #1C1B19 !important;
+      cursor: pointer !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      padding: 0 !important;
+      transition: background 0.15s ease !important;
+    }
+
+    #ellora-header-{{ section.id }} .el-cart-drawer-wrapper .el-cd-stepper-btn:hover,
+    .el-cart-drawer-wrapper .el-cd-stepper-btn:hover {
+      background: #F4EFEB !important;
+    }
+
+    #ellora-header-{{ section.id }} .el-cart-drawer-wrapper .el-cd-stepper-input,
+    .el-cart-drawer-wrapper .el-cd-stepper-input {
+      width: 38px !important;
+      height: 32px !important;
+      border: none !important;
+      text-align: center !important;
+      font-size: 13.5px !important;
+      font-weight: 600 !important;
+      color: #1C1B19 !important;
+      padding: 0 !important;
+      margin: 0 !important;
+      background: transparent !important;
+      -moz-appearance: textfield !important;
+      appearance: textfield !important;
+    }
+
+    #ellora-header-{{ section.id }} .el-cart-drawer-wrapper .el-cd-stepper-input::-webkit-outer-spin-button,
+    #ellora-header-{{ section.id }} .el-cart-drawer-wrapper .el-cd-stepper-input::-webkit-inner-spin-button,
+    .el-cart-drawer-wrapper .el-cd-stepper-input::-webkit-outer-spin-button,
+    .el-cart-drawer-wrapper .el-cd-stepper-input::-webkit-inner-spin-button {
+      -webkit-appearance: none !important;
+      margin: 0 !important;
+    }
+
+    #ellora-header-{{ section.id }} .el-cart-drawer-wrapper .el-cd-item-remove-btn,
+    .el-cart-drawer-wrapper .el-cd-item-remove-btn {
+      background: none !important;
+      border: none !important;
+      font-size: 12px !important;
+      color: #736E67 !important;
+      cursor: pointer !important;
+      text-decoration: underline !important;
+      padding: 0 !important;
+      margin: 0 !important;
+      transition: color 0.18s ease !important;
+    }
+
+    #ellora-header-{{ section.id }} .el-cart-drawer-wrapper .el-cd-item-remove-btn:hover,
+    .el-cart-drawer-wrapper .el-cd-item-remove-btn:hover {
+      color: #B9382B !important;
+    }
+
+    /* Empty Cart State */
+    #ellora-header-{{ section.id }} .el-cart-drawer-wrapper .el-cd-empty,
+    .el-cart-drawer-wrapper .el-cd-empty {
+      padding: 60px 24px !important;
+      text-align: center !important;
+      display: flex !important;
+      flex-direction: column !important;
+      align-items: center !important;
+      gap: 14px !important;
+      margin: auto 0 !important;
+      box-sizing: border-box !important;
+    }
+
+    #ellora-header-{{ section.id }} .el-cart-drawer-wrapper .el-cd-empty-icon svg,
+    .el-cart-drawer-wrapper .el-cd-empty-icon svg {
+      width: 48px !important;
+      height: 48px !important;
+      stroke: #736E67 !important;
+      fill: none !important;
+      stroke-width: 1.4 !important;
+      opacity: 0.65 !important;
+    }
+
+    #ellora-header-{{ section.id }} .el-cart-drawer-wrapper .el-cd-empty-title,
+    .el-cart-drawer-wrapper .el-cd-empty-title {
+      font-family: var(--el-hd-font-serif, 'Cormorant Garamond', Georgia, serif) !important;
+      font-size: 24px !important;
+      font-weight: 500 !important;
+      color: #1C1B19 !important;
+      margin: 0 !important;
+    }
+
+    #ellora-header-{{ section.id }} .el-cart-drawer-wrapper .el-cd-empty-desc,
+    .el-cart-drawer-wrapper .el-cd-empty-desc {
+      font-size: 13.5px !important;
+      color: #736E67 !important;
+      max-width: 280px !important;
+      line-height: 1.5 !important;
+      margin: 0 !important;
+    }
+
+    #ellora-header-{{ section.id }} .el-cart-drawer-wrapper .el-cd-empty-btn,
+    .el-cart-drawer-wrapper .el-cd-empty-btn {
+      margin-top: 10px !important;
+      display: inline-block !important;
+      padding: 12px 24px !important;
+      background: #1C1B19 !important;
+      color: #FFFFFF !important;
+      text-decoration: none !important;
+      font-size: 11.5px !important;
+      letter-spacing: 0.08em !important;
+      text-transform: uppercase !important;
+      font-weight: 600 !important;
+      border-radius: 4px !important;
+      transition: background 0.2s ease !important;
+    }
+
+    #ellora-header-{{ section.id }} .el-cart-drawer-wrapper .el-cd-empty-btn:hover,
+    .el-cart-drawer-wrapper .el-cd-empty-btn:hover {
+      background: #C59B8B !important;
+    }
+
+    /* Drawer Footer */
+    #ellora-header-{{ section.id }} .el-cart-drawer-wrapper .el-cd-footer,
+    .el-cart-drawer-wrapper .el-cd-footer {
+      padding: 24px 28px !important;
+      border-top: 1px solid #ECE7E1 !important;
+      background: #FAF8F5 !important;
+      flex-shrink: 0 !important;
+      display: flex !important;
+      flex-direction: column !important;
+      gap: 14px !important;
+      box-sizing: border-box !important;
+    }
+
+    #ellora-header-{{ section.id }} .el-cart-drawer-wrapper .el-cd-subtotal-row,
+    .el-cart-drawer-wrapper .el-cd-subtotal-row {
+      display: flex !important;
+      justify-content: space-between !important;
+      align-items: center !important;
+      font-size: 15.5px !important;
+      font-weight: 600 !important;
+      color: #1C1B19 !important;
+      margin: 0 !important;
+    }
+
+    #ellora-header-{{ section.id }} .el-cart-drawer-wrapper .el-cd-tax-note,
+    .el-cart-drawer-wrapper .el-cd-tax-note {
+      font-size: 12px !important;
+      color: #736E67 !important;
+      line-height: 1.4 !important;
+      margin: 0 !important;
+    }
+
+    #ellora-header-{{ section.id }} .el-cart-drawer-wrapper .el-cd-checkout-btn,
+    .el-cart-drawer-wrapper .el-cd-checkout-btn {
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      width: 100% !important;
+      height: 48px !important;
+      background: #BA8877 !important;
+      color: #FFFFFF !important;
+      text-decoration: none !important;
+      font-size: 12.5px !important;
+      font-weight: 600 !important;
+      letter-spacing: 0.08em !important;
+      text-transform: uppercase !important;
+      border-radius: 4px !important;
+      transition: all 0.25s ease !important;
+      box-shadow: 0 4px 14px rgba(186, 136, 119, 0.28) !important;
+      margin-top: 4px !important;
+      box-sizing: border-box !important;
+    }
+
+    #ellora-header-{{ section.id }} .el-cart-drawer-wrapper .el-cd-checkout-btn:hover,
+    .el-cart-drawer-wrapper .el-cd-checkout-btn:hover {
+      background: #A67565 !important;
+      box-shadow: 0 6px 20px rgba(186, 136, 119, 0.38) !important;
+      color: #FFFFFF !important;
+    }
+
+    #ellora-header-{{ section.id }} .el-cart-drawer-wrapper .el-cd-view-cart-btn,
+    .el-cart-drawer-wrapper .el-cd-view-cart-btn {
+      display: block !important;
+      text-align: center !important;
+      font-size: 12.5px !important;
+      color: #736E67 !important;
+      text-decoration: underline !important;
+      padding: 4px 0 !important;
+      margin: 0 !important;
+      transition: color 0.18s ease !important;
+    }
+
+    #ellora-header-{{ section.id }} .el-cart-drawer-wrapper .el-cd-view-cart-btn:hover,
+    .el-cart-drawer-wrapper .el-cd-view-cart-btn:hover {
+      color: #1C1B19 !important;
+    }
+
+    /* Mobile Cart Drawer Optimizations */
+    @media (max-width: 640px) {
+      #ellora-header-{{ section.id }} .el-cart-drawer-wrapper .el-cd-panel,
+      .el-cart-drawer-wrapper .el-cd-panel {
+        width: 100% !important;
+        max-width: 100vw !important;
+      }
+
+      #ellora-header-{{ section.id }} .el-cart-drawer-wrapper .el-cd-header,
+      .el-cart-drawer-wrapper .el-cd-header {
+        padding: 16px 20px !important;
+      }
+
+      #ellora-header-{{ section.id }} .el-cart-drawer-wrapper .el-cd-header-title,
+      .el-cart-drawer-wrapper .el-cd-header-title {
+        font-size: 22px !important;
+      }
+
+      #ellora-header-{{ section.id }} .el-cart-drawer-wrapper .el-cd-close-btn,
+      .el-cart-drawer-wrapper .el-cd-close-btn {
+        width: 32px !important;
+        height: 32px !important;
+        font-size: 16px !important;
+      }
+
+      #ellora-header-{{ section.id }} .el-cart-drawer-wrapper .el-cd-items-body,
+      .el-cart-drawer-wrapper .el-cd-items-body {
+        padding: 16px 20px !important;
+        gap: 16px !important;
+      }
+
+      #ellora-header-{{ section.id }} .el-cart-drawer-wrapper .el-cd-item,
+      .el-cart-drawer-wrapper .el-cd-item {
+        grid-template-columns: 70px 1fr !important;
+        gap: 14px !important;
+        padding-bottom: 16px !important;
+      }
+
+      #ellora-header-{{ section.id }} .el-cart-drawer-wrapper .el-cd-item-media,
+      .el-cart-drawer-wrapper .el-cd-item-media {
+        width: 70px !important;
+        height: 70px !important;
+      }
+
+      #ellora-header-{{ section.id }} .el-cart-drawer-wrapper .el-cd-item-title,
+      .el-cart-drawer-wrapper .el-cd-item-title {
+        font-size: 16px !important;
+      }
+
+      #ellora-header-{{ section.id }} .el-cart-drawer-wrapper .el-cd-footer,
+      .el-cart-drawer-wrapper .el-cd-footer {
+        padding: 14px 20px calc(18px + env(safe-area-inset-bottom, 0px)) !important;
+        gap: 10px !important;
+      }
+
+      #ellora-header-{{ section.id }} .el-cart-drawer-wrapper .el-cd-subtotal-row,
+      .el-cart-drawer-wrapper .el-cd-subtotal-row {
+        font-size: 14.5px !important;
+      }
+
+      #ellora-header-{{ section.id }} .el-cart-drawer-wrapper .el-cd-tax-note,
+      .el-cart-drawer-wrapper .el-cd-tax-note {
+        font-size: 11px !important;
+        line-height: 1.3 !important;
+      }
+
+      #ellora-header-{{ section.id }} .el-cart-drawer-wrapper .el-cd-checkout-btn,
+      .el-cart-drawer-wrapper .el-cd-checkout-btn {
+        height: 44px !important;
+        font-size: 12px !important;
+        margin-top: 2px !important;
+      }
+
+      #ellora-header-{{ section.id }} .el-cart-drawer-wrapper .el-cd-view-cart-btn,
+      .el-cart-drawer-wrapper .el-cd-view-cart-btn {
+        display: block !important;
+        font-size: 13px !important;
+        font-weight: 500 !important;
+        padding: 6px 0 2px !important;
+      }
+    }
+  </style>
+
+  <!-- ========================================================================
+       TOP ANNOUNCEMENT BAR
+       ======================================================================== -->
+  {%- if section.settings.show_announcement -%}
+    <div class="el-announcement-bar">
+      <div class="el-hd-container">
+        <div class="el-announcement-inner">
+          {%- if section.settings.announcement_link != blank -%}
+            <a href="{{ section.settings.announcement_link }}" class="el-announcement-left">
+              {{ section.settings.announcement_text | default: "New Collection · Discover Ellora's Latest Designs" }}
+            </a>
+          {%- else -%}
+            <span class="el-announcement-left">
+              {{ section.settings.announcement_text | default: "New Collection · Discover Ellora's Latest Designs" }}
+            </span>
+          {%- endif -%}
+
+          {%- if section.settings.top_menu != blank and linklists[section.settings.top_menu].links.size > 0 -%}
+            <div class="el-announcement-links">
+              {%- for top_link in linklists[section.settings.top_menu].links -%}
+                <a href="{{ top_link.url }}">{{ top_link.title }}</a>
+              {%- endfor -%}
+            </div>
+          {%- elsif section.settings.show_top_links -%}
+            <div class="el-announcement-links">
+              <a href="{{ section.settings.faq_url | default: '/pages/faqs' }}">
+                {{ section.settings.faq_label | default: 'FAQs' }}
+              </a>
+              <a href="{{ section.settings.contact_url | default: '/pages/contact' }}">
+                {{ section.settings.contact_label | default: 'Contact' }}
+              </a>
+              <a href="{{ section.settings.trade_url | default: '/pages/trade' }}">
+                {{ section.settings.trade_label | default: 'Trade' }}
+              </a>
+            </div>
+          {%- endif -%}
+        </div>
+      </div>
+    </div>
+  {%- endif -%}
+
+  <!-- ========================================================================
+       MAIN HEADER (DESKTOP + MOBILE)
+       ======================================================================== -->
+  <header class="el-main-header">
+    <div class="el-hd-container">
+      <div class="el-main-header-inner">
+        
+        <!-- Mobile Hamburger Toggle -->
+        <button type="button" class="el-mobile-toggle" id="elMobileToggle-{{ section.id }}" aria-label="Open navigation menu">
+          <svg viewBox="0 0 24 24">
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+        </button>
+
+        <!-- Dynamic Category & Collection Resolution for Mega Menu -->
+        {%- assign tiles_col = collections['all-tiles-stone'] | default: collections['tiles'] | default: collections['all-tiles'] -%}
+        {%- if tiles_col != blank -%}
+          {%- assign tiles_base_url = tiles_col.url -%}
+        {%- else -%}
+          {%- assign tiles_base_url = '/collections/all?filter.p.product_type=Tiles' -%}
+        {%- endif -%}
+
+        {%- assign wallpaper_col = collections['all-wallpapers-murals'] | default: collections['wallpapers'] | default: collections['wallpaper'] -%}
+        {%- if wallpaper_col != blank -%}
+          {%- assign wallpaper_base_url = wallpaper_col.url -%}
+        {%- else -%}
+          {%- assign wallpaper_base_url = '/collections/all?filter.p.product_type=Wallpaper' -%}
+        {%- endif -%}
+
+        <!-- Capture Dynamic Luxury Tabbed Mega Menu Panel -->
+        {%- capture megamenu_panel_html -%}
+          <div class="el-megamenu-panel" id="elShopMegaMenu-{{ section.id }}" role="region" aria-label="Shop Products Mega Menu">
+            <div class="el-megamenu-header">
+              <h3 class="el-megamenu-title">{{ section.settings.megamenu_title | default: 'Shop Products' }}</h3>
+              <button type="button" class="el-megamenu-close" id="elMegaMenuClose-{{ section.id }}" aria-label="Close Mega Menu">✕</button>
+            </div>
+
+            <div class="el-megamenu-body">
+              <!-- Sidebar: All Backend Collections Dynamically -->
+              <div class="el-megamenu-sidebar">
+                <h4 class="el-sidebar-heading">Shop By Collection</h4>
+                <ul class="el-sidebar-list">
+                  <li>
+                    <a href="{{ routes.all_products_collection_url }}">
+                      <span>All Products</span>
+                      {%- if collections.all.all_products_count > 0 -%}
+                        <span class="el-sidebar-count">({{ collections.all.all_products_count }})</span>
+                      {%- endif -%}
+                    </a>
+                  </li>
+                  {%- for col in collections -%}
+                    {%- unless col.handle == 'frontpage' or col.handle == 'all' -%}
+                      <li>
+                        <a href="{{ col.url }}">
+                          <span>{{ col.title }}</span>
+                          {%- if col.all_products_count > 0 -%}
+                            <span class="el-sidebar-count">({{ col.all_products_count }})</span>
+                          {%- endif -%}
+                        </a>
+                      </li>
+                    {%- endunless -%}
+                  {%- endfor -%}
+                </ul>
+              </div>
+
+              <!-- Content Area with Dynamic Surface Tabs & Architectural Filters -->
+              <div class="el-megamenu-content">
+                <div class="el-megamenu-tabs" role="tablist">
+                  <button type="button" class="el-megamenu-tab is-active" data-tab="tiles-tab-{{ section.id }}" role="tab" aria-selected="true">
+                    Tiles & Natural Stone
+                  </button>
+                  <button type="button" class="el-megamenu-tab" data-tab="wallpapers-tab-{{ section.id }}" role="tab" aria-selected="false">
+                    Wallpapers & Murals
+                  </button>
+                </div>
+
+                <!-- Tab 1: Tiles & Natural Stone -->
+                <div class="el-tab-pane is-active" id="tiles-tab-{{ section.id }}" role="tabpanel">
+                  <div class="el-pane-col">
+                    <h4 class="el-pane-heading">Tiles & Stone</h4>
+                    <p class="el-pane-desc">Architectural stone, terracotta & porcelain surfaces engineered to endure.</p>
+                    <a href="{{ tiles_base_url }}" class="el-pane-btn">View All Tiles →</a>
+                  </div>
+                  <div class="el-pane-col">
+                    <h5 class="el-col-subheading">Materials</h5>
+                    <ul class="el-col-list">
+                      <li><a href="{% if collections['marble-surfaces'] != blank %}{{ collections['marble-surfaces'].url }}{% else %}{{ tiles_base_url }}/marble{% endif %}">Marble Surfaces</a></li>
+                      <li><a href="{% if collections['travertine-surfaces'] != blank %}{{ collections['travertine-surfaces'].url }}{% else %}{{ tiles_base_url }}/travertine{% endif %}">Travertine Surfaces</a></li>
+                      <li><a href="{% if collections['limestone-surfaces'] != blank %}{{ collections['limestone-surfaces'].url }}{% else %}{{ tiles_base_url }}/limestone{% endif %}">French Limestone</a></li>
+                      <li><a href="{{ tiles_base_url }}/porcelain">Sintered Porcelain</a></li>
+                      <li><a href="{{ tiles_base_url }}/terracotta">Tuscan Terracotta</a></li>
+                      <li><a href="{{ tiles_base_url }}/slate">Architectural Slate</a></li>
+                    </ul>
+                  </div>
+                  <div class="el-pane-col">
+                    <h5 class="el-col-subheading">By Space</h5>
+                    <ul class="el-col-list">
+                      <li><a href="{{ tiles_base_url }}/bathroom">Bathroom & Wet Room</a></li>
+                      <li><a href="{{ tiles_base_url }}/kitchen">Kitchen & Splashback</a></li>
+                      <li><a href="{{ tiles_base_url }}/living-room">Living & Hallways</a></li>
+                      <li><a href="{{ tiles_base_url }}/outdoor">Outdoor & Patio</a></li>
+                      <li><a href="{{ tiles_base_url }}/feature-wall">Feature & Accent Walls</a></li>
+                    </ul>
+                  </div>
+                  <div class="el-pane-col el-col-bordered">
+                    <h5 class="el-col-subheading">Finish & Style</h5>
+                    <ul class="el-col-list">
+                      <li><a href="{{ tiles_base_url }}/honed">Honed & Filled</a></li>
+                      <li><a href="{{ tiles_base_url }}/polished">Polished Gloss</a></li>
+                      <li><a href="{{ tiles_base_url }}/fluted">Fluted Relief Carved</a></li>
+                      <li><a href="{{ tiles_base_url }}/tumbled">Tumbled Heritage</a></li>
+                      <li><a href="{{ tiles_base_url }}/mosaic">Mesh Mosaic Sheets</a></li>
+                    </ul>
+                  </div>
+                </div>
+
+                <!-- Tab 2: Wallpapers & Murals -->
+                <div class="el-tab-pane" id="wallpapers-tab-{{ section.id }}" role="tabpanel">
+                  <div class="el-pane-col">
+                    <h4 class="el-pane-heading">Wallcoverings</h4>
+                    <p class="el-pane-desc">Curated murals, artisan textures and botanical studies printed to scale.</p>
+                    <a href="{{ wallpaper_base_url }}" class="el-pane-btn">View Wallpapers →</a>
+                  </div>
+                  <div class="el-pane-col">
+                    <h5 class="el-col-subheading">Style & Art</h5>
+                    <ul class="el-col-list">
+                      <li><a href="{{ wallpaper_base_url }}/mural">Architectural Murals</a></li>
+                      <li><a href="{{ wallpaper_base_url }}/botanical">Botanical & Foliage</a></li>
+                      <li><a href="{{ wallpaper_base_url }}/fresco">Renaissance Fresco</a></li>
+                      <li><a href="{{ wallpaper_base_url }}/geometric">Brutalist & Geometric</a></li>
+                      <li><a href="{{ wallpaper_base_url }}/landscape">Panoramic Landscape</a></li>
+                      <li><a href="{{ wallpaper_base_url }}/chinoiserie">Chinoiserie Classic</a></li>
+                    </ul>
+                  </div>
+                  <div class="el-pane-col">
+                    <h5 class="el-col-subheading">Substrates</h5>
+                    <ul class="el-col-list">
+                      <li><a href="{{ wallpaper_base_url }}/linen">Textured Linen (300 gsm)</a></li>
+                      <li><a href="{{ wallpaper_base_url }}/non-woven">Non-Woven Matte</a></li>
+                      <li><a href="{{ wallpaper_base_url }}/peel-and-stick">Peel & Stick Grasscloth</a></li>
+                      <li><a href="{{ wallpaper_base_url }}/foil">Artisan Metallic Foil</a></li>
+                    </ul>
+                  </div>
+                  <div class="el-pane-col el-col-bordered">
+                    <h5 class="el-col-subheading">By Room</h5>
+                    <ul class="el-col-list">
+                      <li><a href="{{ wallpaper_base_url }}/bedroom">Primary Suite & Bedroom</a></li>
+                      <li><a href="{{ wallpaper_base_url }}/living-room">Living Room Feature Wall</a></li>
+                      <li><a href="{{ wallpaper_base_url }}/dining">Dining & Entertaining</a></li>
+                      <li><a href="{{ wallpaper_base_url }}/powder-room">Powder Room Statement</a></li>
+                      <li><a href="{{ wallpaper_base_url }}/study">Study & Library</a></li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        {%- endcapture -%}
+
+        <!-- Left Desktop Navigation (Supports Backend Menu Picker) -->
+        <nav class="el-header-left" aria-label="Main Navigation">
+          {%- assign current_menu = section.settings.menu -%}
+          {%- if current_menu != blank and linklists[current_menu].links.size > 0 -%}
+            
+            {%- for link in linklists[current_menu].links -%}
+              {%- assign title_clean = link.title | strip | downcase -%}
+
+              {%- if title_clean == 'shop' and section.settings.enable_mega_menu -%}
+                <!-- Shop Link with Interactive Mega Menu -->
+                <div class="el-nav-item el-has-megamenu" id="elShopMegaMenuParent-{{ section.id }}">
+                  <a href="{{ link.url }}" class="el-nav-link" id="elShopBtn-{{ section.id }}" aria-haspopup="true" aria-expanded="false">
+                    <span>{{ link.title }}</span>
+                    <svg class="el-chevron-icon" viewBox="0 0 10 6">
+                      <polyline points="1 1 5 5 9 1"></polyline>
+                    </svg>
+                  </a>
+                  {{ megamenu_panel_html }}
+                </div>
+
+              {%- elsif link.links != blank -%}
+                {%- if link.links.first.links != blank -%}
+                  <!-- Multi-column Mega Dropdown for Nested Menu -->
+                  <div class="el-nav-item el-has-megamenu">
+                    <a href="{{ link.url }}" class="el-nav-link">
+                      <span>{{ link.title }}</span>
+                      <svg class="el-chevron-icon" viewBox="0 0 10 6">
+                        <polyline points="1 1 5 5 9 1"></polyline>
+                      </svg>
+                    </a>
+                    <div class="el-mega-dropdown">
+                      {%- for child in link.links -%}
+                        <div class="el-mega-col">
+                          <a href="{{ child.url }}" class="el-mega-col-heading">{{ child.title }}</a>
+                          {%- if child.links != blank -%}
+                            <ul class="el-mega-col-list">
+                              {%- for grand in child.links -%}
+                                <li><a href="{{ grand.url }}">{{ grand.title }}</a></li>
+                              {%- endfor -%}
+                            </ul>
+                          {%- endif -%}
+                        </div>
+                      {%- endfor -%}
+                    </div>
+                  </div>
+                {%- else -%}
+                  <!-- Single Dropdown Menu -->
+                  <div class="el-nav-item el-has-dropdown">
+                    <a href="{{ link.url }}" class="el-nav-link">
+                      <span>{{ link.title }}</span>
+                      <svg class="el-chevron-icon" viewBox="0 0 10 6">
+                        <polyline points="1 1 5 5 9 1"></polyline>
+                      </svg>
+                    </a>
+                    <ul class="el-dropdown-menu">
+                      {%- for child in link.links -%}
+                        <li><a href="{{ child.url }}">{{ child.title }}</a></li>
+                      {%- endfor -%}
+                    </ul>
+                  </div>
+                {%- endif -%}
+
+              {%- else -%}
+                <!-- Direct Link -->
+                <a href="{{ link.url }}" class="el-nav-link">{{ link.title }}</a>
+              {%- endif -%}
+
+            {%- endfor -%}
+
+          {%- else -%}
+            
+            <!-- Default Fallback Navigation if No Menu Chosen Yet -->
+            <div class="el-nav-item el-has-megamenu" id="elShopMegaMenuParent-{{ section.id }}">
+              <button type="button" class="el-nav-link" id="elShopBtn-{{ section.id }}" aria-haspopup="true" aria-expanded="false">
+                <span>Shop</span>
+                <svg class="el-chevron-icon" viewBox="0 0 10 6">
+                  <polyline points="1 1 5 5 9 1"></polyline>
+                </svg>
+              </button>
+              {{ megamenu_panel_html }}
+            </div>
+
+            <a href="/pages/inspiration" class="el-nav-link">Inspiration</a>
+            <a href="/pages/about" class="el-nav-link">About</a>
+
+          {%- endif -%}
+        </nav>
+
+        <!-- Center Brand Logo -->
+        <div class="el-header-center">
+          <a href="/" class="el-header-logo-link" aria-label="Ellora Spaces Home">
+            {%- if section.settings.logo != blank -%}
+              {{ section.settings.logo | image_url: width: 400 | image_tag: class: 'el-header-logo-img', alt: 'Ellora Spaces' }}
+            {%- else -%}
+              <img 
+                src="{{ section.settings.fallback_logo | default: 'https://cdn.shopify.com/s/files/1/0990/3685/6647/files/ellora_logo_final.png?v=1793618092' }}" 
+                alt="Ellora Spaces" 
+                class="el-header-logo-img">
+            {%- endif -%}
+          </a>
+        </div>
+
+        <!-- Right Utility Icons -->
+        <div class="el-header-right">
+          <!-- 1. Search Icon -->
+          {%- if section.settings.show_search -%}
+            <a href="{{ routes.search_url }}" class="el-header-icon-btn" aria-label="Search Collection">
+              <svg viewBox="0 0 24 24">
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+              </svg>
+            </a>
+          {%- endif -%}
+
+          <!-- 2. Wishlist Icon -->
+          {%- if section.settings.show_wishlist -%}
+            <a href="{{ section.settings.wishlist_url | default: '/pages/wishlist' }}" class="el-header-icon-btn el-header-wishlist-btn" aria-label="View Wishlist">
+              <svg viewBox="0 0 24 24">
+                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+              </svg>
+              <span class="el-header-wishlist-badge" id="elWishlistBadge-{{ section.id }}" style="display:none;">0</span>
+            </a>
+          {%- endif -%}
+
+          <!-- 3. Shopping Basket Icon with Count -->
+          {%- if section.settings.show_cart -%}
+            <a href="{{ routes.cart_url }}" 
+               class="el-header-icon-btn el-header-cart-btn" 
+               {% if section.settings.enable_slide_cart %}id="cart-icon-bubble" data-cart-drawer-trigger="true"{% endif %} 
+               aria-label="Shopping Basket">
+              <svg viewBox="0 0 24 24">
+                <path d="M2 9h20l-2 11H4L2 9z"></path>
+                <path d="M7 9l4.5-6"></path>
+                <path d="M17 9l-4.5-6"></path>
+                <line x1="4.5" y1="14" x2="19.5" y2="14"></line>
+              </svg>
+              <span class="el-header-cart-badge" id="elCartBadge-{{ section.id }}" {% if cart.item_count == 0 %}style="display: none;"{% endif %}>{{ cart.item_count }}</span>
+            </a>
+          {%- endif -%}
+
+          <!-- 4. User Account Icon -->
+          {%- if section.settings.show_account -%}
+            <a href="{{ routes.account_url }}" class="el-header-icon-btn el-header-icon-account" aria-label="Customer Account">
+              <svg viewBox="0 0 24 24">
+                <circle cx="12" cy="12" r="10"></circle>
+                <circle cx="12" cy="10" r="3"></circle>
+                <path d="M6.168 18.849a6 6 0 0 1 11.664 0"></path>
+              </svg>
+            </a>
+          {%- endif -%}
+        </div>
+
+      </div>
+    </div>
+  </header>
+
+  <!-- ========================================================================
+       SLIDE-OUT LEFT MOBILE DRAWER (RESPONSIVE BACKEND MENU)
+       ======================================================================== -->
+  <div class="el-drawer-overlay" id="elDrawerOverlay-{{ section.id }}" aria-hidden="true"></div>
+  <aside class="el-mobile-drawer" id="elMobileDrawer-{{ section.id }}" aria-label="Mobile Navigation" role="dialog" aria-modal="true">
+    <div class="el-drawer-header">
+      {%- if section.settings.logo != blank -%}
+        {{ section.settings.logo | image_url: width: 300 | image_tag: class: 'el-drawer-logo-img', alt: 'Ellora Spaces' }}
+      {%- else -%}
+        <img src="{{ section.settings.fallback_logo | default: 'https://cdn.shopify.com/s/files/1/0990/3685/6647/files/ellora_logo_final.png?v=1793618092' }}" alt="Ellora Spaces" class="el-drawer-logo-img">
+      {%- endif -%}
+      <button type="button" class="el-drawer-close-btn" id="elDrawerClose-{{ section.id }}" aria-label="Close navigation menu">✕</button>
+    </div>
+
+    <!-- Dynamic Mobile Drawer Shop Accordion Capture -->
+    {%- capture mobile_drawer_shop_accordion_html -%}
+      <div class="el-drawer-accordion-group">
+        <button type="button" class="el-drawer-accordion-btn is-active">
+          <span>Shop Products</span>
+          <svg viewBox="0 0 10 6"><polyline points="1 1 5 5 9 1"></polyline></svg>
+        </button>
+        <div class="el-drawer-accordion-content is-open">
+          <div class="el-drawer-subheading">Shop By Collection</div>
+          <a href="{{ routes.all_products_collection_url }}">All Products</a>
+          {%- for col in collections -%}
+            {%- unless col.handle == 'frontpage' or col.handle == 'all' -%}
+              <a href="{{ col.url }}">
+                {{ col.title }}
+                {%- if col.all_products_count > 0 -%} ({{ col.all_products_count }}){%- endif -%}
+              </a>
+            {%- endunless -%}
+          {%- endfor -%}
+
+          <div class="el-drawer-subheading" style="margin-top: 14px;">Tiles & Natural Stone</div>
+          <a href="{{ tiles_base_url }}" style="color: var(--el-hd-primary); font-weight: 500;">View All Tiles →</a>
+          <a href="{% if collections['marble-surfaces'] != blank %}{{ collections['marble-surfaces'].url }}{% else %}{{ tiles_base_url }}/marble{% endif %}">Marble Surfaces</a>
+          <a href="{% if collections['travertine-surfaces'] != blank %}{{ collections['travertine-surfaces'].url }}{% else %}{{ tiles_base_url }}/travertine{% endif %}">Travertine Surfaces</a>
+          <a href="{{ tiles_base_url }}/limestone">French Limestone</a>
+          <a href="{{ tiles_base_url }}/porcelain">Sintered Porcelain</a>
+          <a href="{{ tiles_base_url }}/terracotta">Tuscan Terracotta</a>
+          <a href="{{ tiles_base_url }}/slate">Architectural Slate</a>
+          <a href="{{ tiles_base_url }}/bathroom">Bathroom & Wet Rooms</a>
+          <a href="{{ tiles_base_url }}/kitchen">Kitchen & Splashbacks</a>
+
+          <div class="el-drawer-subheading" style="margin-top: 14px;">Wallpapers & Murals</div>
+          <a href="{{ wallpaper_base_url }}" style="color: var(--el-hd-primary); font-weight: 500;">View All Wallpapers →</a>
+          <a href="{{ wallpaper_base_url }}/mural">Architectural Murals</a>
+          <a href="{{ wallpaper_base_url }}/botanical">Botanical Studies</a>
+          <a href="{{ wallpaper_base_url }}/fresco">Renaissance Fresco</a>
+          <a href="{{ wallpaper_base_url }}/geometric">Brutalist & Geometric</a>
+          <a href="{{ wallpaper_base_url }}/linen">Textured Linen Substrate</a>
+          <a href="{{ wallpaper_base_url }}/peel-and-stick">Peel & Stick Grasscloth</a>
+          <a href="{{ wallpaper_base_url }}/bedroom">Bedroom Wallcoverings</a>
+          <a href="{{ wallpaper_base_url }}/living-room">Living Room Murals</a>
+        </div>
+      </div>
+    {%- endcapture -%}
+
+    <nav class="el-drawer-nav">
+      {%- if current_menu != blank and linklists[current_menu].links.size > 0 -%}
+        {%- for link in linklists[current_menu].links -%}
+          {%- assign title_clean = link.title | strip | downcase -%}
+
+          {%- if title_clean == 'shop' and section.settings.enable_mega_menu -%}
+            <!-- Mobile Shop Accordion with Full Collections & Tiles -->
+            {{ mobile_drawer_shop_accordion_html }}
+
+          {%- elsif link.links != blank -%}
+            <!-- Dynamic Mobile Accordion for any backend link with children -->
+            <div class="el-drawer-accordion-group">
+              <button type="button" class="el-drawer-accordion-btn">
+                <span>{{ link.title }}</span>
+                <svg viewBox="0 0 10 6"><polyline points="1 1 5 5 9 1"></polyline></svg>
+              </button>
+              <div class="el-drawer-accordion-content">
+                {%- for child in link.links -%}
+                  {%- if child.links != blank -%}
+                    <div class="el-drawer-subheading">{{ child.title }}</div>
+                    {%- for grand in child.links -%}
+                      <a href="{{ grand.url }}">{{ grand.title }}</a>
+                    {%- endfor -%}
+                  {%- else -%}
+                    <a href="{{ child.url }}">{{ child.title }}</a>
+                  {%- endif -%}
+                {%- endfor -%}
+              </div>
+            </div>
+
+          {%- else -%}
+            <a href="{{ link.url }}" class="el-drawer-link">{{ link.title }}</a>
+          {%- endif -%}
+
+        {%- endfor -%}
+
+      {%- else -%}
+        
+        <!-- Default Fallback Drawer Navigation -->
+        {{ mobile_drawer_shop_accordion_html }}
+
+        <a href="/pages/inspiration" class="el-drawer-link">Inspiration</a>
+        <a href="/pages/about" class="el-drawer-link">About</a>
+
+      {%- endif -%}
+
+      {%- if section.settings.show_wishlist -%}
+        <a href="{{ section.settings.wishlist_url | default: '/pages/wishlist' }}" class="el-drawer-link">Wishlist</a>
+      {%- endif -%}
+
+      {%- if section.settings.show_account -%}
+        <a href="{{ routes.account_url }}" class="el-drawer-link">My Account</a>
+      {%- endif -%}
+    </nav>
+
+    <div class="el-drawer-footer">
+      <div><strong>{{ section.settings.drawer_footer_title | default: 'Ellora Spaces Studio' }}</strong></div>
+      <div>{{ section.settings.drawer_footer_sub | default: 'Crafting enduring, organic living spaces.' }}</div>
+      <div style="margin-top: 4px; display: flex; gap: 16px;">
+        {%- if section.settings.top_menu != blank and linklists[section.settings.top_menu].links.size > 0 -%}
+          {%- for top_link in linklists[section.settings.top_menu].links -%}
+            <a href="{{ top_link.url }}">{{ top_link.title }}</a>
+          {%- endfor -%}
+        {%- else -%}
+          <a href="{{ section.settings.faq_url | default: '/pages/faqs' }}">FAQs</a>
+          <a href="{{ section.settings.contact_url | default: '/pages/contact' }}">Contact</a>
+          <a href="{{ section.settings.trade_url | default: '/pages/trade' }}">Trade</a>
+        {%- endif -%}
+      </div>
+    </div>
+  </aside>
+
+  {%- if section.settings.enable_slide_cart -%}
+    <!-- ========================================================================
+         ELLORA SLIDE CART DRAWER
+         ======================================================================== -->
+    <div class="el-cart-drawer-wrapper" id="elCartDrawer-{{ section.id }}" aria-hidden="true">
+      <div class="el-cd-overlay" id="elCartDrawerOverlay-{{ section.id }}"></div>
+      <aside class="el-cd-panel" aria-label="Shopping Cart Drawer" role="dialog" aria-modal="true">
+        <!-- Header -->
+        <header class="el-cd-header">
+          <h2 class="el-cd-header-title">
+            Your Basket
+            <span class="el-cd-header-count" id="elDrawerCount-{{ section.id }}">({{ cart.item_count }})</span>
+          </h2>
+          <button type="button" class="el-cd-close-btn" id="elCartDrawerClose-{{ section.id }}" aria-label="Close cart">&times;</button>
+        </header>
+
+        <!-- Scrollable Items Body -->
+        <div class="el-cd-items-body" id="elDrawerItems-{{ section.id }}">
+          {%- if cart.item_count > 0 -%}
+            {%- for item in cart.items -%}
+              <div class="el-cd-item" data-key="{{ item.key }}">
+                <a href="{{ item.url }}" class="el-cd-item-media">
+                  {%- if item.image -%}
+                    <img src="{{ item.image | image_url: width: 160 }}" alt="{{ item.title | escape }}" loading="lazy">
+                  {%- else -%}
+                    <div style="width:100%; height:100%; background:#ECE7E1;"></div>
+                  {%- endif -%}
+                </a>
+                <div class="el-cd-item-info">
+                  <div>
+                    <a href="{{ item.url }}" class="el-cd-item-title">{{ item.product.title }}</a>
+                    {%- unless item.product.has_only_default_variant -%}
+                      <div class="el-cd-item-variant">{{ item.variant.title }}</div>
+                    {%- endunless -%}
+                    <div class="el-cd-item-price">{{ item.final_line_price | money }}</div>
+                  </div>
+                  <div class="el-cd-item-actions">
+                    <div class="el-cd-stepper">
+                      <button type="button" class="el-cd-stepper-btn el-cd-minus" data-key="{{ item.key }}" aria-label="Decrease">&minus;</button>
+                      <input type="number" class="el-cd-stepper-input" value="{{ item.quantity }}" min="0" data-key="{{ item.key }}" aria-label="Quantity">
+                      <button type="button" class="el-cd-stepper-btn el-cd-plus" data-key="{{ item.key }}" aria-label="Increase">&plus;</button>
+                    </div>
+                    <button type="button" class="el-cd-item-remove-btn" data-key="{{ item.key }}">Remove</button>
+                  </div>
+                </div>
+              </div>
+            {%- endfor -%}
+          {%- else -%}
+            <div class="el-cd-empty">
+              <div class="el-cd-empty-icon">
+                <svg viewBox="0 0 24 24"><path d="M2 9h20l-2 11H4L2 9z"></path><path d="M7 9l4.5-6"></path><path d="M17 9l-4.5-6"></path></svg>
+              </div>
+              <h3 class="el-cd-empty-title">Your basket is empty</h3>
+              <p class="el-cd-empty-desc">Explore our curated architectural tiles and natural surfaces to begin.</p>
+              <a href="/collections/all" class="el-cd-empty-btn">Explore Collections &rarr;</a>
+            </div>
+          {%- endif -%}
+        </div>
+
+        <!-- Drawer Footer -->
+        <footer class="el-cd-footer" id="elDrawerFooter-{{ section.id }}" {% if cart.item_count == 0 %}style="display: none;"{% endif %}>
+          <div class="el-cd-subtotal-row">
+            <span>Subtotal</span>
+            <span id="elDrawerSubtotal-{{ section.id }}">{{ cart.total_price | money }}</span>
+          </div>
+          <p class="el-cd-tax-note">Taxes, freight delivery and discounts are calculated at checkout.</p>
+          <a href="/checkout" class="el-cd-checkout-btn">Proceed to Checkout &rarr;</a>
+          <a href="{{ routes.cart_url }}" class="el-cd-view-cart-btn">View Full Shopping Basket</a>
+        </footer>
+      </aside>
+    </div>
+  {%- endif -%}
+</div>
+
+<!-- ========================================================================
+     JAVASCRIPT: MEGA MENU TABS, MOBILE SLIDE DRAWER & ACCORDIONS
+     ======================================================================== -->
+<script>
+  (function() {
+    var sectionId = "{{ section.id }}";
+    var shopParent = document.getElementById('elShopMegaMenuParent-' + sectionId);
+    var shopBtn = document.getElementById('elShopBtn-' + sectionId);
+    var megaClose = document.getElementById('elMegaMenuClose-' + sectionId);
+
+    // Desktop Mega Menu Tabs
+    var tabBtns = document.querySelectorAll('#ellora-header-' + sectionId + ' .el-megamenu-tab');
+    var tabPanes = document.querySelectorAll('#ellora-header-' + sectionId + ' .el-tab-pane');
+
+    tabBtns.forEach(function(btn) {
+      btn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        var targetId = btn.getAttribute('data-tab');
+
+        tabBtns.forEach(function(b) {
+          b.classList.remove('is-active');
+          b.setAttribute('aria-selected', 'false');
+        });
+        tabPanes.forEach(function(p) {
+          p.classList.remove('is-active');
+        });
+
+        btn.classList.add('is-active');
+        btn.setAttribute('aria-selected', 'true');
+        var activePane = document.getElementById(targetId);
+        if (activePane) {
+          activePane.classList.add('is-active');
+        }
+      });
+    });
+
+    // Desktop Shop Button Click Toggle (for touch/click devices)
+    if (shopBtn && shopParent) {
+      shopBtn.addEventListener('click', function(e) {
+        if (window.innerWidth > 991) {
+          e.preventDefault();
+          e.stopPropagation();
+          var isOpen = shopParent.classList.contains('is-open');
+          if (isOpen) {
+            shopParent.classList.remove('is-open');
+            shopBtn.setAttribute('aria-expanded', 'false');
+          } else {
+            shopParent.classList.add('is-open');
+            shopBtn.setAttribute('aria-expanded', 'true');
+          }
+        }
+      });
+    }
+
+    if (megaClose && shopParent) {
+      megaClose.addEventListener('click', function(e) {
+        e.stopPropagation();
+        shopParent.classList.remove('is-open');
+        if (shopBtn) shopBtn.setAttribute('aria-expanded', 'false');
+      });
+    }
+
+    // Close Mega Menu when clicking outside
+    document.addEventListener('click', function(e) {
+      if (shopParent && !shopParent.contains(e.target)) {
+        shopParent.classList.remove('is-open');
+        if (shopBtn) shopBtn.setAttribute('aria-expanded', 'false');
+      }
+    });
+
+    // Mobile Slide-Left Drawer Toggle
+    var mobileToggle = document.getElementById('elMobileToggle-' + sectionId);
+    var mobileDrawer = document.getElementById('elMobileDrawer-' + sectionId);
+    var drawerOverlay = document.getElementById('elDrawerOverlay-' + sectionId);
+    var drawerClose = document.getElementById('elDrawerClose-' + sectionId);
+    var headerWrapper = document.getElementById('ellora-header-' + sectionId);
+
+    function openDrawer() {
+      if (mobileDrawer) mobileDrawer.classList.add('is-open');
+      if (drawerOverlay) drawerOverlay.classList.add('is-open');
+      document.body.style.overflow = 'hidden';
+      document.body.classList.add('el-mobile-drawer-open');
+      if (headerWrapper) {
+        headerWrapper.classList.add('has-drawer-open');
+        var sectionParent = headerWrapper.closest('.shopify-section');
+        if (sectionParent) {
+          sectionParent.classList.add('has-drawer-open');
+          sectionParent.style.zIndex = '9999999';
+        }
+      }
+    }
+
+    function closeDrawer() {
+      if (mobileDrawer) mobileDrawer.classList.remove('is-open');
+      if (drawerOverlay) drawerOverlay.classList.remove('is-open');
+      document.body.style.overflow = '';
+      document.body.classList.remove('el-mobile-drawer-open');
+      if (headerWrapper) {
+        headerWrapper.classList.remove('has-drawer-open');
+        var sectionParent = headerWrapper.closest('.shopify-section');
+        if (sectionParent) {
+          sectionParent.classList.remove('has-drawer-open');
+          sectionParent.style.zIndex = '';
+        }
+      }
+    }
+
+    if (mobileToggle) mobileToggle.addEventListener('click', openDrawer);
+    if (drawerClose) drawerClose.addEventListener('click', closeDrawer);
+    if (drawerOverlay) drawerOverlay.addEventListener('click', closeDrawer);
+
+    // Escape Key to Close Drawer
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') {
+        closeDrawer();
+        if (shopParent) shopParent.classList.remove('is-open');
+      }
+    });
+
+    // Mobile Accordions (Supports all dynamic backend menus)
+    var accBtns = document.querySelectorAll('#ellora-header-' + sectionId + ' .el-drawer-accordion-btn');
+    accBtns.forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        var content = btn.nextElementSibling;
+        if (content) {
+          var isOpen = content.classList.contains('is-open');
+          if (isOpen) {
+            content.classList.remove('is-open');
+            btn.classList.remove('is-active');
+          } else {
+            content.classList.add('is-open');
+            btn.classList.add('is-active');
+          }
+        }
+      });
+    });
+
+    // Real-Time Wishlist Badge Sync
+    function syncHeaderWishlistBadge() {
+      try {
+        var list = JSON.parse(localStorage.getItem('ellora_wishlist') || '[]');
+        var count = Array.isArray(list) ? list.length : 0;
+        var badge = document.getElementById('elWishlistBadge-' + sectionId);
+        if (badge) {
+          if (count > 0) {
+            badge.textContent = count;
+            badge.style.display = 'flex';
+          } else {
+            badge.style.display = 'none';
+          }
+        }
+      } catch(e) {}
+    }
+    syncHeaderWishlistBadge();
+    window.addEventListener('ellora:wishlist:updated', syncHeaderWishlistBadge);
+    window.addEventListener('storage', syncHeaderWishlistBadge);
+
+    // Real-Time Cart Badge Sync
+    function updateCartBadges(count) {
+      var badges = document.querySelectorAll('.el-header-cart-badge');
+      badges.forEach(function(badge) {
+        badge.textContent = count;
+        if (count > 0) {
+          badge.style.display = 'flex';
+        } else {
+          badge.style.display = 'none';
+        }
+      });
+    }
+
+    function syncHeaderCartBadge() {
+      fetch('/cart.js')
+        .then(function(res) { return res.json(); })
+        .then(function(cart) {
+          if (cart && typeof cart.item_count !== 'undefined') {
+            updateCartBadges(cart.item_count);
+          }
+        })
+        .catch(function(err) {});
+    }
+
+    // Immediate sync on load
+    syncHeaderCartBadge();
+
+    // Listen to all cart events across the theme
+    window.addEventListener('ellora:cart:refresh', syncHeaderCartBadge);
+    window.addEventListener('ellora:cart:updated', function(e) {
+      if (e && e.detail && typeof e.detail.item_count !== 'undefined') {
+        updateCartBadges(e.detail.item_count);
+      } else {
+        syncHeaderCartBadge();
+      }
+    });
+    window.addEventListener('cart:updated', syncHeaderCartBadge);
+    window.addEventListener('cart:refresh', syncHeaderCartBadge);
+    document.addEventListener('cart:updated', syncHeaderCartBadge);
+    window.addEventListener('storage', syncHeaderCartBadge);
+
+    // ========================================================================
+    // ELLORA SLIDE CART DRAWER CONTROLLER
+    // ========================================================================
+    var currencySymbol = {{ cart.currency.symbol | json }} || '£';
+
+    function formatMoney(cents) {
+      var val = (Number(cents) / 100).toFixed(2);
+      return currencySymbol + val;
+    }
+
+    var drawerWrapper = document.getElementById('elCartDrawer-' + sectionId);
+
+    function openSlideCart() {
+      // 1. Try our built-in Ellora slide cart drawer
+      if (drawerWrapper) {
+        drawerWrapper.classList.add('is-open');
+        drawerWrapper.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden';
+        refreshSlideCart();
+        return;
+      }
+
+      // 2. Fallback: Any other .el-cart-drawer-wrapper in DOM
+      var extDrawers = document.querySelectorAll('.el-cart-drawer-wrapper');
+      if (extDrawers.length > 0) {
+        extDrawers.forEach(function(el) { el.classList.add('is-open'); });
+        document.body.style.overflow = 'hidden';
+        return;
+      }
+
+      // 3. Fallback: Dawn's native <cart-drawer>
+      var dawnDrawer = document.querySelector('cart-drawer');
+      if (dawnDrawer) {
+        try {
+          if (typeof dawnDrawer.open === 'function') dawnDrawer.open();
+        } catch(e) {}
+        dawnDrawer.classList.add('animate', 'active');
+        var inner = dawnDrawer.querySelector('.drawer__inner');
+        if (inner) inner.style.transform = 'translateX(0)';
+        document.body.classList.add('overflow-hidden');
+        return;
+      }
+
+      // 4. Fallback: navigate to /cart if no drawer component
+      window.location.href = '/cart';
+    }
+
+    function closeSlideCart() {
+      if (drawerWrapper) {
+        drawerWrapper.classList.remove('is-open');
+        drawerWrapper.setAttribute('aria-hidden', 'true');
+      }
+      var extDrawers = document.querySelectorAll('.el-cart-drawer-wrapper');
+      extDrawers.forEach(function(el) { el.classList.remove('is-open'); });
+      document.body.style.overflow = '';
+
+      var dawnDrawer = document.querySelector('cart-drawer');
+      if (dawnDrawer) {
+        dawnDrawer.classList.remove('active');
+        document.body.classList.remove('overflow-hidden');
+      }
+    }
+
+    function refreshSlideCart() {
+      fetch('/cart.js')
+        .then(function(res) { return res.json(); })
+        .then(function(cart) {
+          renderSlideCart(cart);
+          updateCartBadges(cart.item_count);
+        })
+        .catch(function(err) {
+          console.error('Error refreshing cart:', err);
+        });
+    }
+
+    function renderSlideCart(cart) {
+      if (!drawerWrapper) return;
+      var countEl = document.getElementById('elDrawerCount-' + sectionId);
+      if (countEl) countEl.textContent = '(' + cart.item_count + ')';
+
+      var itemsContainer = document.getElementById('elDrawerItems-' + sectionId);
+      var footerContainer = document.getElementById('elDrawerFooter-' + sectionId);
+      var subtotalEl = document.getElementById('elDrawerSubtotal-' + sectionId);
+
+      if (!itemsContainer) return;
+
+      if (cart.item_count === 0) {
+        itemsContainer.innerHTML = '<div class="el-cd-empty">' +
+          '<div class="el-cd-empty-icon">' +
+            '<svg viewBox="0 0 24 24"><path d="M2 9h20l-2 11H4L2 9z"></path><path d="M7 9l4.5-6"></path><path d="M17 9l-4.5-6"></path></svg>' +
+          '</div>' +
+          '<h3 class="el-cd-empty-title">Your basket is empty</h3>' +
+          '<p class="el-cd-empty-desc">Explore our curated architectural tiles and natural surfaces to begin.</p>' +
+          '<a href="/collections/all" class="el-cd-empty-btn">Explore Collections &rarr;</a>' +
+        '</div>';
+        if (footerContainer) footerContainer.style.display = 'none';
+        return;
+      }
+
+      if (footerContainer) {
+        footerContainer.style.display = 'flex';
+        if (subtotalEl) subtotalEl.textContent = formatMoney(cart.total_price);
+      }
+
+      var html = '';
+      cart.items.forEach(function(item) {
+        var imgHtml = item.image ? '<img src="' + item.image + '" alt="' + (item.title ? item.title.replace(/"/g, '&quot;') : '') + '" loading="lazy">' : '<div style="width:100%; height:100%; background:#ECE7E1;"></div>';
+        var variantHtml = (item.variant_title && item.variant_title !== 'Default Title') ? '<div class="el-cd-item-variant">' + item.variant_title + '</div>' : '';
+        var linePrice = formatMoney(item.final_line_price || item.line_price);
+
+        html += '<div class="el-cd-item" data-key="' + item.key + '">' +
+          '<a href="' + item.url + '" class="el-cd-item-media">' + imgHtml + '</a>' +
+          '<div class="el-cd-item-info">' +
+            '<div>' +
+              '<a href="' + item.url + '" class="el-cd-item-title">' + (item.product_title || item.title) + '</a>' +
+              variantHtml +
+              '<div class="el-cd-item-price">' + linePrice + '</div>' +
+            '</div>' +
+            '<div class="el-cd-item-actions">' +
+              '<div class="el-cd-stepper">' +
+                '<button type="button" class="el-cd-stepper-btn el-cd-minus" data-key="' + item.key + '" aria-label="Decrease">&minus;</button>' +
+                '<input type="number" class="el-cd-stepper-input" value="' + item.quantity + '" min="0" data-key="' + item.key + '" aria-label="Quantity">' +
+                '<button type="button" class="el-cd-stepper-btn el-cd-plus" data-key="' + item.key + '" aria-label="Increase">&plus;</button>' +
+              '</div>' +
+              '<button type="button" class="el-cd-item-remove-btn" data-key="' + item.key + '">Remove</button>' +
+            '</div>' +
+          '</div>' +
+        '</div>';
+      });
+
+      itemsContainer.innerHTML = html;
+    }
+
+    function updateDrawerQuantity(key, quantity) {
+      var itemsContainer = document.getElementById('elDrawerItems-' + sectionId);
+      if (itemsContainer) itemsContainer.style.opacity = '0.5';
+
+      fetch('/cart/change.js', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify({ id: key, quantity: quantity })
+      })
+      .then(function(res) {
+        if (!res.ok) throw new Error('Cart change failed');
+        return res.json();
+      })
+      .then(function(cart) {
+        renderSlideCart(cart);
+        updateCartBadges(cart.item_count);
+        window.dispatchEvent(new CustomEvent('ellora:cart:updated', { detail: cart }));
+      })
+      .catch(function(err) {
+        console.error('Error changing cart quantity:', err);
+        refreshSlideCart();
+      })
+      .finally(function() {
+        if (itemsContainer) itemsContainer.style.opacity = '1';
+      });
+    }
+
+    // Bind Drawer Controls
+    if (drawerWrapper) {
+      var closeBtn = document.getElementById('elCartDrawerClose-' + sectionId);
+      var overlay = document.getElementById('elCartDrawerOverlay-' + sectionId);
+      if (closeBtn) closeBtn.addEventListener('click', closeSlideCart);
+      if (overlay) overlay.addEventListener('click', closeSlideCart);
+
+      drawerWrapper.addEventListener('click', function(e) {
+        var plus = e.target.closest('.el-cd-plus');
+        if (plus) {
+          var key = plus.getAttribute('data-key');
+          var input = drawerWrapper.querySelector('.el-cd-stepper-input[data-key="' + key + '"]');
+          var cur = input ? (parseInt(input.value, 10) || 0) : 0;
+          updateDrawerQuantity(key, cur + 1);
+          return;
+        }
+
+        var minus = e.target.closest('.el-cd-minus');
+        if (minus) {
+          var key = minus.getAttribute('data-key');
+          var input = drawerWrapper.querySelector('.el-cd-stepper-input[data-key="' + key + '"]');
+          var cur = input ? (parseInt(input.value, 10) || 0) : 0;
+          updateDrawerQuantity(key, Math.max(0, cur - 1));
+          return;
+        }
+
+        var removeBtn = e.target.closest('.el-cd-item-remove-btn');
+        if (removeBtn) {
+          var key = removeBtn.getAttribute('data-key');
+          updateDrawerQuantity(key, 0);
+          return;
+        }
+      });
+
+      drawerWrapper.addEventListener('change', function(e) {
+        if (e.target.classList.contains('el-cd-stepper-input')) {
+          var key = e.target.getAttribute('data-key');
+          var val = parseInt(e.target.value, 10);
+          if (!isNaN(val) && val >= 0) {
+            updateDrawerQuantity(key, val);
+          }
+        }
+      });
+    }
+
+    // Escape key closes drawer
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') closeSlideCart();
+    });
+
+    // Cart Drawer Toggle Button on Header
+    var headerEl = document.getElementById('ellora-header-' + sectionId);
+    if (headerEl) {
+      var cartBtn = headerEl.querySelector('.el-header-cart-btn');
+      if (cartBtn) {
+        cartBtn.addEventListener('click', function(e) {
+          var isDrawerEnabled = cartBtn.hasAttribute('data-cart-drawer-trigger');
+          if (!isDrawerEnabled) {
+            return; // Normal navigation to /cart
+          }
+          e.preventDefault();
+          openSlideCart();
+        });
+      }
+    }
+
+    // Delegate any button with [data-cart-drawer-trigger]
+    document.addEventListener('click', function(e) {
+      var trigger = e.target.closest('[data-cart-drawer-trigger]');
+      if (trigger && !trigger.classList.contains('el-header-cart-btn')) {
+        e.preventDefault();
+        openSlideCart();
+      }
+    });
+
+    // Global Events
+    window.addEventListener('ellora:cart:open', openSlideCart);
+    window.addEventListener('ellora:cart:close', closeSlideCart);
+    window.addEventListener('ellora:cart:toggle', function() {
+      if (drawerWrapper && drawerWrapper.classList.contains('is-open')) {
+        closeSlideCart();
+      } else {
+        openSlideCart();
+      }
+    });
+    window.addEventListener('cart-drawer:open', openSlideCart);
+    window.addEventListener('cart:open', openSlideCart);
+    document.addEventListener('cart:open', openSlideCart);
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Ellora Header",
+  "tag": "section",
+  "class": "section-ellora-header",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Navigation Menus (Backend)"
+    },
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "Main Navigation Menu",
+      "default": "main-menu",
+      "info": "Select any menu created in Online Store > Navigation. Nested items automatically become dropdowns and mobile accordions."
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_mega_menu",
+      "label": "Enable Luxury Mega Menu on 'Shop'",
+      "default": true,
+      "info": "Displays the luxury tabbed Mega Menu (Tiles + Wallpapers) for any link titled 'Shop'."
+    },
+    {
+      "type": "text",
+      "id": "megamenu_title",
+      "label": "Mega Menu Title",
+      "default": "Shop Products"
+    },
+    {
+      "type": "header",
+      "content": "Announcement Bar"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_announcement",
+      "label": "Show Announcement Bar",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "announcement_text",
+      "label": "Announcement Banner Text",
+      "default": "New Collection · Discover Ellora's Latest Designs"
+    },
+    {
+      "type": "url",
+      "id": "announcement_link",
+      "label": "Announcement Banner Link"
+    },
+    {
+      "type": "link_list",
+      "id": "top_menu",
+      "label": "Top Bar Navigation Menu (Optional)",
+      "info": "Select a menu for the top right bar. If unselected, defaults to the links below."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_top_links",
+      "label": "Show Default Top Right Links",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "faq_label",
+      "label": "FAQs Label"
+    },
+    {
+      "type": "url",
+      "id": "faq_url",
+      "label": "FAQs URL"
+    },
+    {
+      "type": "text",
+      "id": "contact_label",
+      "label": "Contact Label"
+    },
+    {
+      "type": "url",
+      "id": "contact_url",
+      "label": "Contact URL"
+    },
+    {
+      "type": "text",
+      "id": "trade_label",
+      "label": "Trade Label"
+    },
+    {
+      "type": "url",
+      "id": "trade_url",
+      "label": "Trade URL"
+    },
+    {
+      "type": "color",
+      "id": "top_bg",
+      "label": "Announcement Bar Background"
+    },
+    {
+      "type": "color",
+      "id": "top_text_color",
+      "label": "Announcement Bar Text Color"
+    },
+    {
+      "type": "header",
+      "content": "Main Header & Logo"
+    },
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Custom Logo Image"
+    },
+    {
+      "type": "text",
+      "id": "fallback_logo",
+      "label": "Fallback Logo CDN URL",
+      "default": "https://cdn.shopify.com/s/files/1/0990/3685/6647/files/ellora_logo_final.png?v=1793618092"
+    },
+    {
+      "type": "range",
+      "id": "logo_width",
+      "min": 80,
+      "max": 240,
+      "step": 10,
+      "unit": "px",
+      "label": "Desktop Logo Width",
+      "default": 110
+    },
+    {
+      "type": "range",
+      "id": "logo_width_mobile",
+      "min": 70,
+      "max": 180,
+      "step": 10,
+      "unit": "px",
+      "label": "Mobile Logo Width",
+      "default": 90
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_sticky",
+      "label": "Enable Sticky Header on Scroll",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_bottom_border",
+      "label": "Show Header Bottom Border",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "header_padding_y",
+      "min": 10,
+      "max": 30,
+      "step": 2,
+      "unit": "px",
+      "label": "Header Vertical Padding",
+      "default": 16
+    },
+    {
+      "type": "header",
+      "content": "Right Header Utility Icons"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_search",
+      "label": "Show Search Icon",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_wishlist",
+      "label": "Show Wishlist Icon",
+      "default": true
+    },
+    {
+      "type": "url",
+      "id": "wishlist_url",
+      "label": "Wishlist Page URL"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_cart",
+      "label": "Show Shopping Basket Icon",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_slide_cart",
+      "label": "Enable Cart Drawer",
+      "info": "When enabled, clicking the cart icon opens the slide-in cart drawer. When disabled, it navigates directly to the cart page (/cart).",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_account",
+      "label": "Show Customer Account Icon",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Colors & Drawer"
+    },
+    {
+      "type": "color",
+      "id": "header_bg",
+      "label": "Header Background Color"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Header Text / Icon Color"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accent Color",
+      "default": "#C59B8B"
+    },
+    {
+      "type": "text",
+      "id": "drawer_footer_title",
+      "label": "Mobile Drawer Footer Title",
+      "default": "Ellora Spaces Studio"
+    },
+    {
+      "type": "text",
+      "id": "drawer_footer_sub",
+      "label": "Mobile Drawer Footer Subtitle",
+      "default": "Crafting enduring, organic living spaces."
+    }
+  ],
+  "presets": [
+    {
+      "name": "Ellora Header"
+    }
+  ]
+}
+{% endschema %}

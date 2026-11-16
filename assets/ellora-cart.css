@@ -1,0 +1,644 @@
+/* ==========================================================================
+   ELLORA SPACES — LUXURY EDITORIAL CART PAGE (DAWN & OS 2.0)
+   Custom CSS for Shopify Cart Page & Cart Drawer
+   Warm Ivory Canvas, Cormorant Garamond Typography, Terracotta CTAs,
+   Refined Border Surfaces, Elegant Quantity Steppers, and Editorial Polish.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. FONTS & LUXURY DESIGN TOKENS
+   -------------------------------------------------------------------------- */
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
+
+:root {
+  --el-bg: #FAF9F6;              /* Warm off-white / porcelain canvas */
+  --el-bg-card: #FFFFFF;         /* Crisp pure white surface */
+  --el-bg-subtle: #F5EFEB;       /* Soft warm beige thumbnail placeholder */
+  --el-dark: #1E1B18;            /* Deep obsidian dark headings */
+  --el-text: #2D2A28;            /* Primary typography */
+  --el-muted: #736E67;           /* Elegant taupe for secondary labels */
+  --el-muted-light: #9B958E;     /* Soft stone for borders & icons */
+  --el-terracotta: #BA8877;      /* Ellora signature terracotta accent */
+  --el-terracotta-dark: #7B4F43; /* Deep terracotta for checkout hover */
+  --el-terracotta-tint: #FAF2ED; /* Subtle terracotta blush */
+  --el-border: #ECE7E1;          /* Minimalist clean border lines */
+  --el-border-light: #F2EFEA;    /* Soft inner table separators */
+
+  --el-font-serif: 'Cormorant Garamond', Georgia, serif;
+  --el-font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  
+  --el-shadow-subtle: 0 4px 20px rgba(0, 0, 0, 0.035);
+  --el-shadow-card: 0 8px 30px rgba(0, 0, 0, 0.045);
+}
+
+/* --------------------------------------------------------------------------
+   2. GLOBAL CART PAGE CANVAS & LAYOUT
+   -------------------------------------------------------------------------- */
+.cart,
+.main-cart-items,
+.main-cart-footer,
+cart-items,
+.cart__warnings,
+#main-cart-items,
+#main-cart-footer {
+  background-color: var(--el-bg) !important;
+  color: var(--el-text) !important;
+  font-family: var(--el-font-sans) !important;
+  -webkit-font-smoothing: antialiased !important;
+  -moz-osx-font-smoothing: grayscale !important;
+}
+
+.cart__contents,
+.cart-items-wrapper {
+  max-width: 1240px !important;
+  margin: 0 auto !important;
+}
+
+/* --------------------------------------------------------------------------
+   3. CART HEADER & "CONTINUE SHOPPING" LINK
+   -------------------------------------------------------------------------- */
+.title-wrapper-with-link {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: flex-end !important;
+  padding: 36px 0 24px 0 !important;
+  margin-bottom: 24px !important;
+  border-bottom: 1px solid var(--el-border) !important;
+  max-width: 1240px !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+.title-wrapper-with-link .title,
+.main-cart-title,
+.cart__empty-text {
+  font-family: var(--el-font-serif) !important;
+  font-size: 38px !important;
+  font-weight: 400 !important;
+  letter-spacing: 0.02em !important;
+  color: var(--el-dark) !important;
+  line-height: 1.15 !important;
+  margin: 0 !important;
+}
+
+.title-wrapper-with-link .underlined-link,
+.cart__warnings .underlined-link {
+  font-family: var(--el-font-sans) !important;
+  font-size: 13.5px !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.03em !important;
+  color: var(--el-terracotta) !important;
+  text-decoration: underline !important;
+  text-underline-offset: 4px !important;
+  transition: color 0.2s ease !important;
+}
+
+.title-wrapper-with-link .underlined-link:hover,
+.cart__warnings .underlined-link:hover {
+  color: var(--el-terracotta-dark) !important;
+}
+
+/* --------------------------------------------------------------------------
+   4. LUXURY PRODUCT TABLE & CART ITEM ROWS
+   -------------------------------------------------------------------------- */
+table.cart-items {
+  width: 100% !important;
+  border-collapse: separate !important;
+  border-spacing: 0 !important;
+  background-color: var(--el-bg-card) !important;
+  border: 1px solid var(--el-border) !important;
+  border-radius: 6px !important;
+  box-shadow: var(--el-shadow-subtle) !important;
+  overflow: hidden !important;
+  margin-bottom: 32px !important;
+}
+
+/* Table Header */
+table.cart-items thead {
+  background-color: #FAF8F5 !important;
+}
+
+table.cart-items th {
+  font-family: var(--el-font-sans) !important;
+  font-size: 11px !important;
+  font-weight: 600 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.08em !important;
+  color: var(--el-muted) !important;
+  padding: 16px 24px !important;
+  border-bottom: 1px solid var(--el-border) !important;
+}
+
+/* Table Row */
+tr.cart-item {
+  border-bottom: 1px solid var(--el-border-light) !important;
+  transition: background-color 0.2s ease !important;
+}
+
+tr.cart-item:hover {
+  background-color: #FCFBF9 !important;
+}
+
+tr.cart-item:last-child {
+  border-bottom: none !important;
+}
+
+table.cart-items td {
+  padding: 24px !important;
+  vertical-align: middle !important;
+}
+
+/* Thumbnail Image */
+.cart-item__media {
+  width: 90px !important;
+  flex-shrink: 0 !important;
+}
+
+.cart-item__image {
+  width: 88px !important;
+  height: 88px !important;
+  object-fit: cover !important;
+  border-radius: 4px !important;
+  border: 1px solid var(--el-border) !important;
+  background-color: var(--el-bg-subtle) !important;
+}
+
+/* Product Title & Properties */
+.cart-item__details {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 4px !important;
+}
+
+.cart-item__name {
+  font-family: var(--el-font-serif) !important;
+  font-size: 20px !important;
+  font-weight: 500 !important;
+  color: var(--el-dark) !important;
+  letter-spacing: 0.01em !important;
+  line-height: 1.25 !important;
+  text-decoration: none !important;
+  transition: color 0.2s ease !important;
+}
+
+.cart-item__name:hover {
+  color: var(--el-terracotta) !important;
+}
+
+/* Vendor tag */
+.cart-item__details .caption-with-letter-spacing {
+  font-family: var(--el-font-sans) !important;
+  font-size: 11px !important;
+  font-weight: 500 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.06em !important;
+  color: var(--el-muted-light) !important;
+  margin-bottom: 2px !important;
+}
+
+/* Variant & Properties */
+.cart-item__details .product-option {
+  font-family: var(--el-font-sans) !important;
+  font-size: 13px !important;
+  color: var(--el-muted) !important;
+  line-height: 1.4 !important;
+}
+
+.cart-item__details .product-option dd {
+  display: inline !important;
+  font-weight: 500 !important;
+  color: var(--el-text) !important;
+  margin-left: 4px !important;
+}
+
+/* Unit Price */
+.cart-item__price-wrapper,
+.cart-item__details .price {
+  font-family: var(--el-font-sans) !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  color: var(--el-text) !important;
+  margin-top: 4px !important;
+}
+
+/* --------------------------------------------------------------------------
+   5. QUANTITY STEPPER & REMOVE BUTTON
+   -------------------------------------------------------------------------- */
+.cart-item__quantity-wrapper {
+  display: flex !important;
+  align-items: center !important;
+  gap: 14px !important;
+}
+
+.cart-item__quantity .quantity,
+quantity-input.quantity {
+  min-height: 36px !important;
+  height: 36px !important;
+  width: 104px !important;
+  border: 1px solid var(--el-border) !important;
+  border-radius: 3px !important;
+  background-color: #FAF9F6 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+}
+
+.cart-item__quantity .quantity__button,
+quantity-input .quantity__button {
+  width: 32px !important;
+  height: 34px !important;
+  color: var(--el-muted) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  background: transparent !important;
+  border: none !important;
+  transition: color 0.15s ease, background-color 0.15s ease !important;
+  cursor: pointer !important;
+}
+
+.cart-item__quantity .quantity__button:hover,
+quantity-input .quantity__button:hover {
+  color: var(--el-terracotta) !important;
+  background-color: #F5EFEB !important;
+}
+
+.cart-item__quantity .quantity__button svg,
+quantity-input .quantity__button svg {
+  width: 10px !important;
+  height: 10px !important;
+  stroke-width: 1.8 !important;
+}
+
+.cart-item__quantity .quantity__input,
+quantity-input .quantity__input {
+  font-family: var(--el-font-sans) !important;
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  color: var(--el-dark) !important;
+  text-align: center !important;
+  border: none !important;
+  background: transparent !important;
+  width: 38px !important;
+  padding: 0 !important;
+}
+
+/* Remove Item Trash Button */
+cart-remove-button,
+.cart-remove-button {
+  margin: 0 !important;
+}
+
+.cart-remove-button .button {
+  min-width: 32px !important;
+  min-height: 32px !important;
+  padding: 4px !important;
+  background: transparent !important;
+  color: var(--el-muted-light) !important;
+  border: none !important;
+  cursor: pointer !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  transition: color 0.2s ease, transform 0.15s ease !important;
+}
+
+.cart-remove-button .button:hover {
+  color: var(--el-terracotta-dark) !important;
+  transform: scale(1.1) !important;
+}
+
+.cart-remove-button svg {
+  width: 16px !important;
+  height: 16px !important;
+  stroke: currentColor !important;
+  stroke-width: 1.5 !important;
+}
+
+/* Line Item Total Price */
+.cart-item__totals .price,
+.cart-item__totals .price--end {
+  font-family: var(--el-font-sans) !important;
+  font-size: 15.5px !important;
+  font-weight: 600 !important;
+  color: var(--el-dark) !important;
+}
+
+/* --------------------------------------------------------------------------
+   6. CART FOOTER: SUMMARY CARD, ORDER NOTE & CHECKOUT CTA
+   -------------------------------------------------------------------------- */
+.cart__footer {
+  max-width: 1240px !important;
+  margin: 0 auto !important;
+  padding: 0 0 60px 0 !important;
+}
+
+.cart__footer-wrapper {
+  background-color: transparent !important;
+}
+
+.cart__footer > * {
+  display: flex !important;
+  justify-content: flex-end !important;
+}
+
+.cart__blocks {
+  width: 100% !important;
+  max-width: 460px !important;
+  background-color: var(--el-bg-card) !important;
+  border: 1px solid var(--el-border) !important;
+  border-radius: 6px !important;
+  padding: 32px 36px !important;
+  box-shadow: var(--el-shadow-card) !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 16px !important;
+}
+
+/* Order Notes Input */
+.cart__note {
+  margin-top: 10px !important;
+}
+
+.cart__note label {
+  font-family: var(--el-font-sans) !important;
+  font-size: 12.5px !important;
+  font-weight: 600 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important;
+  color: var(--el-dark) !important;
+  margin-bottom: 8px !important;
+  display: block !important;
+}
+
+.cart__note textarea,
+.cart__note .text-area {
+  width: 100% !important;
+  border: 1px solid var(--el-border) !important;
+  border-radius: 3px !important;
+  background-color: #FAF9F6 !important;
+  font-family: var(--el-font-sans) !important;
+  font-size: 13px !important;
+  color: var(--el-text) !important;
+  padding: 12px 14px !important;
+  min-height: 84px !important;
+  transition: border-color 0.2s ease, background-color 0.2s ease !important;
+}
+
+.cart__note textarea:focus,
+.cart__note .text-area:focus {
+  outline: none !important;
+  border-color: var(--el-terracotta) !important;
+  background-color: #FFFFFF !important;
+}
+
+/* Subtotal Row */
+.totals {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: baseline !important;
+  border-bottom: 1px solid var(--el-border-light) !important;
+  padding-bottom: 14px !important;
+  margin-bottom: 6px !important;
+}
+
+.totals__subtotal {
+  font-family: var(--el-font-serif) !important;
+  font-size: 20px !important;
+  font-weight: 500 !important;
+  color: var(--el-muted) !important;
+  margin: 0 !important;
+}
+
+.totals__subtotal-value {
+  font-family: var(--el-font-serif) !important;
+  font-size: 30px !important;
+  font-weight: 600 !important;
+  color: var(--el-dark) !important;
+  letter-spacing: -0.01em !important;
+  margin: 0 !important;
+}
+
+/* Tax & Shipping Note */
+.tax-note {
+  font-family: var(--el-font-sans) !important;
+  font-size: 12px !important;
+  color: var(--el-muted) !important;
+  line-height: 1.5 !important;
+  margin: 0 0 10px 0 !important;
+}
+
+/* Checkout Button (Ellora Signature Terracotta) */
+.cart__ctas {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 12px !important;
+  margin-top: 6px !important;
+}
+
+.cart__checkout-button,
+button#checkout,
+[name="checkout"] {
+  width: 100% !important;
+  height: 52px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  background-color: var(--el-terracotta) !important;
+  color: #FFFFFF !important;
+  font-family: var(--el-font-sans) !important;
+  font-size: 13.5px !important;
+  font-weight: 600 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.08em !important;
+  border: none !important;
+  border-radius: 2px !important;
+  cursor: pointer !important;
+  box-shadow: 0 4px 14px rgba(186, 136, 119, 0.28) !important;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.cart__checkout-button:hover,
+button#checkout:hover,
+[name="checkout"]:hover {
+  background-color: var(--el-terracotta-dark) !important;
+  box-shadow: 0 6px 20px rgba(123, 79, 67, 0.35) !important;
+  transform: translateY(-1px) !important;
+}
+
+/* Dynamic Accelerated Payment Buttons (Shop Pay / PayPal) */
+.dynamic-checkout__buttons {
+  margin-top: 6px !important;
+}
+
+/* --------------------------------------------------------------------------
+   7. EMPTY CART STATE POLISH
+   -------------------------------------------------------------------------- */
+.cart__warnings {
+  padding: 80px 24px !important;
+  text-align: center !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 18px !important;
+  max-width: 600px !important;
+  margin: 40px auto !important;
+  background-color: var(--el-bg-card) !important;
+  border: 1px solid var(--el-border) !important;
+  border-radius: 6px !important;
+  box-shadow: var(--el-shadow-subtle) !important;
+}
+
+.cart__empty-text {
+  font-family: var(--el-font-serif) !important;
+  font-size: 34px !important;
+  font-weight: 400 !important;
+  color: var(--el-dark) !important;
+}
+
+.cart__warnings .button {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 13px 28px !important;
+  background-color: var(--el-terracotta) !important;
+  color: #FFFFFF !important;
+  font-family: var(--el-font-sans) !important;
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.06em !important;
+  border-radius: 2px !important;
+  text-decoration: none !important;
+  box-shadow: 0 4px 14px rgba(186, 136, 119, 0.25) !important;
+  transition: all 0.2s ease !important;
+}
+
+.cart__warnings .button:hover {
+  background-color: var(--el-terracotta-dark) !important;
+  transform: translateY(-1px) !important;
+}
+
+/* --------------------------------------------------------------------------
+   8. SLIDE-OUT CART DRAWER STYLING (DAWN DRAWER INTEGRATION)
+   -------------------------------------------------------------------------- */
+cart-drawer .drawer__inner {
+  background-color: var(--el-bg) !important;
+}
+
+cart-drawer .drawer__header {
+  border-bottom: 1px solid var(--el-border) !important;
+  padding: 20px 24px !important;
+  background-color: #FAF8F5 !important;
+}
+
+cart-drawer .drawer__heading {
+  font-family: var(--el-font-serif) !important;
+  font-size: 24px !important;
+  font-weight: 500 !important;
+  color: var(--el-dark) !important;
+}
+
+cart-drawer .drawer__close {
+  color: var(--el-muted) !important;
+  transition: color 0.15s ease !important;
+}
+
+cart-drawer .drawer__close:hover {
+  color: var(--el-terracotta) !important;
+}
+
+cart-drawer .cart-item {
+  border-bottom: 1px solid var(--el-border-light) !important;
+  padding: 18px 24px !important;
+  background-color: #FFFFFF !important;
+}
+
+cart-drawer .drawer__footer {
+  background-color: #FFFFFF !important;
+  border-top: 1px solid var(--el-border) !important;
+  padding: 24px !important;
+  box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.03) !important;
+}
+
+/* --------------------------------------------------------------------------
+   9. RESPONSIVE CART (TABLET & MOBILE BREAKPOINTS)
+   -------------------------------------------------------------------------- */
+@media screen and (max-width: 989px) {
+  .cart__footer > * {
+    justify-content: stretch !important;
+  }
+  
+  .cart__blocks {
+    max-width: 100% !important;
+    padding: 24px !important;
+  }
+}
+
+@media screen and (max-width: 749px) {
+  .title-wrapper-with-link {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 12px !important;
+    padding: 24px 16px 18px 16px !important;
+  }
+
+  .title-wrapper-with-link .title {
+    font-size: 30px !important;
+  }
+
+  /* Mobile Stacked Items */
+  table.cart-items {
+    border: none !important;
+    background: transparent !important;
+    box-shadow: none !important;
+  }
+
+  table.cart-items thead {
+    display: none !important;
+  }
+
+  tr.cart-item {
+    display: grid !important;
+    grid-template-columns: 80px 1fr !important;
+    gap: 16px !important;
+    background-color: var(--el-bg-card) !important;
+    border: 1px solid var(--el-border) !important;
+    border-radius: 6px !important;
+    padding: 18px !important;
+    margin-bottom: 14px !important;
+    box-shadow: var(--el-shadow-subtle) !important;
+  }
+
+  tr.cart-item td {
+    padding: 0 !important;
+    border: none !important;
+  }
+
+  .cart-item__media {
+    grid-column: 1 !important;
+    grid-row: 1 / span 3 !important;
+    width: 80px !important;
+  }
+
+  .cart-item__image {
+    width: 80px !important;
+    height: 80px !important;
+  }
+
+  .cart-item__details {
+    grid-column: 2 !important;
+  }
+
+  .cart-item__quantity {
+    grid-column: 2 !important;
+    margin-top: 10px !important;
+  }
+
+  .cart-item__totals {
+    grid-column: 2 !important;
+    margin-top: 6px !important;
+    text-align: right !important;
+  }
+}

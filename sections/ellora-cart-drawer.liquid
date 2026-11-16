@@ -1,0 +1,840 @@
+{% comment %}
+  ==========================================================================
+  ELLORA SPACES — SLIDE CART DRAWER
+  File: sections/ellora-cart-drawer.liquid
+  Theme Editor Name: Ellora Slide Cart Drawer
+  Features:
+  - Slide-in side drawer from right side with smooth CSS transition
+  - Full AJAX Cart API integration (/cart.js, /cart/change.js, /cart/add.js)
+  - Real-time quantity steppers (+ / -) & instant removal
+  - Dynamic Free Shipping progress bar
+  - Subtotal and direct Checkout CTA + View Cart button
+  - Synchronizes with header shopping basket count badge via 'ellora:cart:updated' event
+  - Can be triggered from any button with [data-cart-drawer-trigger] or window event 'ellora:cart:open'
+  ==========================================================================
+{% endcomment %}
+
+<div class="el-cart-drawer-wrapper" id="ellora-cart-drawer-{{ section.id }}" data-section-id="{{ section.id }}">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
+
+    #ellora-cart-drawer-{{ section.id }} {
+      --el-cd-bg: {{ section.settings.bg_color | default: '#FFFFFF' }};
+      --el-cd-primary: {{ section.settings.primary_color | default: '#8E6356' }};
+      --el-cd-primary-hover: {{ section.settings.primary_hover | default: '#734E43' }};
+      --el-cd-dark: {{ section.settings.text_dark | default: '#1C1B19' }};
+      --el-cd-muted: {{ section.settings.text_muted | default: '#68645F' }};
+      --el-cd-border: {{ section.settings.border_color | default: '#ECE7E1' }};
+      --el-cd-card-bg: {{ section.settings.card_bg | default: '#FAF8F5' }};
+
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    #ellora-cart-drawer-{{ section.id }} *,
+    #ellora-cart-drawer-{{ section.id }} *::before,
+    #ellora-cart-drawer-{{ section.id }} *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* Backdrop Overlay */
+    #ellora-cart-drawer-{{ section.id }} .el-cd-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(28, 27, 25, 0.45);
+      backdrop-filter: blur(2px);
+      -webkit-backdrop-filter: blur(2px);
+      z-index: 99998;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.3s ease;
+    }
+
+    #ellora-cart-drawer-{{ section.id }}.is-open .el-cd-overlay {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    /* Slide-in Drawer Container */
+    #ellora-cart-drawer-{{ section.id }} .el-cd-panel {
+      position: fixed;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      width: 440px;
+      max-width: 92vw;
+      height: 100vh;
+      background: var(--el-cd-bg);
+      color: var(--el-cd-dark);
+      z-index: 99999;
+      display: flex;
+      flex-direction: column;
+      box-shadow: -10px 0 35px rgba(0, 0, 0, 0.12);
+      transform: translateX(100%);
+      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    #ellora-cart-drawer-{{ section.id }}.is-open .el-cd-panel {
+      transform: translateX(0);
+    }
+
+    /* Drawer Header */
+    #ellora-cart-drawer-{{ section.id }} .el-cd-header {
+      padding: 22px 24px;
+      border-bottom: 1px solid var(--el-cd-border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-shrink: 0;
+    }
+
+    #ellora-cart-drawer-{{ section.id }} .el-cd-header-title {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 26px;
+      font-weight: 500;
+      color: var(--el-cd-dark);
+      letter-spacing: -0.01em;
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+    }
+
+    #ellora-cart-drawer-{{ section.id }} .el-cd-header-count {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 13px;
+      font-weight: 400;
+      color: var(--el-cd-muted);
+    }
+
+    #ellora-cart-drawer-{{ section.id }} .el-cd-close-btn {
+      background: none;
+      border: none;
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: var(--el-cd-dark);
+      font-size: 22px;
+      border-radius: 50%;
+      transition: background 0.2s ease, color 0.2s ease;
+      font-family: inherit;
+    }
+
+    #ellora-cart-drawer-{{ section.id }} .el-cd-close-btn:hover {
+      background: var(--el-cd-card-bg);
+      color: var(--el-cd-primary);
+    }
+
+    /* Free Shipping Bar */
+    #ellora-cart-drawer-{{ section.id }} .el-cd-shipping-bar {
+      padding: 14px 24px;
+      background: var(--el-cd-card-bg);
+      border-bottom: 1px solid var(--el-cd-border);
+      flex-shrink: 0;
+    }
+
+    #ellora-cart-drawer-{{ section.id }} .el-cd-shipping-text {
+      font-size: 12.5px;
+      color: var(--el-cd-dark);
+      margin-bottom: 8px;
+    }
+
+    #ellora-cart-drawer-{{ section.id }} .el-cd-shipping-text strong {
+      color: var(--el-cd-primary);
+    }
+
+    #ellora-cart-drawer-{{ section.id }} .el-cd-shipping-progress {
+      height: 4px;
+      background: rgba(0, 0, 0, 0.08);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    #ellora-cart-drawer-{{ section.id }} .el-cd-shipping-fill {
+      height: 100%;
+      background: var(--el-cd-primary);
+      border-radius: 999px;
+      transition: width 0.3s ease;
+    }
+
+    /* Items Scroll Container */
+    #ellora-cart-drawer-{{ section.id }} .el-cd-items-body {
+      flex: 1 1 auto;
+      overflow-y: auto;
+      padding: 16px 24px;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    #ellora-cart-drawer-{{ section.id }} .el-cd-item {
+      display: flex;
+      gap: 16px;
+      padding: 16px 0;
+      border-bottom: 1px solid var(--el-cd-border);
+      position: relative;
+      transition: opacity 0.2s ease;
+    }
+
+    #ellora-cart-drawer-{{ section.id }} .el-cd-item.is-loading {
+      opacity: 0.4;
+      pointer-events: none;
+    }
+
+    #ellora-cart-drawer-{{ section.id }} .el-cd-item-media {
+      width: 76px;
+      aspect-ratio: 4 / 5;
+      background: #F0ECE7;
+      border-radius: 2px;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    #ellora-cart-drawer-{{ section.id }} .el-cd-item-media img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    #ellora-cart-drawer-{{ section.id }} .el-cd-item-info {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-width: 0;
+    }
+
+    #ellora-cart-drawer-{{ section.id }} .el-cd-item-title {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 18px;
+      font-weight: 500;
+      color: var(--el-cd-dark);
+      text-decoration: none;
+      line-height: 1.25;
+      margin-bottom: 3px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: block;
+      transition: color 0.2s ease;
+    }
+
+    #ellora-cart-drawer-{{ section.id }} .el-cd-item-title:hover {
+      color: var(--el-cd-primary);
+    }
+
+    #ellora-cart-drawer-{{ section.id }} .el-cd-item-variant {
+      font-size: 12px;
+      color: var(--el-cd-muted);
+      margin-bottom: 6px;
+    }
+
+    #ellora-cart-drawer-{{ section.id }} .el-cd-item-price {
+      font-size: 13.5px;
+      font-weight: 600;
+      color: var(--el-cd-dark);
+      margin-bottom: 10px;
+    }
+
+    #ellora-cart-drawer-{{ section.id }} .el-cd-item-actions {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    /* Stepper */
+    #ellora-cart-drawer-{{ section.id }} .el-cd-stepper {
+      display: inline-flex;
+      align-items: center;
+      border: 1px solid var(--el-cd-border);
+      border-radius: 2px;
+      background: #FFFFFF;
+      height: 32px;
+    }
+
+    #ellora-cart-drawer-{{ section.id }} .el-cd-stepper-btn {
+      width: 28px;
+      height: 100%;
+      background: none;
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: var(--el-cd-dark);
+      font-size: 14px;
+      font-family: inherit;
+    }
+
+    #ellora-cart-drawer-{{ section.id }} .el-cd-stepper-input {
+      width: 32px;
+      height: 100%;
+      border: none;
+      text-align: center;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--el-cd-dark);
+      background: transparent;
+      -moz-appearance: textfield;
+      appearance: textfield;
+      font-family: inherit;
+    }
+
+    #ellora-cart-drawer-{{ section.id }} .el-cd-stepper-input::-webkit-outer-spin-button,
+    #ellora-cart-drawer-{{ section.id }} .el-cd-stepper-input::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
+    #ellora-cart-drawer-{{ section.id }} .el-cd-item-remove-btn {
+      background: none;
+      border: none;
+      color: var(--el-cd-muted);
+      font-size: 11.5px;
+      cursor: pointer;
+      text-decoration: underline;
+      text-underline-offset: 2px;
+      font-family: inherit;
+      transition: color 0.2s ease;
+    }
+
+    #ellora-cart-drawer-{{ section.id }} .el-cd-item-remove-btn:hover {
+      color: #A03224;
+    }
+
+    /* Empty State */
+    #ellora-cart-drawer-{{ section.id }} .el-cd-empty {
+      padding: 60px 20px;
+      text-align: center;
+    }
+
+    #ellora-cart-drawer-{{ section.id }} .el-cd-empty-icon {
+      width: 52px;
+      height: 52px;
+      margin: 0 auto 16px auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      background: var(--el-cd-card-bg);
+      border: 1px solid var(--el-cd-border);
+    }
+
+    #ellora-cart-drawer-{{ section.id }} .el-cd-empty-icon svg {
+      width: 24px;
+      height: 24px;
+      stroke: var(--el-cd-primary);
+      stroke-width: 1.5;
+      fill: none;
+    }
+
+    #ellora-cart-drawer-{{ section.id }} .el-cd-empty-title {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 24px;
+      font-weight: 500;
+      color: var(--el-cd-dark);
+      margin-bottom: 8px;
+    }
+
+    #ellora-cart-drawer-{{ section.id }} .el-cd-empty-desc {
+      font-size: 13.5px;
+      color: var(--el-cd-muted);
+      margin-bottom: 24px;
+      line-height: 1.5;
+    }
+
+    #ellora-cart-drawer-{{ section.id }} .el-cd-empty-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 11px 22px;
+      background: var(--el-cd-primary);
+      color: #FFFFFF;
+      text-decoration: none;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      border-radius: 2px;
+      transition: background 0.2s ease;
+    }
+
+    #ellora-cart-drawer-{{ section.id }} .el-cd-empty-btn:hover {
+      background: var(--el-cd-primary-hover);
+      color: #FFFFFF;
+    }
+
+    /* Drawer Footer */
+    #ellora-cart-drawer-{{ section.id }} .el-cd-footer {
+      padding: 20px 24px;
+      border-top: 1px solid var(--el-cd-border);
+      background: var(--el-cd-card-bg);
+      flex-shrink: 0;
+    }
+
+    #ellora-cart-drawer-{{ section.id }} .el-cd-subtotal-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+      font-size: 14px;
+      color: var(--el-cd-muted);
+    }
+
+    #ellora-cart-drawer-{{ section.id }} .el-cd-subtotal-row span:last-child {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 22px;
+      font-weight: 600;
+      color: var(--el-cd-dark);
+    }
+
+    #ellora-cart-drawer-{{ section.id }} .el-cd-tax-note {
+      font-size: 11.5px;
+      color: var(--el-cd-muted);
+      margin-bottom: 18px;
+      line-height: 1.4;
+    }
+
+    #ellora-cart-drawer-{{ section.id }} .el-cd-checkout-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      padding: 14px 20px;
+      background: var(--el-cd-primary);
+      color: #FFFFFF;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      border: none;
+      border-radius: 2px;
+      cursor: pointer;
+      transition: background 0.2s ease;
+      font-family: inherit;
+    }
+
+    #ellora-cart-drawer-{{ section.id }} .el-cd-checkout-btn:hover {
+      background: var(--el-cd-primary-hover);
+      color: #FFFFFF;
+    }
+
+    #ellora-cart-drawer-{{ section.id }} .el-cd-view-cart-btn {
+      display: block;
+      text-align: center;
+      margin-top: 12px;
+      font-size: 12.5px;
+      letter-spacing: 0.04em;
+      color: var(--el-cd-muted);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      transition: color 0.2s ease;
+    }
+
+    #ellora-cart-drawer-{{ section.id }} .el-cd-view-cart-btn:hover {
+      color: var(--el-cd-dark);
+    }
+  </style>
+
+  <!-- Overlay -->
+  <div class="el-cd-overlay" id="elCartDrawerOverlay-{{ section.id }}"></div>
+
+  <!-- Slide Panel -->
+  <aside class="el-cd-panel" aria-label="Shopping Cart Drawer" role="dialog" aria-modal="true">
+    
+    <!-- Header -->
+    <header class="el-cd-header">
+      <h2 class="el-cd-header-title">
+        Your Basket
+        <span class="el-cd-header-count" id="elDrawerCount-{{ section.id }}">({{ cart.item_count }})</span>
+      </h2>
+      <button type="button" class="el-cd-close-btn" id="elDrawerClose-{{ section.id }}" aria-label="Close cart">&times;</button>
+    </header>
+
+    <!-- Free Shipping Bar -->
+    {%- if section.settings.show_free_shipping -%}
+      {%- assign threshold_cents = section.settings.free_shipping_threshold | times: 100 -%}
+      <div class="el-cd-shipping-bar" id="elDrawerShippingBar-{{ section.id }}" data-threshold="{{ threshold_cents }}">
+        <div class="el-cd-shipping-text" id="elDrawerShippingText-{{ section.id }}">
+          {%- if cart.total_price >= threshold_cents -%}
+            <span>{{ section.settings.free_shipping_reached_text | default: 'You have unlocked Complimentary Pallet Delivery!' }}</span>
+          {%- else -%}
+            {%- assign diff = threshold_cents | minus: cart.total_price -%}
+            <span>Add <strong>{{ diff | money }}</strong> more for {{ section.settings.free_shipping_perk_text | default: 'Complimentary Pallet Delivery' }}</span>
+          {%- endif -%}
+        </div>
+        <div class="el-cd-shipping-progress">
+          {%- assign percent = cart.total_price | times: 100 | divided_by: threshold_cents -%}
+          {%- if percent > 100 -%}{%- assign percent = 100 -%}{%- endif -%}
+          <div class="el-cd-shipping-fill" id="elDrawerShippingFill-{{ section.id }}" style="width: {{ percent }}%;"></div>
+        </div>
+      </div>
+    {%- endif -%}
+
+    <!-- Scrollable Items Body -->
+    <div class="el-cd-items-body" id="elDrawerItems-{{ section.id }}">
+      {%- if cart.item_count > 0 -%}
+        {%- for item in cart.items -%}
+          <div class="el-cd-item" data-key="{{ item.key }}">
+            <a href="{{ item.url }}" class="el-cd-item-media">
+              {%- if item.image -%}
+                <img src="{{ item.image | image_url: width: 160 }}" alt="{{ item.title | escape }}" loading="lazy">
+              {%- else -%}
+                <div style="width:100%; height:100%; background:#ECE7E1;"></div>
+              {%- endif -%}
+            </a>
+            <div class="el-cd-item-info">
+              <div>
+                <a href="{{ item.url }}" class="el-cd-item-title">{{ item.product.title }}</a>
+                {%- unless item.product.has_only_default_variant -%}
+                  <div class="el-cd-item-variant">{{ item.variant.title }}</div>
+                {%- endunless -%}
+                <div class="el-cd-item-price">{{ item.final_line_price | money }}</div>
+              </div>
+              <div class="el-cd-item-actions">
+                <div class="el-cd-stepper">
+                  <button type="button" class="el-cd-stepper-btn el-cd-minus" data-key="{{ item.key }}" aria-label="Decrease">&minus;</button>
+                  <input type="number" class="el-cd-stepper-input" value="{{ item.quantity }}" min="0" data-key="{{ item.key }}" aria-label="Quantity">
+                  <button type="button" class="el-cd-stepper-btn el-cd-plus" data-key="{{ item.key }}" aria-label="Increase">&plus;</button>
+                </div>
+                <button type="button" class="el-cd-item-remove-btn" data-key="{{ item.key }}">Remove</button>
+              </div>
+            </div>
+          </div>
+        {%- endfor -%}
+      {%- else -%}
+        <div class="el-cd-empty">
+          <div class="el-cd-empty-icon">
+            <svg viewBox="0 0 24 24"><path d="M2 9h20l-2 11H4L2 9z"></path><path d="M7 9l4.5-6"></path><path d="M17 9l-4.5-6"></path></svg>
+          </div>
+          <h3 class="el-cd-empty-title">Your basket is empty</h3>
+          <p class="el-cd-empty-desc">Explore our curated architectural tiles and natural surfaces to begin.</p>
+          <a href="/collections/all" class="el-cd-empty-btn">Explore Collections &rarr;</a>
+        </div>
+      {%- endif -%}
+    </div>
+
+    <!-- Drawer Footer -->
+    {%- if cart.item_count > 0 -%}
+      <footer class="el-cd-footer" id="elDrawerFooter-{{ section.id }}">
+        <div class="el-cd-subtotal-row">
+          <span>Subtotal</span>
+          <span id="elDrawerSubtotal-{{ section.id }}">{{ cart.total_price | money }}</span>
+        </div>
+        <p class="el-cd-tax-note">Taxes, freight delivery and discounts are calculated at checkout.</p>
+        <a href="/checkout" class="el-cd-checkout-btn">Checkout &rarr;</a>
+        {%- if section.settings.show_view_cart_btn -%}
+          <a href="{{ routes.cart_url }}" class="el-cd-view-cart-btn">View Full Shopping Basket</a>
+        {%- endif -%}
+      </footer>
+    {%- endif -%}
+
+  </aside>
+</div>
+
+<script>
+  (function() {
+    var sectionId = "{{ section.id }}";
+    var root = (sectionId ? document.getElementById('ellora-cart-drawer-' + sectionId) : null) || document.querySelector('.el-cart-drawer-wrapper');
+    if (!root) return;
+
+    var overlay = root.querySelector('.el-cd-overlay') || (sectionId ? document.getElementById('elCartDrawerOverlay-' + sectionId) : null);
+    var closeBtn = root.querySelector('.el-cd-close-btn') || (sectionId ? document.getElementById('elDrawerClose-' + sectionId) : null);
+
+    // Open / Close Drawer API
+    function openDrawer() {
+      root.classList.add('is-open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeDrawer() {
+      root.classList.remove('is-open');
+      document.body.style.overflow = '';
+    }
+
+    if (overlay) overlay.addEventListener('click', closeDrawer);
+    if (closeBtn) closeBtn.addEventListener('click', closeDrawer);
+
+    // Escape key
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape' && root.classList.contains('is-open')) closeDrawer();
+    });
+
+    // Global Event Listeners
+    window.addEventListener('ellora:cart:open', openDrawer);
+    window.addEventListener('ellora:cart:close', closeDrawer);
+    window.addEventListener('ellora:cart:toggle', function() {
+      if (root.classList.contains('is-open')) closeDrawer(); else openDrawer();
+    });
+
+    // Delegate any button on page with [data-cart-drawer-trigger]
+    document.addEventListener('click', function(e) {
+      var trigger = e.target.closest('[data-cart-drawer-trigger]');
+      if (trigger) {
+        e.preventDefault();
+        openDrawer();
+      }
+    });
+
+    // Money formatter helper
+    function formatMoney(cents) {
+      var dollars = (cents / 100).toFixed(2);
+      return '$' + dollars;
+    }
+
+    // Refresh Drawer HTML from Shopify Cart Object
+    function renderDrawer(cart) {
+      // 1. Update count
+      var countEl = root.querySelector('.el-cd-header-count') || (sectionId ? document.getElementById('elDrawerCount-' + sectionId) : null);
+      if (countEl) countEl.textContent = '(' + cart.item_count + ')';
+
+      // 2. Update Free Shipping Bar
+      var shipBar = root.querySelector('.el-cd-shipping-bar') || (sectionId ? document.getElementById('elDrawerShippingBar-' + sectionId) : null);
+      if (shipBar) {
+        var threshold = parseInt(shipBar.getAttribute('data-threshold'), 10) || 30000;
+        var textEl = root.querySelector('.el-cd-shipping-text') || (sectionId ? document.getElementById('elDrawerShippingText-' + sectionId) : null);
+        var fillEl = root.querySelector('.el-cd-shipping-fill') || (sectionId ? document.getElementById('elDrawerShippingFill-' + sectionId) : null);
+        if (cart.total_price >= threshold) {
+          if (textEl) textEl.innerHTML = '<span>You have unlocked Complimentary Pallet Delivery!</span>';
+          if (fillEl) fillEl.style.width = '100%';
+        } else {
+          var diff = threshold - cart.total_price;
+          if (textEl) textEl.innerHTML = '<span>Add <strong>' + formatMoney(diff) + '</strong> more for Complimentary Pallet Delivery</span>';
+          var percent = Math.min(100, Math.round((cart.total_price / threshold) * 100));
+          if (fillEl) fillEl.style.width = percent + '%';
+        }
+      }
+
+      // 3. Render items
+      var itemsContainer = root.querySelector('.el-cd-items-body') || (sectionId ? document.getElementById('elDrawerItems-' + sectionId) : null);
+      var footerContainer = root.querySelector('.el-cd-footer') || (sectionId ? document.getElementById('elDrawerFooter-' + sectionId) : null);
+
+      if (cart.item_count === 0) {
+        if (itemsContainer) {
+          itemsContainer.innerHTML = '<div class="el-cd-empty">' +
+            '<div class="el-cd-empty-icon">' +
+              '<svg viewBox="0 0 24 24"><path d="M2 9h20l-2 11H4L2 9z"></path><path d="M7 9l4.5-6"></path><path d="M17 9l-4.5-6"></path></svg>' +
+            '</div>' +
+            '<h3 class="el-cd-empty-title">Your basket is empty</h3>' +
+            '<p class="el-cd-empty-desc">Explore our curated architectural tiles and natural surfaces to begin.</p>' +
+            '<a href="/collections/all" class="el-cd-empty-btn">Explore Collections &rarr;</a>' +
+            '</div>';
+        }
+        if (footerContainer) footerContainer.style.display = 'none';
+        return;
+      }
+
+      if (footerContainer) {
+        footerContainer.style.display = 'block';
+        var subtotalEl = root.querySelector('.el-cd-subtotal-row span:last-child') || (sectionId ? document.getElementById('elDrawerSubtotal-' + sectionId) : null);
+        if (subtotalEl) subtotalEl.textContent = formatMoney(cart.total_price);
+      }
+
+      if (itemsContainer) {
+        var html = '';
+        cart.items.forEach(function(item) {
+          var imgHtml = item.image ? '<img src="' + item.image + '" alt="' + item.title + '">' : '<div style="width:100%; height:100%; background:#ECE7E1;"></div>';
+          var variantHtml = (item.variant_title && item.variant_title !== 'Default Title') ? '<div class="el-cd-item-variant">' + item.variant_title + '</div>' : '';
+          html += '<div class="el-cd-item" data-key="' + item.key + '">' +
+            '<a href="' + item.url + '" class="el-cd-item-media">' + imgHtml + '</a>' +
+            '<div class="el-cd-item-info">' +
+              '<div>' +
+                '<a href="' + item.url + '" class="el-cd-item-title">' + item.product_title + '</a>' +
+                variantHtml +
+                '<div class="el-cd-item-price">' + formatMoney(item.final_line_price) + '</div>' +
+              '</div>' +
+              '<div class="el-cd-item-actions">' +
+                '<div class="el-cd-stepper">' +
+                  '<button type="button" class="el-cd-stepper-btn el-cd-minus" data-key="' + item.key + '">&minus;</button>' +
+                  '<input type="number" class="el-cd-stepper-input" value="' + item.quantity + '" min="0" data-key="' + item.key + '">' +
+                  '<button type="button" class="el-cd-stepper-btn el-cd-plus" data-key="' + item.key + '">&plus;</button>' +
+                '</div>' +
+                '<button type="button" class="el-cd-item-remove-btn" data-key="' + item.key + '">Remove</button>' +
+              '</div>' +
+            '</div>' +
+          '</div>';
+        });
+        itemsContainer.innerHTML = html;
+      }
+    }
+
+    // AJAX cart update helper
+    function updateItem(key, quantity) {
+      var itemEl = root.querySelector('.el-cd-item[data-key="' + key + '"]');
+      if (itemEl) itemEl.classList.add('is-loading');
+
+      fetch('/cart/change.js', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify({ id: key, quantity: quantity })
+      })
+      .then(function(res) { return res.json(); })
+      .then(function(cart) {
+        renderDrawer(cart);
+        // Sync header badge
+        window.dispatchEvent(new CustomEvent('ellora:cart:updated', { detail: cart }));
+      })
+      .catch(function(err) {
+        console.error('Error changing cart item:', err);
+        if (itemEl) itemEl.classList.remove('is-loading');
+      });
+    }
+
+    // Event delegation inside drawer
+    root.addEventListener('click', function(e) {
+      var plusBtn = e.target.closest('.el-cd-plus');
+      if (plusBtn) {
+        var key = plusBtn.getAttribute('data-key');
+        var input = root.querySelector('.el-cd-stepper-input[data-key="' + key + '"]');
+        if (input) updateItem(key, (parseInt(input.value, 10) || 0) + 1);
+        return;
+      }
+
+      var minusBtn = e.target.closest('.el-cd-minus');
+      if (minusBtn) {
+        var key = minusBtn.getAttribute('data-key');
+        var input = root.querySelector('.el-cd-stepper-input[data-key="' + key + '"]');
+        if (input) {
+          var val = parseInt(input.value, 10) || 0;
+          if (val > 0) updateItem(key, val - 1);
+        }
+        return;
+      }
+
+      var removeBtn = e.target.closest('.el-cd-item-remove-btn');
+      if (removeBtn) {
+        var key = removeBtn.getAttribute('data-key');
+        updateItem(key, 0);
+        return;
+      }
+    });
+
+    root.addEventListener('change', function(e) {
+      if (e.target.classList.contains('el-cd-stepper-input')) {
+        var key = e.target.getAttribute('data-key');
+        var val = parseInt(e.target.value, 10);
+        if (!isNaN(val) && val >= 0) updateItem(key, val);
+      }
+    });
+
+    // Listen to external refresh
+    window.addEventListener('ellora:cart:refresh', function() {
+      fetch('/cart.js')
+        .then(function(r) { return r.json(); })
+        .then(function(cart) {
+          renderDrawer(cart);
+          window.dispatchEvent(new CustomEvent('ellora:cart:updated', { detail: cart }));
+        });
+    });
+
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Ellora Slide Cart Drawer",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Free Shipping Progress"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_free_shipping",
+      "label": "Enable Free Shipping Bar",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "free_shipping_threshold",
+      "label": "Free Shipping Threshold ($)",
+      "min": 0,
+      "max": 1000,
+      "step": 50,
+      "default": 300
+    },
+    {
+      "type": "text",
+      "id": "free_shipping_perk_text",
+      "label": "Perk Name",
+      "default": "Complimentary Pallet Delivery"
+    },
+    {
+      "type": "text",
+      "id": "free_shipping_reached_text",
+      "label": "Unlocked Text",
+      "default": "You have unlocked Complimentary Pallet Delivery!"
+    },
+    {
+      "type": "header",
+      "content": "Drawer Footer"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_view_cart_btn",
+      "label": "Show View Full Cart Link",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Drawer Background Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "primary_color",
+      "label": "Primary Accent Color",
+      "default": "#8E6356"
+    },
+    {
+      "type": "color",
+      "id": "primary_hover",
+      "label": "Primary Accent Hover",
+      "default": "#734E43"
+    },
+    {
+      "type": "color",
+      "id": "text_dark",
+      "label": "Dark Text Color",
+      "default": "#1C1B19"
+    },
+    {
+      "type": "color",
+      "id": "text_muted",
+      "label": "Muted Text Color",
+      "default": "#68645F"
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "Border Color",
+      "default": "#ECE7E1"
+    },
+    {
+      "type": "color",
+      "id": "card_bg",
+      "label": "Card & Footer Background",
+      "default": "#FAF8F5"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Ellora Slide Cart Drawer"
+    }
+  ]
+}
+{% endschema %}

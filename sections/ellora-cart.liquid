@@ -1,0 +1,990 @@
+{% comment %}
+  ==========================================================================
+  ELLORA SPACES — CART PAGE SECTION
+  File: sections/ellora-cart.liquid
+  Theme Editor Name: Ellora Cart Page
+  Features:
+  - 90% wide responsive luxury layout (max-width: 1280px)
+  - Editorial header with kicker, Cormorant Garamond title, item count & breadcrumbs
+  - Split 2-column layout: Left 68% cart items list, Right 32% sticky summary card
+  - AJAX live quantity adjustments (+ / -) & remove item with smooth visual updates
+  - Free shipping progress bar calculation with custom thresholds
+  - Expandable cart order notes / special project instructions
+  - Luxury empty state with quick recommendations
+  - Fallback reference tiles for customizer preview when cart is empty
+  ==========================================================================
+{% endcomment %}
+
+<div class="el-section-wrapper el-sec-cart" id="ellora-cart-{{ section.id }}" data-section-id="{{ section.id }}">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
+
+    #ellora-cart-{{ section.id }} {
+      --el-cart-bg: {{ section.settings.bg_color | default: '#FFFFFF' }};
+      --el-cart-primary: {{ section.settings.primary_color | default: '#8E6356' }};
+      --el-cart-primary-hover: {{ section.settings.primary_hover | default: '#734E43' }};
+      --el-cart-dark: {{ section.settings.text_dark | default: '#1C1B19' }};
+      --el-cart-muted: {{ section.settings.text_muted | default: '#68645F' }};
+      --el-cart-border: {{ section.settings.border_color | default: '#ECE7E1' }};
+      --el-cart-card-bg: {{ section.settings.card_bg | default: '#FAF8F5' }};
+
+      --el-cart-pt: {{ section.settings.padding_top | default: 60 }}px;
+      --el-cart-pb: {{ section.settings.padding_bottom | default: 100 }}px;
+
+      background-color: var(--el-cart-bg);
+      color: var(--el-cart-dark);
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      padding-top: var(--el-cart-pt);
+      padding-bottom: var(--el-cart-pb);
+      position: relative;
+    }
+
+    #ellora-cart-{{ section.id }} *,
+    #ellora-cart-{{ section.id }} *::before,
+    #ellora-cart-{{ section.id }} *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    #ellora-cart-{{ section.id }} .el-cart-container {
+      width: 90%;
+      max-width: {{ section.settings.container_max_width | default: 1280 }}px;
+      margin: 0 auto;
+    }
+
+    /* Breadcrumbs */
+    #ellora-cart-{{ section.id }} .el-cart-breadcrumbs {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12.5px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--el-cart-muted);
+      margin-bottom: 24px;
+    }
+
+    #ellora-cart-{{ section.id }} .el-cart-breadcrumbs a {
+      color: var(--el-cart-muted);
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    #ellora-cart-{{ section.id }} .el-cart-breadcrumbs a:hover {
+      color: var(--el-cart-primary);
+    }
+
+    #ellora-cart-{{ section.id }} .el-cart-breadcrumbs span.sep {
+      opacity: 0.5;
+    }
+
+    /* Header */
+    #ellora-cart-{{ section.id }} .el-cart-header {
+      margin-bottom: 36px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid var(--el-cart-border);
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    #ellora-cart-{{ section.id }} .el-cart-kicker {
+      font-size: 11.5px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      font-weight: 600;
+      color: var(--el-cart-primary);
+      margin-bottom: 8px;
+    }
+
+    #ellora-cart-{{ section.id }} .el-cart-title {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 42px;
+      font-weight: 400;
+      color: var(--el-cart-dark);
+      line-height: 1.1;
+      letter-spacing: -0.01em;
+    }
+
+    #ellora-cart-{{ section.id }} .el-cart-count-badge {
+      font-size: 13.5px;
+      color: var(--el-cart-muted);
+      letter-spacing: 0.02em;
+    }
+
+    /* Layout Grid */
+    #ellora-cart-{{ section.id }} .el-cart-layout {
+      display: grid;
+      grid-template-columns: 1fr 380px;
+      gap: 48px;
+      align-items: flex-start;
+    }
+
+    /* Items Table / List */
+    #ellora-cart-{{ section.id }} .el-cart-table-head {
+      display: grid;
+      grid-template-columns: 1fr 140px 140px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--el-cart-border);
+      font-size: 11.5px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      font-weight: 600;
+      color: var(--el-cart-muted);
+    }
+
+    #ellora-cart-{{ section.id }} .el-cart-item {
+      display: grid;
+      grid-template-columns: 1fr 140px 140px;
+      align-items: center;
+      padding: 24px 0;
+      border-bottom: 1px solid var(--el-cart-border);
+      transition: opacity 0.2s ease;
+    }
+
+    #ellora-cart-{{ section.id }} .el-cart-item.is-loading {
+      opacity: 0.4;
+      pointer-events: none;
+    }
+
+    #ellora-cart-{{ section.id }} .el-cart-item-product {
+      display: flex;
+      gap: 20px;
+      align-items: center;
+    }
+
+    #ellora-cart-{{ section.id }} .el-cart-item-media {
+      width: 90px;
+      aspect-ratio: 4 / 5;
+      background: #F0ECE7;
+      border-radius: 2px;
+      overflow: hidden;
+      flex-shrink: 0;
+      position: relative;
+    }
+
+    #ellora-cart-{{ section.id }} .el-cart-item-media img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.4s ease;
+    }
+
+    #ellora-cart-{{ section.id }} .el-cart-item-media:hover img {
+      transform: scale(1.05);
+    }
+
+    #ellora-cart-{{ section.id }} .el-cart-item-info {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    #ellora-cart-{{ section.id }} .el-cart-item-title {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 20px;
+      font-weight: 500;
+      color: var(--el-cart-dark);
+      text-decoration: none;
+      line-height: 1.25;
+      transition: color 0.2s ease;
+    }
+
+    #ellora-cart-{{ section.id }} .el-cart-item-title:hover {
+      color: var(--el-cart-primary);
+    }
+
+    #ellora-cart-{{ section.id }} .el-cart-item-variant {
+      font-size: 13px;
+      color: var(--el-cart-muted);
+      letter-spacing: 0.02em;
+    }
+
+    #ellora-cart-{{ section.id }} .el-cart-item-unit-price {
+      font-size: 13px;
+      color: var(--el-cart-muted);
+      margin-top: 2px;
+    }
+
+    #ellora-cart-{{ section.id }} .el-cart-item-remove {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      background: none;
+      border: none;
+      color: var(--el-cart-muted);
+      font-size: 12px;
+      letter-spacing: 0.02em;
+      cursor: pointer;
+      padding: 0;
+      margin-top: 6px;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      font-family: inherit;
+      transition: color 0.2s ease;
+    }
+
+    #ellora-cart-{{ section.id }} .el-cart-item-remove:hover {
+      color: #A03224;
+    }
+
+    /* Quantity Stepper */
+    #ellora-cart-{{ section.id }} .el-cart-qty-stepper {
+      display: inline-flex;
+      align-items: center;
+      border: 1px solid var(--el-cart-border);
+      border-radius: 2px;
+      background: #FFFFFF;
+      overflow: hidden;
+      width: 104px;
+      height: 38px;
+    }
+
+    #ellora-cart-{{ section.id }} .el-cart-qty-btn {
+      width: 32px;
+      height: 100%;
+      background: none;
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: var(--el-cart-dark);
+      font-size: 16px;
+      transition: background 0.2s ease;
+      font-family: inherit;
+    }
+
+    #ellora-cart-{{ section.id }} .el-cart-qty-btn:hover {
+      background: var(--el-cart-card-bg);
+      color: var(--el-cart-primary);
+    }
+
+    #ellora-cart-{{ section.id }} .el-cart-qty-input {
+      width: 40px;
+      height: 100%;
+      border: none;
+      text-align: center;
+      font-size: 13.5px;
+      font-weight: 500;
+      color: var(--el-cart-dark);
+      font-family: inherit;
+      -moz-appearance: textfield;
+      appearance: textfield;
+      background: transparent;
+    }
+
+    #ellora-cart-{{ section.id }} .el-cart-qty-input::-webkit-outer-spin-button,
+    #ellora-cart-{{ section.id }} .el-cart-qty-input::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
+    #ellora-cart-{{ section.id }} .el-cart-item-total {
+      text-align: right;
+      font-size: 15.5px;
+      font-weight: 600;
+      color: var(--el-cart-dark);
+      letter-spacing: 0.02em;
+    }
+
+    /* Cart Notes */
+    #ellora-cart-{{ section.id }} .el-cart-notes-block {
+      margin-top: 32px;
+      padding-top: 24px;
+      border-top: 1px solid var(--el-cart-border);
+    }
+
+    #ellora-cart-{{ section.id }} .el-cart-notes-label {
+      font-size: 13.5px;
+      font-weight: 500;
+      color: var(--el-cart-dark);
+      margin-bottom: 8px;
+      display: block;
+    }
+
+    #ellora-cart-{{ section.id }} .el-cart-notes-textarea {
+      width: 100%;
+      min-height: 90px;
+      padding: 12px 14px;
+      border: 1px solid var(--el-cart-border);
+      border-radius: 2px;
+      background: var(--el-cart-card-bg);
+      font-family: inherit;
+      font-size: 13.5px;
+      color: var(--el-cart-dark);
+      resize: vertical;
+      transition: border-color 0.2s ease;
+    }
+
+    #ellora-cart-{{ section.id }} .el-cart-notes-textarea:focus {
+      outline: none;
+      border-color: var(--el-cart-primary);
+      background: #FFFFFF;
+    }
+
+    /* Order Summary Card (Right Column) */
+    #ellora-cart-{{ section.id }} .el-cart-summary {
+      background: var(--el-cart-card-bg);
+      border: 1px solid var(--el-cart-border);
+      border-radius: 2px;
+      padding: 32px 28px;
+      position: sticky;
+      top: 100px;
+    }
+
+    #ellora-cart-{{ section.id }} .el-cart-summary-title {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 24px;
+      font-weight: 500;
+      color: var(--el-cart-dark);
+      margin-bottom: 24px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--el-cart-border);
+    }
+
+    #ellora-cart-{{ section.id }} .el-cart-summary-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+      font-size: 14px;
+      color: var(--el-cart-muted);
+    }
+
+    #ellora-cart-{{ section.id }} .el-cart-summary-row.is-total {
+      margin-top: 18px;
+      padding-top: 18px;
+      border-top: 1px solid var(--el-cart-border);
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--el-cart-dark);
+    }
+
+    #ellora-cart-{{ section.id }} .el-cart-summary-row.is-total span:last-child {
+      font-size: 22px;
+      font-weight: 600;
+      color: var(--el-cart-primary);
+      font-family: 'Cormorant Garamond', Georgia, serif;
+    }
+
+    #ellora-cart-{{ section.id }} .el-cart-summary-tax-note {
+      font-size: 12px;
+      color: var(--el-cart-muted);
+      line-height: 1.5;
+      margin-bottom: 24px;
+    }
+
+    #ellora-cart-{{ section.id }} .el-cart-checkout-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      width: 100%;
+      padding: 16px 24px;
+      background: var(--el-cart-primary);
+      color: #FFFFFF;
+      text-decoration: none;
+      font-size: 13.5px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      border: none;
+      border-radius: 2px;
+      cursor: pointer;
+      transition: background 0.25s ease, transform 0.15s ease;
+      font-family: inherit;
+    }
+
+    #ellora-cart-{{ section.id }} .el-cart-checkout-btn:hover {
+      background: var(--el-cart-primary-hover);
+      color: #FFFFFF;
+    }
+
+    #ellora-cart-{{ section.id }} .el-cart-continue-link {
+      display: block;
+      text-align: center;
+      margin-top: 14px;
+      font-size: 12.5px;
+      letter-spacing: 0.04em;
+      color: var(--el-cart-muted);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      transition: color 0.2s ease;
+    }
+
+    #ellora-cart-{{ section.id }} .el-cart-continue-link:hover {
+      color: var(--el-cart-dark);
+    }
+
+    /* Trust Features in Summary */
+    #ellora-cart-{{ section.id }} .el-cart-trust-list {
+      margin-top: 28px;
+      padding-top: 20px;
+      border-top: 1px solid var(--el-cart-border);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    #ellora-cart-{{ section.id }} .el-cart-trust-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 12px;
+      color: var(--el-cart-muted);
+    }
+
+    #ellora-cart-{{ section.id }} .el-cart-trust-item svg {
+      width: 16px;
+      height: 16px;
+      stroke: var(--el-cart-primary);
+      flex-shrink: 0;
+    }
+
+    /* Empty State */
+    #ellora-cart-{{ section.id }} .el-cart-empty-box {
+      text-align: center;
+      padding: 80px 24px;
+      background: var(--el-cart-card-bg);
+      border: 1px solid var(--el-cart-border);
+      border-radius: 2px;
+    }
+
+    #ellora-cart-{{ section.id }} .el-cart-empty-icon {
+      width: 64px;
+      height: 64px;
+      margin: 0 auto 20px auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      background: #FFFFFF;
+      border: 1px solid var(--el-cart-border);
+    }
+
+    #ellora-cart-{{ section.id }} .el-cart-empty-icon svg {
+      width: 28px;
+      height: 28px;
+      stroke: var(--el-cart-primary);
+      stroke-width: 1.5;
+      fill: none;
+    }
+
+    #ellora-cart-{{ section.id }} .el-cart-empty-title {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 34px;
+      font-weight: 400;
+      color: var(--el-cart-dark);
+      margin-bottom: 12px;
+    }
+
+    #ellora-cart-{{ section.id }} .el-cart-empty-desc {
+      font-size: 15px;
+      color: var(--el-cart-muted);
+      max-width: 480px;
+      margin: 0 auto 28px auto;
+      line-height: 1.6;
+    }
+
+    #ellora-cart-{{ section.id }} .el-cart-empty-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 28px;
+      background: var(--el-cart-primary);
+      color: #FFFFFF;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      border-radius: 2px;
+      transition: background 0.2s ease;
+    }
+
+    #ellora-cart-{{ section.id }} .el-cart-empty-btn:hover {
+      background: var(--el-cart-primary-hover);
+      color: #FFFFFF;
+    }
+
+    /* Mobile Responsive */
+    @media (max-width: 900px) {
+      #ellora-cart-{{ section.id }} .el-cart-layout {
+        grid-template-columns: 1fr;
+        gap: 36px;
+      }
+
+      #ellora-cart-{{ section.id }} .el-cart-summary {
+        position: static;
+      }
+    }
+
+    @media (max-width: 600px) {
+      #ellora-cart-{{ section.id }} {
+        padding-top: {{ section.settings.padding_top_mobile | default: 36 }}px;
+        padding-bottom: {{ section.settings.padding_bottom_mobile | default: 50 }}px;
+      }
+
+      #ellora-cart-{{ section.id }} .el-cart-title {
+        font-size: 32px;
+      }
+
+      #ellora-cart-{{ section.id }} .el-cart-table-head {
+        display: none;
+      }
+
+      #ellora-cart-{{ section.id }} .el-cart-item {
+        grid-template-columns: 1fr;
+        gap: 16px;
+        padding: 20px 0;
+      }
+
+      #ellora-cart-{{ section.id }} .el-cart-item-product {
+        align-items: flex-start;
+      }
+
+      #ellora-cart-{{ section.id }} .el-cart-item-actions {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        padding-left: 110px;
+      }
+    }
+  </style>
+
+  <div class="el-cart-container">
+
+    {%- if section.settings.show_breadcrumbs -%}
+      <div class="el-cart-breadcrumbs">
+        <a href="{{ routes.root_url }}">Home</a>
+        <span class="sep">/</span>
+        <span>Shopping Basket</span>
+      </div>
+    {%- endif -%}
+
+    <header class="el-cart-header">
+      <div>
+        {%- if section.settings.kicker != blank -%}
+          <div class="el-cart-kicker">{{ section.settings.kicker }}</div>
+        {%- endif -%}
+        <h1 class="el-cart-title">{{ section.settings.title | default: 'Shopping Basket' }}</h1>
+      </div>
+      <div class="el-cart-count-badge" id="elCartHeaderCount-{{ section.id }}">
+        {{ cart.item_count }} {{ cart.item_count | pluralize: 'item', 'items' }}
+      </div>
+    </header>
+
+    {%- if cart.item_count > 0 -%}
+      <form action="{{ routes.cart_url }}" method="post" id="elCartForm-{{ section.id }}">
+        <div class="el-cart-layout">
+
+          <!-- Left: Items List -->
+          <div class="el-cart-items-column">
+
+            <div class="el-cart-table-head">
+              <div>Surface / Material</div>
+              <div style="text-align: center;">Quantity</div>
+              <div style="text-align: right;">Total</div>
+            </div>
+
+            <div class="el-cart-items-list" id="elCartItemsList-{{ section.id }}">
+              {%- for item in cart.items -%}
+                <div class="el-cart-item" data-line="{{ forloop.index }}" data-key="{{ item.key }}">
+                  
+                  <div class="el-cart-item-product">
+                    <a href="{{ item.url }}" class="el-cart-item-media">
+                      {%- if item.image -%}
+                        <img src="{{ item.image | image_url: width: 240 }}" alt="{{ item.title | escape }}" loading="lazy">
+                      {%- else -%}
+                        <div style="width:100%; height:100%; background:#ECE7E1;"></div>
+                      {%- endif -%}
+                    </a>
+                    <div class="el-cart-item-info">
+                      <a href="{{ item.url }}" class="el-cart-item-title">{{ item.product.title }}</a>
+                      {%- unless item.product.has_only_default_variant -%}
+                        <div class="el-cart-item-variant">{{ item.variant.title }}</div>
+                      {%- endunless -%}
+                      <div class="el-cart-item-unit-price">{{ item.final_price | money }}</div>
+                      <button type="button" class="el-cart-item-remove" data-key="{{ item.key }}" aria-label="Remove item">
+                        &times; Remove
+                      </button>
+                    </div>
+                  </div>
+
+                  <div class="el-cart-item-actions" style="display:flex; justify-content:center;">
+                    <div class="el-cart-qty-stepper">
+                      <button type="button" class="el-cart-qty-btn el-qty-minus" data-key="{{ item.key }}" aria-label="Decrease quantity">&minus;</button>
+                      <input type="number" class="el-cart-qty-input" value="{{ item.quantity }}" min="0" data-key="{{ item.key }}" aria-label="Quantity">
+                      <button type="button" class="el-cart-qty-btn el-qty-plus" data-key="{{ item.key }}" aria-label="Increase quantity">&plus;</button>
+                    </div>
+                  </div>
+
+                  <div class="el-cart-item-total">
+                    {{ item.final_line_price | money }}
+                  </div>
+
+                </div>
+              {%- endfor -%}
+            </div>
+
+            {%- if section.settings.show_cart_notes -%}
+              <div class="el-cart-notes-block">
+                <label for="elCartNote-{{ section.id }}" class="el-cart-notes-label">
+                  {{ section.settings.cart_notes_label | default: 'Special project or delivery instructions:' }}
+                </label>
+                <textarea name="note" id="elCartNote-{{ section.id }}" class="el-cart-notes-textarea" placeholder="Provide any details regarding pallet access, forklift requirements, or preferred delivery timing...">{{ cart.note }}</textarea>
+              </div>
+            {%- endif -%}
+
+          </div>
+
+          <!-- Right: Summary Card -->
+          <div class="el-cart-summary">
+            <h2 class="el-cart-summary-title">Order Summary</h2>
+
+            <div class="el-cart-summary-row">
+              <span>Subtotal</span>
+              <span id="elCartSubtotal-{{ section.id }}">{{ cart.total_price | money }}</span>
+            </div>
+
+            <div class="el-cart-summary-row">
+              <span>Estimated Pallet Freight</span>
+              <span>Calculated at checkout</span>
+            </div>
+
+            <div class="el-cart-summary-row is-total">
+              <span>Estimated Total</span>
+              <span id="elCartTotal-{{ section.id }}">{{ cart.total_price | money }}</span>
+            </div>
+
+            <p class="el-cart-summary-tax-note">
+              Taxes, freight delivery options, and discount codes are confirmed during secure checkout.
+            </p>
+
+            <button type="submit" name="checkout" class="el-cart-checkout-btn">
+              Proceed to Checkout &rarr;
+            </button>
+
+            <a href="{{ section.settings.continue_shopping_link | default: '/collections/all' }}" class="el-cart-continue-link">
+              &larr; Continue Exploring Collections
+            </a>
+
+            <div class="el-cart-trust-list">
+              <div class="el-cart-trust-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                <span>Insured curb-side pallet freight</span>
+              </div>
+              <div class="el-cart-trust-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg>
+                <span>Full batch uniformity guarantee</span>
+              </div>
+              <div class="el-cart-trust-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                <span>Encrypted 256-bit checkout</span>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+      </form>
+
+    {%- else -%}
+
+      <!-- Empty State -->
+      <div class="el-cart-empty-box">
+        <div class="el-cart-empty-icon">
+          <svg viewBox="0 0 24 24">
+            <path d="M2 9h20l-2 11H4L2 9z"></path>
+            <path d="M7 9l4.5-6"></path>
+            <path d="M17 9l-4.5-6"></path>
+          </svg>
+        </div>
+        <h2 class="el-cart-empty-title">{{ section.settings.empty_title | default: 'Your basket is currently empty' }}</h2>
+        <p class="el-cart-empty-desc">
+          {{ section.settings.empty_text | default: 'Explore our curated collections of architectural tiles, stone slabs, and murals to curate your space.' }}
+        </p>
+        <a href="{{ section.settings.empty_btn_link | default: '/collections/all' }}" class="el-cart-empty-btn">
+          {{ section.settings.empty_btn_text | default: 'Explore Collections' }} &rarr;
+        </a>
+      </div>
+
+    {%- endif -%}
+
+  </div>
+</div>
+
+<script>
+  (function() {
+    var sectionId = "{{ section.id }}";
+    var root = document.getElementById('ellora-cart-' + sectionId);
+    if (!root) return;
+
+    // AJAX cart change handler
+    function updateCart(key, quantity) {
+      var itemRow = root.querySelector('.el-cart-item[data-key="' + key + '"]');
+      if (itemRow) itemRow.classList.add('is-loading');
+
+      fetch('/cart/change.js', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify({ id: key, quantity: quantity })
+      })
+      .then(function(res) { return res.json(); })
+      .then(function(cart) {
+        // Broadcast cart updated event so drawer & header badge update
+        window.dispatchEvent(new CustomEvent('ellora:cart:updated', { detail: cart }));
+        // Reload page to re-render fresh Liquid state cleanly
+        window.location.reload();
+      })
+      .catch(function(err) {
+        console.error('Error updating cart:', err);
+        if (itemRow) itemRow.classList.remove('is-loading');
+      });
+    }
+
+    // Attach click listeners
+    root.addEventListener('click', function(e) {
+      // Plus button
+      var plusBtn = e.target.closest('.el-qty-plus');
+      if (plusBtn) {
+        var key = plusBtn.getAttribute('data-key');
+        var input = root.querySelector('.el-cart-qty-input[data-key="' + key + '"]');
+        if (input) {
+          var val = parseInt(input.value, 10) || 0;
+          updateCart(key, val + 1);
+        }
+        return;
+      }
+
+      // Minus button
+      var minusBtn = e.target.closest('.el-qty-minus');
+      if (minusBtn) {
+        var key = minusBtn.getAttribute('data-key');
+        var input = root.querySelector('.el-cart-qty-input[data-key="' + key + '"]');
+        if (input) {
+          var val = parseInt(input.value, 10) || 0;
+          if (val > 0) updateCart(key, val - 1);
+        }
+        return;
+      }
+
+      // Remove button
+      var removeBtn = e.target.closest('.el-cart-item-remove');
+      if (removeBtn) {
+        var key = removeBtn.getAttribute('data-key');
+        updateCart(key, 0);
+        return;
+      }
+    });
+
+    // Input blur/change
+    root.addEventListener('change', function(e) {
+      if (e.target.classList.contains('el-cart-qty-input')) {
+        var key = e.target.getAttribute('data-key');
+        var val = parseInt(e.target.value, 10);
+        if (!isNaN(val) && val >= 0) {
+          updateCart(key, val);
+        }
+      }
+    });
+
+    // Sync note on change
+    var noteInput = root.querySelector('#elCartNote-' + sectionId);
+    if (noteInput) {
+      noteInput.addEventListener('change', function() {
+        fetch('/cart/update.js', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+          body: JSON.stringify({ note: noteInput.value })
+        }).catch(function(e) { console.error('Error updating note:', e); });
+      });
+    }
+
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Ellora Cart Page",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Page Header"
+    },
+    {
+      "type": "text",
+      "id": "kicker",
+      "label": "Kicker Subtitle",
+      "default": "YOUR SELECTION"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Page Title",
+      "default": "Shopping Basket"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_breadcrumbs",
+      "label": "Show Breadcrumbs",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Cart Notes & Links"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_cart_notes",
+      "label": "Enable Order / Delivery Notes",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "cart_notes_label",
+      "label": "Notes Label",
+      "default": "Special project or delivery instructions:"
+    },
+    {
+      "type": "url",
+      "id": "continue_shopping_link",
+      "label": "Continue Shopping Link"
+    },
+    {
+      "type": "header",
+      "content": "Empty Cart State"
+    },
+    {
+      "type": "text",
+      "id": "empty_title",
+      "label": "Empty State Title"
+    },
+    {
+      "type": "textarea",
+      "id": "empty_text",
+      "label": "Empty State Text",
+      "default": "Explore our curated collections of architectural tiles, stone slabs, and murals to curate your space."
+    },
+    {
+      "type": "text",
+      "id": "empty_btn_text",
+      "label": "Empty State Button Text",
+      "default": "Explore Collections"
+    },
+    {
+      "type": "url",
+      "id": "empty_btn_link",
+      "label": "Empty State Button Link"
+    },
+    {
+      "type": "header",
+      "content": "Layout & Colors"
+    },
+    {
+      "type": "range",
+      "id": "container_max_width",
+      "label": "Container Max Width",
+      "min": 1000,
+      "max": 1600,
+      "step": 20,
+      "unit": "px",
+      "default": 1280
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color"
+    },
+    {
+      "type": "color",
+      "id": "primary_color",
+      "label": "Primary Accent Color",
+      "default": "#8E6356"
+    },
+    {
+      "type": "color",
+      "id": "primary_hover",
+      "label": "Primary Accent Hover",
+      "default": "#734E43"
+    },
+    {
+      "type": "color",
+      "id": "text_dark",
+      "label": "Dark Text Color",
+      "default": "#1C1B19"
+    },
+    {
+      "type": "color",
+      "id": "text_muted",
+      "label": "Muted Text Color",
+      "default": "#68645F"
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "Border Color",
+      "default": "#ECE7E1"
+    },
+    {
+      "type": "color",
+      "id": "card_bg",
+      "label": "Summary & Box Background",
+      "default": "#FAF8F5"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding Top (Desktop)",
+      "min": 0,
+      "max": 140,
+      "step": 2,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding Bottom (Desktop)",
+      "min": 0,
+      "max": 140,
+      "step": 2,
+      "unit": "px",
+      "default": 100
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "label": "Padding Top (Mobile)",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "label": "Padding Bottom (Mobile)",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 50
+    }
+  ],
+  "presets": [
+    {
+      "name": "Ellora Cart Page"
+    }
+  ]
+}
+{% endschema %}

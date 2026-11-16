@@ -1,0 +1,299 @@
+{% comment %}
+  ==========================================================================
+  ELLORA SPACES — SECTION 5: CRAFTED THROUGH TEXTURE, TIME & PLACE
+  File: sections/ellora-crafted.liquid
+  Fully customizable via Shopify Theme Customizer
+  ==========================================================================
+{% endcomment %}
+
+<div class="el-section-wrapper el-sec-crafted-wrapper" id="ellora-crafted-{{ section.id }}">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
+
+    #ellora-crafted-{{ section.id }} {
+      --el-dark: #1C1B19;
+      --el-bg: {{ section.settings.bg_color | default: '#FFF9F8' }};
+      --el-btn-bg: {{ section.settings.btn_color | default: '#CC9E8E' }};
+      --el-btn-hover: #BA8A7A;
+      --el-font-serif: 'Cormorant Garamond', Georgia, serif;
+      --el-font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+
+      background-color: var(--el-bg);
+      padding: {{ section.settings.padding_top | default: 50 }}px 0 {{ section.settings.padding_bottom | default: 50 }}px;
+      width: 100%;
+      font-family: var(--el-font-sans);
+      box-sizing: border-box;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    #ellora-crafted-{{ section.id }} *,
+    #ellora-crafted-{{ section.id }} *::before,
+    #ellora-crafted-{{ section.id }} *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    #ellora-crafted-{{ section.id }} .el-sec-crafted-container {
+      width: 90%;
+      max-width: 1720px;
+      margin: 0 auto;
+    }
+
+    #ellora-crafted-{{ section.id }} .el-crafted-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.25fr;
+      gap: 75px;
+      align-items: center;
+    }
+
+    #ellora-crafted-{{ section.id }} .el-crafted-info {
+      padding-right: 20px;
+    }
+
+    #ellora-crafted-{{ section.id }} .el-crafted-title {
+      font-family: var(--el-font-serif);
+      font-size: 52px;
+      line-height: 1.15;
+      margin-bottom: 26px;
+      font-weight: 400;
+      letter-spacing: -0.01em;
+    }
+
+    #ellora-crafted-{{ section.id }} .el-title-dark {
+      color: var(--el-dark);
+    }
+
+    #ellora-crafted-{{ section.id }} .el-title-accent {
+      color: #8E6356;
+    }
+
+    #ellora-crafted-{{ section.id }} .el-crafted-text {
+      font-family: var(--el-font-sans);
+      font-size: 15.5px;
+      line-height: 1.75;
+      color: #4A453F;
+      margin-bottom: 38px;
+      max-width: 490px;
+    }
+
+    #ellora-crafted-{{ section.id }} .el-crafted-btn {
+      background-color: var(--el-btn-bg);
+      color: #FFFFFF !important;
+      border: none;
+      padding: 14px 34px;
+      font-size: 14.5px;
+      font-weight: 500;
+      border-radius: 3px;
+      display: inline-block;
+      text-decoration: none;
+      cursor: pointer;
+      transition: background-color 0.25s ease, transform 0.25s ease;
+    }
+
+    #ellora-crafted-{{ section.id }} .el-crafted-btn:hover {
+      background-color: var(--el-btn-hover);
+      transform: translateY(-2px);
+    }
+
+    #ellora-crafted-{{ section.id }} .el-crafted-gallery {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+    }
+
+    #ellora-crafted-{{ section.id }} .el-gallery-item {
+      position: relative;
+      border-radius: 6px;
+      overflow: hidden;
+      aspect-ratio: 1 / 1.05;
+      background-color: #EFECE6;
+    }
+
+    #ellora-crafted-{{ section.id }} .el-gallery-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.6s ease;
+    }
+
+    #ellora-crafted-{{ section.id }} .el-gallery-item:hover img {
+      transform: scale(1.05);
+    }
+
+    @media (max-width: 990px) {
+      #ellora-crafted-{{ section.id }} .el-crafted-grid {
+        grid-template-columns: 1fr;
+        gap: 40px;
+      }
+      #ellora-crafted-{{ section.id }} .el-crafted-info {
+        padding-right: 0;
+      }
+    }
+
+    @media (max-width: 640px) {
+      #ellora-crafted-{{ section.id }} .el-crafted-title {
+        font-size: 36px;
+      }
+      #ellora-crafted-{{ section.id }} .el-crafted-gallery {
+        gap: 12px;
+      }
+    }
+  </style>
+
+  <div class="el-sec-crafted-container">
+    <div class="el-crafted-grid">
+      <div class="el-crafted-info">
+        <h2 class="el-crafted-title">
+          <span class="el-title-dark">{{ section.settings.title_dark }} </span>
+          <br>
+          <span class="el-title-accent">{{ section.settings.title_accent }}</span>
+        </h2>
+        <p class="el-crafted-text">
+          {{ section.settings.description }}
+        </p>
+        {%- if section.settings.btn_label != blank -%}
+          <a href="{{ section.settings.btn_link | default: '/pages/about' }}" class="el-crafted-btn">
+            {{ section.settings.btn_label }}
+          </a>
+        {%- endif -%}
+      </div>
+
+      <div class="el-crafted-gallery">
+        <div class="el-gallery-item">
+          {%- if section.settings.image_1 != blank -%}
+            {{ section.settings.image_1 | image_url: width: 800 | image_tag: loading: 'lazy', alt: 'Handcrafted Ellora stone texture 1' }}
+          {%- else -%}
+            <img src="https://cdn.shopify.com/s/files/1/0990/3685/6647/files/sec5_gallery1.jpg?v=1789453290" alt="Handcrafted Ellora stone texture" loading="lazy">
+          {%- endif -%}
+        </div>
+        <div class="el-gallery-item">
+          {%- if section.settings.image_2 != blank -%}
+            {{ section.settings.image_2 | image_url: width: 800 | image_tag: loading: 'lazy', alt: 'Handcrafted Ellora stone texture 2' }}
+          {%- else -%}
+            <img src="https://cdn.shopify.com/s/files/1/0990/3685/6647/files/sec5_gallery2.jpg?v=1789453290" alt="Handcrafted Ellora stone texture" loading="lazy">
+          {%- endif -%}
+        </div>
+        <div class="el-gallery-item">
+          {%- if section.settings.image_3 != blank -%}
+            {{ section.settings.image_3 | image_url: width: 800 | image_tag: loading: 'lazy', alt: 'Handcrafted Ellora stone texture 3' }}
+          {%- else -%}
+            <img src="https://cdn.shopify.com/s/files/1/0990/3685/6647/files/sec5_gallery3.jpg?v=1789453290" alt="Handcrafted Ellora stone texture" loading="lazy">
+          {%- endif -%}
+        </div>
+        <div class="el-gallery-item">
+          {%- if section.settings.image_4 != blank -%}
+            {{ section.settings.image_4 | image_url: width: 800 | image_tag: loading: 'lazy', alt: 'Handcrafted Ellora stone texture 4' }}
+          {%- else -%}
+            <img src="https://cdn.shopify.com/s/files/1/0990/3685/6647/files/sec5_gallery4.jpg?v=1789453290" alt="Handcrafted Ellora stone texture" loading="lazy">
+          {%- endif -%}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Ellora Crafted Texture",
+  "tag": "section",
+  "class": "section-ellora-crafted",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title_dark",
+      "label": "Heading Line 1 (Dark)",
+      "default": "Crafted Through"
+    },
+    {
+      "type": "text",
+      "id": "title_accent",
+      "label": "Heading Line 2 (Accent)",
+      "default": "Texture, Time & Place"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Story Description",
+      "default": "Every tile in our collection tells an architectural story. From age-old quarries to precision finishing, our surfaces harmonize geological authenticity with modern durability."
+    },
+    {
+      "type": "text",
+      "id": "btn_label",
+      "label": "Button Label",
+      "default": "Explore the Material Story"
+    },
+    {
+      "type": "url",
+      "id": "btn_link",
+      "label": "Button Link"
+    },
+    {
+      "type": "header",
+      "content": "4 Gallery Photos"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_1",
+      "label": "Gallery Image 1"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_2",
+      "label": "Gallery Image 2"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_3",
+      "label": "Gallery Image 3"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_4",
+      "label": "Gallery Image 4"
+    },
+    {
+      "type": "header",
+      "content": "Style & Colors"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#FFF9F8"
+    },
+    {
+      "type": "color",
+      "id": "btn_color",
+      "label": "Button Color",
+      "default": "#CC9E8E"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 20,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Top Padding",
+      "default": 50
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 20,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Bottom Padding",
+      "default": 50
+    }
+  ],
+  "presets": [
+    {
+      "name": "Ellora Crafted Texture"
+    }
+  ]
+}
+{% endschema %}

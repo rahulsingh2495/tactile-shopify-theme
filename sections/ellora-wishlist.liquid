@@ -1,0 +1,927 @@
+{% comment %}
+  ==========================================================================
+  ELLORA SPACES — WISHLIST SECTION TEMPLATE
+  File: sections/ellora-wishlist.liquid
+  Theme Editor Name: Ellora Wishlist
+  Features:
+  - Exact same product card grids & UI as Ellora Collection page
+  - Client-side LocalStorage integration (no third-party app required)
+  - Real-time live header badge sync & cross-tab communication
+  - One-click heart toggle to remove/add items with smooth fade animation
+  - High-end Empty State with luxury call-to-action
+  - Fully customizable via Shopify Theme Customizer
+  ==========================================================================
+{% endcomment %}
+
+<div class="el-section-wrapper el-sec-wishlist" id="ellora-wishlist-{{ section.id }}">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
+
+    #ellora-wishlist-{{ section.id }} {
+      --el-wl-bg: {{ section.settings.bg_color | default: '#FFFFFF' }};
+      --el-wl-primary: {{ section.settings.primary_color | default: '#8E6356' }};
+      --el-wl-dark: {{ section.settings.text_dark | default: '#1C1B19' }};
+      --el-wl-muted: {{ section.settings.text_muted | default: '#68645F' }};
+      --el-wl-border: {{ section.settings.border_color | default: '#ECE7E1' }};
+      --el-wl-btn-bg: {{ section.settings.btn_bg | default: '#BA9587' }};
+      --el-wl-btn-hover: {{ section.settings.btn_hover | default: '#A58072' }};
+      --el-wl-font-serif: 'Cormorant Garamond', Georgia, serif;
+      --el-wl-font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+
+      width: 100%;
+      background-color: var(--el-wl-bg);
+      font-family: var(--el-wl-font-sans);
+      color: var(--el-wl-dark);
+      box-sizing: border-box;
+      padding-top: {{ section.settings.padding_top | default: 50 }}px;
+      padding-bottom: {{ section.settings.padding_bottom | default: 80 }}px;
+      position: relative;
+    }
+
+    #ellora-wishlist-{{ section.id }} *,
+    #ellora-wishlist-{{ section.id }} *::before,
+    #ellora-wishlist-{{ section.id }} *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    #ellora-wishlist-{{ section.id }} .el-wl-container {
+      width: 90%;
+      max-width: {{ section.settings.container_max_width | default: 1280 }}px;
+      margin: 0 auto;
+    }
+
+    /* Breadcrumbs */
+    #ellora-wishlist-{{ section.id }} .el-wl-breadcrumbs {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12.5px;
+      color: var(--el-wl-muted);
+      margin-bottom: 24px;
+    }
+    #ellora-wishlist-{{ section.id }} .el-wl-breadcrumbs a {
+      color: var(--el-wl-muted);
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+    #ellora-wishlist-{{ section.id }} .el-wl-breadcrumbs a:hover {
+      color: var(--el-wl-primary);
+    }
+    #ellora-wishlist-{{ section.id }} .el-wl-breadcrumbs span.sep {
+      opacity: 0.5;
+    }
+    #ellora-wishlist-{{ section.id }} .el-wl-breadcrumbs span.current {
+      color: var(--el-wl-dark);
+      font-weight: 500;
+    }
+
+    /* Wishlist Header */
+    #ellora-wishlist-{{ section.id }} .el-wl-header-wrap {
+      margin-bottom: 36px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid var(--el-wl-border);
+    }
+
+    #ellora-wishlist-{{ section.id }} .el-wl-kicker {
+      font-size: 11.5px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      font-weight: 600;
+      color: var(--el-wl-primary);
+      margin-bottom: 8px;
+      display: block;
+    }
+
+    #ellora-wishlist-{{ section.id }} .el-wl-title-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+
+    #ellora-wishlist-{{ section.id }} .el-wl-headline {
+      font-family: var(--el-wl-font-serif);
+      font-size: {{ section.settings.title_size_desktop | default: 44 }}px;
+      line-height: 1.16;
+      font-weight: {{ section.settings.title_weight | default: 400 }};
+      color: var(--el-wl-primary);
+      letter-spacing: -0.01em;
+      margin-bottom: 8px;
+    }
+
+    #ellora-wishlist-{{ section.id }} .el-wl-description {
+      font-size: 14px;
+      line-height: 1.6;
+      color: var(--el-wl-muted);
+      max-width: 600px;
+    }
+
+    #ellora-wishlist-{{ section.id }} .el-wl-actions-bar {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    #ellora-wishlist-{{ section.id }} .el-wl-count-badge {
+      font-size: 13px;
+      color: var(--el-wl-muted);
+      font-weight: 500;
+      padding: 6px 14px;
+      background: #FAF8F5;
+      border: 1px solid var(--el-wl-border);
+      border-radius: 4px;
+    }
+
+    #ellora-wishlist-{{ section.id }} .el-wl-clear-btn {
+      background: transparent;
+      border: 1px solid var(--el-wl-border);
+      border-radius: 4px;
+      color: var(--el-wl-muted);
+      font-family: var(--el-wl-font-sans);
+      font-size: 12.5px;
+      font-weight: 500;
+      padding: 7px 14px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+    }
+    #ellora-wishlist-{{ section.id }} .el-wl-clear-btn:hover {
+      background: #FFF5F5;
+      border-color: #F0C2C2;
+      color: #9C2A2A;
+    }
+
+    /* Exact Collection Page Product Grid */
+    #ellora-wishlist-{{ section.id }} .el-product-grid {
+      display: grid;
+      grid-template-columns: repeat({{ section.settings.columns_desktop | default: 4 }}, 1fr);
+      gap: 32px 24px;
+      margin-bottom: 48px;
+    }
+
+    #ellora-wishlist-{{ section.id }} .el-product-card {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      text-decoration: none;
+      position: relative;
+      transition: opacity 0.35s ease, transform 0.35s ease;
+    }
+
+    #ellora-wishlist-{{ section.id }} .el-card-media {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 4 / 5;
+      overflow: hidden;
+      background: #EDE8E2;
+      border-radius: 8px;
+      margin-bottom: 14px;
+    }
+
+    #ellora-wishlist-{{ section.id }} .el-card-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    #ellora-wishlist-{{ section.id }} .el-product-card:hover .el-card-img {
+      transform: scale(1.04);
+    }
+
+    /* Wishlist Heart Icon (Pre-filled Active in Wishlist) */
+    #ellora-wishlist-{{ section.id }} .el-wishlist-btn {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      width: 32px;
+      height: 32px;
+      background: #FAF2ED;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+      border: none;
+      cursor: pointer;
+      z-index: 3;
+      transition: transform 0.2s ease, background 0.2s ease;
+    }
+
+    #ellora-wishlist-{{ section.id }} .el-wishlist-btn:hover {
+      transform: scale(1.12);
+      background: #F4E5DE;
+    }
+
+    #ellora-wishlist-{{ section.id }} .el-wishlist-btn svg {
+      width: 15px;
+      height: 15px;
+      stroke: var(--el-wl-primary, #BA8877);
+      fill: var(--el-wl-primary, #BA8877);
+      stroke-width: 1.6;
+      transition: all 0.2s ease;
+    }
+
+    /* Product Card Info */
+    #ellora-wishlist-{{ section.id }} .el-card-info {
+      display: flex;
+      flex-direction: column;
+      flex: 1 1 auto;
+      gap: 0;
+    }
+
+    #ellora-wishlist-{{ section.id }} .el-card-title {
+      font-family: var(--el-wl-font-serif);
+      font-size: 20px;
+      font-weight: 400;
+      color: var(--el-wl-dark);
+      margin: 0 0 4px;
+      letter-spacing: -0.01em;
+      line-height: 1.25;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      transition: color 0.2s ease;
+    }
+
+    #ellora-wishlist-{{ section.id }} .el-product-card:hover .el-card-title {
+      color: var(--el-wl-primary, #BA8877);
+    }
+
+    #ellora-wishlist-{{ section.id }} .el-card-price {
+      font-family: var(--el-wl-font-sans);
+      font-size: 14px;
+      font-weight: 400;
+      letter-spacing: 0.01em;
+      line-height: 1.4;
+      color: var(--el-wl-muted);
+      margin: 0 0 14px;
+    }
+
+    /* Luxury Add to Cart Button */
+    #ellora-wishlist-{{ section.id }} .el-card-add-btn {
+      margin-top: auto;
+      width: 100%;
+      height: 38px;
+      padding: 0 14px;
+      background: #FFFFFF;
+      color: #1E1B18;
+      border: 1px solid var(--el-wl-border, #ECE7E1);
+      border-radius: 4px;
+      font-family: var(--el-wl-font-sans);
+      font-size: 11.5px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      transition: all 0.22s ease;
+    }
+
+    #ellora-wishlist-{{ section.id }} .el-card-add-btn:hover {
+      background: var(--el-wl-primary, #BA8877);
+      border-color: var(--el-wl-primary, #BA8877);
+      color: #FFFFFF;
+      box-shadow: 0 4px 12px rgba(186, 136, 119, 0.22);
+    }
+
+    #ellora-wishlist-{{ section.id }} .el-card-add-btn svg {
+      width: 14px;
+      height: 14px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 1.8;
+      transition: stroke 0.2s ease;
+    }
+
+    #ellora-wishlist-{{ section.id }} .el-card-add-btn.is-loading {
+      opacity: 0.7;
+      pointer-events: none;
+    }
+
+    #ellora-wishlist-{{ section.id }} .el-card-add-btn.is-success {
+      background: #4A6B53 !important;
+      border-color: #4A6B53 !important;
+      color: #FFFFFF !important;
+    }
+
+    #ellora-wishlist-{{ section.id }} .el-card-add-btn.is-soldout {
+      background: #F5F3EF;
+      border-color: #E8E4DD;
+      color: #A39D94;
+      cursor: not-allowed;
+    }
+
+    #ellora-wishlist-{{ section.id }} .el-card-remove-btn {
+      background: transparent;
+      border: none;
+      color: var(--el-wl-muted, #736E67);
+      font-family: var(--el-wl-font-sans);
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      margin: 8px auto 0;
+      cursor: pointer;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      transition: color 0.2s ease;
+    }
+
+    #ellora-wishlist-{{ section.id }} .el-card-remove-btn:hover {
+      color: #9C2A2A;
+    }
+
+    /* Luxury Empty State */
+    #ellora-wishlist-{{ section.id }} .el-wl-empty-card {
+      background: #FFFAF8;
+      border: 1px solid #F2E8E2;
+      border-radius: 4px;
+      padding: 72px 30px;
+      text-align: center;
+      margin: 20px 0 40px 0;
+    }
+
+    #ellora-wishlist-{{ section.id }} .el-wl-empty-icon {
+      width: 56px;
+      height: 56px;
+      margin: 0 auto 20px auto;
+      border-radius: 50%;
+      background: #FAF2ED;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #ellora-wishlist-{{ section.id }} .el-wl-empty-icon svg {
+      width: 26px;
+      height: 26px;
+      stroke: var(--el-wl-primary);
+      fill: none;
+      stroke-width: 1.5;
+    }
+
+    #ellora-wishlist-{{ section.id }} .el-wl-empty-title {
+      font-family: var(--el-wl-font-serif);
+      font-size: 34px;
+      line-height: 1.22;
+      font-weight: 400;
+      color: var(--el-wl-primary);
+      margin-bottom: 12px;
+    }
+
+    #ellora-wishlist-{{ section.id }} .el-wl-empty-desc {
+      font-size: 14px;
+      line-height: 1.6;
+      color: var(--el-wl-muted);
+      max-width: 480px;
+      margin: 0 auto 28px auto;
+    }
+
+    #ellora-wishlist-{{ section.id }} .el-wl-empty-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      background: var(--el-wl-btn-bg);
+      color: #FFFFFF;
+      border: 1px solid var(--el-wl-btn-bg);
+      border-radius: 3px;
+      padding: 0 32px;
+      height: 48px;
+      font-size: 13.5px;
+      font-weight: 500;
+      text-decoration: none;
+      cursor: pointer;
+      transition: background 0.25s ease, border-color 0.25s ease;
+    }
+
+    #ellora-wishlist-{{ section.id }} .el-wl-empty-btn:hover {
+      background: var(--el-wl-btn-hover);
+      border-color: var(--el-wl-btn-hover);
+    }
+
+    /* Responsive */
+    @media (max-width: 1100px) {
+      #ellora-wishlist-{{ section.id }} .el-product-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 24px 18px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      #ellora-wishlist-{{ section.id }} .el-wl-title-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 16px;
+      }
+      #ellora-wishlist-{{ section.id }} .el-wl-headline {
+        font-size: {{ section.settings.title_size_mobile | default: 32 }}px;
+      }
+      #ellora-wishlist-{{ section.id }} {
+        padding-top: {{ section.settings.padding_top_mobile | default: 36 }}px;
+        padding-bottom: {{ section.settings.padding_bottom_mobile | default: 50 }}px;
+      }
+    }
+
+    @media (max-width: 580px) {
+      #ellora-wishlist-{{ section.id }} .el-product-grid {
+        grid-template-columns: repeat({{ section.settings.columns_mobile | default: '2' }}, 1fr);
+        gap: 14px;
+      }
+      #ellora-wishlist-{{ section.id }} .el-card-title {
+        font-size: 17px;
+        line-height: 1.25;
+        margin-bottom: 4px;
+      }
+      #ellora-wishlist-{{ section.id }} .el-card-price {
+        font-size: 13px;
+        line-height: 1.4;
+        margin-bottom: 12px;
+      }
+      #ellora-wishlist-{{ section.id }} .el-wl-empty-card {
+        padding: 50px 20px;
+      }
+      #ellora-wishlist-{{ section.id }} .el-wl-empty-title {
+        font-size: 28px;
+      }
+    }
+  </style>
+
+  <div class="el-wl-container">
+    
+    <!-- Breadcrumbs -->
+    <nav class="el-wl-breadcrumbs" aria-label="Breadcrumb">
+      <a href="{{ routes.root_url }}">Home</a>
+      <span class="sep">/</span>
+      <span class="current">Wishlist</span>
+    </nav>
+
+    <!-- Header Section -->
+    <header class="el-wl-header-wrap">
+      <span class="el-wl-kicker">{{ section.settings.kicker | default: 'SAVED SURFACES' }}</span>
+      <div class="el-wl-title-row">
+        <div>
+          <h1 class="el-wl-headline">{{ section.settings.title | default: 'Your Wishlist' }}</h1>
+          <p class="el-wl-description">
+            {{ section.settings.subtitle | default: 'Review, compare, and shortlist your saved tiles, stone surfaces, and wallpapers in one place.' }}
+          </p>
+        </div>
+        <div class="el-wl-actions-bar" id="elWlActionsBar" style="display: none;">
+          <span class="el-wl-count-badge" id="elWlCountBadge">0 items</span>
+          <button type="button" class="el-wl-clear-btn" id="elWlClearBtn">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+            Clear All
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Dynamic Product Grid (Same UI as Ellora Collection) -->
+    <div class="el-product-grid" id="elWishlistGrid" style="display: none;"></div>
+
+    <!-- Empty State -->
+    <div class="el-wl-empty-card" id="elWishlistEmpty" style="display: none;">
+      <div class="el-wl-empty-icon">
+        <svg viewBox="0 0 24 24">
+          <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+        </svg>
+      </div>
+      <h2 class="el-wl-empty-title">{{ section.settings.empty_title | default: 'Your wishlist is currently empty' }}</h2>
+      <p class="el-wl-empty-desc">
+        {{ section.settings.empty_desc | default: "You haven't saved any surfaces yet. Explore our curated collections of architectural tiles, stone slabs, and murals to curate your space." }}
+      </p>
+      <a href="{{ section.settings.empty_btn_link | default: '/collections/all' }}" class="el-wl-empty-btn">
+        {{ section.settings.empty_btn_text | default: 'Explore Collections' }} &rarr;
+      </a>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  (function() {
+    var sectionId = "{{ section.id }}";
+    var root = document.getElementById('ellora-wishlist-' + sectionId);
+    if (!root) return;
+
+    var grid = root.querySelector('#elWishlistGrid');
+    var emptyCard = root.querySelector('#elWishlistEmpty');
+    var actionsBar = root.querySelector('#elWlActionsBar');
+    var countBadge = root.querySelector('#elWlCountBadge');
+    var clearBtn = root.querySelector('#elWlClearBtn');
+
+    function getWishlist() {
+      try {
+        var raw = localStorage.getItem('ellora_wishlist');
+        return raw ? JSON.parse(raw) : [];
+      } catch(e) {
+        return [];
+      }
+    }
+
+    function saveWishlist(items) {
+      localStorage.setItem('ellora_wishlist', JSON.stringify(items));
+      window.dispatchEvent(new CustomEvent('ellora:wishlist:updated', { detail: { items: items } }));
+    }
+
+    function renderWishlist() {
+      var items = getWishlist();
+
+      if (!items || items.length === 0) {
+        if (grid) {
+          grid.innerHTML = '';
+          grid.style.display = 'none';
+        }
+        if (actionsBar) actionsBar.style.display = 'none';
+        if (emptyCard) emptyCard.style.display = 'block';
+        return;
+      }
+
+      if (emptyCard) emptyCard.style.display = 'none';
+      if (actionsBar) actionsBar.style.display = 'flex';
+      if (countBadge) countBadge.textContent = items.length + (items.length === 1 ? ' item' : ' items');
+
+      if (!grid) return;
+      grid.style.display = 'grid';
+
+      var html = '';
+      items.forEach(function(item) {
+        var title = item.title || 'Ellora Surface';
+        var price = item.price || 'From £37.20/M2';
+        var img = item.image || 'https://cdn.shopify.com/s/files/1/0990/3685/6647/files/sec4_surface_03_marble_stone.jpg?v=1789453291';
+        var url = item.url || '/collections/all';
+        var id = item.id || ('item-' + Math.random().toString(36).substring(2, 9));
+
+        html += '<div class="el-product-card" data-product-id="' + id + '">';
+        html += '  <div class="el-card-media">';
+        html += '    <button type="button" class="el-wishlist-btn is-active" data-action="remove" data-product-id="' + id + '" aria-label="Remove ' + title + ' from wishlist">';
+        html += '      <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>';
+        html += '    </button>';
+        html += '    <a href="' + url + '">';
+        html += '      <img src="' + img + '" alt="' + title + '" class="el-card-img" loading="lazy">';
+        html += '    </a>';
+        html += '  </div>';
+        html += '  <div class="el-card-info">';
+        html += '    <a href="' + url + '" style="text-decoration: none;">';
+        html += '      <h3 class="el-card-title">' + title + '</h3>';
+        html += '    </a>';
+        html += '    <p class="el-card-price">' + price + '</p>';
+        html += '    <button type="button" class="el-card-add-btn" data-variant-id="' + (item.variantId || (isNaN(id) ? '' : id)) + '" data-product-title="' + title.replace(/"/g, '&quot;') + '" aria-label="Add ' + title.replace(/"/g, '&quot;') + ' to cart">';
+        html += '      <svg viewBox="0 0 24 24"><path d="M2 9h20l-2 11H4L2 9z"></path><path d="M7 9l4.5-6"></path><path d="M17 9l-4.5-6"></path></svg>';
+        html += '      <span>Add to Cart</span>';
+        html += '    </button>';
+        html += '    <button type="button" class="el-card-remove-btn" data-action="remove" data-product-id="' + id + '" aria-label="Remove ' + title.replace(/"/g, '&quot;') + ' from wishlist">';
+        html += '      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>';
+        html += '      <span>Remove</span>';
+        html += '    </button>';
+        html += '  </div>';
+        html += '</div>';
+      });
+
+      grid.innerHTML = html;
+    }
+
+    // Handle AJAX Add to Cart
+    if (grid) {
+      grid.addEventListener('click', function(e) {
+        var btn = e.target.closest('.el-card-add-btn');
+        if (!btn || btn.classList.contains('is-loading') || btn.classList.contains('is-soldout')) return;
+        e.preventDefault();
+        e.stopPropagation();
+
+        var variantId = btn.getAttribute('data-variant-id');
+        var title = btn.getAttribute('data-product-title') || 'Product';
+        var originalHTML = btn.innerHTML;
+
+        if (!variantId) {
+          btn.classList.add('is-success');
+          btn.innerHTML = '&#10003; Added to Basket';
+          window.dispatchEvent(new CustomEvent('ellora:cart:open'));
+          setTimeout(function() {
+            btn.classList.remove('is-success');
+            btn.innerHTML = originalHTML;
+          }, 2000);
+          return;
+        }
+
+        btn.classList.add('is-loading');
+        btn.innerHTML = 'Adding...';
+
+        fetch('/cart/add.js', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          },
+          body: JSON.stringify({
+            id: Number(variantId),
+            quantity: 1
+          })
+        })
+        .then(function(res) {
+          if (!res.ok) throw new Error('Add to cart failed');
+          return res.json();
+        })
+        .then(function(item) {
+          btn.classList.remove('is-loading');
+          btn.classList.add('is-success');
+          btn.innerHTML = '&#10003; Added to Basket';
+
+          window.dispatchEvent(new CustomEvent('ellora:cart:refresh'));
+          window.dispatchEvent(new CustomEvent('ellora:cart:updated', { detail: item }));
+          window.dispatchEvent(new CustomEvent('cart:updated'));
+          window.dispatchEvent(new CustomEvent('cart:refresh'));
+          window.dispatchEvent(new CustomEvent('ellora:cart:open'));
+
+          setTimeout(function() {
+            btn.classList.remove('is-success');
+            btn.innerHTML = originalHTML;
+          }, 2200);
+        })
+        .catch(function(err) {
+          console.error('Error adding to cart:', err);
+          btn.classList.remove('is-loading');
+          btn.innerHTML = originalHTML;
+        });
+      });
+    }
+
+    // Handle Remove Single Item
+    if (grid) {
+      grid.addEventListener('click', function(e) {
+        var btn = e.target.closest('[data-action="remove"]');
+        if (!btn) return;
+        e.preventDefault();
+        e.stopPropagation();
+
+        var id = btn.getAttribute('data-product-id');
+        var card = btn.closest('.el-product-card');
+
+        if (card) {
+          card.style.opacity = '0';
+          card.style.transform = 'scale(0.92)';
+          setTimeout(function() {
+            var items = getWishlist();
+            var newItems = items.filter(function(item) {
+              return String(item.id) !== String(id);
+            });
+            saveWishlist(newItems);
+            renderWishlist();
+          }, 240);
+        }
+      });
+    }
+
+    // Handle Clear All
+    if (clearBtn) {
+      clearBtn.addEventListener('click', function() {
+        if (confirm('Are you sure you want to remove all saved surfaces from your wishlist?')) {
+          saveWishlist([]);
+          renderWishlist();
+        }
+      });
+    }
+
+    // Initial render & event listeners
+    renderWishlist();
+    window.addEventListener('ellora:wishlist:updated', renderWishlist);
+    window.addEventListener('storage', renderWishlist);
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Ellora Wishlist",
+  "tag": "section",
+  "class": "section-ellora-wishlist",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Headline & Subtitle"
+    },
+    {
+      "type": "text",
+      "id": "kicker",
+      "label": "Top Kicker Label",
+      "default": "SAVED SURFACES"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Your Wishlist"
+    },
+    {
+      "type": "range",
+      "id": "title_size_desktop",
+      "label": "Headline Size Desktop",
+      "min": 28,
+      "max": 64,
+      "step": 2,
+      "unit": "px",
+      "default": 44
+    },
+    {
+      "type": "range",
+      "id": "title_size_mobile",
+      "label": "Headline Size Mobile",
+      "min": 22,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 32
+    },
+    {
+      "type": "select",
+      "id": "title_weight",
+      "label": "Headline Font Weight",
+      "options": [
+        { "value": "300", "label": "300 - Light" },
+        { "value": "400", "label": "400 - Regular" },
+        { "value": "500", "label": "500 - Medium" }
+      ],
+      "default": "400"
+    },
+    {
+      "type": "textarea",
+      "id": "subtitle",
+      "label": "Description Text",
+      "default": "Review, compare, and shortlist your saved tiles, stone surfaces, and wallpapers in one place."
+    },
+    {
+      "type": "range",
+      "id": "columns_desktop",
+      "label": "Columns per row (Desktop)",
+      "min": 2,
+      "max": 5,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "type": "select",
+      "id": "columns_mobile",
+      "label": "Columns (Mobile)",
+      "options": [
+        { "value": "1", "label": "1 Column" },
+        { "value": "2", "label": "2 Columns" }
+      ],
+      "default": "2"
+    },
+    {
+      "type": "range",
+      "id": "rows_desktop",
+      "label": "Grid Rows per page",
+      "min": 1,
+      "max": 6,
+      "step": 1,
+      "default": 3
+    },
+    {
+      "type": "header",
+      "content": "Empty State Settings"
+    },
+    {
+      "type": "text",
+      "id": "empty_title",
+      "label": "Empty State Title",
+      "default": "Your wishlist is currently empty"
+    },
+    {
+      "type": "textarea",
+      "id": "empty_desc",
+      "label": "Empty State Description",
+      "default": "You haven't saved any surfaces yet. Explore our curated collections of architectural tiles, stone slabs, and murals to curate your space."
+    },
+    {
+      "type": "text",
+      "id": "empty_btn_text",
+      "label": "Empty State Button Text",
+      "default": "Explore Collections"
+    },
+    {
+      "type": "url",
+      "id": "empty_btn_link",
+      "label": "Empty State Button Link"
+    },
+    {
+      "type": "header",
+      "content": "Colors & Layout"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Section Background"
+    },
+    {
+      "type": "color",
+      "id": "primary_color",
+      "label": "Primary Accent / Heading Color",
+      "default": "#8E6356"
+    },
+    {
+      "type": "color",
+      "id": "text_dark",
+      "label": "Card Title Color",
+      "default": "#1C1B19"
+    },
+    {
+      "type": "color",
+      "id": "text_muted",
+      "label": "Price & Description Color",
+      "default": "#68645F"
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "Border Divider Color",
+      "default": "#ECE7E1"
+    },
+    {
+      "type": "color",
+      "id": "btn_bg",
+      "label": "Button Background Color",
+      "default": "#BA9587"
+    },
+    {
+      "type": "color",
+      "id": "btn_hover",
+      "label": "Button Hover Color",
+      "default": "#A58072"
+    },
+    {
+      "type": "range",
+      "id": "container_max_width",
+      "label": "Container Max Width",
+      "min": 1000,
+      "max": 1600,
+      "step": 20,
+      "unit": "px",
+      "default": 1280
+    },
+    {
+      "type": "header",
+      "content": "Section Spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding Top (Desktop)",
+      "min": 0,
+      "max": 140,
+      "step": 2,
+      "unit": "px",
+      "default": 50
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding Bottom (Desktop)",
+      "min": 0,
+      "max": 140,
+      "step": 2,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "label": "Padding Top (Mobile)",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "label": "Padding Bottom (Mobile)",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 50
+    }
+  ],
+  "presets": [
+    {
+      "name": "Ellora Wishlist"
+    }
+  ]
+}
+{% endschema %}

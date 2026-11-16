@@ -1,0 +1,585 @@
+{% comment %}
+  ==========================================================================
+  ELLORA SPACES — FAQ ACCORDION & CONTACT SECTION
+  File: sections/ellora-faq-accordion.liquid
+  Theme Editor Name: FAQ Accordion & Contact
+  Features:
+  - 100% robust native HTML5 disclosure accordions (<details> & <summary>)
+  - Pixel-perfect geometrically centered SVG indicator icons
+  - Smooth 45° rotation into close state with zero wobble
+  - Optional auto-close of other questions
+  - Pre-populated with luxury architectural stone & surface questions
+  - Bottom concierge support card with direct WhatsApp and email buttons
+  ==========================================================================
+{% endcomment %}
+
+<div class="el-section-wrapper el-sec-faq-acc" id="ellora-faq-acc-{{ section.id }}">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
+
+    #ellora-faq-acc-{{ section.id }} {
+      --el-fa-bg: {{ section.settings.bg_color | default: '#FFFFFF' }};
+      --el-fa-primary: {{ section.settings.primary_color | default: '#8E6356' }};
+      --el-fa-dark: {{ section.settings.text_dark | default: '#1C1B19' }};
+      --el-fa-muted: {{ section.settings.text_muted | default: '#68645F' }};
+      --el-fa-border: {{ section.settings.border_color | default: '#ECE7E1' }};
+      --el-fa-card-bg: {{ section.settings.card_bg | default: '#FAF8F5' }};
+
+      --el-fa-pt: {{ section.settings.padding_top | default: 20 }}px;
+      --el-fa-pb: {{ section.settings.padding_bottom | default: 100 }}px;
+
+      background-color: var(--el-fa-bg);
+      color: var(--el-fa-dark);
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      padding-top: var(--el-fa-pt);
+      padding-bottom: var(--el-fa-pb);
+    }
+
+    #ellora-faq-acc-{{ section.id }} *,
+    #ellora-faq-acc-{{ section.id }} *::before,
+    #ellora-faq-acc-{{ section.id }} *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    #ellora-faq-acc-{{ section.id }} .el-fa-container {
+      width: 90%;
+      max-width: {{ section.settings.container_max_width | default: 1720 }}px;
+      margin: 0 auto;
+    }
+
+    /* Accordion List */
+    #ellora-faq-acc-{{ section.id }} .el-fa-list {
+      display: flex;
+      flex-direction: column;
+      border-top: 1px solid var(--el-fa-border);
+      margin-bottom: 56px;
+    }
+
+    #ellora-faq-acc-{{ section.id }} .el-fa-item {
+      border-bottom: 1px solid var(--el-fa-border);
+      display: block;
+    }
+
+    #ellora-faq-acc-{{ section.id }} .el-fa-trigger {
+      width: 100%;
+      padding: 24px 0;
+      background: none;
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      cursor: pointer;
+      text-align: left;
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 22px;
+      font-weight: 500;
+      color: var(--el-fa-dark);
+      transition: color 0.2s ease;
+      list-style: none;
+      user-select: none;
+    }
+
+    #ellora-faq-acc-{{ section.id }} .el-fa-trigger::-webkit-details-marker,
+    #ellora-faq-acc-{{ section.id }} .el-fa-trigger::marker {
+      display: none !important;
+      content: "";
+    }
+
+    #ellora-faq-acc-{{ section.id }} .el-fa-trigger:hover {
+      color: var(--el-fa-primary);
+    }
+
+    #ellora-faq-acc-{{ section.id }} .el-fa-item[open] > .el-fa-trigger {
+      color: var(--el-fa-primary);
+    }
+
+    /* Pixel-Perfect Centered Icon */
+    #ellora-faq-acc-{{ section.id }} .el-fa-icon {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      border: 1px solid var(--el-fa-border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      color: var(--el-fa-dark);
+      background: transparent;
+      transition: background-color 0.25s ease, border-color 0.25s ease, color 0.25s ease;
+      position: relative;
+    }
+
+    #ellora-faq-acc-{{ section.id }} .el-fa-icon svg {
+      width: 12px;
+      height: 12px;
+      display: block;
+      transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      transform-origin: center center;
+    }
+
+    #ellora-faq-acc-{{ section.id }} .el-fa-item[open] .el-fa-icon {
+      background: var(--el-fa-primary);
+      border-color: var(--el-fa-primary);
+      color: #FFFFFF;
+    }
+
+    #ellora-faq-acc-{{ section.id }} .el-fa-item[open] .el-fa-icon svg {
+      transform: rotate(45deg);
+    }
+
+    #ellora-faq-acc-{{ section.id }} .el-fa-body {
+      padding-bottom: 24px;
+      animation: elFaqSlideIn 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    @keyframes elFaqSlideIn {
+      from {
+        opacity: 0;
+        transform: translateY(-6px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    #ellora-faq-acc-{{ section.id }} .el-fa-content {
+      font-size: 14.5px;
+      color: var(--el-fa-muted);
+      line-height: 1.75;
+    }
+
+    #ellora-faq-acc-{{ section.id }} .el-fa-content p {
+      margin-bottom: 12px;
+    }
+
+    #ellora-faq-acc-{{ section.id }} .el-fa-content p:last-child {
+      margin-bottom: 0;
+    }
+
+    #ellora-faq-acc-{{ section.id }} .el-fa-content a {
+      color: var(--el-fa-primary);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    /* Support Card */
+    #ellora-faq-acc-{{ section.id }} .el-fa-support-card {
+      background: var(--el-fa-card-bg);
+      border: 1px solid var(--el-fa-border);
+      border-radius: 2px;
+      padding: 36px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+
+    #ellora-faq-acc-{{ section.id }} .el-fa-support-info h3 {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 24px;
+      font-weight: 500;
+      color: var(--el-fa-dark);
+      margin-bottom: 6px;
+    }
+
+    #ellora-faq-acc-{{ section.id }} .el-fa-support-info p {
+      font-size: 13.5px;
+      color: var(--el-fa-muted);
+    }
+
+    #ellora-faq-acc-{{ section.id }} .el-fa-support-actions {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    #ellora-faq-acc-{{ section.id }} .el-fa-btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 22px;
+      background: var(--el-fa-primary);
+      color: #FFFFFF;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      border-radius: 2px;
+      transition: background 0.2s ease;
+    }
+
+    #ellora-faq-acc-{{ section.id }} .el-fa-btn-primary:hover {
+      background: #734E43;
+    }
+
+    #ellora-faq-acc-{{ section.id }} .el-fa-btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 11px 20px;
+      background: transparent;
+      border: 1px solid var(--el-fa-border);
+      color: var(--el-fa-dark);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 500;
+      border-radius: 2px;
+      transition: border-color 0.2s, color 0.2s;
+    }
+
+    #ellora-faq-acc-{{ section.id }} .el-fa-btn-secondary:hover {
+      border-color: var(--el-fa-dark);
+      color: var(--el-fa-primary);
+    }
+
+    @media (max-width: 768px) {
+      #ellora-faq-acc-{{ section.id }} .el-fa-trigger {
+        font-size: 19px;
+        padding: 20px 0;
+      }
+      #ellora-faq-acc-{{ section.id }} .el-fa-support-card {
+        padding: 24px;
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      #ellora-faq-acc-{{ section.id }} .el-fa-support-actions {
+        width: 100%;
+      }
+      #ellora-faq-acc-{{ section.id }} .el-fa-btn-primary,
+      #ellora-faq-acc-{{ section.id }} .el-fa-btn-secondary {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+  </style>
+
+  <div class="el-fa-container">
+    <div class="el-fa-list" id="elFaqList-{{ section.id }}" data-auto-close="{{ section.settings.auto_close_others }}">
+      {%- if section.blocks.size > 0 -%}
+        {%- for block in section.blocks -%}
+          <details class="el-fa-item" {{ block.shopify_attributes }}>
+            <summary class="el-fa-trigger">
+              <span>{{ block.settings.question }}</span>
+              <span class="el-fa-icon" aria-hidden="true">
+                <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M6 1.5v9M1.5 6h9"/></svg>
+              </span>
+            </summary>
+            <div class="el-fa-body">
+              <div class="el-fa-content">
+                {{ block.settings.answer }}
+              </div>
+            </div>
+          </details>
+        {%- endfor -%}
+      {%- else -%}
+        <!-- Default Pre-populated FAQs -->
+        <details class="el-fa-item">
+          <summary class="el-fa-trigger">
+            <span>Are stone color and veining variations normal?</span>
+            <span class="el-fa-icon" aria-hidden="true">
+              <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M6 1.5v9M1.5 6h9"/></svg>
+            </span>
+          </summary>
+          <div class="el-fa-body">
+            <div class="el-fa-content">
+              <p>Yes. Travertine, marble, limestone, and slate are genuine geological stones formed naturally over millennia. Organic variations in veining, colour tone, fossil markings, and porous texture are natural characteristics that make each piece entirely unique.</p>
+            </div>
+          </div>
+        </details>
+
+        <details class="el-fa-item">
+          <summary class="el-fa-trigger">
+            <span>How much wastage should I calculate when ordering?</span>
+            <span class="el-fa-icon" aria-hidden="true">
+              <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M6 1.5v9M1.5 6h9"/></svg>
+            </span>
+          </summary>
+          <div class="el-fa-body">
+            <div class="el-fa-content">
+              <p>We recommend ordering an extra 10% to 15% allowance over your exact room square meterage. This covers edge cutting, irregular room layouts, artisan pattern blending, and future spare tiles from the exact same production batch.</p>
+            </div>
+          </div>
+        </details>
+
+        <details class="el-fa-item">
+          <summary class="el-fa-trigger">
+            <span>Does natural stone require sealing after installation?</span>
+            <span class="el-fa-icon" aria-hidden="true">
+              <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M6 1.5v9M1.5 6h9"/></svg>
+            </span>
+          </summary>
+          <div class="el-fa-body">
+            <div class="el-fa-content">
+              <p>All natural porous stones (such as honed travertine and limestone) must be sealed using a penetrating, breathable impregnating sealer suitable for the specific environment (wet room, kitchen splashback, or exterior patio) prior to and immediately after grouting.</p>
+            </div>
+          </div>
+        </details>
+
+        <details class="el-fa-item">
+          <summary class="el-fa-trigger">
+            <span>How are stone slabs and tile crates delivered?</span>
+            <span class="el-fa-icon" aria-hidden="true">
+              <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M6 1.5v9M1.5 6h9"/></svg>
+            </span>
+          </summary>
+          <div class="el-fa-body">
+            <div class="el-fa-content">
+              <p>All orders containing stone surfaces are shipped via specialized pallet freight. Deliveries are curb-side to accessible ground-level locations via a tail-lift truck. Please ensure level ground and adequate vehicle access for a delivery lorry.</p>
+            </div>
+          </div>
+        </details>
+
+        <details class="el-fa-item">
+          <summary class="el-fa-trigger">
+            <span>Do you offer trade discounts for interior designers and architects?</span>
+            <span class="el-fa-icon" aria-hidden="true">
+              <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M6 1.5v9M1.5 6h9"/></svg>
+            </span>
+          </summary>
+          <div class="el-fa-body">
+            <div class="el-fa-content">
+              <p>Yes. Registered interior designers, architects, and developers can open a Trade Account to access tiered wholesale margins, complimentary client presentation sample swatches, and custom cut-to-size fabrication. You can apply directly on our Trade page.</p>
+            </div>
+          </div>
+        </details>
+      {%- endif -%}
+    </div>
+
+    <!-- Concierge Support Card -->
+    {%- if section.settings.show_support_card -%}
+      <div class="el-fa-support-card">
+        <div class="el-fa-support-info">
+          <h3>{{ section.settings.support_title | default: 'Still have a question?' }}</h3>
+          <p>{{ section.settings.support_sub | default: 'Our surface specialists are available Monday to Friday to assist with material guidance.' }}</p>
+        </div>
+        <div class="el-fa-support-actions">
+          <a href="{{ section.settings.support_link | default: '/pages/contact' }}" class="el-fa-btn-primary">
+            {{ section.settings.support_btn_text | default: 'Contact Us' }} &rarr;
+          </a>
+          <a href="mailto:{{ section.settings.support_email | default: 'contact@elloraspaces.com' }}" class="el-fa-btn-secondary">
+            Send Email
+          </a>
+        </div>
+      </div>
+    {%- endif -%}
+  </div>
+</div>
+
+<script>
+  (function() {
+    // Delegated auto-close handler
+    document.addEventListener('click', function(e) {
+      var summary = e.target.closest('.el-fa-trigger');
+      if (!summary) return;
+
+      var currentItem = summary.closest('.el-fa-item');
+      if (!currentItem) return;
+
+      var list = currentItem.closest('.el-fa-list');
+      if (!list || list.getAttribute('data-auto-close') !== 'true') return;
+
+      // Close sibling details when opening this one
+      var isOpening = !currentItem.hasAttribute('open');
+      if (isOpening) {
+        list.querySelectorAll('.el-fa-item[open]').forEach(function(item) {
+          if (item !== currentItem) {
+            item.removeAttribute('open');
+          }
+        });
+      }
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "FAQ Accordion & Contact",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "auto_close_others",
+      "label": "Auto-close other items",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Support Concierge Card"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_support_card",
+      "label": "Show Bottom Support Card",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "support_title",
+      "label": "Support Heading",
+      "default": "Still have a question?"
+    },
+    {
+      "type": "text",
+      "id": "support_sub",
+      "label": "Support Subtitle",
+      "default": "Our surface specialists are available Monday to Friday to assist with material guidance."
+    },
+    {
+      "type": "text",
+      "id": "support_btn_text",
+      "label": "Support Button Text",
+      "default": "Contact Us"
+    },
+    {
+      "type": "url",
+      "id": "support_link",
+      "label": "Support Button Link"
+    },
+    {
+      "type": "text",
+      "id": "support_email",
+      "label": "Support Email Address",
+      "default": "contact@elloraspaces.com"
+    },
+    {
+      "type": "header",
+      "content": "Colors & Spacing"
+    },
+    {
+      "type": "range",
+      "id": "container_max_width",
+      "label": "Container Max Width",
+      "min": 800,
+      "max": 1800,
+      "step": 20,
+      "unit": "px",
+      "default": 1720
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "primary_color",
+      "label": "Primary Accent Color",
+      "default": "#8E6356"
+    },
+    {
+      "type": "color",
+      "id": "text_dark",
+      "label": "Dark Text Color",
+      "default": "#1C1B19"
+    },
+    {
+      "type": "color",
+      "id": "text_muted",
+      "label": "Muted Text Color",
+      "default": "#68645F"
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "Border Color",
+      "default": "#ECE7E1"
+    },
+    {
+      "type": "color",
+      "id": "card_bg",
+      "label": "Card Background",
+      "default": "#FAF8F5"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding Top (Desktop)",
+      "min": 0,
+      "max": 140,
+      "step": 2,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding Bottom (Desktop)",
+      "min": 0,
+      "max": 140,
+      "step": 2,
+      "unit": "px",
+      "default": 100
+    }
+  ],
+  "blocks": [
+    {
+      "type": "faq",
+      "name": "FAQ Item",
+      "settings": [
+        {
+          "type": "text",
+          "id": "question",
+          "label": "Question",
+          "default": "Are stone color and veining variations normal?"
+        },
+        {
+          "type": "richtext",
+          "id": "answer",
+          "label": "Answer",
+          "default": "<p>Yes. Travertine, marble, limestone, and slate are genuine geological stones formed naturally over millennia. Organic variations in veining, colour tone, fossil markings, and porous texture are natural characteristics that make each piece entirely unique.</p>"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "FAQ Accordion & Contact",
+      "blocks": [
+        {
+          "type": "faq",
+          "settings": {
+            "question": "Are stone color and veining variations normal?",
+            "answer": "<p>Yes. Travertine, marble, limestone, and slate are genuine geological stones formed naturally over millennia. Organic variations in veining, colour tone, fossil markings, and porous texture are natural characteristics that make each piece entirely unique.</p>"
+          }
+        },
+        {
+          "type": "faq",
+          "settings": {
+            "question": "How much wastage should I calculate when ordering?",
+            "answer": "<p>We recommend ordering an extra 10% to 15% allowance over your exact room square meterage. This covers edge cutting, irregular room layouts, artisan pattern blending, and future spare tiles from the exact same production batch.</p>"
+          }
+        },
+        {
+          "type": "faq",
+          "settings": {
+            "question": "Does natural stone require sealing after installation?",
+            "answer": "<p>All natural porous stones (such as honed travertine and limestone) must be sealed using a penetrating, breathable impregnating sealer suitable for the specific environment (wet room, kitchen splashback, or exterior patio) prior to and immediately after grouting.</p>"
+          }
+        },
+        {
+          "type": "faq",
+          "settings": {
+            "question": "How are stone slabs and tile crates delivered?",
+            "answer": "<p>All orders containing stone surfaces are shipped via specialized pallet freight. Deliveries are curb-side to accessible ground-level locations via a tail-lift truck. Please ensure level ground and adequate vehicle access for a delivery lorry.</p>"
+          }
+        },
+        {
+          "type": "faq",
+          "settings": {
+            "question": "Do you offer trade discounts for interior designers and architects?",
+            "answer": "<p>Yes. Registered interior designers, architects, and developers can open a Trade Account to access tiered wholesale margins, complimentary client presentation sample swatches, and custom cut-to-size fabrication. You can apply directly on our Trade page.</p>"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

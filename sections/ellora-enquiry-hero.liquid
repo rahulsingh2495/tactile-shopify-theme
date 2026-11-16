@@ -1,0 +1,438 @@
+{% comment %}
+  ==========================================================================
+  ELLORA SPACES — ENQUIRY PAGE SECTION 1: HERO & SURFACE BANNER
+  File: sections/ellora-enquiry-hero.liquid
+  Fully customizable via Shopify Theme Customizer
+  ==========================================================================
+{% endcomment %}
+
+<div class="el-section-wrapper el-sec-enquiry-hero" id="ellora-enquiry-hero-{{ section.id }}">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
+
+    #ellora-enquiry-hero-{{ section.id }} {
+      --el-bg: {{ section.settings.bg_color | default: '#FFFFFF' }};
+      --el-title-color: {{ section.settings.title_color | default: '#8E6356' }};
+      --el-text-color: {{ section.settings.text_color | default: '#5C5854' }};
+      --el-font-serif: 'Cormorant Garamond', Georgia, serif;
+      --el-font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+
+      width: 100%;
+      background-color: var(--el-bg);
+      font-family: var(--el-font-sans);
+      box-sizing: border-box;
+      padding-top: {{ section.settings.padding_top | default: 60 }}px;
+      padding-bottom: {{ section.settings.padding_bottom | default: 40 }}px;
+      position: relative;
+    }
+
+    #ellora-enquiry-hero-{{ section.id }} *,
+    #ellora-enquiry-hero-{{ section.id }} *::before,
+    #ellora-enquiry-hero-{{ section.id }} *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    #ellora-enquiry-hero-{{ section.id }} .el-hero-container {
+      width: 90%;
+      max-width: {{ section.settings.container_max_width | default: 1720 }}px;
+      margin: 0 auto;
+    }
+
+    /* Top Split Row: Headline on left, Note on right */
+    #ellora-enquiry-hero-{{ section.id }} .el-hero-split-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 40px;
+      margin-bottom: {{ section.settings.header_margin_bottom | default: 36 }}px;
+    }
+
+    #ellora-enquiry-hero-{{ section.id }} .el-hero-headline-wrap {
+      flex: 1 1 60%;
+      max-width: {{ section.settings.headline_max_width | default: 680 }}px;
+    }
+
+    #ellora-enquiry-hero-{{ section.id }} .el-hero-headline {
+      font-family: var(--el-font-serif);
+      font-size: {{ section.settings.title_size_desktop | default: 46 }}px;
+      line-height: 1.18;
+      font-weight: {{ section.settings.title_weight | default: 400 }};
+      color: var(--el-title-color);
+      letter-spacing: -0.01em;
+    }
+
+    #ellora-enquiry-hero-{{ section.id }} .el-hero-description-wrap {
+      flex: 1 1 40%;
+      max-width: {{ section.settings.desc_max_width | default: 420 }}px;
+      padding-top: 8px;
+    }
+
+    #ellora-enquiry-hero-{{ section.id }} .el-hero-description {
+      font-family: var(--el-font-sans);
+      font-size: {{ section.settings.desc_size | default: 13.5 }}px;
+      line-height: 1.62;
+      font-weight: 400;
+      color: var(--el-text-color);
+      letter-spacing: 0.005em;
+    }
+
+    /* Large Feature Banner Image */
+    #ellora-enquiry-hero-{{ section.id }} .el-hero-banner-frame {
+      width: 100%;
+      position: relative;
+      overflow: hidden;
+      border-radius: {{ section.settings.image_radius | default: 6 }}px;
+      background-color: #F5F2EC;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+    }
+
+    #ellora-enquiry-hero-{{ section.id }} .el-hero-banner-image {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+      object-position: {{ section.settings.image_position | default: 'center center' }};
+      transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    /* Aspect ratio options */
+    #ellora-enquiry-hero-{{ section.id }} .el-hero-aspect-natural {
+      aspect-ratio: auto;
+    }
+    #ellora-enquiry-hero-{{ section.id }} .el-hero-aspect-cinema {
+      aspect-ratio: 21 / 9;
+    }
+    #ellora-enquiry-hero-{{ section.id }} .el-hero-aspect-wide {
+      aspect-ratio: 16 / 9;
+    }
+    #ellora-enquiry-hero-{{ section.id }} .el-hero-aspect-banner {
+      aspect-ratio: 1.88 / 1;
+    }
+    #ellora-enquiry-hero-{{ section.id }} .el-hero-aspect-custom {
+      height: {{ section.settings.custom_image_height | default: 480 }}px;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 900px) {
+      #ellora-enquiry-hero-{{ section.id }} .el-hero-split-header {
+        flex-direction: column;
+        gap: 20px;
+        margin-bottom: 28px;
+      }
+      #ellora-enquiry-hero-{{ section.id }} .el-hero-headline-wrap,
+      #ellora-enquiry-hero-{{ section.id }} .el-hero-description-wrap {
+        max-width: 100%;
+        flex: 1 1 100%;
+      }
+      #ellora-enquiry-hero-{{ section.id }} .el-hero-description-wrap {
+        padding-top: 0;
+      }
+      #ellora-enquiry-hero-{{ section.id }} .el-hero-headline {
+        font-size: {{ section.settings.title_size_mobile | default: 32 }}px;
+        line-height: 1.22;
+      }
+      #ellora-enquiry-hero-{{ section.id }} .el-hero-aspect-custom {
+        height: {{ section.settings.custom_image_height_mobile | default: 280 }}px;
+      }
+      #ellora-enquiry-hero-{{ section.id }} {
+        padding-top: {{ section.settings.padding_top_mobile | default: 40 }}px;
+        padding-bottom: {{ section.settings.padding_bottom_mobile | default: 28 }}px;
+      }
+    }
+  </style>
+
+  <div class="el-hero-container">
+    <!-- Header Row -->
+    <div class="el-hero-split-header">
+      <div class="el-hero-headline-wrap">
+        <h1 class="el-hero-headline">
+          {{ section.settings.title | default: 'Tell us about your room,<br>wall, floor or surface idea.' }}
+        </h1>
+      </div>
+      <div class="el-hero-description-wrap">
+        <p class="el-hero-description">
+          {{ section.settings.description | default: 'Use this page to guide customers toward the right enquiry route: WhatsApp for quick help, video call for design guidance, email for project details, and trade for professional buyers.' }}
+        </p>
+      </div>
+    </div>
+
+    <!-- Hero Banner Image Frame -->
+    <div class="el-hero-banner-frame el-hero-aspect-{{ section.settings.aspect_ratio | default: 'banner' }}">
+      {%- if section.settings.image != blank -%}
+        <img
+          src="{{ section.settings.image | image_url: width: 2400 }}"
+          alt="{{ section.settings.image.alt | default: section.settings.title | escape }}"
+          loading="eager"
+          fetchpriority="high"
+          class="el-hero-banner-image"
+          width="{{ section.settings.image.width }}"
+          height="{{ section.settings.image.height }}"
+        >
+      {%- elsif section.settings.custom_image_url != blank -%}
+        <img
+          src="{{ section.settings.custom_image_url }}"
+          alt="{{ section.settings.title | escape }}"
+          loading="eager"
+          fetchpriority="high"
+          class="el-hero-banner-image"
+        >
+      {%- else -%}
+        {% comment %} Default luxury living room photo fallback {% endcomment %}
+        <img
+          src="{{ 'ellora-enquiry-hero.jpg' | asset_url }}"
+          alt="Ellora Spaces - Room, Wall and Surface Consultation"
+          loading="eager"
+          fetchpriority="high"
+          class="el-hero-banner-image"
+          onerror="this.src='https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=2000&q=85';"
+        >
+      {%- endif -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Ellora Enquiry Hero",
+  "tag": "section",
+  "class": "section-ellora-enquiry-hero",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Typography & Content"
+    },
+    {
+      "type": "html",
+      "id": "title",
+      "label": "Headline (supports <br>)",
+      "default": "Tell us about your room,<br>wall, floor or surface idea."
+    },
+    {
+      "type": "range",
+      "id": "title_size_desktop",
+      "label": "Headline Size Desktop",
+      "min": 28,
+      "max": 64,
+      "step": 2,
+      "unit": "px",
+      "default": 46
+    },
+    {
+      "type": "range",
+      "id": "title_size_mobile",
+      "label": "Headline Size Mobile",
+      "min": 24,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 32
+    },
+    {
+      "type": "select",
+      "id": "title_weight",
+      "label": "Headline Font Weight",
+      "options": [
+        { "value": "300", "label": "300 - Light" },
+        { "value": "400", "label": "400 - Regular" },
+        { "value": "500", "label": "500 - Medium" },
+        { "value": "600", "label": "600 - Semi-bold" }
+      ],
+      "default": "400"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Right Explanatory Description",
+      "default": "Use this page to guide customers toward the right enquiry route: WhatsApp for quick help, video call for design guidance, email for project details, and trade for professional buyers."
+    },
+    {
+      "type": "range",
+      "id": "desc_size",
+      "label": "Description Font Size",
+      "min": 11,
+      "max": 18,
+      "step": 0.5,
+      "unit": "px",
+      "default": 13.5
+    },
+    {
+      "type": "header",
+      "content": "Feature Banner Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Upload Hero Banner Image"
+    },
+    {
+      "type": "text",
+      "id": "custom_image_url",
+      "label": "Or Direct Image URL",
+      "info": "Useful for external CDNs or staging assets"
+    },
+    {
+      "type": "select",
+      "id": "aspect_ratio",
+      "label": "Image Aspect Ratio",
+      "options": [
+        { "value": "banner", "label": "Banner 1.88 : 1 (Design Standard)" },
+        { "value": "wide", "label": "Wide 16 : 9" },
+        { "value": "cinema", "label": "Cinematic 21 : 9" },
+        { "value": "natural", "label": "Natural Image Dimensions" },
+        { "value": "custom", "label": "Custom Fixed Height (slider below)" }
+      ],
+      "default": "banner"
+    },
+    {
+      "type": "range",
+      "id": "custom_image_height",
+      "label": "Custom Height Desktop",
+      "min": 250,
+      "max": 750,
+      "step": 10,
+      "unit": "px",
+      "default": 460
+    },
+    {
+      "type": "range",
+      "id": "custom_image_height_mobile",
+      "label": "Custom Height Mobile",
+      "min": 180,
+      "max": 450,
+      "step": 10,
+      "unit": "px",
+      "default": 260
+    },
+    {
+      "type": "select",
+      "id": "image_position",
+      "label": "Image Focal Alignment",
+      "options": [
+        { "value": "center top", "label": "Top" },
+        { "value": "center center", "label": "Center" },
+        { "value": "center bottom", "label": "Bottom" }
+      ],
+      "default": "center center"
+    },
+    {
+      "type": "range",
+      "id": "image_radius",
+      "label": "Image Corner Radius",
+      "min": 0,
+      "max": 24,
+      "step": 2,
+      "unit": "px",
+      "default": 6
+    },
+    {
+      "type": "header",
+      "content": "Colors & Layout"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Section Background Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Headline Color",
+      "default": "#8E6356"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Description Text Color",
+      "default": "#5C5854"
+    },
+    {
+      "type": "range",
+      "id": "container_max_width",
+      "label": "Container Max Width",
+      "min": 1000,
+      "max": 1800,
+      "step": 20,
+      "unit": "px",
+      "default": 1720
+    },
+    {
+      "type": "range",
+      "id": "headline_max_width",
+      "label": "Headline Max Width",
+      "min": 400,
+      "max": 900,
+      "step": 20,
+      "unit": "px",
+      "default": 680
+    },
+    {
+      "type": "range",
+      "id": "desc_max_width",
+      "label": "Description Max Width",
+      "min": 280,
+      "max": 600,
+      "step": 20,
+      "unit": "px",
+      "default": 420
+    },
+    {
+      "type": "range",
+      "id": "header_margin_bottom",
+      "label": "Space Below Header Text",
+      "min": 20,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding Top (Desktop)",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding Bottom (Desktop)",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "label": "Padding Top (Mobile)",
+      "min": 0,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "label": "Padding Bottom (Mobile)",
+      "min": 0,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "default": 28
+    }
+  ],
+  "presets": [
+    {
+      "name": "Ellora Enquiry Hero"
+    }
+  ]
+}
+{% endschema %}
