@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "cart-items": {
@@ -38,10 +47,6 @@
         "kicker": "YOUR SELECTION",
         "title": "Shopping Basket",
         "show_breadcrumbs": true,
-        "show_free_shipping": true,
-        "free_shipping_threshold": 300,
-        "free_shipping_perk_text": "Complimentary Pallet Delivery",
-        "free_shipping_reached_text": "You have unlocked Complimentary Pallet Delivery!",
         "show_cart_notes": true,
         "cart_notes_label": "Special project or delivery instructions:",
         "continue_shopping_link": "",
