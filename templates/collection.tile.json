@@ -1,0 +1,55 @@
+{
+  "sections": {
+    "main_collection": {
+      "type": "ellora-collection",
+      "settings": {
+        "show_breadcrumbs": true,
+        "fallback_title": "Architectural Tiles",
+        "fallback_desc": "Every surface is selected for its tactile quality, tonal depth and architectural presence. From natural stone to contemporary porcelain, Ellora Living focuses on materials that age beautifully.",
+        "show_categories": true,
+        "collection_menu": "",
+        "products_per_page": 12,
+        "columns_desktop": 3,
+        "columns_mobile": "2",
+        "rows_desktop": 3,
+        "show_search": true,
+        "search_placeholder": "Search tiles in this collection...",
+        "show_wishlist": true,
+        "price_unit": "/M2",
+        "bg_color": "#FAF9F6",
+        "card_bg": "#FFFFFF",
+        "accent_color": "#BA8877",
+        "sticky_top": 20,
+        "padding_top": 40,
+        "padding_bottom": 80
+      }
+    },
+    "related_collections": {
+      "type": "ellora-related-collection",
+      "settings": {
+        "kicker": "CURATED SURFACES",
+        "title": "Related Collections",
+        "layout_type": "grid",
+        "columns_desktop": 4,
+        "columns_mobile": "2",
+        "header_align": "left",
+        "collection_source": "auto",
+        "collections_to_show": 4,
+        "card_title_align": "center",
+        "card_desc_align": "center",
+        "show_top_border": true,
+        "bg_color": "#FAF9F6",
+        "drawer_bg": "#FAF8F5",
+        "accent_color": "#BA8877",
+        "padding_top": 60,
+        "padding_bottom": 80,
+        "padding_top_mobile": 40,
+        "padding_bottom_mobile": 50
+      }
+    }
+  },
+  "order": [
+    "main_collection",
+    "related_collections"
+  ]
+}
