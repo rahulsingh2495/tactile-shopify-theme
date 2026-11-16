@@ -1155,11 +1155,22 @@
           <!-- Dynamic Collections Navigation (All Backend Collections) -->
         {%- if section.settings.show_categories -%}
           <div class="el-category-tree" aria-label="Collections Navigation">
-            <div class="el-cat-header-label">Collections</div>
+            <div class="el-cat-header-label">Collections & Curations</div>
 
-            <a href="{{ routes.all_products_collection_url }}" class="el-cat-item {% if collection.handle == 'all' or collection.handle == blank %}is-active{% endif %}">
+            <a href="{{ routes.all_products_collection_url }}" class="el-cat-item {% if collection.handle == 'all' or collection.handle == blank %}is-active{% endif %}" id="elCatItemAll">
               <span>All Products</span>
               <span class="el-cat-count">({{ collections.all.all_products_count | default: all_products_count }})</span>
+            </a>
+
+            <!-- Quick Curated Filters (Best Sellers, Trending, New Arrivals) -->
+            <a href="{{ routes.all_products_collection_url }}?curation=best-sellers" class="el-cat-item el-curation-pill" data-curation="best-sellers">
+              <span>★ Best Sellers</span>
+            </a>
+            <a href="{{ routes.all_products_collection_url }}?curation=trending" class="el-cat-item el-curation-pill" data-curation="trending">
+              <span>🔥 Trending</span>
+            </a>
+            <a href="{{ routes.all_products_collection_url }}?curation=new-arrivals" class="el-cat-item el-curation-pill" data-curation="new-arrivals">
+              <span>✦ New Arrivals</span>
             </a>
 
             {%- if section.settings.collection_menu != blank and linklists[section.settings.collection_menu].links.size > 0 -%}
@@ -1958,6 +1969,18 @@
         } else {
           emptyFilterState.style.display = 'none';
         }
+      }
+    }
+
+    // Parse URL curation parameter (e.g. ?curation=best-sellers or ?curation=trending)
+    var urlParams = new URLSearchParams(window.location.search);
+    var curationParam = (urlParams.get('curation') || '').toLowerCase();
+    if (curationParam) {
+      var activePill = root.querySelector('.el-curation-pill[data-curation="' + curationParam + '"]');
+      if (activePill) {
+        var allItem = root.querySelector('#elCatItemAll');
+        if (allItem) allItem.classList.remove('is-active');
+        activePill.classList.add('is-active');
       }
     }
 

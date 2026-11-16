@@ -44,10 +44,24 @@
       -moz-osx-font-smoothing: grayscale;
     }
 
+    /* Sticky Header Support */
+    .shopify-section-group-header-group,
+    #shopify-section-{{ section.id }},
+    .shopify-section:has(#ellora-header-{{ section.id }}[data-sticky="true"]) {
+      position: sticky !important;
+      top: 0 !important;
+      z-index: 1000 !important;
+    }
+
     #ellora-header-{{ section.id }}[data-sticky="true"] {
       position: sticky;
       top: 0;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+      transition: box-shadow 0.25s ease;
+    }
+
+    #ellora-header-{{ section.id }}.is-scrolled {
+      box-shadow: 0 6px 24px rgba(0, 0, 0, 0.08);
     }
 
     #ellora-header-{{ section.id }} *,
@@ -1469,9 +1483,11 @@
               <a href="{{ section.settings.faq_url | default: '/pages/faqs' }}">
                 {{ section.settings.faq_label | default: 'FAQs' }}
               </a>
-              <a href="{{ section.settings.contact_url | default: '/pages/contact' }}">
-                {{ section.settings.contact_label | default: 'Contact' }}
-              </a>
+              {%- if section.settings.show_top_contact -%}
+                <a href="{{ section.settings.contact_url | default: '/pages/contact' }}">
+                  {{ section.settings.contact_label | default: 'Contact' }}
+                </a>
+              {%- endif -%}
               <a href="{{ section.settings.trade_url | default: '/pages/trade' }}">
                 {{ section.settings.trade_label | default: 'Trade' }}
               </a>
@@ -2065,13 +2081,32 @@
       });
     }
 
-    // Close Mega Menu when clicking outside
+    // Close Mega Menu when clicking outside or pressing Escape
     document.addEventListener('click', function(e) {
       if (shopParent && !shopParent.contains(e.target)) {
         shopParent.classList.remove('is-open');
         if (shopBtn) shopBtn.setAttribute('aria-expanded', 'false');
       }
     });
+
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape' && shopParent && shopParent.classList.contains('is-open')) {
+        shopParent.classList.remove('is-open');
+        if (shopBtn) shopBtn.setAttribute('aria-expanded', 'false');
+      }
+    });
+
+    // Sticky Scroll Shadow Listener
+    window.addEventListener('scroll', function() {
+      var hdWrap = document.getElementById('ellora-header-' + sectionId);
+      if (hdWrap && hdWrap.getAttribute('data-sticky') === 'true') {
+        if (window.scrollY > 15) {
+          hdWrap.classList.add('is-scrolled');
+        } else {
+          hdWrap.classList.remove('is-scrolled');
+        }
+      }
+    }, { passive: true });
 
     // Mobile Slide-Left Drawer Toggle
     var mobileToggle = document.getElementById('elMobileToggle-' + sectionId);
@@ -2517,6 +2552,12 @@
       "id": "show_top_links",
       "label": "Show Default Top Right Links",
       "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_top_contact",
+      "label": "Show Contact in Top Bar (Leave unchecked if Contact is already in Main Menu)",
+      "default": false
     },
     {
       "type": "text",

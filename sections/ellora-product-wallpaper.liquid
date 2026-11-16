@@ -494,27 +494,111 @@
 
     #ellora-prod-wp-{{ section.id }} .el-pw-sample-btn {
       width: 100%;
-      height: 44px;
-      background: transparent;
-      border: 1px solid var(--el-pw-border);
-      color: var(--el-pw-dark);
-      border-radius: 2px;
+      height: 48px;
+      background: #FFFFFF;
+      border: 1.5px solid var(--el-pw-primary, #8E6356);
+      color: var(--el-pw-primary, #8E6356);
+      border-radius: 4px;
       font-family: inherit;
-      font-size: 13px;
-      font-weight: 500;
+      font-size: 13.5px;
+      font-weight: 600;
       letter-spacing: 0.04em;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 8px;
-      margin-bottom: 28px;
-      transition: border-color 0.2s, color 0.2s;
+      gap: 10px;
+      margin-top: 12px;
+      margin-bottom: 24px;
+      transition: all 0.25s ease;
     }
 
     #ellora-prod-wp-{{ section.id }} .el-pw-sample-btn:hover {
-      border-color: var(--el-pw-dark);
-      color: var(--el-pw-primary);
+      background: var(--el-pw-primary, #8E6356);
+      color: #FFFFFF !important;
+      box-shadow: 0 4px 14px rgba(142, 99, 86, 0.25);
+    }
+
+    /* Pincode & Delivery Checker */
+    #ellora-prod-wp-{{ section.id }} .el-pw-pincode-card {
+      margin-top: 20px;
+      margin-bottom: 24px;
+      padding: 16px 18px;
+      background: var(--el-pw-card-bg, #FAF8F5);
+      border: 1px solid var(--el-pw-border, #ECE7E1);
+      border-radius: 6px;
+      font-family: var(--el-pw-font-sans);
+    }
+    #ellora-prod-wp-{{ section.id }} .el-pw-pincode-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13.5px;
+      font-weight: 600;
+      color: var(--el-pw-dark, #1C1B19);
+      margin-bottom: 12px;
+    }
+    #ellora-prod-wp-{{ section.id }} .el-pw-pincode-header svg {
+      color: var(--el-pw-primary, #8E6356);
+    }
+    #ellora-prod-wp-{{ section.id }} .el-pw-pincode-form {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+    #ellora-prod-wp-{{ section.id }} .el-pw-pincode-input {
+      flex: 1;
+      height: 40px;
+      padding: 0 12px;
+      border: 1px solid var(--el-pw-border, #ECE7E1);
+      border-radius: 4px;
+      font-size: 13px;
+      font-family: inherit;
+      background: #FFFFFF;
+      text-transform: uppercase;
+    }
+    #ellora-prod-wp-{{ section.id }} .el-pw-pincode-input:focus {
+      outline: none;
+      border-color: var(--el-pw-primary, #8E6356);
+    }
+    #ellora-prod-wp-{{ section.id }} .el-pw-pincode-btn {
+      height: 40px;
+      padding: 0 16px;
+      background: var(--el-pw-primary, #8E6356);
+      color: #FFFFFF;
+      border: none;
+      border-radius: 4px;
+      font-size: 12.5px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    #ellora-prod-wp-{{ section.id }} .el-pw-pincode-btn:hover {
+      background: var(--el-pw-primary-hover, #734E43);
+    }
+    #ellora-prod-wp-{{ section.id }} .el-pw-pincode-result {
+      font-size: 12.5px;
+      padding: 8px 10px;
+      border-radius: 4px;
+      margin-bottom: 10px;
+      line-height: 1.4;
+    }
+    #ellora-prod-wp-{{ section.id }} .el-pw-pincode-result.is-valid {
+      background: #EBF7EE;
+      color: #1E6638;
+      border: 1px solid #C3E6CB;
+    }
+    #ellora-prod-wp-{{ section.id }} .el-pw-pincode-result.is-invalid {
+      background: #FDF2F2;
+      color: #A32727;
+      border: 1px solid #F8D7DA;
+    }
+    #ellora-prod-wp-{{ section.id }} .el-pw-pincode-notes {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      font-size: 11.5px;
+      color: var(--el-pw-muted, #68645F);
     }
 
     /* Specs */
@@ -812,6 +896,40 @@
           </button>
         </div>
 
+        <!-- Sample Order Swatch Action -->
+        <button type="button" class="el-pw-sample-btn" id="elWpOrderSample" 
+                data-product-id="{{ product.id }}" 
+                data-product-title="{{ product.title | escape }}">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+            <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+            <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+            <line x1="12" y1="22.08" x2="12" y2="12"></line>
+          </svg>
+          Order an A4 Swatch Sample &mdash; Complimentary
+        </button>
+
+        <!-- Pincode / Postal Delivery Checker -->
+        <div class="el-pw-pincode-card">
+          <div class="el-pw-pincode-header">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="1" y="3" width="15" height="13"></rect>
+              <polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon>
+              <circle cx="5.5" cy="18.5" r="2.5"></circle>
+              <circle cx="18.5" cy="18.5" r="2.5"></circle>
+            </svg>
+            <span>Delivery &amp; Pincode Check</span>
+          </div>
+          <div class="el-pw-pincode-form">
+            <input type="text" id="elWpPincodeInput-{{ section.id }}" class="el-pw-pincode-input" placeholder="Enter postal code / pincode" maxlength="10">
+            <button type="button" id="elWpPincodeCheckBtn-{{ section.id }}" class="el-pw-pincode-btn">Check</button>
+          </div>
+          <div id="elWpPincodeResult-{{ section.id }}" class="el-pw-pincode-result" style="display: none;"></div>
+          <div class="el-pw-pincode-notes">
+            <span>✓ Rolls custom printed &amp; packaged in protective rigid tubes</span>
+            <span>✓ Dispatched in 3–5 working days</span>
+          </div>
+        </div>
+
         <!-- Architectural Specifications Table -->
         <div class="el-pw-specs-card">
           <h3 class="el-pw-specs-title">Mural &amp; Paper Specifications</h3>
@@ -1032,6 +1150,85 @@
         item.classList.toggle('is-open');
       });
     });
+
+    // Sample Order Swatch Action
+    var sampleBtn = root.querySelector('#elWpOrderSample');
+    if (sampleBtn) {
+      sampleBtn.addEventListener('click', function() {
+        var originalText = sampleBtn.innerHTML;
+        sampleBtn.textContent = 'Adding Sample to Cart...';
+        sampleBtn.style.opacity = '0.7';
+
+        var sampleVariantId = currentVariantId || {{ product.selected_or_first_available_variant.id | default: 0 }};
+        var formData = {
+          items: [{
+            id: sampleVariantId,
+            quantity: 1,
+            properties: {
+              'Order Type': 'Wallpaper Swatch (Complimentary)'
+            }
+          }]
+        };
+
+        fetch('/cart/add.js', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+          body: JSON.stringify(formData)
+        })
+        .then(function(res) { return res.json(); })
+        .then(function(item) {
+          sampleBtn.style.opacity = '1';
+          sampleBtn.innerHTML = '&#10003; Swatch Added to Cart!';
+          sampleBtn.style.backgroundColor = '#2d6a4f';
+          sampleBtn.style.color = '#FFFFFF';
+          sampleBtn.style.borderColor = '#2d6a4f';
+
+          if (window.dispatchEvent) {
+            window.dispatchEvent(new CustomEvent('cart:updated'));
+            window.dispatchEvent(new CustomEvent('ellora:cart:open'));
+          }
+
+          setTimeout(function() {
+            sampleBtn.innerHTML = originalText;
+            sampleBtn.style.backgroundColor = '';
+            sampleBtn.style.color = '';
+            sampleBtn.style.borderColor = '';
+          }, 3500);
+        })
+        .catch(function(err) {
+          console.error(err);
+          sampleBtn.style.opacity = '1';
+          sampleBtn.innerHTML = originalText;
+        });
+      });
+    }
+
+    // Pincode / Postal Delivery Checker
+    var pincodeInput = root.querySelector('#elWpPincodeInput-{{ section.id }}');
+    var pincodeBtn = root.querySelector('#elWpPincodeCheckBtn-{{ section.id }}');
+    var pincodeResult = root.querySelector('#elWpPincodeResult-{{ section.id }}');
+
+    if (pincodeBtn && pincodeInput && pincodeResult) {
+      function checkPincode() {
+        var val = pincodeInput.value.trim();
+        if (!val || val.length < 3) {
+          pincodeResult.className = 'el-pw-pincode-result is-invalid';
+          pincodeResult.textContent = 'Please enter a valid postal code or pincode.';
+          pincodeResult.style.display = 'block';
+          return;
+        }
+        pincodeResult.className = 'el-pw-pincode-result is-valid';
+        pincodeResult.innerHTML = '<strong>Standard Delivery Available to ' + val.toUpperCase() + '</strong><br>Custom print & packaging: 3–5 working days delivery.';
+        pincodeResult.style.display = 'block';
+      }
+      pincodeBtn.addEventListener('click', checkPincode);
+      pincodeInput.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          checkPincode();
+        }
+      });
+    }
 
     // Add to Cart
     var addBtn = root.querySelector('#elWpAddToCart');
