@@ -27,7 +27,7 @@
         "price_unit": "/M2",
         "bg_color": "#FAF9F6",
         "card_bg": "#FFFFFF",
-        "accent_color": "#BA8877",
+        "accent_color": "#8E6356",
         "sticky_top": 20,
         "padding_top": 40,
         "padding_bottom": 80
@@ -49,7 +49,7 @@
         "show_top_border": true,
         "bg_color": "#FAF9F6",
         "drawer_bg": "#FAF8F5",
-        "accent_color": "#BA8877",
+        "accent_color": "#8E6356",
         "padding_top": 60,
         "padding_bottom": 80,
         "padding_top_mobile": 40,
