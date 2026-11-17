@@ -1483,9 +1483,9 @@
               <a href="{{ section.settings.faq_url | default: '/pages/faqs' }}">
                 {{ section.settings.faq_label | default: 'FAQs' }}
               </a>
-              {%- if section.settings.show_top_contact -%}
+              {%- if section.settings.show_top_contact and section.settings.contact_label != blank -%}
                 <a href="{{ section.settings.contact_url | default: '/pages/contact' }}">
-                  {{ section.settings.contact_label | default: 'Contact' }}
+                  {{ section.settings.contact_label }}
                 </a>
               {%- endif -%}
               <a href="{{ section.settings.trade_url | default: '/pages/trade' }}">
@@ -1937,9 +1937,15 @@
             <a href="{{ top_link.url }}">{{ top_link.title }}</a>
           {%- endfor -%}
         {%- else -%}
-          <a href="{{ section.settings.faq_url | default: '/pages/faqs' }}">FAQs</a>
-          <a href="{{ section.settings.contact_url | default: '/pages/contact' }}">Contact</a>
-          <a href="{{ section.settings.trade_url | default: '/pages/trade' }}">Trade</a>
+          {%- if section.settings.faq_label != blank -%}
+            <a href="{{ section.settings.faq_url | default: '/pages/faqs' }}">{{ section.settings.faq_label }}</a>
+          {%- endif -%}
+          {%- if section.settings.show_top_contact and section.settings.contact_label != blank -%}
+            <a href="{{ section.settings.contact_url | default: '/pages/contact' }}">{{ section.settings.contact_label }}</a>
+          {%- endif -%}
+          {%- if section.settings.trade_label != blank -%}
+            <a href="{{ section.settings.trade_url | default: '/pages/trade' }}">{{ section.settings.trade_label }}</a>
+          {%- endif -%}
         {%- endif -%}
       </div>
     </div>
