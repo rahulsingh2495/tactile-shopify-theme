@@ -90,6 +90,9 @@
         "header_bg": "#ffffff",
         "text_color": "#1c1b19",
         "accent_color": "#8E6356",
+        "menu_link_color": "#1C1B19",
+        "menu_link_hover_color": "#8E6356",
+        "menu_link_active_color": "#8E6356",
         "drawer_footer_title": "Ellora Spaces Studio",
         "drawer_footer_sub": "Crafting enduring, organic living spaces."
       }
