@@ -20,11 +20,11 @@
     @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
 
     #ellora-header-{{ section.id }} {
-      --el-hd-top-bg: {{ section.settings.top_bg | default: '#C59B8B' }};
+      --el-hd-top-bg: {{ section.settings.top_bg | default: '#8E6356' }};
       --el-hd-top-text: {{ section.settings.top_text_color | default: '#FFFFFF' }};
       --el-hd-bg: {{ section.settings.header_bg | default: '#FFFFFF' }};
-      --el-hd-primary: {{ section.settings.accent_color | default: '#C59B8B' }};
-      --el-hd-primary-hover: #B48776;
+      --el-hd-primary: {{ section.settings.accent_color | default: '#8E6356' }};
+      --el-hd-primary-hover: #734E43;
       --el-hd-dark: {{ section.settings.text_color | default: '#1C1B19' }};
       --el-hd-text: #44403B;
       --el-hd-muted: #736E67;
@@ -185,8 +185,33 @@
       white-space: nowrap;
     }
 
-    #ellora-header-{{ section.id }} .el-nav-link:hover {
-      color: var(--el-hd-primary);
+    #ellora-header-{{ section.id }} .el-nav-link:hover,
+    #ellora-header-{{ section.id }} .el-nav-link.is-active,
+    #ellora-header-{{ section.id }} .el-nav-link[aria-current="page"] {
+      color: var(--el-hd-primary, #8E6356);
+    }
+
+    #ellora-header-{{ section.id }} .el-nav-link.is-active,
+    #ellora-header-{{ section.id }} .el-nav-link[aria-current="page"] {
+      font-weight: 600;
+      position: relative;
+    }
+
+    #ellora-header-{{ section.id }} .el-nav-link.is-active::after,
+    #ellora-header-{{ section.id }} .el-nav-link[aria-current="page"]::after {
+      content: '';
+      position: absolute;
+      bottom: 2px;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background-color: var(--el-hd-primary, #8E6356);
+      border-radius: 1px;
+    }
+
+    #ellora-header-{{ section.id }} .el-nav-link.is-active .el-chevron-icon,
+    #ellora-header-{{ section.id }} .el-nav-link[aria-current="page"] .el-chevron-icon {
+      stroke: var(--el-hd-primary, #8E6356);
     }
 
     #ellora-header-{{ section.id }} .el-chevron-icon {
@@ -245,9 +270,12 @@
       transition: color 0.15s ease, background-color 0.15s ease;
     }
 
-    #ellora-header-{{ section.id }} .el-dropdown-menu li a:hover {
-      color: var(--el-hd-primary);
+    #ellora-header-{{ section.id }} .el-dropdown-menu li a:hover,
+    #ellora-header-{{ section.id }} .el-dropdown-menu li a.is-active,
+    #ellora-header-{{ section.id }} .el-dropdown-menu li a[aria-current="page"] {
+      color: var(--el-hd-primary, #8E6356);
       background-color: #FAF8F5;
+      font-weight: 600;
     }
 
     /* Multi-Column Mega Dropdown (for 3-level Backend Menus) */
@@ -849,8 +877,11 @@
       transition: color 0.2s ease;
     }
 
-    #ellora-header-{{ section.id }} .el-drawer-accordion-content a:hover {
-      color: var(--el-hd-primary);
+    #ellora-header-{{ section.id }} .el-drawer-accordion-content a:hover,
+    #ellora-header-{{ section.id }} .el-drawer-accordion-content a.is-active,
+    #ellora-header-{{ section.id }} .el-drawer-accordion-content a[aria-current="page"] {
+      color: var(--el-hd-primary, #8E6356);
+      font-weight: 600;
     }
 
     #ellora-header-{{ section.id }} .el-drawer-link {
@@ -864,8 +895,11 @@
       transition: color 0.2s ease;
     }
 
-    #ellora-header-{{ section.id }} .el-drawer-link:hover {
-      color: var(--el-hd-primary);
+    #ellora-header-{{ section.id }} .el-drawer-link:hover,
+    #ellora-header-{{ section.id }} .el-drawer-link.is-active,
+    #ellora-header-{{ section.id }} .el-drawer-link[aria-current="page"] {
+      color: var(--el-hd-primary, #8E6356);
+      font-weight: 600;
     }
 
     #ellora-header-{{ section.id }} .el-drawer-footer {
@@ -1666,11 +1700,21 @@
             
             {%- for link in linklists[current_menu].links -%}
               {%- assign title_clean = link.title | strip | downcase -%}
+              {%- assign is_link_active = false -%}
+              {%- if link.active or link.current -%}
+                {%- assign is_link_active = true -%}
+              {%- elsif request.path == link.url -%}
+                {%- assign is_link_active = true -%}
+              {%- elsif link.url != '/' and link.url != blank and request.path contains link.url -%}
+                {%- assign is_link_active = true -%}
+              {%- elsif template.name == 'index' and link.url == '/' or link.url == routes.root_url -%}
+                {%- assign is_link_active = true -%}
+              {%- endif -%}
 
               {%- if title_clean == 'shop' and section.settings.enable_mega_menu -%}
                 <!-- Shop Link with Interactive Mega Menu -->
-                <div class="el-nav-item el-has-megamenu" id="elShopMegaMenuParent-{{ section.id }}">
-                  <a href="{{ link.url }}" class="el-nav-link" id="elShopBtn-{{ section.id }}" aria-haspopup="true" aria-expanded="false">
+                <div class="el-nav-item el-has-megamenu{% if is_link_active %} is-active{% endif %}" id="elShopMegaMenuParent-{{ section.id }}">
+                  <a href="{{ link.url }}" class="el-nav-link{% if is_link_active %} is-active{% endif %}" id="elShopBtn-{{ section.id }}" aria-haspopup="true" aria-expanded="false"{% if is_link_active %} aria-current="page"{% endif %}>
                     <span>{{ link.title }}</span>
                     <svg class="el-chevron-icon" viewBox="0 0 10 6">
                       <polyline points="1 1 5 5 9 1"></polyline>
@@ -1682,8 +1726,8 @@
               {%- elsif link.links != blank -%}
                 {%- if link.links.first.links != blank -%}
                   <!-- Multi-column Mega Dropdown for Nested Menu -->
-                  <div class="el-nav-item el-has-megamenu">
-                    <a href="{{ link.url }}" class="el-nav-link">
+                  <div class="el-nav-item el-has-megamenu{% if is_link_active %} is-active{% endif %}">
+                    <a href="{{ link.url }}" class="el-nav-link{% if is_link_active %} is-active{% endif %}"{% if is_link_active %} aria-current="page"{% endif %}>
                       <span>{{ link.title }}</span>
                       <svg class="el-chevron-icon" viewBox="0 0 10 6">
                         <polyline points="1 1 5 5 9 1"></polyline>
@@ -1696,7 +1740,11 @@
                           {%- if child.links != blank -%}
                             <ul class="el-mega-col-list">
                               {%- for grand in child.links -%}
-                                <li><a href="{{ grand.url }}">{{ grand.title }}</a></li>
+                                {%- assign is_grand_active = false -%}
+                                {%- if grand.active or grand.current or request.path == grand.url -%}
+                                  {%- assign is_grand_active = true -%}
+                                {%- endif -%}
+                                <li><a href="{{ grand.url }}"{% if is_grand_active %} class="is-active" aria-current="page"{% endif %}>{{ grand.title }}</a></li>
                               {%- endfor -%}
                             </ul>
                           {%- endif -%}
@@ -1706,8 +1754,8 @@
                   </div>
                 {%- else -%}
                   <!-- Single Dropdown Menu -->
-                  <div class="el-nav-item el-has-dropdown">
-                    <a href="{{ link.url }}" class="el-nav-link">
+                  <div class="el-nav-item el-has-dropdown{% if is_link_active %} is-active{% endif %}">
+                    <a href="{{ link.url }}" class="el-nav-link{% if is_link_active %} is-active{% endif %}"{% if is_link_active %} aria-current="page"{% endif %}>
                       <span>{{ link.title }}</span>
                       <svg class="el-chevron-icon" viewBox="0 0 10 6">
                         <polyline points="1 1 5 5 9 1"></polyline>
@@ -1715,7 +1763,11 @@
                     </a>
                     <ul class="el-dropdown-menu">
                       {%- for child in link.links -%}
-                        <li><a href="{{ child.url }}">{{ child.title }}</a></li>
+                        {%- assign is_child_active = false -%}
+                        {%- if child.active or child.current or request.path == child.url -%}
+                          {%- assign is_child_active = true -%}
+                        {%- endif -%}
+                        <li><a href="{{ child.url }}"{% if is_child_active %} class="is-active" aria-current="page"{% endif %}>{{ child.title }}</a></li>
                       {%- endfor -%}
                     </ul>
                   </div>
@@ -1723,7 +1775,7 @@
 
               {%- else -%}
                 <!-- Direct Link -->
-                <a href="{{ link.url }}" class="el-nav-link">{{ link.title }}</a>
+                <a href="{{ link.url }}" class="el-nav-link{% if is_link_active %} is-active{% endif %}"{% if is_link_active %} aria-current="page"{% endif %}>{{ link.title }}</a>
               {%- endif -%}
 
             {%- endfor -%}
@@ -1741,8 +1793,8 @@
               {{ megamenu_panel_html }}
             </div>
 
-            <a href="/pages/inspiration" class="el-nav-link">Inspiration</a>
-            <a href="/pages/about" class="el-nav-link">About</a>
+            <a href="/pages/inspiration" class="el-nav-link{% if request.path == '/pages/inspiration' %} is-active{% endif %}"{% if request.path == '/pages/inspiration' %} aria-current="page"{% endif %}>Inspiration</a>
+            <a href="/pages/about" class="el-nav-link{% if request.path == '/pages/about' %} is-active{% endif %}"{% if request.path == '/pages/about' %} aria-current="page"{% endif %}>About</a>
 
           {%- endif -%}
         </nav>
@@ -1877,6 +1929,16 @@
       {%- if current_menu != blank and linklists[current_menu].links.size > 0 -%}
         {%- for link in linklists[current_menu].links -%}
           {%- assign title_clean = link.title | strip | downcase -%}
+          {%- assign is_drawer_active = false -%}
+          {%- if link.active or link.current -%}
+            {%- assign is_drawer_active = true -%}
+          {%- elsif request.path == link.url -%}
+            {%- assign is_drawer_active = true -%}
+          {%- elsif link.url != '/' and link.url != blank and request.path contains link.url -%}
+            {%- assign is_drawer_active = true -%}
+          {%- elsif template.name == 'index' and link.url == '/' or link.url == routes.root_url -%}
+            {%- assign is_drawer_active = true -%}
+          {%- endif -%}
 
           {%- if title_clean == 'shop' and section.settings.enable_mega_menu -%}
             <!-- Mobile Shop Accordion with Full Collections & Tiles -->
@@ -1885,26 +1947,34 @@
           {%- elsif link.links != blank -%}
             <!-- Dynamic Mobile Accordion for any backend link with children -->
             <div class="el-drawer-accordion-group">
-              <button type="button" class="el-drawer-accordion-btn">
+              <button type="button" class="el-drawer-accordion-btn{% if is_drawer_active %} is-active{% endif %}">
                 <span>{{ link.title }}</span>
                 <svg viewBox="0 0 10 6"><polyline points="1 1 5 5 9 1"></polyline></svg>
               </button>
               <div class="el-drawer-accordion-content">
                 {%- for child in link.links -%}
+                  {%- assign is_drawer_child_active = false -%}
+                  {%- if child.active or child.current or request.path == child.url -%}
+                    {%- assign is_drawer_child_active = true -%}
+                  {%- endif -%}
                   {%- if child.links != blank -%}
                     <div class="el-drawer-subheading">{{ child.title }}</div>
                     {%- for grand in child.links -%}
-                      <a href="{{ grand.url }}">{{ grand.title }}</a>
+                      {%- assign is_drawer_grand_active = false -%}
+                      {%- if grand.active or grand.current or request.path == grand.url -%}
+                        {%- assign is_drawer_grand_active = true -%}
+                      {%- endif -%}
+                      <a href="{{ grand.url }}"{% if is_drawer_grand_active %} class="is-active" aria-current="page"{% endif %}>{{ grand.title }}</a>
                     {%- endfor -%}
                   {%- else -%}
-                    <a href="{{ child.url }}">{{ child.title }}</a>
+                    <a href="{{ child.url }}"{% if is_drawer_child_active %} class="is-active" aria-current="page"{% endif %}>{{ child.title }}</a>
                   {%- endif -%}
                 {%- endfor -%}
               </div>
             </div>
 
           {%- else -%}
-            <a href="{{ link.url }}" class="el-drawer-link">{{ link.title }}</a>
+            <a href="{{ link.url }}" class="el-drawer-link{% if is_drawer_active %} is-active{% endif %}"{% if is_drawer_active %} aria-current="page"{% endif %}>{{ link.title }}</a>
           {%- endif -%}
 
         {%- endfor -%}
@@ -1914,8 +1984,8 @@
         <!-- Default Fallback Drawer Navigation -->
         {{ mobile_drawer_shop_accordion_html }}
 
-        <a href="/pages/inspiration" class="el-drawer-link">Inspiration</a>
-        <a href="/pages/about" class="el-drawer-link">About</a>
+        <a href="/pages/inspiration" class="el-drawer-link{% if request.path == '/pages/inspiration' %} is-active{% endif %}"{% if request.path == '/pages/inspiration' %} aria-current="page"{% endif %}>Inspiration</a>
+        <a href="/pages/about" class="el-drawer-link{% if request.path == '/pages/about' %} is-active{% endif %}"{% if request.path == '/pages/about' %} aria-current="page"{% endif %}>About</a>
 
       {%- endif -%}
 
@@ -2034,6 +2104,44 @@
     var shopParent = document.getElementById('elShopMegaMenuParent-' + sectionId);
     var shopBtn = document.getElementById('elShopBtn-' + sectionId);
     var megaClose = document.getElementById('elMegaMenuClose-' + sectionId);
+
+    // Highlight Active Navigation Link based on current page URL
+    function highlightActiveLinks() {
+      var currentPath = window.location.pathname.replace(/\/$/, '') || '/';
+      var headerRoot = document.getElementById('ellora-header-' + sectionId);
+      if (!headerRoot) return;
+
+      var navLinks = headerRoot.querySelectorAll('.el-nav-link, .el-drawer-link, .el-dropdown-menu li a, .el-mega-col-list li a');
+      navLinks.forEach(function(link) {
+        var href = link.getAttribute('href');
+        if (!href || href === '#' || href.startsWith('javascript:')) return;
+        try {
+          var url = new URL(href, window.location.origin);
+          var linkPath = url.pathname.replace(/\/$/, '') || '/';
+
+          var isMatch = false;
+          if (linkPath === '/' && currentPath === '/') {
+            isMatch = true;
+          } else if (linkPath !== '/' && (currentPath === linkPath || (linkPath.length > 1 && currentPath.indexOf(linkPath) === 0))) {
+            isMatch = true;
+          }
+
+          if (isMatch) {
+            link.classList.add('is-active');
+            link.setAttribute('aria-current', 'page');
+            var parentDropdown = link.closest('.el-has-dropdown, .el-has-megamenu');
+            if (parentDropdown) {
+              var parentBtn = parentDropdown.querySelector(':scope > .el-nav-link');
+              if (parentBtn) {
+                parentBtn.classList.add('is-active');
+                parentBtn.setAttribute('aria-current', 'page');
+              }
+            }
+          }
+        } catch(err) {}
+      });
+    }
+    highlightActiveLinks();
 
     // Desktop Mega Menu Tabs
     var tabBtns = document.querySelectorAll('#ellora-header-' + sectionId + ' .el-megamenu-tab');
@@ -2721,7 +2829,7 @@
       "type": "color",
       "id": "accent_color",
       "label": "Accent Color",
-      "default": "#C59B8B"
+      "default": "#8E6356"
     },
     {
       "type": "text",
