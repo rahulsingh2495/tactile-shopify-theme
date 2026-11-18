@@ -26,7 +26,7 @@
 {%- assign calculated_limit = default_cols | times: default_rows -%}
 {%- assign products_limit = section.settings.products_per_page | default: calculated_limit -%}
 
-{%- paginate collection.products by products_limit -%}
+{%- paginate collection.products by 50 -%}
 <div class="el-collection-wrapper" id="ellora-collection-{{ section.id }}">
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
@@ -553,10 +553,20 @@
       flex-direction: column;
     }
 
-    /* Search Bar */
-    #ellora-collection-{{ section.id }} .el-col-search-box {
+    /* Search Bar & Top Results Row */
+    #ellora-collection-{{ section.id }} .el-col-search-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
       margin-bottom: 24px;
+      flex-wrap: wrap;
+    }
+
+    #ellora-collection-{{ section.id }} .el-col-search-box {
+      margin-bottom: 0;
       position: relative;
+      flex: 1 1 300px;
       max-width: 440px;
     }
 
@@ -566,16 +576,68 @@
       background: #FFFFFF;
       border: 1px solid var(--el-col-border);
       border-radius: 4px;
-      padding: 0 14px 0 38px;
+      padding: 0 85px 0 38px;
       font-family: var(--el-col-font-sans);
       font-size: 13.5px;
       color: var(--el-col-dark);
       outline: none;
-      transition: border-color 0.2s ease;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+      box-sizing: border-box;
     }
 
     #ellora-collection-{{ section.id }} .el-col-search-input:focus {
       border-color: var(--el-col-primary);
+      box-shadow: 0 0 0 1px var(--el-col-primary);
+    }
+
+    #ellora-collection-{{ section.id }} .el-col-search-badge {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 11.5px;
+      font-weight: 600;
+      color: var(--el-col-primary);
+      background: rgba(142, 99, 86, 0.12);
+      padding: 3px 8px;
+      border-radius: 12px;
+      pointer-events: none;
+      display: none;
+      white-space: nowrap;
+    }
+
+    #ellora-collection-{{ section.id }} .el-col-search-results-pill {
+      font-family: var(--el-col-font-sans);
+      font-size: 13.5px;
+      font-weight: 500;
+      color: var(--el-col-muted);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+    }
+
+    #ellora-collection-{{ section.id }} .el-col-search-results-pill strong {
+      color: var(--el-col-primary);
+      font-weight: 700;
+    }
+
+    #ellora-collection-{{ section.id }} .el-col-search-results-pill .el-found-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: rgba(142, 99, 86, 0.12);
+      color: var(--el-col-primary);
+      padding: 5px 12px;
+      border-radius: 16px;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    #ellora-collection-{{ section.id }} .el-col-search-results-pill .el-found-tag svg {
+      width: 13px;
+      height: 13px;
+      stroke: var(--el-col-primary);
     }
 
     #ellora-collection-{{ section.id }} .el-col-search-icon {
@@ -877,7 +939,11 @@
       font-size: 13px;
       color: var(--el-col-dark);
       text-decoration: none;
+      background: transparent;
+      border: 1px solid transparent;
       border-radius: 4px;
+      cursor: pointer;
+      outline: none;
       transition: all 0.2s ease;
     }
 
@@ -1540,11 +1606,15 @@
       <!-- Right Main Content Area -->
       <section class="el-col-content">
         
-        <!-- Search Bar with Live Filter -->
+        <!-- Search Bar with Live Filter & Results Count -->
         {%- if section.settings.show_search -%}
-          <div class="el-col-search-box">
-            <svg class="el-col-search-icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-            <input type="text" class="el-col-search-input" id="elCollectionSearch" placeholder="{{ section.settings.search_placeholder | default: 'Search products in this collection...' }}">
+          <div class="el-col-search-row">
+            <div class="el-col-search-box">
+              <svg class="el-col-search-icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+              <input type="text" class="el-col-search-input" id="elCollectionSearch" placeholder="{{ section.settings.search_placeholder | default: 'Search products in this collection...' }}" autocomplete="off">
+              <span class="el-col-search-badge" id="elSearchBadge"></span>
+            </div>
+            <div class="el-col-search-results-pill" id="elSearchResultsPill"></div>
           </div>
         {%- endif -%}
 
@@ -1894,44 +1964,8 @@
 
         </div>
 
-        <!-- Real Native Shopify Pagination -->
-        {%- if paginate.pages > 1 -%}
-          <nav class="el-pagination" aria-label="Collection pagination">
-            {%- if paginate.previous -%}
-              <a href="{{ paginate.previous.url }}" class="el-page-btn el-page-arrow">&larr; Prev</a>
-            {%- else -%}
-              <span class="el-page-btn el-page-arrow disabled">&larr; Prev</span>
-            {%- endif -%}
-
-            {%- for part in paginate.parts -%}
-              {%- if part.is_link -%}
-                <a href="{{ part.url }}" class="el-page-btn">{{ part.title }}</a>
-              {%- else -%}
-                {%- if part.title == paginate.current_page -%}
-                  <span class="el-page-btn is-active">{{ part.title }}</span>
-                {%- else -%}
-                  <span class="el-page-btn disabled">{{ part.title }}</span>
-                {%- endif -%}
-              {%- endif -%}
-            {%- endfor -%}
-
-            {%- if paginate.next -%}
-              <a href="{{ paginate.next.url }}" class="el-page-btn el-page-arrow">Next &rarr;</a>
-            {%- else -%}
-              <span class="el-page-btn el-page-arrow disabled">Next &rarr;</span>
-            {%- endif -%}
-          </nav>
-        {%- else -%}
-          <!-- Preview Pagination fallback when viewing single page or sample -->
-          <nav class="el-pagination" aria-label="Collection pagination">
-            <span class="el-page-btn el-page-arrow disabled">&larr; Prev</span>
-            <span class="el-page-btn is-active">1</span>
-            <span class="el-page-btn">2</span>
-            <span class="el-page-btn">3</span>
-            <span class="el-page-btn">4</span>
-            <span class="el-page-btn el-page-arrow">Next &rarr;</span>
-          </nav>
-        {%- endif -%}
+        <!-- Dynamic Filter-Aware Pagination -->
+        <nav class="el-pagination" id="elPagination" aria-label="Collection pagination" style="display: none;"></nav>
 
       </section>
 
@@ -2044,38 +2078,107 @@
       });
     });
 
-    // Dynamic Filter & Search System
+    // Dynamic Filter & Search System + Pagination
     var searchInput = root.querySelector('#elCollectionSearch');
+    var searchBadge = root.querySelector('#elSearchBadge');
+    var searchResultsPill = root.querySelector('#elSearchResultsPill');
     var tagCheckboxes = root.querySelectorAll('.el-tag-filter');
     var countText = root.querySelector('.el-col-count-text');
-    var cards = root.querySelectorAll('.el-product-card');
+    var cards = Array.prototype.slice.call(root.querySelectorAll('.el-product-card'));
     var emptyFilterState = root.querySelector('#elEmptyFilterState');
+    var paginationEl = root.querySelector('#elPagination');
     var totalCards = cards.length;
+    var pageSize = {{ products_limit | default: 12 }};
+    var currentPage = 1;
 
-    function applyDynamicFilters() {
+    function renderPagination(totalPages) {
+      if (!paginationEl) return;
+
+      // If only 1 page or 0 items, hide pagination completely
+      if (totalPages <= 1) {
+        paginationEl.style.display = 'none';
+        paginationEl.innerHTML = '';
+        return;
+      }
+
+      paginationEl.style.display = 'flex';
+      var html = '';
+
+      // Prev Button
+      if (currentPage > 1) {
+        html += '<button type="button" class="el-page-btn el-page-arrow" data-page="' + (currentPage - 1) + '" aria-label="Previous page">&larr; Prev</button>';
+      } else {
+        html += '<span class="el-page-btn el-page-arrow disabled" aria-disabled="true">&larr; Prev</span>';
+      }
+
+      // Page Numbers
+      for (var p = 1; p <= totalPages; p++) {
+        if (p === currentPage) {
+          html += '<span class="el-page-btn is-active" aria-current="page">' + p + '</span>';
+        } else {
+          html += '<button type="button" class="el-page-btn" data-page="' + p + '" aria-label="Page ' + p + '">' + p + '</button>';
+        }
+      }
+
+      // Next Button
+      if (currentPage < totalPages) {
+        html += '<button type="button" class="el-page-btn el-page-arrow" data-page="' + (currentPage + 1) + '" aria-label="Next page">Next &rarr;</button>';
+      } else {
+        html += '<span class="el-page-btn el-page-arrow disabled" aria-disabled="true">Next &rarr;</span>';
+      }
+
+      paginationEl.innerHTML = html;
+
+      // Attach Click Handlers to pagination buttons
+      var pageButtons = paginationEl.querySelectorAll('button[data-page]');
+      pageButtons.forEach(function(btn) {
+        btn.addEventListener('click', function(e) {
+          e.preventDefault();
+          var targetPage = parseInt(btn.getAttribute('data-page'), 10);
+          if (!isNaN(targetPage) && targetPage !== currentPage) {
+            currentPage = targetPage;
+            applyDynamicFilters(false);
+            var grid = root.querySelector('#elProductGrid');
+            if (grid) {
+              grid.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+          }
+        });
+      });
+    }
+
+    function applyDynamicFilters(resetPage) {
+      if (resetPage !== false) {
+        currentPage = 1;
+      }
+
       var searchTerm = (searchInput ? searchInput.value.toLowerCase().trim() : '');
       
       // Group active tag filters by data-group
       var activeFiltersByGroup = {};
+      var totalActiveFilterCount = 0;
       tagCheckboxes.forEach(function(cb) {
         if (cb.checked) {
+          totalActiveFilterCount++;
           var grp = cb.getAttribute('data-group') || 'tag';
           if (!activeFiltersByGroup[grp]) activeFiltersByGroup[grp] = [];
           activeFiltersByGroup[grp].push(cb.value.toLowerCase());
         }
       });
 
-      var visibleCount = 0;
+      var isFilteringActive = (searchTerm.length > 0 || totalActiveFilterCount > 0);
+      var matchedCards = [];
 
       cards.forEach(function(card) {
         var title = (card.getAttribute('data-title') || '').toLowerCase();
         var cardType = (card.getAttribute('data-type') || '').toLowerCase();
         var cardTags = (card.getAttribute('data-tags') || '').toLowerCase();
+        var cardColors = (card.getAttribute('data-colors') || '').toLowerCase();
 
         // 1. Search term check
         var matchesSearch = true;
         if (searchTerm) {
-          matchesSearch = (title.indexOf(searchTerm) > -1 || cardTags.indexOf(searchTerm) > -1 || cardType.indexOf(searchTerm) > -1);
+          matchesSearch = (title.indexOf(searchTerm) > -1 || cardTags.indexOf(searchTerm) > -1 || cardType.indexOf(searchTerm) > -1 || cardColors.indexOf(searchTerm) > -1);
         }
 
         // 2. Tag filter groups check (AND across groups, OR within group)
@@ -2092,7 +2195,6 @@
                   break;
                 }
               } else if (grp === 'color') {
-                var cardColors = (card.getAttribute('data-colors') || '').toLowerCase();
                 if (cardColors.indexOf(val) > -1 || cardTags.indexOf(val) > -1 || title.indexOf(val) > -1) {
                   groupMatched = true;
                   break;
@@ -2112,30 +2214,76 @@
         }
 
         if (matchesSearch && matchesTags) {
-          card.style.display = '';
-          visibleCount++;
+          matchedCards.push(card);
         } else {
           card.style.display = 'none';
         }
       });
 
-      // Update count text
-      if (countText) {
-        if (visibleCount === totalCards) {
-          countText.textContent = 'Showing ' + totalCards + ' Products';
+      var totalMatched = matchedCards.length;
+      var totalPages = Math.ceil(totalMatched / pageSize);
+
+      if (currentPage > totalPages) {
+        currentPage = 1;
+      }
+
+      // Paginate only matched cards
+      var startIndex = (currentPage - 1) * pageSize;
+      var endIndex = startIndex + pageSize;
+
+      matchedCards.forEach(function(card, idx) {
+        if (idx >= startIndex && idx < endIndex) {
+          card.style.display = '';
         } else {
-          countText.textContent = 'Showing ' + visibleCount + ' of ' + totalCards + ' Products';
+          card.style.display = 'none';
+        }
+      });
+
+      // Update Top Search Badge & Right Pill & Stats Count
+      if (isFilteringActive) {
+        if (searchBadge) {
+          searchBadge.style.display = 'inline-block';
+          searchBadge.textContent = totalMatched + ' Found';
+        }
+        if (searchResultsPill) {
+          searchResultsPill.innerHTML = '<span class="el-found-tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg> <span class="el-pill-num">' + totalMatched + '</span> ' + (totalMatched === 1 ? 'Product' : 'Products') + ' Found</span>';
+        }
+        if (countText) {
+          if (totalMatched > 0) {
+            countText.textContent = 'Found ' + totalMatched + ' ' + (totalMatched === 1 ? 'Product' : 'Products');
+          } else {
+            countText.textContent = '0 Products match selected filters';
+          }
+        }
+      } else {
+        if (searchBadge) {
+          searchBadge.style.display = 'none';
+        }
+        if (searchResultsPill) {
+          searchResultsPill.innerHTML = 'Showing all <strong>' + totalCards + '</strong> Products';
+        }
+        if (countText) {
+          if (totalCards > 0) {
+            var pageStart = startIndex + 1;
+            var pageEnd = Math.min(endIndex, totalCards);
+            countText.textContent = 'Showing ' + pageStart + '–' + pageEnd + ' of ' + totalCards + ' Products';
+          } else {
+            countText.textContent = 'Showing 0 Products';
+          }
         }
       }
 
       // Empty State
       if (emptyFilterState) {
-        if (visibleCount === 0 && totalCards > 0) {
+        if (totalMatched === 0 && totalCards > 0) {
           emptyFilterState.style.display = 'block';
         } else {
           emptyFilterState.style.display = 'none';
         }
       }
+
+      // Render or Hide Pagination
+      renderPagination(totalPages);
     }
 
     // Parse URL curation parameter (e.g. ?curation=best-sellers or ?curation=trending)
@@ -2151,11 +2299,15 @@
     }
 
     if (searchInput) {
-      searchInput.addEventListener('input', applyDynamicFilters);
+      searchInput.addEventListener('input', function() {
+        applyDynamicFilters(true);
+      });
     }
 
     tagCheckboxes.forEach(function(cb) {
-      cb.addEventListener('change', applyDynamicFilters);
+      cb.addEventListener('change', function() {
+        applyDynamicFilters(true);
+      });
     });
 
     var resetBtn = root.querySelector('#elResetFiltersBtn');
@@ -2163,9 +2315,12 @@
       resetBtn.addEventListener('click', function() {
         if (searchInput) searchInput.value = '';
         tagCheckboxes.forEach(function(cb) { cb.checked = false; });
-        applyDynamicFilters();
+        applyDynamicFilters(true);
       });
     }
+
+    // Initial Filter & Pagination Run
+    applyDynamicFilters(false);
 
     // Clear all filters
     var clearBtn = root.querySelector('#elClearFilters');
@@ -2173,7 +2328,7 @@
       clearBtn.addEventListener('click', function() {
         if (searchInput) searchInput.value = '';
         tagCheckboxes.forEach(function(cb) { cb.checked = false; });
-        applyDynamicFilters();
+        applyDynamicFilters(true);
         var form = root.querySelector('#FacetFiltersForm');
         var cleanUrl = (form && form.getAttribute('action')) ? form.getAttribute('action') : window.location.pathname;
         window.location.href = cleanUrl;
