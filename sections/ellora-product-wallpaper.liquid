@@ -564,6 +564,137 @@
       box-shadow: 0 4px 14px rgba(142, 99, 86, 0.25);
     }
 
+    /* Sample Consultation Modal */
+    #ellora-prod-wp-{{ section.id }} .el-sample-modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(18, 16, 15, 0.65);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      z-index: 999999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s ease, visibility 0.3s ease;
+    }
+    #ellora-prod-wp-{{ section.id }} .el-sample-modal-backdrop.is-open {
+      opacity: 1;
+      visibility: visible;
+    }
+    #ellora-prod-wp-{{ section.id }} .el-sample-modal-dialog {
+      background: #FFFFFF;
+      max-width: 480px;
+      width: 100%;
+      border-radius: 4px;
+      padding: 36px 32px 30px;
+      position: relative;
+      text-align: center;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+      transform: translateY(20px);
+      transition: transform 0.3s ease;
+    }
+    #ellora-prod-wp-{{ section.id }} .el-sample-modal-backdrop.is-open .el-sample-modal-dialog {
+      transform: translateY(0);
+    }
+    #ellora-prod-wp-{{ section.id }} .el-sample-modal-close {
+      position: absolute;
+      top: 14px;
+      right: 16px;
+      background: none;
+      border: none;
+      font-size: 26px;
+      line-height: 1;
+      color: #999;
+      cursor: pointer;
+      padding: 4px 8px;
+    }
+    #ellora-prod-wp-{{ section.id }} .el-sample-modal-close:hover {
+      color: #12100f;
+    }
+    #ellora-prod-wp-{{ section.id }} .el-sample-modal-icon {
+      width: 56px;
+      height: 56px;
+      background: #fbf7f4;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 16px;
+    }
+    #ellora-prod-wp-{{ section.id }} .el-sample-modal-badge {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #8E6356;
+      background: #f8f1ee;
+      padding: 4px 12px;
+      border-radius: 2px;
+      margin-bottom: 12px;
+    }
+    #ellora-prod-wp-{{ section.id }} .el-sample-modal-title {
+      font-family: var(--el-pw-font-heading, serif);
+      font-size: 22px;
+      font-weight: 500;
+      color: #12100f;
+      margin: 0 0 12px;
+      line-height: 1.3;
+    }
+    #ellora-prod-wp-{{ section.id }} .el-sample-modal-text {
+      font-size: 14px;
+      color: #555;
+      line-height: 1.6;
+      margin: 0 0 10px;
+    }
+    #ellora-prod-wp-{{ section.id }} .el-sample-modal-subtext {
+      font-size: 13px;
+      color: #777;
+      line-height: 1.5;
+      margin: 0 0 24px;
+    }
+    #ellora-prod-wp-{{ section.id }} .el-sample-modal-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    #ellora-prod-wp-{{ section.id }} .el-sample-modal-btn-primary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: 46px;
+      background: var(--el-pw-primary, #8E6356);
+      color: #FFFFFF !important;
+      text-decoration: none;
+      font-size: 13.5px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      border-radius: 2px;
+      transition: background 0.2s ease;
+    }
+    #ellora-prod-wp-{{ section.id }} .el-sample-modal-btn-primary:hover {
+      background: #734d42;
+    }
+    #ellora-prod-wp-{{ section.id }} .el-sample-modal-btn-secondary {
+      background: none;
+      border: 1px solid #ddd;
+      color: #666;
+      height: 42px;
+      font-size: 13px;
+      border-radius: 2px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    #ellora-prod-wp-{{ section.id }} .el-sample-modal-btn-secondary:hover {
+      border-color: #8E6356;
+      color: #8E6356;
+    }
+
     /* Pincode & Delivery Checker */
     #ellora-prod-wp-{{ section.id }} .el-pw-pincode-card {
       margin-top: 20px;
@@ -1017,7 +1148,7 @@
           <div id="elWpPincodeResult-{{ section.id }}" class="el-pw-pincode-result" style="display: none;"></div>
           <div class="el-pw-pincode-notes">
             <span>✓ Rolls custom printed &amp; packaged in protective rigid tubes</span>
-            <span>✓ Dispatched in 3–5 working days</span>
+            <span>✓ Complimentary 1-on-1 material consultations available</span>
           </div>
         </div>
 
@@ -1079,6 +1210,37 @@
 
     </div>
 
+  </div>
+
+  <!-- Sample Unavailable / Consultation Modal -->
+  <div class="el-sample-modal-backdrop" id="elSampleModal-{{ section.id }}" aria-hidden="true" role="dialog" aria-modal="true">
+    <div class="el-sample-modal-dialog">
+      <button type="button" class="el-sample-modal-close" aria-label="Close modal">&times;</button>
+      <div class="el-sample-modal-icon">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#8E6356" stroke-width="1.8">
+          <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+          <line x1="16" y1="2" x2="16" y2="6"></line>
+          <line x1="8" y1="2" x2="8" y2="6"></line>
+          <line x1="3" y1="10" x2="21" y2="10"></line>
+        </svg>
+      </div>
+      <span class="el-sample-modal-badge">Sample Consultation Notice</span>
+      <h3 class="el-sample-modal-title">Physical Samples Notice</h3>
+      <p class="el-sample-modal-text">
+        Physical swatch samples for <strong>{{ product.title | escape }}</strong> are currently in high demand and being prepared for our next dispatch cycle.
+      </p>
+      <p class="el-sample-modal-subtext">
+        To inspect substrate textures, print fidelity, and review bespoke wall dimensions with our design specialists, please schedule a complimentary 1-on-1 meeting.
+      </p>
+      <div class="el-sample-modal-actions">
+        <a href="/pages/contact?subject=Schedule+Sample+Consultation+-+{{ product.title | url_encode }}" class="el-sample-modal-btn-primary">
+          Schedule a Meeting
+        </a>
+        <button type="button" class="el-sample-modal-btn-secondary">
+          Continue Browsing
+        </button>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -1242,55 +1404,37 @@
       });
     });
 
-    // Sample Order Swatch Action
+    // Sample Order Swatch Action -> Open Meeting / Consultation Modal
     var sampleBtn = root.querySelector('#elWpOrderSample');
-    if (sampleBtn) {
-      sampleBtn.addEventListener('click', function() {
-        var originalText = sampleBtn.innerHTML;
-        sampleBtn.textContent = 'Adding Sample to Cart...';
-        sampleBtn.style.opacity = '0.7';
+    var sampleModal = document.getElementById('elSampleModal-{{ section.id }}');
+    if (sampleBtn && sampleModal) {
+      var sampleModalClose = sampleModal.querySelector('.el-sample-modal-close');
+      var sampleModalSecondary = sampleModal.querySelector('.el-sample-modal-btn-secondary');
 
-        var sampleVariantId = currentVariantId || {{ product.selected_or_first_available_variant.id | default: 0 }};
-        var formData = {
-          items: [{
-            id: sampleVariantId,
-            quantity: 1,
-            properties: {
-              'Order Type': 'Wallpaper Swatch (Complimentary)'
-            }
-          }]
-        };
+      function openSampleModal() {
+        sampleModal.classList.add('is-open');
+        document.body.style.overflow = 'hidden';
+      }
 
-        fetch('/cart/add.js', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-          body: JSON.stringify(formData)
-        })
-        .then(function(res) { return res.json(); })
-        .then(function(item) {
-          sampleBtn.style.opacity = '1';
-          sampleBtn.innerHTML = '&#10003; Swatch Added to Cart!';
-          sampleBtn.style.backgroundColor = '#2d6a4f';
-          sampleBtn.style.color = '#FFFFFF';
-          sampleBtn.style.borderColor = '#2d6a4f';
+      function closeSampleModal() {
+        sampleModal.classList.remove('is-open');
+        document.body.style.overflow = '';
+      }
 
-          if (window.dispatchEvent) {
-            window.dispatchEvent(new CustomEvent('cart:updated'));
-            window.dispatchEvent(new CustomEvent('ellora:cart:open'));
-          }
+      sampleBtn.addEventListener('click', openSampleModal);
+      if (sampleModalClose) sampleModalClose.addEventListener('click', closeSampleModal);
+      if (sampleModalSecondary) sampleModalSecondary.addEventListener('click', closeSampleModal);
 
-          setTimeout(function() {
-            sampleBtn.innerHTML = originalText;
-            sampleBtn.style.backgroundColor = '';
-            sampleBtn.style.color = '';
-            sampleBtn.style.borderColor = '';
-          }, 3500);
-        })
-        .catch(function(err) {
-          console.error(err);
-          sampleBtn.style.opacity = '1';
-          sampleBtn.innerHTML = originalText;
-        });
+      sampleModal.addEventListener('click', function(e) {
+        if (e.target === sampleModal) {
+          closeSampleModal();
+        }
+      });
+
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && sampleModal.classList.contains('is-open')) {
+          closeSampleModal();
+        }
       });
     }
 

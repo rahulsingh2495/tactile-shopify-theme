@@ -724,6 +724,188 @@
       border-radius: 50%;
       flex-shrink: 0;
       display: inline-block;
+      margin-right: 6px;
+      vertical-align: middle;
+      border: 1px solid rgba(0, 0, 0, 0.15);
+    }
+
+    /* Floating Side Sign-Up Tab & Drawer (Mandarin Stone inspired) */
+    .el-side-signup-tab {
+      position: fixed;
+      right: 0;
+      top: 55%;
+      transform: translateY(-50%);
+      z-index: 9998;
+      background: var(--el-hd-primary, #8E6356);
+      color: #FFFFFF;
+      border: none;
+      border-radius: 6px 0 0 6px;
+      padding: 14px 9px;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      box-shadow: -3px 4px 18px rgba(0, 0, 0, 0.18);
+      transition: all 0.25s ease;
+      font-family: var(--el-hd-font-sans);
+    }
+
+    .el-side-signup-tab:hover {
+      background: #734E43;
+      padding-right: 14px;
+    }
+
+    .el-side-signup-tab svg {
+      width: 16px;
+      height: 16px;
+      stroke: #FFFFFF;
+    }
+
+    .el-side-signup-tab span {
+      writing-mode: vertical-rl;
+      transform: rotate(180deg);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .el-side-signup-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.45);
+      backdrop-filter: blur(2px);
+      z-index: 99998;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s ease, visibility 0.3s ease;
+    }
+
+    .el-side-signup-overlay.is-open {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .el-side-signup-drawer {
+      position: fixed;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      width: 400px;
+      max-width: 90vw;
+      background: #FAF8F5;
+      box-shadow: -8px 0 35px rgba(0, 0, 0, 0.2);
+      z-index: 99999;
+      transform: translateX(100%);
+      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      display: flex;
+      flex-direction: column;
+      padding: 36px 32px;
+      box-sizing: border-box;
+      overflow-y: auto;
+      font-family: var(--el-hd-font-sans);
+    }
+
+    .el-side-signup-drawer.is-open {
+      transform: translateX(0);
+    }
+
+    .el-side-signup-close {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: none;
+      border: none;
+      font-size: 18px;
+      color: var(--el-hd-muted);
+      cursor: pointer;
+      line-height: 1;
+      padding: 6px;
+    }
+
+    .el-side-signup-close:hover {
+      color: var(--el-hd-dark);
+    }
+
+    .el-side-signup-eyebrow {
+      font-size: 11.5px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--el-hd-primary, #8E6356);
+      margin-bottom: 12px;
+    }
+
+    .el-side-signup-title {
+      font-family: var(--el-hd-font-serif);
+      font-size: 28px;
+      font-weight: 400;
+      line-height: 1.25;
+      color: var(--el-hd-dark);
+      margin: 0 0 14px;
+    }
+
+    .el-side-signup-desc {
+      font-size: 14px;
+      line-height: 1.6;
+      color: var(--el-hd-muted);
+      margin: 0 0 26px;
+    }
+
+    .el-side-signup-form {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .el-side-signup-input {
+      width: 100%;
+      height: 46px;
+      background: #FFFFFF;
+      border: 1px solid #E6E1D9;
+      border-radius: 4px;
+      padding: 0 16px;
+      font-family: inherit;
+      font-size: 14px;
+      color: var(--el-hd-dark);
+      outline: none;
+      box-sizing: border-box;
+      transition: border-color 0.2s ease;
+    }
+
+    .el-side-signup-input:focus {
+      border-color: var(--el-hd-primary);
+    }
+
+    .el-side-signup-btn {
+      width: 100%;
+      height: 48px;
+      background: var(--el-hd-primary, #8E6356);
+      color: #FFFFFF;
+      border: none;
+      border-radius: 4px;
+      font-family: inherit;
+      font-size: 13.5px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      cursor: pointer;
+      transition: background 0.2s ease;
+    }
+
+    .el-side-signup-btn:hover {
+      background: #734E43;
+    }
+
+    .el-side-signup-note {
+      font-size: 12px;
+      color: #8C867E;
+      margin-top: 14px;
+      line-height: 1.5;
     }
 
     /* -----------------------------------------------------------------------
@@ -1624,19 +1806,69 @@
               <!-- Content Area with Dynamic Surface Tabs & Architectural Filters -->
               <div class="el-megamenu-content">
                 <div class="el-megamenu-tabs" role="tablist">
-                  <button type="button" class="el-megamenu-tab is-active" data-tab="tiles-tab-{{ section.id }}" role="tab" aria-selected="true">
-                    Tiles & Natural Stone
+                  <button type="button" class="el-megamenu-tab is-active" data-tab="stone-panel-tab-{{ section.id }}" role="tab" aria-selected="true">
+                    Stone Panel
+                  </button>
+                  <button type="button" class="el-megamenu-tab" data-tab="tiles-tab-{{ section.id }}" role="tab" aria-selected="false">
+                    Tiles
                   </button>
                   <button type="button" class="el-megamenu-tab" data-tab="wallpapers-tab-{{ section.id }}" role="tab" aria-selected="false">
-                    Wallpapers & Murals
+                    Wallpaper <span style="font-size: 10px; background: rgba(142, 99, 86, 0.12); color: var(--el-hd-primary); padding: 2px 6px; border-radius: 10px; margin-left: 4px; font-weight: 600;">Coming Soon</span>
                   </button>
                 </div>
 
-                <!-- Tab 1: Tiles & Natural Stone -->
-                <div class="el-tab-pane is-active" id="tiles-tab-{{ section.id }}" role="tabpanel">
+                <!-- Tab 1: Stone Panel (First Tab) -->
+                <div class="el-tab-pane is-active" id="stone-panel-tab-{{ section.id }}" role="tabpanel">
                   <div class="el-pane-col">
-                    <h4 class="el-pane-heading">Tiles & Stone</h4>
-                    <p class="el-pane-desc">Architectural stone, terracotta & porcelain surfaces engineered to endure.</p>
+                    <h4 class="el-pane-heading">Stone Panels</h4>
+                    <p class="el-pane-desc">Architectural stone paneling, monolithic formats and precision-cut surfaces.</p>
+                    <a href="{{ routes.all_products_collection_url }}" class="el-pane-btn">Explore Stone Panels →</a>
+                  </div>
+                  <div class="el-pane-col">
+                    <h5 class="el-col-subheading">Type</h5>
+                    <ul class="el-col-list">
+                      <li><a href="{{ routes.all_products_collection_url }}">Honed Wall Panels</a></li>
+                      <li><a href="{{ routes.all_products_collection_url }}">Fluted Linear Panels</a></li>
+                      <li><a href="{{ routes.all_products_collection_url }}">Textured Relief Panels</a></li>
+                      <li><a href="{{ routes.all_products_collection_url }}">Large Format Slabs</a></li>
+                    </ul>
+                  </div>
+                  <div class="el-pane-col">
+                    <h5 class="el-col-subheading">Cluster Tiles</h5>
+                    <ul class="el-col-list">
+                      <li><a href="{{ routes.all_products_collection_url }}">Mosaic Clusters</a></li>
+                      <li><a href="{{ routes.all_products_collection_url }}">Micro-Cluster Mesh</a></li>
+                      <li><a href="{{ routes.all_products_collection_url }}">Staggered Modular Blocks</a></li>
+                      <li><a href="{{ routes.all_products_collection_url }}">Organic Split Face</a></li>
+                    </ul>
+                  </div>
+                  <div class="el-pane-col">
+                    <h5 class="el-col-subheading">Stone Tiles</h5>
+                    <ul class="el-col-list">
+                      <li><a href="{% if collections['marble-surfaces'] != blank %}{{ collections['marble-surfaces'].url }}{% else %}{{ tiles_base_url }}/marble{% endif %}">Marble Surfaces</a></li>
+                      <li><a href="{% if collections['travertine-surfaces'] != blank %}{{ collections['travertine-surfaces'].url }}{% else %}{{ tiles_base_url }}/travertine{% endif %}">Travertine Surfaces</a></li>
+                      <li><a href="{% if collections['limestone-surfaces'] != blank %}{{ collections['limestone-surfaces'].url }}{% else %}{{ tiles_base_url }}/limestone{% endif %}">French Limestone</a></li>
+                      <li><a href="{{ tiles_base_url }}/slate">Architectural Slate</a></li>
+                    </ul>
+                  </div>
+                  <div class="el-pane-col el-col-bordered">
+                    <h5 class="el-col-subheading">Colors &amp; Tones</h5>
+                    <ul class="el-col-list">
+                      <li><a href="{{ routes.all_products_collection_url }}?color=gold"><span class="el-color-dot" style="background:#D4AF37;"></span>Gold</a></li>
+                      <li><a href="{{ routes.all_products_collection_url }}?color=silver"><span class="el-color-dot" style="background:#C5C6C7;"></span>Silver</a></li>
+                      <li><a href="{{ routes.all_products_collection_url }}?color=ivory"><span class="el-color-dot" style="background:#F5F2EB;"></span>Ivory &amp; White</a></li>
+                      <li><a href="{{ routes.all_products_collection_url }}?color=beige"><span class="el-color-dot" style="background:#D8C7B5;"></span>Beige &amp; Sand</a></li>
+                      <li><a href="{{ routes.all_products_collection_url }}?color=terracotta"><span class="el-color-dot" style="background:#8E6356;"></span>Terracotta</a></li>
+                      <li><a href="{{ routes.all_products_collection_url }}?color=charcoal"><span class="el-color-dot" style="background:#2E2D2B;"></span>Anthracite &amp; Slate</a></li>
+                    </ul>
+                  </div>
+                </div>
+
+                <!-- Tab 2: Tiles -->
+                <div class="el-tab-pane" id="tiles-tab-{{ section.id }}" role="tabpanel">
+                  <div class="el-pane-col">
+                    <h4 class="el-pane-heading">Tiles &amp; Stone</h4>
+                    <p class="el-pane-desc">Architectural stone, terracotta &amp; porcelain surfaces engineered to endure.</p>
                     <a href="{{ tiles_base_url }}" class="el-pane-btn">View All Tiles →</a>
                   </div>
                   <div class="el-pane-col">
@@ -1653,26 +1885,27 @@
                   <div class="el-pane-col">
                     <h5 class="el-col-subheading">By Space</h5>
                     <ul class="el-col-list">
-                      <li><a href="{{ tiles_base_url }}/bathroom">Bathroom & Wet Room</a></li>
-                      <li><a href="{{ tiles_base_url }}/kitchen">Kitchen & Splashback</a></li>
-                      <li><a href="{{ tiles_base_url }}/living-room">Living & Hallways</a></li>
-                      <li><a href="{{ tiles_base_url }}/outdoor">Outdoor & Patio</a></li>
-                      <li><a href="{{ tiles_base_url }}/feature-wall">Feature & Accent Walls</a></li>
+                      <li><a href="{{ tiles_base_url }}/bathroom">Bathroom &amp; Wet Room</a></li>
+                      <li><a href="{{ tiles_base_url }}/kitchen">Kitchen &amp; Splashback</a></li>
+                      <li><a href="{{ tiles_base_url }}/living-room">Living &amp; Hallways</a></li>
+                      <li><a href="{{ tiles_base_url }}/outdoor">Outdoor &amp; Patio</a></li>
+                      <li><a href="{{ tiles_base_url }}/feature-wall">Feature &amp; Accent Walls</a></li>
                     </ul>
                   </div>
                   <div class="el-pane-col el-col-bordered">
-                    <h5 class="el-col-subheading">Finish & Style</h5>
+                    <h5 class="el-col-subheading">Colors &amp; Tones</h5>
                     <ul class="el-col-list">
-                      <li><a href="{{ tiles_base_url }}/honed">Honed & Filled</a></li>
-                      <li><a href="{{ tiles_base_url }}/polished">Polished Gloss</a></li>
-                      <li><a href="{{ tiles_base_url }}/fluted">Fluted Relief Carved</a></li>
-                      <li><a href="{{ tiles_base_url }}/tumbled">Tumbled Heritage</a></li>
-                      <li><a href="{{ tiles_base_url }}/mosaic">Mesh Mosaic Sheets</a></li>
+                      <li><a href="{{ tiles_base_url }}?color=gold"><span class="el-color-dot" style="background:#D4AF37;"></span>Gold</a></li>
+                      <li><a href="{{ tiles_base_url }}?color=silver"><span class="el-color-dot" style="background:#C5C6C7;"></span>Silver</a></li>
+                      <li><a href="{{ tiles_base_url }}?color=ivory"><span class="el-color-dot" style="background:#F5F2EB;"></span>Ivory &amp; White</a></li>
+                      <li><a href="{{ tiles_base_url }}?color=beige"><span class="el-color-dot" style="background:#D8C7B5;"></span>Beige &amp; Sand</a></li>
+                      <li><a href="{{ tiles_base_url }}?color=terracotta"><span class="el-color-dot" style="background:#8E6356;"></span>Terracotta</a></li>
+                      <li><a href="{{ tiles_base_url }}?color=charcoal"><span class="el-color-dot" style="background:#2E2D2B;"></span>Anthracite &amp; Slate</a></li>
                     </ul>
                   </div>
                 </div>
 
-                <!-- Tab 2: Wallpapers & Murals -->
+                <!-- Tab 3: Wallpaper (Coming Soon) -->
                 <div class="el-tab-pane" id="wallpapers-tab-{{ section.id }}" role="tabpanel">
                   <div class="el-pane-col">
                     <h4 class="el-pane-heading">Wallcoverings</h4>
@@ -1680,12 +1913,12 @@
                     <a href="{{ wallpaper_base_url }}" class="el-pane-btn">View Wallpapers →</a>
                   </div>
                   <div class="el-pane-col">
-                    <h5 class="el-col-subheading">Style & Art</h5>
+                    <h5 class="el-col-subheading">Style &amp; Art</h5>
                     <ul class="el-col-list">
                       <li><a href="{{ wallpaper_base_url }}/mural">Architectural Murals</a></li>
-                      <li><a href="{{ wallpaper_base_url }}/botanical">Botanical & Foliage</a></li>
+                      <li><a href="{{ wallpaper_base_url }}/botanical">Botanical &amp; Foliage</a></li>
                       <li><a href="{{ wallpaper_base_url }}/fresco">Renaissance Fresco</a></li>
-                      <li><a href="{{ wallpaper_base_url }}/geometric">Brutalist & Geometric</a></li>
+                      <li><a href="{{ wallpaper_base_url }}/geometric">Brutalist &amp; Geometric</a></li>
                       <li><a href="{{ wallpaper_base_url }}/landscape">Panoramic Landscape</a></li>
                       <li><a href="{{ wallpaper_base_url }}/chinoiserie">Chinoiserie Classic</a></li>
                     </ul>
@@ -1695,18 +1928,19 @@
                     <ul class="el-col-list">
                       <li><a href="{{ wallpaper_base_url }}/linen">Textured Linen (300 gsm)</a></li>
                       <li><a href="{{ wallpaper_base_url }}/non-woven">Non-Woven Matte</a></li>
-                      <li><a href="{{ wallpaper_base_url }}/peel-and-stick">Peel & Stick Grasscloth</a></li>
+                      <li><a href="{{ wallpaper_base_url }}/peel-and-stick">Peel &amp; Stick Grasscloth</a></li>
                       <li><a href="{{ wallpaper_base_url }}/foil">Artisan Metallic Foil</a></li>
                     </ul>
                   </div>
                   <div class="el-pane-col el-col-bordered">
-                    <h5 class="el-col-subheading">By Room</h5>
+                    <h5 class="el-col-subheading">Colors &amp; Tones</h5>
                     <ul class="el-col-list">
-                      <li><a href="{{ wallpaper_base_url }}/bedroom">Primary Suite & Bedroom</a></li>
-                      <li><a href="{{ wallpaper_base_url }}/living-room">Living Room Feature Wall</a></li>
-                      <li><a href="{{ wallpaper_base_url }}/dining">Dining & Entertaining</a></li>
-                      <li><a href="{{ wallpaper_base_url }}/powder-room">Powder Room Statement</a></li>
-                      <li><a href="{{ wallpaper_base_url }}/study">Study & Library</a></li>
+                      <li><a href="{{ wallpaper_base_url }}?color=gold"><span class="el-color-dot" style="background:#D4AF37;"></span>Gold</a></li>
+                      <li><a href="{{ wallpaper_base_url }}?color=silver"><span class="el-color-dot" style="background:#C5C6C7;"></span>Silver</a></li>
+                      <li><a href="{{ wallpaper_base_url }}?color=ivory"><span class="el-color-dot" style="background:#F5F2EB;"></span>Ivory &amp; Chalk</a></li>
+                      <li><a href="{{ wallpaper_base_url }}?color=sepia"><span class="el-color-dot" style="background:#7F675B;"></span>Sepia &amp; Taupe</a></li>
+                      <li><a href="{{ wallpaper_base_url }}?color=indigo"><span class="el-color-dot" style="background:#1E293B;"></span>Indigo &amp; Slate</a></li>
+                      <li><a href="{{ wallpaper_base_url }}?color=emerald"><span class="el-color-dot" style="background:#1B4D3E;"></span>Forest &amp; Sage</a></li>
                     </ul>
                   </div>
                 </div>
@@ -1922,7 +2156,16 @@
             {%- endunless -%}
           {%- endfor -%}
 
-          <div class="el-drawer-subheading" style="margin-top: 14px;">Tiles & Natural Stone</div>
+          <div class="el-drawer-subheading" style="margin-top: 14px;">Stone Panels</div>
+          <a href="{{ routes.all_products_collection_url }}" style="color: var(--el-hd-primary); font-weight: 500;">View Stone Panels →</a>
+          <a href="{{ routes.all_products_collection_url }}">Honed Wall Panels</a>
+          <a href="{{ routes.all_products_collection_url }}">Fluted Linear Panels</a>
+          <a href="{{ routes.all_products_collection_url }}">Cluster Mosaic Tiles</a>
+          <a href="{{ routes.all_products_collection_url }}">Large Format Slabs</a>
+          <a href="{{ routes.all_products_collection_url }}?color=gold"><span class="el-color-dot" style="background:#D4AF37;"></span>Gold Tone Panels</a>
+          <a href="{{ routes.all_products_collection_url }}?color=silver"><span class="el-color-dot" style="background:#C5C6C7;"></span>Silver Tone Panels</a>
+
+          <div class="el-drawer-subheading" style="margin-top: 14px;">Tiles &amp; Natural Stone</div>
           <a href="{{ tiles_base_url }}" style="color: var(--el-hd-primary); font-weight: 500;">View All Tiles →</a>
           <a href="{% if collections['marble-surfaces'] != blank %}{{ collections['marble-surfaces'].url }}{% else %}{{ tiles_base_url }}/marble{% endif %}">Marble Surfaces</a>
           <a href="{% if collections['travertine-surfaces'] != blank %}{{ collections['travertine-surfaces'].url }}{% else %}{{ tiles_base_url }}/travertine{% endif %}">Travertine Surfaces</a>
@@ -1930,19 +2173,18 @@
           <a href="{{ tiles_base_url }}/porcelain">Sintered Porcelain</a>
           <a href="{{ tiles_base_url }}/terracotta">Tuscan Terracotta</a>
           <a href="{{ tiles_base_url }}/slate">Architectural Slate</a>
-          <a href="{{ tiles_base_url }}/bathroom">Bathroom & Wet Rooms</a>
-          <a href="{{ tiles_base_url }}/kitchen">Kitchen & Splashbacks</a>
+          <a href="{{ tiles_base_url }}/bathroom">Bathroom &amp; Wet Rooms</a>
+          <a href="{{ tiles_base_url }}/kitchen">Kitchen &amp; Splashbacks</a>
+          <a href="{{ tiles_base_url }}?color=gold"><span class="el-color-dot" style="background:#D4AF37;"></span>Gold</a>
+          <a href="{{ tiles_base_url }}?color=silver"><span class="el-color-dot" style="background:#C5C6C7;"></span>Silver</a>
 
-          <div class="el-drawer-subheading" style="margin-top: 14px;">Wallpapers & Murals</div>
+          <div class="el-drawer-subheading" style="margin-top: 14px;">Wallpaper (Coming Soon)</div>
           <a href="{{ wallpaper_base_url }}" style="color: var(--el-hd-primary); font-weight: 500;">View All Wallpapers →</a>
           <a href="{{ wallpaper_base_url }}/mural">Architectural Murals</a>
           <a href="{{ wallpaper_base_url }}/botanical">Botanical Studies</a>
           <a href="{{ wallpaper_base_url }}/fresco">Renaissance Fresco</a>
-          <a href="{{ wallpaper_base_url }}/geometric">Brutalist & Geometric</a>
           <a href="{{ wallpaper_base_url }}/linen">Textured Linen Substrate</a>
-          <a href="{{ wallpaper_base_url }}/peel-and-stick">Peel & Stick Grasscloth</a>
           <a href="{{ wallpaper_base_url }}/bedroom">Bedroom Wallcoverings</a>
-          <a href="{{ wallpaper_base_url }}/living-room">Living Room Murals</a>
         </div>
       </div>
     {%- endcapture -%}
@@ -2041,6 +2283,29 @@
         {%- endif -%}
       </div>
     </div>
+  </aside>
+
+  <!-- Floating Side Sign-Up Tab & Slide-Out Drawer (Mandarin Stone inspired) -->
+  <button type="button" class="el-side-signup-tab" id="elSideSignupTab-{{ section.id }}" aria-label="Sign up for exclusive inspiration & offers">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+    <span>Sign up &amp; Offers</span>
+  </button>
+
+  <div class="el-side-signup-overlay" id="elSideSignupOverlay-{{ section.id }}" aria-hidden="true"></div>
+  <aside class="el-side-signup-drawer" id="elSideSignupDrawer-{{ section.id }}" aria-label="Newsletter Signup" role="dialog" aria-modal="true">
+    <button type="button" class="el-side-signup-close" id="elSideSignupClose-{{ section.id }}" aria-label="Close signup drawer">&times;</button>
+    <span class="el-side-signup-eyebrow">Ellora Living</span>
+    <h3 class="el-side-signup-title">Sign up for exclusive inspiration &amp; offers</h3>
+    <p class="el-side-signup-desc">Join our design circle for curated surface edits, material previews, and architectural guidance delivered directly to your inbox.</p>
+    {% form 'customer', id: 'SideSignupForm', class: 'el-side-signup-form' %}
+      <input type="hidden" name="contact[tags]" value="newsletter">
+      <input type="email" name="contact[email]" class="el-side-signup-input" placeholder="Enter your email address" required autocomplete="email">
+      <button type="submit" class="el-side-signup-btn">Sign Up for Inspiration</button>
+      {% if form.posted_successfully? %}
+        <p style="color:#2d6a4f; font-weight:600; font-size:13px; margin-top:8px;">&check; Thank you for subscribing!</p>
+      {% endif %}
+    {% endform %}
+    <p class="el-side-signup-note">We respect your inbox. You can unsubscribe at any time.</p>
   </aside>
 
   {%- if section.settings.enable_slide_cart -%}
@@ -2623,6 +2888,34 @@
     window.addEventListener('cart-drawer:open', openSlideCart);
     window.addEventListener('cart:open', openSlideCart);
     document.addEventListener('cart:open', openSlideCart);
+
+    // Side Sign-Up Drawer Listeners (Mandarin Stone inspired)
+    var sideSignupTab = document.getElementById('elSideSignupTab-' + sectionId);
+    var sideSignupDrawer = document.getElementById('elSideSignupDrawer-' + sectionId);
+    var sideSignupOverlay = document.getElementById('elSideSignupOverlay-' + sectionId);
+    var sideSignupClose = document.getElementById('elSideSignupClose-' + sectionId);
+
+    function openSideSignup() {
+      if (sideSignupDrawer) sideSignupDrawer.classList.add('is-open');
+      if (sideSignupOverlay) sideSignupOverlay.classList.add('is-open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeSideSignup() {
+      if (sideSignupDrawer) sideSignupDrawer.classList.remove('is-open');
+      if (sideSignupOverlay) sideSignupOverlay.classList.remove('is-open');
+      document.body.style.overflow = '';
+    }
+
+    if (sideSignupTab) sideSignupTab.addEventListener('click', openSideSignup);
+    if (sideSignupClose) sideSignupClose.addEventListener('click', closeSideSignup);
+    if (sideSignupOverlay) sideSignupOverlay.addEventListener('click', closeSideSignup);
+
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape' && sideSignupDrawer && sideSignupDrawer.classList.contains('is-open')) {
+        closeSideSignup();
+      }
+    });
   })();
 </script>
 

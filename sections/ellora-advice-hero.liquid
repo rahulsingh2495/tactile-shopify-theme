@@ -201,16 +201,17 @@
     <h1 class="el-ah-title">{{ section.settings.title | default: 'The Surface Advice Hub' }}</h1>
 
     <p class="el-ah-desc">
-      {{ section.settings.desc | default: 'Technical guidance, substrate preparation rules, and artisan care essays compiled by our stone specialists.' }}
+      {{ section.settings.desc | default: 'Everything you need to know about tile and stone delivery, ordering samples, installation rules, returns, and surface maintenance.' }}
     </p>
 
     {%- if section.settings.show_filter_tabs -%}
       <div class="el-ah-pills layout-{{ section.settings.mobile_pills_layout | default: 'scroll' }}" id="elAdvicePills-{{ section.id }}">
-        <button type="button" class="el-ah-pill-btn is-active" data-topic="all">All Articles</button>
-        <button type="button" class="el-ah-pill-btn" data-topic="care">Sealing &amp; Stone Care</button>
-        <button type="button" class="el-ah-pill-btn" data-topic="installation">Substrate &amp; Laying</button>
-        <button type="button" class="el-ah-pill-btn" data-topic="sizing">Wastage &amp; Measurement</button>
-        <button type="button" class="el-ah-pill-btn" data-topic="finishes">Material Finishes</button>
+        <button type="button" class="el-ah-pill-btn is-active" data-topic="all">All FAQs</button>
+        <button type="button" class="el-ah-pill-btn" data-topic="delivery">Delivery &amp; Logistics</button>
+        <button type="button" class="el-ah-pill-btn" data-topic="orders">Orders &amp; Checkout</button>
+        <button type="button" class="el-ah-pill-btn" data-topic="samples">Ordering Samples</button>
+        <button type="button" class="el-ah-pill-btn" data-topic="returns">Returns &amp; Damage</button>
+        <button type="button" class="el-ah-pill-btn" data-topic="care">Installation &amp; Care</button>
       </div>
     {%- endif -%}
   </div>

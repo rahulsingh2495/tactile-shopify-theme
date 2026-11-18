@@ -1,13 +1,15 @@
 {% comment %}
   ==========================================================================
-  ELLORA SPACES — ADVICE HUB GUIDES GRID
+  ELLORA SPACES — ADVICE HUB FAQ HUB
   File: sections/ellora-advice-grid.liquid
-  Theme Editor Name: Advice Hub Guides Grid
+  Theme Editor Name: Advice Hub FAQ Grid
   Features:
-  - 3-column luxury editorial guides grid (4:5 or 16:10 thumbnails)
-  - Supports direct Shopify Blog selection OR repeatable custom guide blocks
-  - Real-time client-side topic filtering synced with Advice Hub Hero tabs
-  - Bottom design consultation concierge card
+  - Architectural FAQ Hub inspired by Mandarin Stone
+  - Categorized into Delivery, Orders, Samples, Returns & Care
+  - Live filtering synced with Advice Hub Hero tabs
+  - Expandable accordion disclosures
+  - Fallback to rich pre-populated FAQ answers
+  - Bottom design consultation & concierge card
   ==========================================================================
 {% endcomment %}
 
@@ -44,196 +46,216 @@
 
     #ellora-advice-grid-{{ section.id }} .el-ag-container {
       width: 90%;
-      max-width: {{ section.settings.container_max_width | default: 1720 }}px;
+      max-width: {{ section.settings.container_max_width | default: 1100 }}px;
       margin: 0 auto;
     }
 
-    /* Grid */
-    #ellora-advice-grid-{{ section.id }} .el-ag-grid {
-      display: grid;
-      grid-template-columns: repeat({{ section.settings.columns_desktop | default: 3 }}, 1fr);
-      gap: 36px 28px;
+    /* FAQ List Layout */
+    #ellora-advice-grid-{{ section.id }} .el-faq-list {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
       margin-bottom: 64px;
     }
 
-    #ellora-advice-grid-{{ section.id }} .el-ag-card {
-      display: flex;
-      flex-direction: column;
-      border: 1px solid var(--el-ag-border);
+    #ellora-advice-grid-{{ section.id }} .el-faq-item {
       background: #FFFFFF;
-      border-radius: 2px;
+      border: 1px solid var(--el-ag-border);
+      border-radius: 4px;
       overflow: hidden;
-      transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
     }
 
-    #ellora-advice-grid-{{ section.id }} .el-ag-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.05);
+    #ellora-advice-grid-{{ section.id }} .el-faq-item:hover {
       border-color: var(--el-ag-primary);
     }
 
-    #ellora-advice-grid-{{ section.id }} .el-ag-card.is-hidden {
+    #ellora-advice-grid-{{ section.id }} .el-faq-item.is-open {
+      border-color: var(--el-ag-primary);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.04);
+    }
+
+    #ellora-advice-grid-{{ section.id }} .el-faq-item.is-hidden {
       display: none !important;
     }
 
-    #ellora-advice-grid-{{ section.id }} .el-ag-media {
+    #ellora-advice-grid-{{ section.id }} .el-faq-q {
       width: 100%;
-      aspect-ratio: 16 / 10;
-      overflow: hidden;
-      background: #F0ECE7;
-      position: relative;
+      background: none;
+      border: none;
+      padding: 22px 26px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      text-align: left;
+      cursor: pointer;
+      font-family: inherit;
     }
 
-    #ellora-advice-grid-{{ section.id }} .el-ag-media img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-      transition: transform 0.5s ease;
+    #ellora-advice-grid-{{ section.id }} .el-faq-q-left {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 6px;
     }
 
-    #ellora-advice-grid-{{ section.id }} .el-ag-card:hover .el-ag-media img {
-      transform: scale(1.05);
-    }
-
-    #ellora-advice-grid-{{ section.id }} .el-ag-badge {
-      position: absolute;
-      top: 14px;
-      left: 14px;
-      background: rgba(255, 255, 255, 0.95);
-      backdrop-filter: blur(4px);
-      padding: 4px 10px;
-      border-radius: 999px;
+    #ellora-advice-grid-{{ section.id }} .el-faq-cat-badge {
       font-size: 11px;
       font-weight: 600;
       letter-spacing: 0.08em;
       text-transform: uppercase;
       color: var(--el-ag-primary);
-      border: 1px solid rgba(0,0,0,0.06);
+      background: #FAF6F4;
+      padding: 3px 8px;
+      border-radius: 2px;
     }
 
-    #ellora-advice-grid-{{ section.id }} .el-ag-body {
-      padding: 24px 24px 28px 24px;
-      display: flex;
-      flex-direction: column;
-      flex: 1;
-    }
-
-    #ellora-advice-grid-{{ section.id }} .el-ag-meta {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      font-size: 12px;
-      color: var(--el-ag-muted);
-      margin-bottom: 10px;
-    }
-
-    #ellora-advice-grid-{{ section.id }} .el-ag-title {
+    #ellora-advice-grid-{{ section.id }} .el-faq-title {
       font-family: 'Cormorant Garamond', Georgia, serif;
-      font-size: 22px;
+      font-size: 20.5px;
       font-weight: 500;
       color: var(--el-ag-dark);
-      line-height: 1.3;
-      margin-bottom: 12px;
-      text-decoration: none;
-      display: block;
-      transition: color 0.2s ease;
+      line-height: 1.35;
     }
 
-    #ellora-advice-grid-{{ section.id }} .el-ag-title:hover {
-      color: var(--el-ag-primary);
-    }
-
-    #ellora-advice-grid-{{ section.id }} .el-ag-excerpt {
-      font-size: 13.5px;
-      color: var(--el-ag-muted);
-      line-height: 1.65;
-      margin-bottom: 20px;
-      flex: 1;
-    }
-
-    #ellora-advice-grid-{{ section.id }} .el-ag-link {
+    #ellora-advice-grid-{{ section.id }} .el-faq-icon {
+      width: 32px;
+      height: 32px;
+      min-width: 32px;
+      border-radius: 50%;
+      background: #FAF8F5;
+      border: 1px solid var(--el-ag-border);
       display: inline-flex;
       align-items: center;
-      gap: 6px;
-      font-size: 12.5px;
-      font-weight: 600;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
+      justify-content: center;
       color: var(--el-ag-primary);
-      text-decoration: none;
-      transition: gap 0.2s ease, color 0.2s ease;
+      transition: transform 0.25s ease, background-color 0.2s ease;
     }
 
-    #ellora-advice-grid-{{ section.id }} .el-ag-link:hover {
-      gap: 10px;
-      color: var(--el-ag-primary-hover);
+    #ellora-advice-grid-{{ section.id }} .el-faq-item.is-open .el-faq-icon {
+      transform: rotate(45deg);
+      background: var(--el-ag-primary);
+      color: #FFFFFF;
+      border-color: var(--el-ag-primary);
     }
 
-    /* Bottom Consultation Card */
+    #ellora-advice-grid-{{ section.id }} .el-faq-a {
+      display: none;
+      padding: 0 26px 24px 26px;
+      color: var(--el-ag-muted);
+      font-size: 15px;
+      line-height: 1.7;
+      border-top: 1px dashed #F0ECE7;
+      margin-top: -4px;
+      padding-top: 18px;
+    }
+
+    #ellora-advice-grid-{{ section.id }} .el-faq-item.is-open .el-faq-a {
+      display: block;
+    }
+
+    #ellora-advice-grid-{{ section.id }} .el-faq-a p {
+      margin-bottom: 12px;
+    }
+    #ellora-advice-grid-{{ section.id }} .el-faq-a p:last-child {
+      margin-bottom: 0;
+    }
+
+    /* Consultation Concierge Banner */
     #ellora-advice-grid-{{ section.id }} .el-ag-consult-card {
       background: var(--el-ag-card-bg);
       border: 1px solid var(--el-ag-border);
-      border-radius: 2px;
-      padding: 40px;
+      border-radius: 4px;
+      padding: 44px 36px;
       display: flex;
+      flex-direction: row;
       align-items: center;
       justify-content: space-between;
       gap: 32px;
-      flex-wrap: wrap;
     }
 
-    #ellora-advice-grid-{{ section.id }} .el-ag-consult-text h3 {
+    #ellora-advice-grid-{{ section.id }} .el-ag-consult-text {
+      max-width: 640px;
+    }
+
+    #ellora-advice-grid-{{ section.id }} .el-ag-consult-title {
       font-family: 'Cormorant Garamond', Georgia, serif;
-      font-size: 28px;
-      font-weight: 400;
+      font-size: 26px;
+      font-weight: 500;
       color: var(--el-ag-dark);
       margin-bottom: 8px;
+      line-height: 1.25;
     }
 
-    #ellora-advice-grid-{{ section.id }} .el-ag-consult-text p {
+    #ellora-advice-grid-{{ section.id }} .el-ag-consult-desc {
       font-size: 14.5px;
       color: var(--el-ag-muted);
-      max-width: 580px;
+      line-height: 1.6;
+    }
+
+    #ellora-advice-grid-{{ section.id }} .el-ag-consult-actions {
+      display: flex;
+      gap: 12px;
+      flex-shrink: 0;
+      flex-wrap: wrap;
     }
 
     #ellora-advice-grid-{{ section.id }} .el-ag-consult-btn {
       display: inline-flex;
       align-items: center;
+      justify-content: center;
       gap: 8px;
-      padding: 13px 26px;
       background: var(--el-ag-primary);
-      color: #FFFFFF;
-      text-decoration: none;
-      font-size: 13px;
+      color: #FFFFFF !important;
+      padding: 13px 26px;
+      font-size: 13.5px;
       font-weight: 600;
-      letter-spacing: 0.08em;
+      letter-spacing: 0.04em;
       text-transform: uppercase;
+      text-decoration: none;
       border-radius: 2px;
-      transition: background 0.2s ease;
-      white-space: nowrap;
+      transition: background-color 0.2s ease, transform 0.2s ease;
     }
 
     #ellora-advice-grid-{{ section.id }} .el-ag-consult-btn:hover {
       background: var(--el-ag-primary-hover);
+      transform: translateY(-1px);
     }
 
-    @media (max-width: 900px) {
-      #ellora-advice-grid-{{ section.id }} .el-ag-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
+    #ellora-advice-grid-{{ section.id }} .el-ag-whatsapp-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      background: #FFFFFF;
+      color: #25D366 !important;
+      border: 1px solid #25D366;
+      padding: 13px 22px;
+      font-size: 13.5px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border-radius: 2px;
+      transition: all 0.2s ease;
     }
 
-    @media (max-width: 600px) {
-      #ellora-advice-grid-{{ section.id }} .el-ag-grid {
-        grid-template-columns: 1fr;
-      }
+    #ellora-advice-grid-{{ section.id }} .el-ag-whatsapp-btn:hover {
+      background: #25D366;
+      color: #FFFFFF !important;
+    }
+
+    @media (max-width: 860px) {
       #ellora-advice-grid-{{ section.id }} .el-ag-consult-card {
-        padding: 24px;
         flex-direction: column;
-        align-items: flex-start;
+        text-align: center;
+        padding: 32px 24px;
       }
-      #ellora-advice-grid-{{ section.id }} .el-ag-consult-btn {
+      #ellora-advice-grid-{{ section.id }} .el-ag-consult-text {
+        max-width: 100%;
+      }
+      #ellora-advice-grid-{{ section.id }} .el-ag-consult-actions {
         width: 100%;
         justify-content: center;
       }
@@ -241,159 +263,218 @@
   </style>
 
   <div class="el-ag-container">
-    <div class="el-ag-grid" id="elAdviceGrid-{{ section.id }}">
-      
+
+    <!-- FAQ Accordion List -->
+    <div class="el-faq-list" id="elFaqList-{{ section.id }}">
       {%- if section.blocks.size > 0 -%}
         {%- for block in section.blocks -%}
-          <article class="el-ag-card" data-topic="{{ block.settings.topic | default: 'all' }}" {{ block.shopify_attributes }}>
-            <div class="el-ag-media">
-              {%- if block.settings.image != blank -%}
-                <img src="{{ block.settings.image | image_url: width: 600 }}" alt="{{ block.settings.title | escape }}" loading="lazy">
-              {%- else -%}
-                <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=600&auto=format&fit=crop" alt="Surface guide" loading="lazy">
-              {%- endif -%}
-              <span class="el-ag-badge">{{ block.settings.badge | default: 'Guide' }}</span>
-            </div>
-            <div class="el-ag-body">
-              <div class="el-ag-meta">
-                <span>{{ block.settings.read_time | default: '5 min read' }}</span>
-                <span>&bull;</span>
-                <span>{{ block.settings.date | default: 'October 2026' }}</span>
+          <div class="el-faq-item" data-topic="{{ block.settings.category | default: 'delivery' }}" {{ block.shopify_attributes }}>
+            <button type="button" class="el-faq-q" aria-expanded="false">
+              <div class="el-faq-q-left">
+                <span class="el-faq-cat-badge">{{ block.settings.category_label | default: block.settings.category | capitalize }}</span>
+                <h3 class="el-faq-title">{{ block.settings.question }}</h3>
               </div>
-              <a href="{{ block.settings.link | default: '/pages/contact' }}" class="el-ag-title">{{ block.settings.title }}</a>
-              <p class="el-ag-excerpt">{{ block.settings.excerpt }}</p>
-              <a href="{{ block.settings.link | default: '/pages/contact' }}" class="el-ag-link">Read Full Guide &rarr;</a>
+              <span class="el-faq-icon" aria-hidden="true">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+              </span>
+            </button>
+            <div class="el-faq-a">
+              {{ block.settings.answer }}
             </div>
-          </article>
+          </div>
         {%- endfor -%}
-
-      {%- elsif section.settings.blog != blank and blogs[section.settings.blog].articles.size > 0 -%}
-        {%- for article in blogs[section.settings.blog].articles limit: 6 -%}
-          <article class="el-ag-card" data-topic="all">
-            <div class="el-ag-media">
-              {%- if article.image -%}
-                <img src="{{ article.image | image_url: width: 600 }}" alt="{{ article.title | escape }}" loading="lazy">
-              {%- else -%}
-                <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=600&auto=format&fit=crop" alt="Guide image" loading="lazy">
-              {%- endif -%}
-              <span class="el-ag-badge">{{ article.tags.first | default: 'Guide' }}</span>
-            </div>
-            <div class="el-ag-body">
-              <div class="el-ag-meta">
-                <span>{{ article.published_at | date: "%B %Y" }}</span>
-              </div>
-              <a href="{{ article.url }}" class="el-ag-title">{{ article.title }}</a>
-              <p class="el-ag-excerpt">{{ article.excerpt_or_content | strip_html | truncatewords: 24 }}</p>
-              <a href="{{ article.url }}" class="el-ag-link">Read Full Guide &rarr;</a>
-            </div>
-          </article>
-        {%- endfor -%}
-
       {%- else -%}
-        <!-- Default Pre-populated Architectural Stone Guides -->
-        <article class="el-ag-card" data-topic="care">
-          <div class="el-ag-media">
-            <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=600&auto=format&fit=crop" alt="Sealing Travertine" loading="lazy">
-            <span class="el-ag-badge">Stone Care</span>
-          </div>
-          <div class="el-ag-body">
-            <div class="el-ag-meta">
-              <span>6 min read</span> &bull; <span>Technical Guide</span>
-            </div>
-            <h3 class="el-ag-title">How to Seal &amp; Maintain Roman Travertine</h3>
-            <p class="el-ag-excerpt">Understanding porous stone breathability, penetrating impregnators vs surface coatings, and everyday pH-neutral cleaning protocols.</p>
-            <a href="/pages/contact" class="el-ag-link">Read Full Guide &rarr;</a>
-          </div>
-        </article>
+        <!-- Pre-populated Mandarin Stone Inspired FAQ Edits -->
 
-        <article class="el-ag-card" data-topic="sizing">
-          <div class="el-ag-media">
-            <img src="https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?q=80&w=600&auto=format&fit=crop" alt="Pattern sets calculation" loading="lazy">
-            <span class="el-ag-badge">Calculations</span>
-          </div>
-          <div class="el-ag-body">
-            <div class="el-ag-meta">
-              <span>4 min read</span> &bull; <span>Measurement</span>
+        <!-- Delivery & Logistics -->
+        <div class="el-faq-item is-open" data-topic="delivery">
+          <button type="button" class="el-faq-q" aria-expanded="true">
+            <div class="el-faq-q-left">
+              <span class="el-faq-cat-badge">Delivery &amp; Logistics</span>
+              <h3 class="el-faq-title">How is my tile or stone panel order delivered?</h3>
             </div>
-            <h3 class="el-ag-title">Calculating Wastage: Single Pieces vs Pattern Sets</h3>
-            <p class="el-ag-excerpt">Why architectural pattern sets require custom cutting formulas, and how to avoid running short between distinct quarry batches.</p>
-            <a href="/pages/contact" class="el-ag-link">Read Full Guide &rarr;</a>
+            <span class="el-faq-icon" aria-hidden="true">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+            </span>
+          </button>
+          <div class="el-faq-a">
+            <p>All tile crates, fluted slabs, and stone panels are securely strapped to timber freight pallets and delivered via specialist tail-lift freight vehicles.</p>
+            <p>Delivery is strictly kerbside to the nearest flat, firm, accessible hard surface at your delivery address. Drivers cannot carry goods inside residences, navigate staircases, or traverse gravel paths.</p>
           </div>
-        </article>
+        </div>
 
-        <article class="el-ag-card" data-topic="installation">
-          <div class="el-ag-media">
-            <img src="https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?q=80&w=600&auto=format&fit=crop" alt="Substrate preparation" loading="lazy">
-            <span class="el-ag-badge">Installation</span>
-          </div>
-          <div class="el-ag-body">
-            <div class="el-ag-meta">
-              <span>8 min read</span> &bull; <span>Site Preparation</span>
+        <div class="el-faq-item" data-topic="delivery">
+          <button type="button" class="el-faq-q" aria-expanded="false">
+            <div class="el-faq-q-left">
+              <span class="el-faq-cat-badge">Delivery &amp; Logistics</span>
+              <h3 class="el-faq-title">What site access is required for heavy pallet delivery?</h3>
             </div>
-            <h3 class="el-ag-title">Substrate &amp; Wet Room Waterproofing for Stone</h3>
-            <p class="el-ag-excerpt">Essential guidelines on deflection tolerances, decoupling mats, and tanking systems prior to laying large-format natural stone slabs.</p>
-            <a href="/pages/contact" class="el-ag-link">Read Full Guide &rarr;</a>
+            <span class="el-faq-icon" aria-hidden="true">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+            </span>
+          </button>
+          <div class="el-faq-a">
+            <p>Pallet delivery lorries typically weigh up to 18 tonnes and require adequate road access without severe low bridges, narrow single tracks, or weight restrictions. Manual pump trucks used to lower the pallet require smooth, flat concrete or tarmac surfaces.</p>
           </div>
-        </article>
+        </div>
 
-        <article class="el-ag-card" data-topic="finishes">
-          <div class="el-ag-media">
-            <img src="https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?q=80&w=600&auto=format&fit=crop" alt="Stone finishes" loading="lazy">
-            <span class="el-ag-badge">Materials</span>
-          </div>
-          <div class="el-ag-body">
-            <div class="el-ag-meta">
-              <span>5 min read</span> &bull; <span>Specification</span>
+        <div class="el-faq-item" data-topic="delivery">
+          <button type="button" class="el-faq-q" aria-expanded="false">
+            <div class="el-faq-q-left">
+              <span class="el-faq-cat-badge">Delivery &amp; Logistics</span>
+              <h3 class="el-faq-title">Can I track my delivery and specify an arrival date?</h3>
             </div>
-            <h3 class="el-ag-title">Honed, Fluted or Brushed: Choosing the Right Texture</h3>
-            <p class="el-ag-excerpt">Compare tactile surface finishes across wet spaces, kitchen splashbacks, and outdoor entertaining areas for lasting durability.</p>
-            <a href="/pages/contact" class="el-ag-link">Read Full Guide &rarr;</a>
+            <span class="el-faq-icon" aria-hidden="true">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+            </span>
+          </button>
+          <div class="el-faq-a">
+            <p>Yes. Once your order leaves our stone depot, you will receive tracking notifications via email and SMS. The local courier hub will contact you prior to delivery to confirm the scheduled date.</p>
           </div>
-        </article>
+        </div>
 
-        <article class="el-ag-card" data-topic="care">
-          <div class="el-ag-media">
-            <img src="https://images.unsplash.com/photo-1616046229478-9901c5536a45?q=80&w=600&auto=format&fit=crop" alt="Marble etching" loading="lazy">
-            <span class="el-ag-badge">Stone Care</span>
-          </div>
-          <div class="el-ag-body">
-            <div class="el-ag-meta">
-              <span>7 min read</span> &bull; <span>Maintenance</span>
+        <!-- Orders & Checkout -->
+        <div class="el-faq-item" data-topic="orders">
+          <button type="button" class="el-faq-q" aria-expanded="false">
+            <div class="el-faq-q-left">
+              <span class="el-faq-cat-badge">Orders &amp; Checkout</span>
+              <h3 class="el-faq-title">How do I calculate how many tiles or square meters to order?</h3>
             </div>
-            <h3 class="el-ag-title">Managing Etching &amp; Patina on Calacatta Marble</h3>
-            <p class="el-ag-excerpt">How natural marble develops an authentic, lived-in patina, and professional techniques to lift acidic spills without damaging stone integrity.</p>
-            <a href="/pages/contact" class="el-ag-link">Read Full Guide &rarr;</a>
+            <span class="el-faq-icon" aria-hidden="true">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+            </span>
+          </button>
+          <div class="el-faq-a">
+            <p>Measure the length and width of each surface to calculate total square meters (M&sup2;). We advise adding a <strong>minimum 10% to 15% allowance</strong> (or 20% for herringbone or complex layouts) to accommodate cuts, corner shaping, and future attic stock.</p>
           </div>
-        </article>
+        </div>
 
-        <article class="el-ag-card" data-topic="installation">
-          <div class="el-ag-media">
-            <img src="https://images.unsplash.com/photo-1513694203232-719a280e022f?q=80&w=600&auto=format&fit=crop" alt="Grout selection" loading="lazy">
-            <span class="el-ag-badge">Specification</span>
-          </div>
-          <div class="el-ag-body">
-            <div class="el-ag-meta">
-              <span>4 min read</span> &bull; <span>Finishing</span>
+        <div class="el-faq-item" data-topic="orders">
+          <button type="button" class="el-faq-q" aria-expanded="false">
+            <div class="el-faq-q-left">
+              <span class="el-faq-cat-badge">Orders &amp; Checkout</span>
+              <h3 class="el-faq-title">Can I add extra boxes to my order later?</h3>
             </div>
-            <h3 class="el-ag-title">Grout Widths &amp; Color Harmonization for Slabs</h3>
-            <p class="el-ag-excerpt">Selecting flexible polymer-modified grouts and matching tonal pigments to achieve seamless continuous surface planes.</p>
-            <a href="/pages/contact" class="el-ag-link">Read Full Guide &rarr;</a>
+            <span class="el-faq-icon" aria-hidden="true">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+            </span>
+          </button>
+          <div class="el-faq-a">
+            <p>Natural stone is extracted from distinct quarry veins. While you can order additional boxes, variations in shade, veining, and calibration between separate batches can occur. Ordering all required material together ensures optimal batch harmony.</p>
           </div>
-        </article>
+        </div>
+
+        <!-- Ordering Samples -->
+        <div class="el-faq-item" data-topic="samples">
+          <button type="button" class="el-faq-q" aria-expanded="false">
+            <div class="el-faq-q-left">
+              <span class="el-faq-cat-badge">Ordering Samples</span>
+              <h3 class="el-faq-title">How does your sample service work?</h3>
+            </div>
+            <span class="el-faq-icon" aria-hidden="true">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+            </span>
+          </button>
+          <div class="el-faq-a">
+            <p>We provide sample swatches to help you assess stone density, tactile surface finishes (honed, brushed, fluted), and coloration under natural lighting within your space.</p>
+          </div>
+        </div>
+
+        <div class="el-faq-item" data-topic="samples">
+          <button type="button" class="el-faq-q" aria-expanded="false">
+            <div class="el-faq-q-left">
+              <span class="el-faq-cat-badge">Ordering Samples</span>
+              <h3 class="el-faq-title">Why do some products request a design consultation instead of a sample order?</h3>
+            </div>
+            <span class="el-faq-icon" aria-hidden="true">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+            </span>
+          </button>
+          <div class="el-faq-a">
+            <p>Due to high demand and quarry extraction cycles, certain rare marble and custom stone panels are currently reserved for 1-on-1 consultations where we review live slab photographs and batch coordinates directly with your project specifiers.</p>
+          </div>
+        </div>
+
+        <!-- Returns & Damaged Goods -->
+        <div class="el-faq-item" data-topic="returns">
+          <button type="button" class="el-faq-q" aria-expanded="false">
+            <div class="el-faq-q-left">
+              <span class="el-faq-cat-badge">Returns &amp; Damaged Goods</span>
+              <h3 class="el-faq-title">What is your returns policy?</h3>
+            </div>
+            <span class="el-faq-icon" aria-hidden="true">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+            </span>
+          </button>
+          <div class="el-faq-a">
+            <p>We accept returns of full, unopened, undamaged crates or boxes within 14 calendar days of delivery. Due to batch variation management and pallet repackaging requirements, we cannot accept returns of partial boxes or installed tiles.</p>
+          </div>
+        </div>
+
+        <div class="el-faq-item" data-topic="returns">
+          <button type="button" class="el-faq-q" aria-expanded="false">
+            <div class="el-faq-q-left">
+              <span class="el-faq-cat-badge">Returns &amp; Damaged Goods</span>
+              <h3 class="el-faq-title">What should I do if any tiles arrive damaged in transit?</h3>
+            </div>
+            <span class="el-faq-icon" aria-hidden="true">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+            </span>
+          </button>
+          <div class="el-faq-a">
+            <p>Inspect the pallet shrink-wrap immediately upon arrival. Mark the carrier proof-of-delivery note as 'Damaged' and photograph the broken pieces. Notify our support desk within 48 hours for expedited replacements.</p>
+          </div>
+        </div>
+
+        <!-- Installation & Care -->
+        <div class="el-faq-item" data-topic="care">
+          <button type="button" class="el-faq-q" aria-expanded="false">
+            <div class="el-faq-q-left">
+              <span class="el-faq-cat-badge">Installation &amp; Care</span>
+              <h3 class="el-faq-title">Does natural stone tile require sealing?</h3>
+            </div>
+            <span class="el-faq-icon" aria-hidden="true">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+            </span>
+          </button>
+          <div class="el-faq-a">
+            <p>Yes. All natural travertine, limestone, marble, and cotto surfaces require a high-grade penetrating impregnator. We recommend applying an initial coat prior to grouting to prevent grout pigmentation absorption, followed by a final coat after thorough drying.</p>
+          </div>
+        </div>
+
+        <div class="el-faq-item" data-topic="care">
+          <button type="button" class="el-faq-q" aria-expanded="false">
+            <div class="el-faq-q-left">
+              <span class="el-faq-cat-badge">Installation &amp; Care</span>
+              <h3 class="el-faq-title">How should I clean and maintain natural stone everyday?</h3>
+            </div>
+            <span class="el-faq-icon" aria-hidden="true">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+            </span>
+          </button>
+          <div class="el-faq-a">
+            <p>Always clean with a dedicated pH-neutral stone cleaner. Avoid standard multi-surface sprays, acidic bathroom descalers, or bleach, as these react with calcium carbonate in natural stone and cause surface etching.</p>
+          </div>
+        </div>
       {%- endif -%}
-
     </div>
 
     <!-- Consultation Banner -->
     {%- if section.settings.show_consult_card -%}
       <div class="el-ag-consult-card">
         <div class="el-ag-consult-text">
-          <h3>{{ section.settings.consult_title | default: 'Planning a bespoke architectural installation?' }}</h3>
-          <p>{{ section.settings.consult_desc | default: 'Our surface specialists review architectural drawings, calculate layout formulas, and recommend stone finishes tailored to your space.' }}</p>
+          <h3 class="el-ag-consult-title">{{ section.settings.consult_title | default: 'Have a specific architectural query?' }}</h3>
+          <p class="el-ag-consult-desc">{{ section.settings.consult_desc | default: 'Our surface specialists review project schedules, examine site access, and advise on substrate preparation and stone care.' }}</p>
         </div>
-        <a href="{{ section.settings.consult_link | default: '/pages/contact' }}" class="el-ag-consult-btn">
-          {{ section.settings.consult_btn_text | default: 'Book Design Consultation' }} &rarr;
-        </a>
+        <div class="el-ag-consult-actions">
+          <a href="{{ section.settings.consult_link | default: '/pages/contact' }}" class="el-ag-consult-btn">
+            {{ section.settings.consult_btn_text | default: 'Speak to a Specialist' }}
+          </a>
+          <a href="https://wa.me/" target="_blank" rel="noopener noreferrer" class="el-ag-whatsapp-btn">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.711 2.598 2.669-.699c.969.53 1.951.815 2.791.815 3.181 0 5.767-2.586 5.768-5.766 0-3.18-2.587-5.766-5.768-5.766zm9.969 5.766c0 5.514-4.486 10-10 10-1.704 0-3.327-.432-4.757-1.196l-5.243 1.371 1.396-5.105c-.868-1.503-1.396-3.239-1.396-5.07 0-5.514 4.486-10 10-10s10 4.486 10 10z"/></svg>
+            Help on WhatsApp
+          </a>
+        </div>
       </div>
     {%- endif -%}
 
@@ -405,20 +486,33 @@
     var root = document.getElementById('ellora-advice-grid-{{ section.id }}');
     if (!root) return;
 
-    var grid = root.querySelector('#elAdviceGrid-{{ section.id }}');
-    if (!grid) return;
+    var faqList = root.querySelector('#elFaqList-{{ section.id }}');
+    if (!faqList) return;
 
+    // Accordion Toggle
+    faqList.addEventListener('click', function(e) {
+      var btn = e.target.closest('.el-faq-q');
+      if (!btn) return;
+      var item = btn.closest('.el-faq-item');
+      if (!item) return;
+
+      var isOpen = item.classList.contains('is-open');
+      item.classList.toggle('is-open');
+      btn.setAttribute('aria-expanded', !isOpen);
+    });
+
+    // Topic Filter Event Listener from Advice Hero Pills
     window.addEventListener('ellora:advice:filter', function(e) {
       var topic = e.detail && e.detail.topic;
       if (!topic) return;
 
-      var cards = grid.querySelectorAll('.el-ag-card');
-      cards.forEach(function(card) {
-        var cardTopic = card.getAttribute('data-topic');
-        if (topic === 'all' || cardTopic === topic || cardTopic === 'all') {
-          card.classList.remove('is-hidden');
+      var items = faqList.querySelectorAll('.el-faq-item');
+      items.forEach(function(item) {
+        var itemTopic = item.getAttribute('data-topic');
+        if (topic === 'all' || itemTopic === topic) {
+          item.classList.remove('is-hidden');
         } else {
-          card.classList.add('is-hidden');
+          item.classList.add('is-hidden');
         }
       });
     });
@@ -427,28 +521,13 @@
 
 {% schema %}
 {
-  "name": "Advice Hub Guides Grid",
+  "name": "Advice Hub FAQ Grid",
   "tag": "section",
   "class": "section",
   "settings": [
     {
-      "type": "blog",
-      "id": "blog",
-      "label": "Or connect Shopify Blog (Optional)",
-      "info": "Leave blank to use the custom editorial blocks below."
-    },
-    {
-      "type": "range",
-      "id": "columns_desktop",
-      "label": "Columns on Desktop",
-      "min": 2,
-      "max": 4,
-      "step": 1,
-      "default": 3
-    },
-    {
       "type": "header",
-      "content": "Bottom Consultation Card"
+      "content": "Consultation Card"
     },
     {
       "type": "checkbox",
@@ -460,19 +539,19 @@
       "type": "text",
       "id": "consult_title",
       "label": "Card Title",
-      "default": "Planning a bespoke architectural installation?"
+      "default": "Have a specific architectural query?"
     },
     {
       "type": "textarea",
       "id": "consult_desc",
       "label": "Card Description",
-      "default": "Our surface specialists review architectural drawings, calculate layout formulas, and recommend stone finishes tailored to your space."
+      "default": "Our surface specialists review project schedules, examine site access, and advise on substrate preparation."
     },
     {
       "type": "text",
       "id": "consult_btn_text",
       "label": "Button Text",
-      "default": "Book Design Consultation"
+      "default": "Speak to a Specialist"
     },
     {
       "type": "url",
@@ -487,11 +566,11 @@
       "type": "range",
       "id": "container_max_width",
       "label": "Container Max Width",
-      "min": 1000,
-      "max": 1800,
+      "min": 800,
+      "max": 1400,
       "step": 20,
       "unit": "px",
-      "default": 1720
+      "default": 1100
     },
     {
       "type": "color",
@@ -501,7 +580,7 @@
     {
       "type": "color",
       "id": "card_bg",
-      "label": "Consultation Card Background",
+      "label": "Card Background",
       "default": "#FAF8F5"
     },
     {
@@ -537,7 +616,7 @@
     {
       "type": "range",
       "id": "padding_top",
-      "label": "Padding Top (Desktop)",
+      "label": "Padding Top",
       "min": 0,
       "max": 140,
       "step": 2,
@@ -547,7 +626,7 @@
     {
       "type": "range",
       "id": "padding_bottom",
-      "label": "Padding Bottom (Desktop)",
+      "label": "Padding Bottom",
       "min": 0,
       "max": 140,
       "step": 2,
@@ -557,67 +636,46 @@
   ],
   "blocks": [
     {
-      "type": "guide",
-      "name": "Custom Guide Article",
+      "type": "faq_item",
+      "name": "FAQ Item",
       "settings": [
         {
-          "type": "image_picker",
-          "id": "image",
-          "label": "Thumbnail Image"
-        },
-        {
           "type": "select",
-          "id": "topic",
-          "label": "Topic Category",
+          "id": "category",
+          "label": "Category",
           "options": [
-            { "value": "care", "label": "Sealing & Stone Care" },
-            { "value": "installation", "label": "Substrate & Laying" },
-            { "value": "sizing", "label": "Wastage & Sizing" },
-            { "value": "finishes", "label": "Material Finishes" }
+            { "value": "delivery", "label": "Delivery & Logistics" },
+            { "value": "orders", "label": "Orders & Checkout" },
+            { "value": "samples", "label": "Ordering Samples" },
+            { "value": "returns", "label": "Returns & Damage" },
+            { "value": "care", "label": "Installation & Care" }
           ],
-          "default": "care"
+          "default": "delivery"
         },
         {
           "type": "text",
-          "id": "badge",
-          "label": "Badge Label",
-          "default": "Stone Care"
+          "id": "category_label",
+          "label": "Category Display Tag",
+          "default": "Delivery & Logistics"
         },
         {
           "type": "text",
-          "id": "read_time",
-          "label": "Reading Time",
-          "default": "5 min read"
+          "id": "question",
+          "label": "Question",
+          "default": "How is my tile or stone panel order delivered?"
         },
         {
-          "type": "text",
-          "id": "date",
-          "label": "Date / Edition",
-          "default": "October 2026"
-        },
-        {
-          "type": "text",
-          "id": "title",
-          "label": "Article Title",
-          "default": "How to Seal & Maintain Roman Travertine"
-        },
-        {
-          "type": "textarea",
-          "id": "excerpt",
-          "label": "Summary Excerpt",
-          "default": "Understanding porous stone breathability, penetrating impregnators vs surface coatings, and everyday pH-neutral cleaning protocols."
-        },
-        {
-          "type": "url",
-          "id": "link",
-          "label": "Article Link"
+          "type": "richtext",
+          "id": "answer",
+          "label": "Answer",
+          "default": "<p>All tile crates and stone panels are delivered on wooden pallets via tail-lift vehicles.</p>"
         }
       ]
     }
   ],
   "presets": [
     {
-      "name": "Advice Hub Guides Grid"
+      "name": "Advice Hub FAQ Grid"
     }
   ]
 }

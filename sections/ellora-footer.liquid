@@ -475,32 +475,35 @@
       <div class="el-footer-nav-col">
         <h4 class="el-footer-nav-title">{{ section.settings.col2_title | default: 'Shop' }}</h4>
         <ul class="el-footer-nav-list">
-          {%- if section.settings.col2_menu != blank -%}
+          {%- if section.settings.col2_menu != blank and linklists[section.settings.col2_menu].links.size > 0 -%}
             {%- for link in linklists[section.settings.col2_menu].links -%}
               <li class="el-footer-nav-item"><a href="{{ link.url }}">{{ link.title }}</a></li>
             {%- endfor -%}
           {%- else -%}
+            <li class="el-footer-nav-item"><a href="/collections/tiles">Tiles</a></li>
+            <li class="el-footer-nav-item"><a href="/collections/stone-panels">Stone Panels</a></li>
+            <li class="el-footer-nav-item"><a href="/collections/wallpaper">Wallpaper (Coming Soon)</a></li>
             <li class="el-footer-nav-item"><a href="/collections/all?sort_by=created-descending">New Arrivals</a></li>
             <li class="el-footer-nav-item"><a href="/collections/all?sort_by=best-selling">Best Sellers</a></li>
-            <li class="el-footer-nav-item"><a href="/collections/all">Shop All Tiles</a></li>
-            <li class="el-footer-nav-item"><a href="/collections">Collections</a></li>
           {%- endif -%}
         </ul>
       </div>
 
-      <!-- Col 3: Help -->
+      <!-- Col 3: Help / Support -->
       <div class="el-footer-nav-col">
-        <h4 class="el-footer-nav-title">{{ section.settings.col3_title | default: 'Help' }}</h4>
+        <h4 class="el-footer-nav-title">{{ section.settings.col3_title | default: 'Help / Support' }}</h4>
         <ul class="el-footer-nav-list">
-          {%- if section.settings.col3_menu != blank -%}
+          {%- if section.settings.col3_menu != blank and linklists[section.settings.col3_menu].links.size > 0 -%}
             {%- for link in linklists[section.settings.col3_menu].links -%}
               <li class="el-footer-nav-item"><a href="{{ link.url }}">{{ link.title }}</a></li>
             {%- endfor -%}
           {%- else -%}
             <li class="el-footer-nav-item"><a href="/pages/advice-hub">Advice Hub</a></li>
-            <li class="el-footer-nav-item"><a href="/pages/delivery">Delivery</a></li>
+            <li class="el-footer-nav-item"><a href="/pages/delivery-information">Delivery Info</a></li>
+            <li class="el-footer-nav-item"><a href="/pages/ordering-samples">Ordering Samples</a></li>
+            <li class="el-footer-nav-item"><a href="/pages/returns-refunds">Return Info</a></li>
+            <li class="el-footer-nav-item"><a href="/pages/faqs">All FAQs</a></li>
             <li class="el-footer-nav-item"><a href="/pages/contact">Contact</a></li>
-            <li class="el-footer-nav-item"><a href="https://wa.me/" target="_blank" rel="noopener noreferrer">Whatsapp</a></li>
           {%- endif -%}
         </ul>
       </div>
@@ -509,15 +512,14 @@
       <div class="el-footer-nav-col">
         <h4 class="el-footer-nav-title">{{ section.settings.col4_title | default: 'Ellora' }}</h4>
         <ul class="el-footer-nav-list">
-          {%- if section.settings.col4_menu != blank -%}
+          {%- if section.settings.col4_menu != blank and linklists[section.settings.col4_menu].links.size > 0 -%}
             {%- for link in linklists[section.settings.col4_menu].links -%}
               <li class="el-footer-nav-item"><a href="{{ link.url }}">{{ link.title }}</a></li>
             {%- endfor -%}
           {%- else -%}
-            <li class="el-footer-nav-item"><a href="/pages/about">About Us</a></li>
-            <li class="el-footer-nav-item"><a href="/pages/inspiration">Inspiration</a></li>
-            <li class="el-footer-nav-item"><a href="/pages/community">#ElloraLiving</a></li>
             <li class="el-footer-nav-item"><a href="/pages/trade">Trade</a></li>
+            <li class="el-footer-nav-item"><a href="/pages/about">About Us</a></li>
+            <li class="el-footer-nav-item"><a href="/#elloraliving">#Ellora Living</a></li>
           {%- endif -%}
         </ul>
       </div>
