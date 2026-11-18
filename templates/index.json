@@ -34,33 +34,33 @@
         "feature_1": {
           "type": "feature_item",
           "settings": {
-            "title": "Thoughtfully Created Tiles",
-            "description": "Chat to our friendly team for all your design and technical needs",
+            "title": "Calm atmosphere",
+            "description": "Surfaces crafted to instill tranquility, emotional resonance, and architectural balance in contemporary living spaces.",
             "link": ""
           }
         },
         "feature_2": {
           "type": "feature_item",
           "settings": {
-            "title": "Secure Online Ordering",
-            "description": "Chat to our friendly team for all your design and technical needs",
+            "title": "Clear sizing",
+            "description": "Precise dimensional specifications and calculated layout increments to support seamless contractor execution.",
             "link": ""
           }
         },
         "feature_3": {
           "type": "feature_item",
           "settings": {
-            "title": "Clear Delivery information",
-            "description": "Chat to our friendly team for all your design and technical needs",
+            "title": "Honest selling unit",
+            "description": "Transparent square-meter and crate pricing with no hidden wastage markups or ambiguous selling minimums.",
             "link": ""
           }
         },
         "feature_4": {
           "type": "feature_item",
           "settings": {
-            "title": "Personal Help on Whatsapp",
-            "description": "Chat to our friendly team for all your design and technical needs",
-            "link": "https://wa.me/"
+            "title": "Guided selection",
+            "description": "Dedicated stone consultants and architectural specialists ready to support your layout drawings and technical needs.",
+            "link": "shopify://pages/contact"
           }
         }
       },

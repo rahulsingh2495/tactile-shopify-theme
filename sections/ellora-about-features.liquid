@@ -43,9 +43,10 @@
     }
 
     #ellora-about-features-{{ section.id }} .el-about-features-grid {
-      display: grid;
-      grid-template-columns: repeat({{ section.blocks.size | at_most: 4 | at_least: 1 }}, 1fr);
+      display: grid !important;
+      grid-template-columns: repeat(4, 1fr) !important;
       gap: 0;
+      align-items: flex-start;
     }
 
     #ellora-about-features-{{ section.id }} .el-about-feature-item {
