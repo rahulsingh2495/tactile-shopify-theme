@@ -199,8 +199,8 @@
       stroke-width: 2;
     }
 
-    /* Fixed Side Sign Up Tab */
-    .el-side-signup-tab {
+    /* Hero-scoped Side Sign Up Tab (only if hero signup is enabled) */
+    #ellora-hero-{{ section.id }} .el-side-signup-tab {
       position: fixed;
       left: 0;
       top: 50%;
@@ -225,12 +225,12 @@
       gap: 8px;
       transition: all 0.25s ease;
     }
-    .el-side-signup-tab:hover {
+    #ellora-hero-{{ section.id }} .el-side-signup-tab:hover {
       background: var(--el-primary, #8E6356);
       color: #FFFFFF !important;
       box-shadow: 4px 6px 22px rgba(184, 107, 83, 0.32);
     }
-    .el-side-signup-tab svg {
+    #ellora-hero-{{ section.id }} .el-side-signup-tab svg {
       width: 14px;
       height: 14px;
       transform: rotate(90deg);

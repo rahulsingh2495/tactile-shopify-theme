@@ -741,33 +741,33 @@
       right: 0 !important;
       left: auto !important;
       top: 50% !important;
-      transform: translateY(-50%) rotate(-90deg) !important;
-      transform-origin: right center !important;
+      transform: translateY(-50%) !important;
       z-index: 9998 !important;
       background: #8E6356 !important;
       color: #FFFFFF !important;
       border: none !important;
       outline: none !important;
-      border-radius: 6px 6px 0 0 !important;
-      padding: 9px 18px 8px 16px !important;
+      border-radius: 6px 0 0 6px !important;
+      padding: 14px 8px !important;
       cursor: pointer !important;
-      display: inline-flex !important;
-      flex-direction: row !important;
+      display: flex !important;
+      flex-direction: column !important;
       align-items: center !important;
       justify-content: center !important;
-      gap: 8px !important;
-      box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.15) !important;
+      gap: 10px !important;
+      box-shadow: -3px 4px 18px rgba(0, 0, 0, 0.18) !important;
       box-sizing: border-box !important;
       font-family: var(--el-hd-font-sans, -apple-system, sans-serif) !important;
       text-decoration: none !important;
-      white-space: nowrap !important;
-      line-height: 1 !important;
-      transition: background-color 0.2s ease, transform 0.2s ease !important;
+      width: 34px !important;
+      min-width: 34px !important;
+      max-width: 34px !important;
+      transition: background-color 0.25s ease, padding-right 0.25s ease !important;
     }
 
     .el-side-signup-tab:hover {
       background: #734E43 !important;
-      transform: translateY(-50%) rotate(-90deg) translateY(-2px) !important;
+      padding-right: 12px !important;
     }
 
     .el-side-signup-tab svg {
@@ -775,12 +775,15 @@
       height: 15px !important;
       stroke: #FFFFFF !important;
       fill: none !important;
-      display: inline-block !important;
+      display: block !important;
       flex-shrink: 0 !important;
-      vertical-align: middle !important;
+      transform: none !important;
+      margin: 0 auto !important;
     }
 
     .el-side-signup-tab span {
+      writing-mode: vertical-rl !important;
+      transform: rotate(180deg) !important;
       font-size: 11px !important;
       font-weight: 600 !important;
       letter-spacing: 0.08em !important;
@@ -788,10 +791,9 @@
       color: #FFFFFF !important;
       white-space: nowrap !important;
       line-height: 1 !important;
-      display: inline-block !important;
-      vertical-align: middle !important;
-      writing-mode: horizontal-tb !important;
-      transform: none !important;
+      display: block !important;
+      text-align: center !important;
+      margin: 0 auto !important;
     }
 
     .el-side-signup-overlay {
@@ -2308,9 +2310,9 @@
   </aside>
 
   <!-- Floating Side Sign-Up Tab & Slide-Out Drawer (Mandarin Stone inspired) -->
-  <button type="button" class="el-side-signup-tab" id="elSideSignupTab-{{ section.id }}" aria-label="Sign up for exclusive inspiration &amp; offers" style="position: fixed !important; right: 0 !important; left: auto !important; top: 50% !important; transform: translateY(-50%) rotate(-90deg) !important; transform-origin: right center !important; z-index: 9998 !important; background-color: #8E6356 !important; color: #FFFFFF !important; border: none !important; border-radius: 6px 6px 0 0 !important; display: inline-flex !important; flex-direction: row !important; align-items: center !important; gap: 8px !important; white-space: nowrap !important; padding: 9px 18px 8px 16px !important;">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 15px; height: 15px; stroke: #FFFFFF; display: inline-block; vertical-align: middle;"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
-    <span style="color: #FFFFFF; font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; white-space: nowrap; display: inline-block; vertical-align: middle;">Sign up &amp; Offers</span>
+  <button type="button" class="el-side-signup-tab" id="elSideSignupTab-{{ section.id }}" aria-label="Sign up for exclusive inspiration &amp; offers">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+    <span>Sign up &amp; Offers</span>
   </button>
 
   <div class="el-side-signup-overlay" id="elSideSignupOverlay-{{ section.id }}" aria-hidden="true"></div>

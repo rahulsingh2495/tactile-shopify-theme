@@ -475,7 +475,7 @@
       <div class="el-footer-nav-col">
         <h4 class="el-footer-nav-title">{{ section.settings.col2_title | default: 'Shop' }}</h4>
         <ul class="el-footer-nav-list">
-          {%- if section.settings.col2_menu != blank and linklists[section.settings.col2_menu].links.size > 0 -%}
+          {%- if section.settings.col2_menu != blank and section.settings.col2_menu != 'shop-footer' and linklists[section.settings.col2_menu].links.size > 0 -%}
             {%- for link in linklists[section.settings.col2_menu].links -%}
               <li class="el-footer-nav-item"><a href="{{ link.url }}">{{ link.title }}</a></li>
             {%- endfor -%}
@@ -493,7 +493,7 @@
       <div class="el-footer-nav-col">
         <h4 class="el-footer-nav-title">{{ section.settings.col3_title | default: 'Help / Support' }}</h4>
         <ul class="el-footer-nav-list">
-          {%- if section.settings.col3_menu != blank and linklists[section.settings.col3_menu].links.size > 0 -%}
+          {%- if section.settings.col3_menu != blank and section.settings.col3_menu != 'help-footer' and linklists[section.settings.col3_menu].links.size > 0 -%}
             {%- for link in linklists[section.settings.col3_menu].links -%}
               <li class="el-footer-nav-item"><a href="{{ link.url }}">{{ link.title }}</a></li>
             {%- endfor -%}
@@ -512,7 +512,7 @@
       <div class="el-footer-nav-col">
         <h4 class="el-footer-nav-title">{{ section.settings.col4_title | default: 'Ellora' }}</h4>
         <ul class="el-footer-nav-list">
-          {%- if section.settings.col4_menu != blank and linklists[section.settings.col4_menu].links.size > 0 -%}
+          {%- if section.settings.col4_menu != blank and section.settings.col4_menu != 'ellora-footer' and linklists[section.settings.col4_menu].links.size > 0 -%}
             {%- for link in linklists[section.settings.col4_menu].links -%}
               <li class="el-footer-nav-item"><a href="{{ link.url }}">{{ link.title }}</a></li>
             {%- endfor -%}
