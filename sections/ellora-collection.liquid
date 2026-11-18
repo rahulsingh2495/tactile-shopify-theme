@@ -365,14 +365,46 @@
       transform: scale(1);
     }
 
-    /* Color Swatch Dot */
+    /* Color Swatch Dot in Filters */
     #ellora-collection-{{ section.id }} .el-swatch-dot {
-      width: 12px;
-      height: 12px;
+      width: 14px;
+      height: 14px;
       border-radius: 50%;
       display: inline-block;
       flex-shrink: 0;
-      border: 1px solid rgba(0, 0, 0, 0.1);
+      border: 1px solid rgba(0, 0, 0, 0.15);
+      box-shadow: inset 0 1px 2px rgba(0,0,0,0.12);
+      vertical-align: middle;
+      margin-right: 2px;
+    }
+
+    /* Card Color Swatches Preview */
+    #ellora-collection-{{ section.id }} .el-card-color-swatches {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      margin: 6px 0 4px;
+    }
+
+    #ellora-collection-{{ section.id }} .el-card-swatch-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      border: 1px solid rgba(0, 0, 0, 0.15);
+      display: inline-block;
+      flex-shrink: 0;
+      box-shadow: inset 0 1px 2px rgba(0,0,0,0.1);
+      transition: transform 0.15s ease;
+    }
+
+    #ellora-collection-{{ section.id }} .el-card-swatch-dot:hover {
+      transform: scale(1.25);
+    }
+
+    #ellora-collection-{{ section.id }} .el-card-swatch-more {
+      font-size: 11px;
+      color: var(--el-col-muted);
+      font-weight: 500;
     }
 
     /* Price Range Inputs */
@@ -1230,7 +1262,29 @@
                             {% if value.active %}checked{% endif %}>
                           
                           {%- if filter_label_down contains 'color' or filter_label_down contains 'colour' -%}
-                            {%- assign swatch_color = value.label | downcase -%}
+                            {%- assign val_low = value.label | downcase -%}
+                            {%- assign swatch_color = '#d8c7b5' -%}
+                            {%- if val_low contains 'ivory' or val_low contains 'white' -%}{%- assign swatch_color = '#F5F2EB' -%}
+                            {%- elsif val_low contains 'beige' or val_low contains 'sand' or val_low contains 'travertine' -%}{%- assign swatch_color = '#D8C7B5' -%}
+                            {%- elsif val_low contains 'burgundy' or val_low contains 'wine' -%}{%- assign swatch_color = '#6A2B35' -%}
+                            {%- elsif val_low contains 'rose' or val_low contains 'pink' or val_low contains 'blush' -%}{%- assign swatch_color = '#C89D91' -%}
+                            {%- elsif val_low contains 'anthracite' or val_low contains 'charcoal' -%}{%- assign swatch_color = '#2E2D2B' -%}
+                            {%- elsif val_low contains 'slate' or val_low contains 'grey' or val_low contains 'gray' or val_low contains 'concrete' -%}{%- assign swatch_color = '#7E8082' -%}
+                            {%- elsif val_low contains 'emerald' -%}{%- assign swatch_color = '#1B4D3E' -%}
+                            {%- elsif val_low contains 'olive' or val_low contains 'cypress' -%}{%- assign swatch_color = '#4B5320' -%}
+                            {%- elsif val_low contains 'sage' -%}{%- assign swatch_color = '#9CAF88' -%}
+                            {%- elsif val_low contains 'green' -%}{%- assign swatch_color = '#2D5A43' -%}
+                            {%- elsif val_low contains 'cream' or val_low contains 'bone' or val_low contains 'calacatta' -%}{%- assign swatch_color = '#FDF6E2' -%}
+                            {%- elsif val_low contains 'black' or val_low contains 'nero' -%}{%- assign swatch_color = '#1E1B18' -%}
+                            {%- elsif val_low contains 'terracotta' or val_low contains 'cotto' or val_low contains 'sienna' -%}{%- assign swatch_color = '#8E6356' -%}
+                            {%- elsif val_low contains 'ochre' or val_low contains 'mustard' or val_low contains 'gold' -%}{%- assign swatch_color = '#C4823F' -%}
+                            {%- elsif val_low contains 'silver' -%}{%- assign swatch_color = '#C5C6C7' -%}
+                            {%- elsif val_low contains 'walnut' or val_low contains 'wood' or val_low contains 'brown' -%}{%- assign swatch_color = '#5C4033' -%}
+                            {%- elsif val_low contains 'sepia' or val_low contains 'taupe' -%}{%- assign swatch_color = '#7F675B' -%}
+                            {%- elsif val_low contains 'indigo' or val_low contains 'navy' or val_low contains 'midnight' -%}{%- assign swatch_color = '#1E293B' -%}
+                            {%- elsif val_low contains 'blue' -%}{%- assign swatch_color = '#8BAAC1' -%}
+                            {%- elsif val_low contains 'sisal' or val_low contains 'jute' or val_low contains 'natural' -%}{%- assign swatch_color = '#C7B198' -%}
+                            {%- endif -%}
                             <span class="el-swatch-dot" style="background-color: {{ swatch_color }};"></span>
                           {%- endif -%}
 
@@ -1302,6 +1356,66 @@
                       <label class="el-check-label">
                         <input type="checkbox" class="el-check-input el-tag-filter" data-group="type" value="{{ type | downcase | escape }}">
                         <span>{{ type }}</span>
+                      </label>
+                    {%- endif -%}
+                  {%- endfor -%}
+                </div>
+              </div>
+            {%- endif -%}
+          {%- endunless -%}
+
+          {%- comment -%} Dynamic Colors & Tones (when native Search & Discovery filter for color is not enabled) {%- endcomment -%}
+          {%- unless existing_labels contains 'color' or existing_labels contains 'colour' -%}
+            {%- assign collected_colors = '' -%}
+            {%- for prod in collection.products -%}
+              {%- for opt in prod.options_with_values -%}
+                {%- assign opt_name_down = opt.name | downcase -%}
+                {%- if opt_name_down contains 'color' or opt_name_down contains 'colour' -%}
+                  {%- for val in opt.values -%}
+                    {%- unless collected_colors contains val -%}
+                      {%- assign collected_colors = collected_colors | append: ',' | append: val -%}
+                    {%- endunless -%}
+                  {%- endfor -%}
+                {%- endif -%}
+              {%- endfor -%}
+            {%- endfor -%}
+            {%- assign color_list = collected_colors | remove_first: ',' | split: ',' | uniq | sort -%}
+            {%- if color_list.size > 0 -%}
+              <div class="el-filter-accordion">
+                <button type="button" class="el-accordion-btn">
+                  <span>Color &amp; Tone</span>
+                  <svg viewBox="0 0 10 6"><polyline points="1 1 5 5 9 1"></polyline></svg>
+                </button>
+                <div class="el-accordion-body">
+                  {%- for clr in color_list -%}
+                    {%- if clr != blank -%}
+                      {%- assign val_low = clr | downcase -%}
+                      {%- assign swatch_color = '#d8c7b5' -%}
+                      {%- if val_low contains 'ivory' or val_low contains 'white' -%}{%- assign swatch_color = '#F5F2EB' -%}
+                      {%- elsif val_low contains 'beige' or val_low contains 'sand' or val_low contains 'travertine' -%}{%- assign swatch_color = '#D8C7B5' -%}
+                      {%- elsif val_low contains 'burgundy' or val_low contains 'wine' -%}{%- assign swatch_color = '#6A2B35' -%}
+                      {%- elsif val_low contains 'rose' or val_low contains 'pink' or val_low contains 'blush' -%}{%- assign swatch_color = '#C89D91' -%}
+                      {%- elsif val_low contains 'anthracite' or val_low contains 'charcoal' -%}{%- assign swatch_color = '#2E2D2B' -%}
+                      {%- elsif val_low contains 'slate' or val_low contains 'grey' or val_low contains 'gray' or val_low contains 'concrete' -%}{%- assign swatch_color = '#7E8082' -%}
+                      {%- elsif val_low contains 'emerald' -%}{%- assign swatch_color = '#1B4D3E' -%}
+                      {%- elsif val_low contains 'olive' or val_low contains 'cypress' -%}{%- assign swatch_color = '#4B5320' -%}
+                      {%- elsif val_low contains 'sage' -%}{%- assign swatch_color = '#9CAF88' -%}
+                      {%- elsif val_low contains 'green' -%}{%- assign swatch_color = '#2D5A43' -%}
+                      {%- elsif val_low contains 'cream' or val_low contains 'bone' or val_low contains 'calacatta' -%}{%- assign swatch_color = '#FDF6E2' -%}
+                      {%- elsif val_low contains 'black' or val_low contains 'nero' -%}{%- assign swatch_color = '#1E1B18' -%}
+                      {%- elsif val_low contains 'terracotta' or val_low contains 'cotto' or val_low contains 'sienna' -%}{%- assign swatch_color = '#8E6356' -%}
+                      {%- elsif val_low contains 'ochre' or val_low contains 'mustard' or val_low contains 'gold' -%}{%- assign swatch_color = '#C4823F' -%}
+                      {%- elsif val_low contains 'silver' -%}{%- assign swatch_color = '#C5C6C7' -%}
+                      {%- elsif val_low contains 'walnut' or val_low contains 'wood' or val_low contains 'brown' -%}{%- assign swatch_color = '#5C4033' -%}
+                      {%- elsif val_low contains 'sepia' or val_low contains 'taupe' -%}{%- assign swatch_color = '#7F675B' -%}
+                      {%- elsif val_low contains 'indigo' or val_low contains 'navy' or val_low contains 'midnight' -%}{%- assign swatch_color = '#1E293B' -%}
+                      {%- elsif val_low contains 'blue' -%}{%- assign swatch_color = '#8BAAC1' -%}
+                      {%- elsif val_low contains 'sisal' or val_low contains 'jute' or val_low contains 'natural' -%}{%- assign swatch_color = '#C7B198' -%}
+                      {%- endif -%}
+                      <label class="el-check-label">
+                        <input type="checkbox" class="el-check-input el-tag-filter" data-group="color" value="{{ val_low | escape }}">
+                        <span class="el-swatch-dot" style="background-color: {{ swatch_color }};"></span>
+                        <span>{{ clr }}</span>
                       </label>
                     {%- endif -%}
                   {%- endfor -%}
@@ -1529,12 +1643,25 @@
           
           {%- if collection.products.size > 0 -%}
             {%- for product in collection.products -%}
+              {%- assign product_colors_arr = '' -%}
+              {%- for opt in product.options_with_values -%}
+                {%- assign opt_name_down = opt.name | downcase -%}
+                {%- if opt_name_down contains 'color' or opt_name_down contains 'colour' -%}
+                  {%- for val in opt.values -%}
+                    {%- assign product_colors_arr = product_colors_arr | append: ',' | append: val -%}
+                  {%- endfor -%}
+                {%- endif -%}
+              {%- endfor -%}
+              {%- assign product_colors_list = product_colors_arr | remove_first: ',' | split: ',' | uniq -%}
+              {%- assign product_colors_str = product_colors_list | join: ',' | downcase -%}
+
               <div class="el-product-card" 
                 data-title="{{ product.title | downcase }}" 
                 data-product-id="{{ product.id }}" 
                 data-product-handle="{{ product.handle }}"
                 data-type="{{ product.type | downcase }}"
                 data-vendor="{{ product.vendor | downcase }}"
+                data-colors="{{ product_colors_str }}"
                 data-tags="{{ product.tags | join: ',' | downcase }}">
                 <div class="el-card-media">
                   {%- if section.settings.show_wishlist -%}
@@ -1555,6 +1682,39 @@
                   <a href="{{ product.url }}" style="text-decoration: none;">
                     <h3 class="el-card-title">{{ product.title }}</h3>
                   </a>
+                  {%- if product_colors_list.size > 0 -%}
+                    <div class="el-card-color-swatches" aria-label="Available Colors">
+                      {%- for clr in product_colors_list limit: 5 -%}
+                        {%- assign clr_low = clr | downcase -%}
+                        {%- assign dot_color = '#d8c7b5' -%}
+                        {%- if clr_low contains 'ivory' or clr_low contains 'white' -%}{%- assign dot_color = '#F5F2EB' -%}
+                        {%- elsif clr_low contains 'beige' or clr_low contains 'sand' or clr_low contains 'travertine' -%}{%- assign dot_color = '#D8C7B5' -%}
+                        {%- elsif clr_low contains 'burgundy' or clr_low contains 'wine' -%}{%- assign dot_color = '#6A2B35' -%}
+                        {%- elsif clr_low contains 'rose' or clr_low contains 'pink' or clr_low contains 'blush' -%}{%- assign dot_color = '#C89D91' -%}
+                        {%- elsif clr_low contains 'anthracite' or clr_low contains 'charcoal' -%}{%- assign dot_color = '#2E2D2B' -%}
+                        {%- elsif clr_low contains 'slate' or clr_low contains 'grey' or clr_low contains 'gray' or clr_low contains 'concrete' -%}{%- assign dot_color = '#7E8082' -%}
+                        {%- elsif clr_low contains 'emerald' -%}{%- assign dot_color = '#1B4D3E' -%}
+                        {%- elsif clr_low contains 'olive' or clr_low contains 'cypress' -%}{%- assign dot_color = '#4B5320' -%}
+                        {%- elsif clr_low contains 'sage' -%}{%- assign dot_color = '#9CAF88' -%}
+                        {%- elsif clr_low contains 'green' -%}{%- assign dot_color = '#2D5A43' -%}
+                        {%- elsif clr_low contains 'cream' or clr_low contains 'bone' or clr_low contains 'calacatta' -%}{%- assign dot_color = '#FDF6E2' -%}
+                        {%- elsif clr_low contains 'black' or clr_low contains 'nero' -%}{%- assign dot_color = '#1E1B18' -%}
+                        {%- elsif clr_low contains 'terracotta' or clr_low contains 'cotto' or clr_low contains 'sienna' -%}{%- assign dot_color = '#8E6356' -%}
+                        {%- elsif clr_low contains 'ochre' or clr_low contains 'mustard' or clr_low contains 'gold' -%}{%- assign dot_color = '#C4823F' -%}
+                        {%- elsif clr_low contains 'silver' -%}{%- assign dot_color = '#C5C6C7' -%}
+                        {%- elsif clr_low contains 'walnut' or clr_low contains 'wood' or clr_low contains 'brown' -%}{%- assign dot_color = '#5C4033' -%}
+                        {%- elsif clr_low contains 'sepia' or clr_low contains 'taupe' -%}{%- assign dot_color = '#7F675B' -%}
+                        {%- elsif clr_low contains 'indigo' or clr_low contains 'navy' or clr_low contains 'midnight' -%}{%- assign dot_color = '#1E293B' -%}
+                        {%- elsif clr_low contains 'blue' -%}{%- assign dot_color = '#8BAAC1' -%}
+                        {%- elsif clr_low contains 'sisal' or clr_low contains 'jute' or clr_low contains 'natural' -%}{%- assign dot_color = '#C7B198' -%}
+                        {%- endif -%}
+                        <span class="el-card-swatch-dot" style="background-color: {{ dot_color }};" title="{{ clr | escape }}"></span>
+                      {%- endfor -%}
+                      {%- if product_colors_list.size > 5 -%}
+                        <span class="el-card-swatch-more">+{{ product_colors_list.size | minus: 5 }}</span>
+                      {%- endif -%}
+                    </div>
+                  {%- endif -%}
                   <p class="el-card-price">{{ product.price | money }} {{ section.settings.price_unit | default: '/M2' }}</p>
 
                   {%- assign default_variant = product.selected_or_first_available_variant -%}
@@ -1928,6 +2088,12 @@
               var val = values[i];
               if (grp === 'type') {
                 if (cardType === val || cardType.indexOf(val) > -1) {
+                  groupMatched = true;
+                  break;
+                }
+              } else if (grp === 'color') {
+                var cardColors = (card.getAttribute('data-colors') || '').toLowerCase();
+                if (cardColors.indexOf(val) > -1 || cardTags.indexOf(val) > -1 || title.indexOf(val) > -1) {
                   groupMatched = true;
                   break;
                 }

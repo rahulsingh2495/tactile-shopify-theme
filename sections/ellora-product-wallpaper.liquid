@@ -424,6 +424,51 @@
       box-shadow: 0 2px 6px rgba(142, 99, 86, 0.25);
     }
 
+    /* Color Swatch Option Buttons */
+    #ellora-prod-wp-{{ section.id }} .el-pw-swatches-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    #ellora-prod-wp-{{ section.id }} .el-pw-swatch-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 14px;
+      background: #FFFFFF;
+      border: 1px solid var(--el-pw-border);
+      border-radius: 2px;
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 13px;
+      color: var(--el-pw-dark);
+      transition: all 0.2s ease;
+    }
+
+    #ellora-prod-wp-{{ section.id }} .el-pw-swatch-btn:hover {
+      border-color: var(--el-pw-primary);
+      color: var(--el-pw-primary);
+    }
+
+    #ellora-prod-wp-{{ section.id }} .el-pw-swatch-btn.is-active {
+      border-color: var(--el-pw-primary);
+      background: rgba(142, 99, 86, 0.08);
+      color: var(--el-pw-primary);
+      font-weight: 600;
+      box-shadow: 0 0 0 1px var(--el-pw-primary);
+    }
+
+    #ellora-prod-wp-{{ section.id }} .el-pw-swatch-dot {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      border: 1px solid rgba(0, 0, 0, 0.15);
+      display: inline-block;
+      flex-shrink: 0;
+      box-shadow: inset 0 1px 2px rgba(0,0,0,0.12);
+    }
+
     /* Buttons */
     #ellora-prod-wp-{{ section.id }} .el-pw-actions-row {
       display: flex;
@@ -832,21 +877,67 @@
         <div class="el-pw-options" id="elWpOptions-{{ section.id }}">
           {%- unless product.has_only_default_variant -%}
             {%- for option in product.options_with_values -%}
+              {%- assign opt_name_down = option.name | downcase -%}
+              {%- assign is_color = false -%}
+              {%- if opt_name_down contains 'color' or opt_name_down contains 'colour' -%}
+                {%- assign is_color = true -%}
+              {%- endif -%}
+
               <div class="el-pw-option-group" data-option-index="{{ forloop.index0 }}">
                 <div class="el-pw-opt-header">
                   <span class="el-pw-opt-title">{{ option.name }}</span>
                   <span class="el-pw-opt-selected" data-header-val="{{ forloop.index0 }}">: {{ option.selected_value }}</span>
                 </div>
-                <div class="el-pw-pills" role="radiogroup" aria-label="{{ option.name }}">
-                  {%- for value in option.values -%}
-                    <button type="button" 
-                            class="el-pw-pill {% if option.selected_value == value %}is-active{% endif %}" 
-                            data-option-index="{{ forloop.parentloop.index0 }}" 
-                            data-value="{{ value | escape }}">
-                      {{ value }}
-                    </button>
-                  {%- endfor -%}
-                </div>
+
+                {%- if is_color -%}
+                  <div class="el-pw-swatches-list" role="radiogroup" aria-label="{{ option.name }}">
+                    {%- for value in option.values -%}
+                      {%- assign val_low = value | downcase -%}
+                      {%- assign swatch_color = '#d8c7b5' -%}
+                      {%- if val_low contains 'ivory' or val_low contains 'white' -%}{%- assign swatch_color = '#F5F2EB' -%}
+                      {%- elsif val_low contains 'beige' or val_low contains 'sand' or val_low contains 'travertine' -%}{%- assign swatch_color = '#D8C7B5' -%}
+                      {%- elsif val_low contains 'burgundy' or val_low contains 'wine' -%}{%- assign swatch_color = '#6A2B35' -%}
+                      {%- elsif val_low contains 'rose' or val_low contains 'pink' or val_low contains 'blush' -%}{%- assign swatch_color = '#C89D91' -%}
+                      {%- elsif val_low contains 'anthracite' or val_low contains 'charcoal' -%}{%- assign swatch_color = '#2E2D2B' -%}
+                      {%- elsif val_low contains 'slate' or val_low contains 'grey' or val_low contains 'gray' or val_low contains 'concrete' -%}{%- assign swatch_color = '#7E8082' -%}
+                      {%- elsif val_low contains 'emerald' -%}{%- assign swatch_color = '#1B4D3E' -%}
+                      {%- elsif val_low contains 'olive' or val_low contains 'cypress' -%}{%- assign swatch_color = '#4B5320' -%}
+                      {%- elsif val_low contains 'sage' -%}{%- assign swatch_color = '#9CAF88' -%}
+                      {%- elsif val_low contains 'green' -%}{%- assign swatch_color = '#2D5A43' -%}
+                      {%- elsif val_low contains 'cream' or val_low contains 'bone' or val_low contains 'calacatta' -%}{%- assign swatch_color = '#FDF6E2' -%}
+                      {%- elsif val_low contains 'black' or val_low contains 'nero' -%}{%- assign swatch_color = '#1E1B18' -%}
+                      {%- elsif val_low contains 'terracotta' or val_low contains 'cotto' or val_low contains 'sienna' -%}{%- assign swatch_color = '#8E6356' -%}
+                      {%- elsif val_low contains 'ochre' or val_low contains 'mustard' or val_low contains 'gold' -%}{%- assign swatch_color = '#C4823F' -%}
+                      {%- elsif val_low contains 'silver' -%}{%- assign swatch_color = '#C5C6C7' -%}
+                      {%- elsif val_low contains 'walnut' or val_low contains 'wood' or val_low contains 'brown' -%}{%- assign swatch_color = '#5C4033' -%}
+                      {%- elsif val_low contains 'sepia' or val_low contains 'taupe' -%}{%- assign swatch_color = '#7F675B' -%}
+                      {%- elsif val_low contains 'indigo' or val_low contains 'navy' or val_low contains 'midnight' -%}{%- assign swatch_color = '#1E293B' -%}
+                      {%- elsif val_low contains 'blue' -%}{%- assign swatch_color = '#8BAAC1' -%}
+                      {%- elsif val_low contains 'sisal' or val_low contains 'jute' or val_low contains 'natural' -%}{%- assign swatch_color = '#C7B198' -%}
+                      {%- endif -%}
+
+                      <button type="button" 
+                              class="el-pw-pill el-pw-swatch-btn {% if option.selected_value == value %}is-active{% endif %}" 
+                              data-option-index="{{ forloop.parentloop.index0 }}" 
+                              data-value="{{ value | escape }}"
+                              title="{{ value | escape }}">
+                        <span class="el-pw-swatch-dot" style="background-color: {{ swatch_color }};"></span>
+                        <span class="el-pw-swatch-name">{{ value }}</span>
+                      </button>
+                    {%- endfor -%}
+                  </div>
+                {%- else -%}
+                  <div class="el-pw-pills" role="radiogroup" aria-label="{{ option.name }}">
+                    {%- for value in option.values -%}
+                      <button type="button" 
+                              class="el-pw-pill {% if option.selected_value == value %}is-active{% endif %}" 
+                              data-option-index="{{ forloop.parentloop.index0 }}" 
+                              data-value="{{ value | escape }}">
+                        {{ value }}
+                      </button>
+                    {%- endfor -%}
+                  </div>
+                {%- endif -%}
               </div>
             {%- endfor -%}
           {%- else -%}
