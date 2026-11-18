@@ -796,140 +796,283 @@
       margin: 0 auto !important;
     }
 
-    .el-side-signup-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.45);
-      backdrop-filter: blur(2px);
-      z-index: 99998;
-      opacity: 0;
-      visibility: hidden;
-      transition: opacity 0.3s ease, visibility 0.3s ease;
+    /* Floating Side Sign-Up Drawer Wrapper & Scrim */
+    body.el-side-signup-open .shopify-section-group-header-group,
+    body.el-side-signup-open .shopify-section-header,
+    body.el-side-signup-open .section-header,
+    body.el-side-signup-open header,
+    body.el-side-signup-open #ellora-header-{{ section.id }} {
+      z-index: 9999999 !important;
     }
 
-    .el-side-signup-overlay.is-open {
-      opacity: 1;
-      visibility: visible;
+    .el-side-signup-wrapper {
+      position: fixed !important;
+      top: 0 !important;
+      left: 0 !important;
+      width: 100vw !important;
+      height: 100vh !important;
+      height: 100dvh !important;
+      z-index: 999999 !important;
+      pointer-events: none !important;
+      visibility: hidden !important;
+      box-sizing: border-box !important;
     }
 
-    .el-side-signup-drawer {
-      position: fixed;
-      top: 0;
-      right: 0;
-      bottom: 0;
-      width: 400px;
-      max-width: 90vw;
-      background: #FAF8F5;
-      box-shadow: -8px 0 35px rgba(0, 0, 0, 0.2);
-      z-index: 99999;
-      transform: translateX(100%);
-      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-      display: flex;
-      flex-direction: column;
-      padding: 36px 32px;
-      box-sizing: border-box;
-      overflow-y: auto;
-      font-family: var(--el-hd-font-sans);
+    .el-side-signup-wrapper.is-open {
+      pointer-events: auto !important;
+      visibility: visible !important;
     }
 
-    .el-side-signup-drawer.is-open {
-      transform: translateX(0);
+    .el-side-signup-wrapper .el-side-signup-overlay {
+      position: absolute !important;
+      top: 0 !important;
+      left: 0 !important;
+      width: 100% !important;
+      height: 100% !important;
+      background: rgba(28, 27, 25, 0.48) !important;
+      backdrop-filter: blur(4px) !important;
+      -webkit-backdrop-filter: blur(4px) !important;
+      opacity: 0 !important;
+      transition: opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1) !important;
     }
 
-    .el-side-signup-close {
-      position: absolute;
-      top: 20px;
-      right: 20px;
-      background: none;
-      border: none;
-      font-size: 18px;
-      color: var(--el-hd-muted);
-      cursor: pointer;
-      line-height: 1;
-      padding: 6px;
+    .el-side-signup-wrapper.is-open .el-side-signup-overlay {
+      opacity: 1 !important;
     }
 
-    .el-side-signup-close:hover {
-      color: var(--el-hd-dark);
+    .el-side-signup-wrapper .el-side-signup-drawer {
+      position: absolute !important;
+      top: 0 !important;
+      right: 0 !important;
+      bottom: 0 !important;
+      width: 440px !important;
+      max-width: 92vw !important;
+      height: 100% !important;
+      height: 100dvh !important;
+      background: #FAF8F5 !important;
+      box-shadow: -12px 0 45px rgba(28, 27, 25, 0.22) !important;
+      transform: translateX(100%) !important;
+      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1) !important;
+      display: flex !important;
+      flex-direction: column !important;
+      box-sizing: border-box !important;
+      overflow-y: auto !important;
+      -webkit-overflow-scrolling: touch !important;
+      font-family: var(--el-hd-font-sans, -apple-system, sans-serif) !important;
+      z-index: 2 !important;
     }
 
-    .el-side-signup-eyebrow {
-      font-size: 11.5px;
-      font-weight: 700;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: var(--el-hd-primary, #8E6356);
-      margin-bottom: 12px;
+    .el-side-signup-wrapper.is-open .el-side-signup-drawer {
+      transform: translateX(0) !important;
     }
 
-    .el-side-signup-title {
-      font-family: var(--el-hd-font-serif);
-      font-size: 28px;
-      font-weight: 400;
-      line-height: 1.25;
-      color: var(--el-hd-dark);
-      margin: 0 0 14px;
+    /* Drawer Header */
+    .el-ss-header {
+      padding: 22px 28px !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: space-between !important;
+      border-bottom: 1px solid #ECE7E1 !important;
+      background: #FFFFFF !important;
+      flex-shrink: 0 !important;
     }
 
-    .el-side-signup-desc {
-      font-size: 14px;
-      line-height: 1.6;
-      color: var(--el-hd-muted);
-      margin: 0 0 26px;
+    .el-ss-kicker {
+      font-size: 11px !important;
+      font-weight: 700 !important;
+      letter-spacing: 0.16em !important;
+      text-transform: uppercase !important;
+      color: #8E6356 !important;
     }
 
-    .el-side-signup-form {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
+    .el-ss-close-btn {
+      width: 32px !important;
+      height: 32px !important;
+      border-radius: 50% !important;
+      border: 1px solid #E6E1D9 !important;
+      background: #FFFFFF !important;
+      color: #736E67 !important;
+      cursor: pointer !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      transition: all 0.2s ease !important;
+      padding: 0 !important;
+      line-height: 1 !important;
     }
 
-    .el-side-signup-input {
-      width: 100%;
-      height: 46px;
-      background: #FFFFFF;
-      border: 1px solid #E6E1D9;
-      border-radius: 4px;
-      padding: 0 16px;
-      font-family: inherit;
-      font-size: 14px;
-      color: var(--el-hd-dark);
-      outline: none;
-      box-sizing: border-box;
-      transition: border-color 0.2s ease;
+    .el-ss-close-btn:hover {
+      background: #8E6356 !important;
+      color: #FFFFFF !important;
+      border-color: #8E6356 !important;
     }
 
-    .el-side-signup-input:focus {
-      border-color: var(--el-hd-primary);
+    /* Drawer Body */
+    .el-ss-body {
+      padding: 28px 24px !important;
+      display: flex !important;
+      flex-direction: column !important;
+      gap: 20px !important;
+      flex: 1 !important;
     }
 
-    .el-side-signup-btn {
-      width: 100%;
-      height: 48px;
-      background: var(--el-hd-primary, #8E6356);
-      color: #FFFFFF;
-      border: none;
-      border-radius: 4px;
-      font-family: inherit;
-      font-size: 13.5px;
-      font-weight: 600;
-      letter-spacing: 0.04em;
-      cursor: pointer;
-      transition: background 0.2s ease;
+    .el-ss-hero-card {
+      background: #FFFFFF !important;
+      border: 1px solid #EAE5DE !important;
+      border-radius: 6px !important;
+      padding: 22px 20px !important;
+      box-shadow: 0 4px 18px rgba(0, 0, 0, 0.03) !important;
     }
 
-    .el-side-signup-btn:hover {
-      background: #734E43;
+    .el-ss-tag {
+      display: inline-block !important;
+      font-size: 10px !important;
+      font-weight: 700 !important;
+      letter-spacing: 0.14em !important;
+      text-transform: uppercase !important;
+      background: #FAF4EF !important;
+      color: #8E6356 !important;
+      padding: 4px 10px !important;
+      border-radius: 3px !important;
+      margin-bottom: 12px !important;
     }
 
-    .el-side-signup-note {
-      font-size: 12px;
-      color: #8C867E;
-      margin-top: 14px;
-      line-height: 1.5;
+    .el-ss-title {
+      font-family: 'Cormorant Garamond', Georgia, serif !important;
+      font-size: 26px !important;
+      font-weight: 400 !important;
+      line-height: 1.25 !important;
+      color: #1C1B19 !important;
+      margin: 0 0 12px 0 !important;
+    }
+
+    .el-ss-desc {
+      font-size: 13.5px !important;
+      line-height: 1.6 !important;
+      color: #68645F !important;
+      margin: 0 !important;
+    }
+
+    /* Form & Input */
+    .el-ss-form {
+      display: flex !important;
+      flex-direction: column !important;
+      gap: 12px !important;
+    }
+
+    .el-ss-input-wrap {
+      position: relative !important;
+      width: 100% !important;
+    }
+
+    .el-ss-mail-icon {
+      position: absolute !important;
+      left: 14px !important;
+      top: 50% !important;
+      transform: translateY(-50%) !important;
+      width: 17px !important;
+      height: 17px !important;
+      stroke: #8E6356 !important;
+      pointer-events: none !important;
+    }
+
+    .el-ss-input {
+      width: 100% !important;
+      height: 48px !important;
+      background: #FFFFFF !important;
+      border: 1.5px solid #DDD7CE !important;
+      border-radius: 4px !important;
+      padding: 0 16px 0 42px !important;
+      font-family: inherit !important;
+      font-size: 14px !important;
+      color: #1C1B19 !important;
+      outline: none !important;
+      box-sizing: border-box !important;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease !important;
+    }
+
+    .el-ss-input:focus {
+      border-color: #8E6356 !important;
+      box-shadow: 0 0 0 3px rgba(142, 99, 86, 0.12) !important;
+    }
+
+    .el-ss-submit-btn {
+      width: 100% !important;
+      height: 48px !important;
+      background: #8E6356 !important;
+      color: #FFFFFF !important;
+      border: none !important;
+      border-radius: 4px !important;
+      font-family: inherit !important;
+      font-size: 13.5px !important;
+      font-weight: 600 !important;
+      letter-spacing: 0.05em !important;
+      cursor: pointer !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      gap: 8px !important;
+      transition: background-color 0.2s ease !important;
+    }
+
+    .el-ss-submit-btn:hover {
+      background: #734E43 !important;
+    }
+
+    .el-ss-success {
+      display: flex !important;
+      align-items: center !important;
+      gap: 8px !important;
+      padding: 10px 14px !important;
+      background: #E8F4EC !important;
+      border: 1px solid #C4E2CE !important;
+      border-radius: 4px !important;
+      color: #2D6A4F !important;
+      font-size: 13px !important;
+      font-weight: 500 !important;
+    }
+
+    /* Perks */
+    .el-ss-perks {
+      background: #FFFFFF !important;
+      border: 1px solid #ECE7E1 !important;
+      border-radius: 6px !important;
+      padding: 16px 18px !important;
+      display: flex !important;
+      flex-direction: column !important;
+      gap: 12px !important;
+    }
+
+    .el-ss-perk-item {
+      display: flex !important;
+      align-items: flex-start !important;
+      gap: 10px !important;
+    }
+
+    .el-ss-perk-bullet {
+      color: #8E6356 !important;
+      font-size: 16px !important;
+      line-height: 1.2 !important;
+    }
+
+    .el-ss-perk-text {
+      font-size: 12.5px !important;
+      line-height: 1.5 !important;
+      color: #5C554E !important;
+    }
+
+    .el-ss-perk-text strong {
+      color: #1C1B19 !important;
+      font-weight: 600 !important;
+    }
+
+    .el-ss-note {
+      font-size: 12px !important;
+      line-height: 1.5 !important;
+      color: #8C867E !important;
+      text-align: center !important;
+      margin: auto 0 0 0 !important;
+      padding-top: 10px !important;
     }
 
     /* -----------------------------------------------------------------------
@@ -2315,22 +2458,85 @@
     <span>Sign up &amp; Offers</span>
   </button>
 
-  <div class="el-side-signup-overlay" id="elSideSignupOverlay-{{ section.id }}" aria-hidden="true"></div>
-  <aside class="el-side-signup-drawer" id="elSideSignupDrawer-{{ section.id }}" aria-label="Newsletter Signup" role="dialog" aria-modal="true">
-    <button type="button" class="el-side-signup-close" id="elSideSignupClose-{{ section.id }}" aria-label="Close signup drawer">&times;</button>
-    <span class="el-side-signup-eyebrow">Ellora Living</span>
-    <h3 class="el-side-signup-title">Sign up for exclusive inspiration &amp; offers</h3>
-    <p class="el-side-signup-desc">Join our design circle for curated surface edits, material previews, and architectural guidance delivered directly to your inbox.</p>
-    {% form 'customer', id: 'SideSignupForm', class: 'el-side-signup-form' %}
-      <input type="hidden" name="contact[tags]" value="newsletter">
-      <input type="email" name="contact[email]" class="el-side-signup-input" placeholder="Enter your email address" required autocomplete="email">
-      <button type="submit" class="el-side-signup-btn">Sign Up for Inspiration</button>
-      {% if form.posted_successfully? %}
-        <p style="color:#2d6a4f; font-weight:600; font-size:13px; margin-top:8px;">&check; Thank you for subscribing!</p>
-      {% endif %}
-    {% endform %}
-    <p class="el-side-signup-note">We respect your inbox. You can unsubscribe at any time.</p>
-  </aside>
+  <!-- Floating Side Sign-Up Drawer Wrapper -->
+  <div class="el-side-signup-wrapper" id="elSideSignupWrapper-{{ section.id }}" aria-hidden="true">
+    <div class="el-side-signup-overlay" id="elSideSignupOverlay-{{ section.id }}"></div>
+    <aside class="el-side-signup-drawer" id="elSideSignupDrawer-{{ section.id }}" aria-label="Newsletter Signup" role="dialog" aria-modal="true">
+      <!-- Drawer Header Bar -->
+      <header class="el-ss-header">
+        <span class="el-ss-kicker">Ellora Living &bull; Circle</span>
+        <button type="button" class="el-ss-close-btn" id="elSideSignupClose-{{ section.id }}" aria-label="Close signup drawer">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 16px; height: 16px; display: block;"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        </button>
+      </header>
+
+      <!-- Drawer Content Body -->
+      <div class="el-ss-body">
+        <!-- Visual Architectural Hero Card -->
+        <div class="el-ss-hero-card">
+          <span class="el-ss-tag">Curated Privileges</span>
+          <h3 class="el-ss-title">Sign up for exclusive inspiration &amp; offers</h3>
+          <p class="el-ss-desc">Join our design circle for curated surface edits, material previews, and architectural guidance delivered directly to your inbox.</p>
+        </div>
+
+        <!-- Signup Form -->
+        {% form 'customer', id: 'SideSignupForm', class: 'el-ss-form' %}
+          <input type="hidden" name="contact[tags]" value="newsletter, side-signup">
+          <div class="el-ss-input-wrap">
+            <svg class="el-ss-mail-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+              <polyline points="22,6 12,13 2,6"></polyline>
+            </svg>
+            <input 
+              type="email" 
+              name="contact[email]" 
+              class="el-ss-input" 
+              placeholder="Enter your email address" 
+              required 
+              autocomplete="email"
+              aria-label="Email address">
+          </div>
+          <button type="submit" class="el-ss-submit-btn">
+            <span>Sign Up for Inspiration</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 14px; height: 14px;"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </button>
+          {% if form.posted_successfully? %}
+            <div class="el-ss-success">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#2d6a4f" stroke-width="2" style="width: 16px; height: 16px;"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+              <span>Thank you for subscribing to Ellora Living notes!</span>
+            </div>
+          {% endif %}
+        {% endform %}
+
+        <!-- Perks / Benefits List -->
+        <div class="el-ss-perks">
+          <div class="el-ss-perk-item">
+            <span class="el-ss-perk-bullet">&bull;</span>
+            <div class="el-ss-perk-text">
+              <strong>Seasonal Curations:</strong> First look at new limestone, travertine &amp; patterned surfaces.
+            </div>
+          </div>
+          <div class="el-ss-perk-item">
+            <span class="el-ss-perk-bullet">&bull;</span>
+            <div class="el-ss-perk-text">
+              <strong>Sample Swatch Priority:</strong> Access to material consultations and complimentary swatches.
+            </div>
+          </div>
+          <div class="el-ss-perk-item">
+            <span class="el-ss-perk-bullet">&bull;</span>
+            <div class="el-ss-perk-text">
+              <strong>Architectural Edits:</strong> Technical insights on stone care, sealing, and laying guides.
+            </div>
+          </div>
+        </div>
+
+        <p class="el-ss-note">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" style="width: 12px; height: 12px; display: inline-block; vertical-align: middle; margin-right: 4px;"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+          We respect your inbox. Unsubscribe at any time with one click.
+        </p>
+      </div>
+    </aside>
+  </div>
 
   {%- if section.settings.enable_slide_cart -%}
     <!-- ========================================================================
@@ -2914,20 +3120,31 @@
     document.addEventListener('cart:open', openSlideCart);
 
     // Side Sign-Up Drawer Listeners (Mandarin Stone inspired)
+    var sideSignupWrapper = document.getElementById('elSideSignupWrapper-' + sectionId);
     var sideSignupTab = document.getElementById('elSideSignupTab-' + sectionId);
     var sideSignupDrawer = document.getElementById('elSideSignupDrawer-' + sectionId);
     var sideSignupOverlay = document.getElementById('elSideSignupOverlay-' + sectionId);
     var sideSignupClose = document.getElementById('elSideSignupClose-' + sectionId);
 
     function openSideSignup() {
+      if (sideSignupWrapper) {
+        sideSignupWrapper.classList.add('is-open');
+        sideSignupWrapper.setAttribute('aria-hidden', 'false');
+      }
       if (sideSignupDrawer) sideSignupDrawer.classList.add('is-open');
       if (sideSignupOverlay) sideSignupOverlay.classList.add('is-open');
+      document.body.classList.add('el-side-signup-open');
       document.body.style.overflow = 'hidden';
     }
 
     function closeSideSignup() {
+      if (sideSignupWrapper) {
+        sideSignupWrapper.classList.remove('is-open');
+        sideSignupWrapper.setAttribute('aria-hidden', 'true');
+      }
       if (sideSignupDrawer) sideSignupDrawer.classList.remove('is-open');
       if (sideSignupOverlay) sideSignupOverlay.classList.remove('is-open');
+      document.body.classList.remove('el-side-signup-open');
       document.body.style.overflow = '';
     }
 
@@ -2936,7 +3153,7 @@
     if (sideSignupOverlay) sideSignupOverlay.addEventListener('click', closeSideSignup);
 
     document.addEventListener('keydown', function(e) {
-      if (e.key === 'Escape' && sideSignupDrawer && sideSignupDrawer.classList.contains('is-open')) {
+      if (e.key === 'Escape' && sideSignupWrapper && (sideSignupWrapper.classList.contains('is-open') || (sideSignupDrawer && sideSignupDrawer.classList.contains('is-open')))) {
         closeSideSignup();
       }
     });

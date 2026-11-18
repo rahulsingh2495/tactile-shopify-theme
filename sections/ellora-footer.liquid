@@ -519,7 +519,7 @@
           {%- else -%}
             <li class="el-footer-nav-item"><a href="/pages/trade">Trade</a></li>
             <li class="el-footer-nav-item"><a href="/pages/about">About Us</a></li>
-            <li class="el-footer-nav-item"><a href="/#elloraliving">#Ellora Living</a></li>
+            <li class="el-footer-nav-item"><a href="{{ routes.root_url }}#elloraliving" onclick="if(window.location.pathname === '/' || window.location.pathname === '{{ routes.root_url }}'){ var el = document.getElementById('elloraliving') || document.querySelector('.el-sec-community-wrapper'); if(el){ el.scrollIntoView({ behavior: 'smooth' }); return false; } }">#Ellora Living</a></li>
           {%- endif -%}
         </ul>
       </div>
