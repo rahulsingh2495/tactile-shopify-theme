@@ -800,9 +800,13 @@
     body.el-side-signup-open .shopify-section-group-header-group,
     body.el-side-signup-open .shopify-section-header,
     body.el-side-signup-open .section-header,
-    body.el-side-signup-open header,
-    body.el-side-signup-open #ellora-header-{{ section.id }} {
-      z-index: 9999999 !important;
+    body.el-side-signup-open #shopify-section-{{ section.id }} {
+      z-index: 2147483640 !important;
+    }
+
+    body.el-side-signup-open .el-header-main-nav,
+    body.el-side-signup-open .el-header-top-bar {
+      z-index: 10 !important;
     }
 
     .el-side-signup-wrapper {
@@ -812,7 +816,7 @@
       width: 100vw !important;
       height: 100vh !important;
       height: 100dvh !important;
-      z-index: 999999 !important;
+      z-index: 2147483647 !important;
       pointer-events: none !important;
       visibility: hidden !important;
       box-sizing: border-box !important;
@@ -833,6 +837,7 @@
       backdrop-filter: blur(4px) !important;
       -webkit-backdrop-filter: blur(4px) !important;
       opacity: 0 !important;
+      z-index: 1 !important;
       transition: opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1) !important;
     }
 
