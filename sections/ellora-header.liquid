@@ -457,8 +457,8 @@
       position: absolute;
       top: calc(100% + 2px);
       left: 0;
-      width: 940px;
-      max-width: 90vw;
+      width: 1080px;
+      max-width: 95vw;
       background: #FFFFFF;
       border: 1px solid var(--el-hd-border);
       border-radius: 4px;
@@ -634,6 +634,11 @@
       align-items: start;
     }
 
+    #ellora-header-{{ section.id }} #stone-panel-tab-{{ section.id }} {
+      grid-template-columns: 1.35fr 1fr 1.05fr 1fr 1.15fr !important;
+      gap: 16px !important;
+    }
+
     #ellora-header-{{ section.id }} .el-tab-pane.is-active {
       display: grid;
     }
@@ -645,7 +650,7 @@
 
     #ellora-header-{{ section.id }} .el-col-bordered {
       border-left: 1px solid var(--el-hd-border-light);
-      padding-left: 20px;
+      padding-left: 16px;
     }
 
     #ellora-header-{{ section.id }} .el-pane-heading {
@@ -663,7 +668,7 @@
       line-height: 1.45;
       color: var(--el-hd-muted);
       margin: 0 0 18px 0;
-      max-width: 175px;
+      max-width: 195px;
     }
 
     #ellora-header-{{ section.id }} .el-pane-btn {
@@ -671,14 +676,15 @@
       align-items: center;
       justify-content: center;
       align-self: flex-start;
-      padding: 9px 18px;
+      padding: 9px 15px;
       background-color: var(--el-hd-primary);
       color: #FFFFFF !important;
       border-radius: 3px;
       font-family: var(--el-hd-font-sans);
-      font-size: 12.5px;
+      font-size: 12px;
       font-weight: 500;
       text-decoration: none;
+      white-space: nowrap !important;
       transition: background-color 0.2s ease;
     }
 
@@ -731,45 +737,61 @@
 
     /* Floating Side Sign-Up Tab & Drawer (Mandarin Stone inspired) */
     .el-side-signup-tab {
-      position: fixed;
-      right: 0;
-      top: 55%;
-      transform: translateY(-50%);
-      z-index: 9998;
-      background: var(--el-hd-primary, #8E6356);
-      color: #FFFFFF;
-      border: none;
-      border-radius: 6px 0 0 6px;
-      padding: 14px 9px;
-      cursor: pointer;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 8px;
-      box-shadow: -3px 4px 18px rgba(0, 0, 0, 0.18);
-      transition: all 0.25s ease;
-      font-family: var(--el-hd-font-sans);
+      position: fixed !important;
+      right: 0 !important;
+      left: auto !important;
+      top: 50% !important;
+      transform: translateY(-50%) !important;
+      width: 36px !important;
+      min-width: 36px !important;
+      max-width: 36px !important;
+      height: auto !important;
+      margin: 0 !important;
+      z-index: 9998 !important;
+      background: #8E6356 !important;
+      color: #FFFFFF !important;
+      border: none !important;
+      outline: none !important;
+      border-radius: 6px 0 0 6px !important;
+      padding: 14px 6px !important;
+      cursor: pointer !important;
+      display: flex !important;
+      flex-direction: column !important;
+      align-items: center !important;
+      justify-content: center !important;
+      gap: 8px !important;
+      box-shadow: -2px 4px 16px rgba(0, 0, 0, 0.2) !important;
+      box-sizing: border-box !important;
+      transition: background-color 0.2s ease, transform 0.2s ease !important;
+      font-family: var(--el-hd-font-sans, -apple-system, sans-serif) !important;
+      text-decoration: none !important;
     }
 
     .el-side-signup-tab:hover {
-      background: #734E43;
-      padding-right: 14px;
+      background: #734E43 !important;
+      transform: translateY(-50%) translateX(-2px) !important;
     }
 
     .el-side-signup-tab svg {
-      width: 16px;
-      height: 16px;
-      stroke: #FFFFFF;
+      width: 16px !important;
+      height: 16px !important;
+      stroke: #FFFFFF !important;
+      fill: none !important;
+      display: block !important;
+      flex-shrink: 0 !important;
     }
 
     .el-side-signup-tab span {
-      writing-mode: vertical-rl;
-      transform: rotate(180deg);
-      font-size: 11px;
-      font-weight: 600;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      white-space: nowrap;
+      writing-mode: vertical-rl !important;
+      transform: rotate(180deg) !important;
+      font-size: 11px !important;
+      font-weight: 600 !important;
+      letter-spacing: 0.08em !important;
+      text-transform: uppercase !important;
+      color: #FFFFFF !important;
+      white-space: nowrap !important;
+      line-height: 1 !important;
+      display: block !important;
     }
 
     .el-side-signup-overlay {
@@ -2286,8 +2308,8 @@
   </aside>
 
   <!-- Floating Side Sign-Up Tab & Slide-Out Drawer (Mandarin Stone inspired) -->
-  <button type="button" class="el-side-signup-tab" id="elSideSignupTab-{{ section.id }}" aria-label="Sign up for exclusive inspiration & offers">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+  <button type="button" class="el-side-signup-tab" id="elSideSignupTab-{{ section.id }}" aria-label="Sign up for exclusive inspiration & offers" style="width: 36px !important; min-width: 36px !important; max-width: 36px !important; position: fixed !important; right: 0 !important; left: auto !important; top: 50% !important; transform: translateY(-50%) !important; z-index: 9998 !important; background-color: #8E6356 !important; color: #FFFFFF !important;">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 16px; height: 16px; stroke: #FFFFFF;"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
     <span>Sign up &amp; Offers</span>
   </button>
 
