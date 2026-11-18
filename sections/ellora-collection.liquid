@@ -576,7 +576,7 @@
       background: #FFFFFF;
       border: 1px solid var(--el-col-border);
       border-radius: 4px;
-      padding: 0 85px 0 38px;
+      padding: 0 16px 0 38px;
       font-family: var(--el-col-font-sans);
       font-size: 13.5px;
       color: var(--el-col-dark);
@@ -588,22 +588,6 @@
     #ellora-collection-{{ section.id }} .el-col-search-input:focus {
       border-color: var(--el-col-primary);
       box-shadow: 0 0 0 1px var(--el-col-primary);
-    }
-
-    #ellora-collection-{{ section.id }} .el-col-search-badge {
-      position: absolute;
-      right: 10px;
-      top: 50%;
-      transform: translateY(-50%);
-      font-size: 11.5px;
-      font-weight: 600;
-      color: var(--el-col-primary);
-      background: rgba(142, 99, 86, 0.12);
-      padding: 3px 8px;
-      border-radius: 12px;
-      pointer-events: none;
-      display: none;
-      white-space: nowrap;
     }
 
     #ellora-collection-{{ section.id }} .el-col-search-results-pill {
@@ -1612,7 +1596,6 @@
             <div class="el-col-search-box">
               <svg class="el-col-search-icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
               <input type="text" class="el-col-search-input" id="elCollectionSearch" placeholder="{{ section.settings.search_placeholder | default: 'Search products in this collection...' }}" autocomplete="off">
-              <span class="el-col-search-badge" id="elSearchBadge"></span>
             </div>
             <div class="el-col-search-results-pill" id="elSearchResultsPill"></div>
           </div>
@@ -2080,7 +2063,6 @@
 
     // Dynamic Filter & Search System + Pagination
     var searchInput = root.querySelector('#elCollectionSearch');
-    var searchBadge = root.querySelector('#elSearchBadge');
     var searchResultsPill = root.querySelector('#elSearchResultsPill');
     var tagCheckboxes = root.querySelectorAll('.el-tag-filter');
     var countText = root.querySelector('.el-col-count-text');
@@ -2239,12 +2221,8 @@
         }
       });
 
-      // Update Top Search Badge & Right Pill & Stats Count
+      // Update Top Right Pill & Stats Count
       if (isFilteringActive) {
-        if (searchBadge) {
-          searchBadge.style.display = 'inline-block';
-          searchBadge.textContent = totalMatched + ' Found';
-        }
         if (searchResultsPill) {
           searchResultsPill.innerHTML = '<span class="el-found-tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg> <span class="el-pill-num">' + totalMatched + '</span> ' + (totalMatched === 1 ? 'Product' : 'Products') + ' Found</span>';
         }
@@ -2256,9 +2234,6 @@
           }
         }
       } else {
-        if (searchBadge) {
-          searchBadge.style.display = 'none';
-        }
         if (searchResultsPill) {
           searchResultsPill.innerHTML = 'Showing all <strong>' + totalCards + '</strong> Products';
         }
