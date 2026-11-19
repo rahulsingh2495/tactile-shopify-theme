@@ -1890,8 +1890,16 @@
             </div>
           {%- elsif section.settings.show_top_links -%}
             <div class="el-announcement-links">
-              <a href="{{ section.settings.faq_url | default: '/pages/faqs' }}">
-                {{ section.settings.faq_label | default: 'FAQs' }}
+              {%- assign top_advice_url = section.settings.faq_url | default: '/pages/advice-hub' -%}
+              {%- if top_advice_url contains '/pages/faq' or top_advice_url contains '/pages/faqs' -%}
+                {%- assign top_advice_url = '/pages/advice-hub' -%}
+              {%- endif -%}
+              {%- assign top_advice_label = section.settings.faq_label | default: 'Advice Hub' -%}
+              {%- if top_advice_label == 'FAQ' or top_advice_label == 'FAQs' or top_advice_label == 'Faq' or top_advice_label == blank -%}
+                {%- assign top_advice_label = 'Advice Hub' -%}
+              {%- endif -%}
+              <a href="{{ top_advice_url }}">
+                {{ top_advice_label }}
               </a>
               {%- if section.settings.show_top_contact and section.settings.contact_label != blank -%}
                 <a href="{{ section.settings.contact_url | default: '/pages/contact' }}">
@@ -2443,8 +2451,16 @@
             <a href="{{ top_link.url }}">{{ top_link.title }}</a>
           {%- endfor -%}
         {%- else -%}
-          {%- if section.settings.faq_label != blank -%}
-            <a href="{{ section.settings.faq_url | default: '/pages/faqs' }}">{{ section.settings.faq_label }}</a>
+          {%- assign drawer_advice_url = section.settings.faq_url | default: '/pages/advice-hub' -%}
+          {%- if drawer_advice_url contains '/pages/faq' or drawer_advice_url contains '/pages/faqs' -%}
+            {%- assign drawer_advice_url = '/pages/advice-hub' -%}
+          {%- endif -%}
+          {%- assign drawer_advice_label = section.settings.faq_label | default: 'Advice Hub' -%}
+          {%- if drawer_advice_label == 'FAQ' or drawer_advice_label == 'FAQs' or drawer_advice_label == 'Faq' or drawer_advice_label == blank -%}
+            {%- assign drawer_advice_label = 'Advice Hub' -%}
+          {%- endif -%}
+          {%- if drawer_advice_label != blank -%}
+            <a href="{{ drawer_advice_url }}">{{ drawer_advice_label }}</a>
           {%- endif -%}
           {%- if section.settings.show_top_contact and section.settings.contact_label != blank -%}
             <a href="{{ section.settings.contact_url | default: '/pages/contact' }}">{{ section.settings.contact_label }}</a>
@@ -3238,12 +3254,13 @@
     {
       "type": "text",
       "id": "faq_label",
-      "label": "FAQs Label"
+      "label": "Advice Hub Label",
+      "default": "Advice Hub"
     },
     {
       "type": "url",
       "id": "faq_url",
-      "label": "FAQs URL"
+      "label": "Advice Hub URL"
     },
     {
       "type": "text",
