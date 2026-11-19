@@ -114,6 +114,24 @@
       }
     }
 
+    #ellora-hero-{{ section.id }} video::-webkit-media-controls,
+    #ellora-hero-{{ section.id }} video::-webkit-media-controls-enclosure,
+    #ellora-hero-{{ section.id }} video::-webkit-media-controls-panel {
+      display: none !important;
+      -webkit-appearance: none;
+    }
+
+    #ellora-hero-{{ section.id }} .el-hero-shield {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 2;
+      background: transparent;
+      pointer-events: auto;
+    }
+
     #ellora-hero-{{ section.id }} .el-hero-overlay {
       position: absolute;
       top: 0;
@@ -121,13 +139,13 @@
       width: 100%;
       height: 100%;
       background: linear-gradient(180deg, rgba(0,0,0,0.03) 0%, rgba(0,0,0,0.0) 40%, rgba(0,0,0,{{ section.settings.overlay_opacity | divided_by: 100.0 | default: 0.15 }}) 100%);
-      z-index: 2;
+      z-index: 3;
       pointer-events: none;
     }
 
     #ellora-hero-{{ section.id }} .el-hero-content {
       position: relative;
-      z-index: 3;
+      z-index: 10;
       width: 90%;
       max-width: 1720px;
       margin: 0 auto;
@@ -136,6 +154,7 @@
       justify-content: center;
       align-items: center;
       text-align: center;
+      pointer-events: auto;
     }
 
     #ellora-hero-{{ section.id }} .el-hero-buttons {
@@ -197,7 +216,7 @@
       bottom: 24px;
       left: 50%;
       transform: translateX(-50%);
-      z-index: 3;
+      z-index: 10;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -283,6 +302,7 @@
 
   <section class="el-hero">
     <div class="el-hero-bg">
+      <div class="el-hero-shield"></div>
       {%- if section.settings.background_type == 'video' -%}
         {%- if section.settings.video != blank -%}
           {{ section.settings.video | video_tag: autoplay: true, loop: true, muted: true, playsinline: true, controls: false, class: 'el-hero-video' }}
@@ -291,8 +311,9 @@
             class="el-hero-video"
             src="https://www.youtube-nocookie.com/embed/{{ section.settings.video_url.id }}?autoplay=1&mute=1&controls=0&loop=1&playlist={{ section.settings.video_url.id }}&playsinline=1&rel=0&showinfo=0&modestbranding=1&enablejsapi=1&disablekb=1&fs=0&iv_load_policy=3"
             frameborder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowfullscreen
+            allow="autoplay; encrypted-media"
+            tabindex="-1"
+            aria-hidden="true"
             title="Hero Background Video"
           ></iframe>
         {%- elsif section.settings.video_url != blank and section.settings.video_url.type == 'vimeo' -%}
@@ -300,8 +321,9 @@
             class="el-hero-video"
             src="https://player.vimeo.com/video/{{ section.settings.video_url.id }}?autoplay=1&muted=1&loop=1&autopause=0&background=1&responsive=1"
             frameborder="0"
-            allow="autoplay; fullscreen; picture-in-picture"
-            allowfullscreen
+            allow="autoplay; encrypted-media"
+            tabindex="-1"
+            aria-hidden="true"
             title="Hero Background Video"
           ></iframe>
         {%- elsif section.settings.video_external_url != blank -%}
@@ -322,8 +344,9 @@
                 class="el-hero-video"
                 src="https://www.youtube-nocookie.com/embed/{{ raw_yt_id }}?autoplay=1&mute=1&controls=0&loop=1&playlist={{ raw_yt_id }}&playsinline=1&rel=0&showinfo=0&modestbranding=1&enablejsapi=1&disablekb=1&fs=0&iv_load_policy=3"
                 frameborder="0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowfullscreen
+                allow="autoplay; encrypted-media"
+                tabindex="-1"
+                aria-hidden="true"
                 title="Hero Background Video"
               ></iframe>
             {%- endif -%}
@@ -333,12 +356,13 @@
               class="el-hero-video"
               src="https://player.vimeo.com/video/{{ raw_vimeo_id }}?autoplay=1&muted=1&loop=1&autopause=0&background=1&responsive=1"
               frameborder="0"
-              allow="autoplay; fullscreen; picture-in-picture"
-              allowfullscreen
+              allow="autoplay; encrypted-media"
+              tabindex="-1"
+              aria-hidden="true"
               title="Hero Background Video"
             ></iframe>
           {%- else -%}
-            <video class="el-hero-video" autoplay muted loop playsinline preload="auto">
+            <video class="el-hero-video" autoplay muted loop playsinline preload="auto" disablePictureInPicture controlsList="nodownload nofullscreen noremoteplayback">
               <source src="{{ ext_url }}" type="video/mp4">
             </video>
           {%- endif -%}
