@@ -1740,13 +1740,6 @@
                     <h3 class="el-card-title">{{ product.title }}</h3>
                   </a>
                   {% render 'el-card-swatches', product: product, show_swatches: section.settings.show_color_swatches %}
-                        <span class="el-card-swatch-dot" style="background-color: {{ dot_color }};" title="{{ clr | escape }}"></span>
-                      {%- endfor -%}
-                      {%- if product_colors_list.size > 5 -%}
-                        <span class="el-card-swatch-more">+{{ product_colors_list.size | minus: 5 }}</span>
-                      {%- endif -%}
-                    </div>
-                  {%- endif -%}
                   <p class="el-card-price">{{ product.price | money }} {{ section.settings.price_unit | default: '/M2' }}</p>
 
                   {%- assign default_variant = product.selected_or_first_available_variant -%}
