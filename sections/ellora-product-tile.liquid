@@ -191,6 +191,24 @@
       position: relative;
     }
 
+    #ellora-prod-tile-{{ section.id }} .el-pt-video-wrap {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: #111;
+      z-index: 2;
+    }
+
+    #ellora-prod-tile-{{ section.id }} .el-pt-video-player {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      border: 0;
+    }
+
     #ellora-prod-tile-{{ section.id }} .el-pt-main-media img {
       width: 100%;
       height: 100%;
@@ -956,38 +974,81 @@
 
     <div class="el-pt-grid">
 
-      <!-- Left: Gallery -->
+      <!-- Left: Gallery (Strict 4 Images + 1 Video at Last) -->
+      {%- assign pt_img_count = 0 -%}
+      {%- assign pt_prod_video = nil -%}
+      {%- for media in product.media -%}
+        {%- if media.media_type == 'video' or media.media_type == 'external_video' -%}
+          {%- if pt_prod_video == nil -%}
+            {%- assign pt_prod_video = media -%}
+          {%- endif -%}
+        {%- endif -%}
+      {%- endfor -%}
+      {%- if pt_prod_video == nil and product.metafields.custom.video != blank -%}
+        {%- assign pt_prod_video = product.metafields.custom.video -%}
+      {%- endif -%}
+
       <div class="el-pt-gallery">
         <div class="el-pt-thumbs">
-          {%- if product.media.size > 0 -%}
+          {%- if product.media.size > 0 or product.images.size > 0 -%}
+            {%- comment -%} 1. Render exactly up to 4 Images first {%- endcomment -%}
             {%- for media in product.media -%}
-              <div class="el-pt-thumb {% if forloop.first %}is-active{% endif %}" 
-                   data-media-id="{{ media.id }}" 
-                   data-media-type="{{ media.media_type }}" 
-                   data-src="{{ media.preview_image | image_url: width: 1400 }}">
-                <img src="{{ media.preview_image | image_url: width: 180 }}" alt="{{ media.alt | default: product.title | escape }}" loading="lazy">
-                {%- if media.media_type == 'video' or media.media_type == 'external_video' -%}
-                  <span class="el-pt-video-badge" aria-label="Video">
-                    <svg viewBox="0 0 24 24" width="10" height="10" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
-                  </span>
+              {%- if media.media_type != 'video' and media.media_type != 'external_video' -%}
+                {%- if pt_img_count < 4 -%}
+                  {%- assign pt_img_count = pt_img_count | plus: 1 -%}
+                  <div class="el-pt-thumb {% if pt_img_count == 1 %}is-active{% endif %}" 
+                       data-media-id="{{ media.id }}" 
+                       data-media-type="image" 
+                       data-src="{{ media.preview_image | default: media | image_url: width: 1400 }}">
+                    <img src="{{ media.preview_image | default: media | image_url: width: 180 }}" alt="{{ media.alt | default: product.title | escape }}" loading="lazy">
+                  </div>
                 {%- endif -%}
-              </div>
+              {%- endif -%}
             {%- endfor -%}
-          {%- elsif product.images.size > 0 -%}
-            {%- for image in product.images -%}
-              <div class="el-pt-thumb {% if forloop.first %}is-active{% endif %}" data-src="{{ image | image_url: width: 1400 }}">
-                <img src="{{ image | image_url: width: 180 }}" alt="{{ image.alt | default: product.title | escape }}" loading="lazy">
+
+            {%- if pt_img_count == 0 and product.images.size > 0 -%}
+              {%- for image in product.images limit: 4 -%}
+                {%- assign pt_img_count = pt_img_count | plus: 1 -%}
+                <div class="el-pt-thumb {% if pt_img_count == 1 %}is-active{% endif %}" 
+                     data-media-type="image" 
+                     data-src="{{ image | image_url: width: 1400 }}">
+                  <img src="{{ image | image_url: width: 180 }}" alt="{{ image.alt | default: product.title | escape }}" loading="lazy">
+                </div>
+              {%- endfor -%}
+            {%- endif -%}
+
+            {%- comment -%} 2. Render 1 Video strictly as the LAST item (Position 5) {%- endcomment -%}
+            {%- if pt_prod_video != nil -%}
+              <div class="el-pt-thumb el-pt-thumb-video" 
+                   data-media-id="video-{{ section.id }}" 
+                   data-media-type="video" 
+                   data-src="{{ pt_prod_video.preview_image | default: product.featured_image | image_url: width: 1400 }}"
+                   title="Play Product Video">
+                <img src="{{ pt_prod_video.preview_image | default: product.featured_image | image_url: width: 180 }}" alt="{{ product.title | escape }} Video" loading="lazy">
+                <span class="el-pt-video-badge" aria-label="Video">
+                  <svg viewBox="0 0 24 24" width="10" height="10" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                </span>
               </div>
-            {%- endfor -%}
+            {%- endif -%}
           {%- else -%}
-            <div class="el-pt-thumb is-active" data-src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=1200&auto=format&fit=crop">
+            {%- comment -%} Fallback Demo: 4 Images + 1 Video {%- endcomment -%}
+            <div class="el-pt-thumb is-active" data-media-type="image" data-src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=1200&auto=format&fit=crop">
               <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=160&auto=format&fit=crop" alt="Demo Tile 1">
             </div>
-            <div class="el-pt-thumb" data-src="https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?q=80&w=1200&auto=format&fit=crop">
+            <div class="el-pt-thumb" data-media-type="image" data-src="https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?q=80&w=1200&auto=format&fit=crop">
               <img src="https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?q=80&w=160&auto=format&fit=crop" alt="Demo Tile 2">
             </div>
-            <div class="el-pt-thumb" data-src="https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?q=80&w=1200&auto=format&fit=crop">
+            <div class="el-pt-thumb" data-media-type="image" data-src="https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?q=80&w=1200&auto=format&fit=crop">
               <img src="https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?q=80&w=160&auto=format&fit=crop" alt="Demo Tile 3">
+            </div>
+            <div class="el-pt-thumb" data-media-type="image" data-src="https://images.unsplash.com/photo-1600565193348-f74bd3c7ccdf?q=80&w=1200&auto=format&fit=crop">
+              <img src="https://images.unsplash.com/photo-1600565193348-f74bd3c7ccdf?q=80&w=160&auto=format&fit=crop" alt="Demo Tile 4">
+            </div>
+            <div class="el-pt-thumb el-pt-thumb-video" data-media-type="video" data-src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=1200&auto=format&fit=crop" title="Product Video">
+              <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=160&auto=format&fit=crop" alt="Demo Video">
+              <span class="el-pt-video-badge" aria-label="Video">
+                <svg viewBox="0 0 24 24" width="10" height="10" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+              </span>
             </div>
           {%- endif -%}
         </div>
@@ -997,6 +1058,20 @@
                src="{% if product.featured_image %}{{ product.featured_image | image_url: width: 1200 }}{% else %}https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=1200&auto=format&fit=crop{% endif %}" 
                alt="{{ product.title | default: 'Roman Travertine Honed Slab' | escape }}" 
                loading="eager">
+
+          <div id="elPtVideoWrap-{{ section.id }}" class="el-pt-video-wrap" style="display: none;">
+            {%- if pt_prod_video != nil -%}
+              {%- if pt_prod_video.media_type == 'video' -%}
+                {{ pt_prod_video | video_tag: controls: true, autoplay: false, loop: true, playsinline: true, preload: 'metadata', class: 'el-pt-video-player' }}
+              {%- elsif pt_prod_video.media_type == 'external_video' -%}
+                {{ pt_prod_video | external_video_tag: class: 'el-pt-video-player' }}
+              {%- elsif product.metafields.custom.video != blank -%}
+                <video class="el-pt-video-player" controls loop playsinline preload="metadata">
+                  <source src="{{ product.metafields.custom.video }}" type="video/mp4">
+                </video>
+              {%- endif -%}
+            {%- endif -%}
+          </div>
 
           <button type="button" class="el-pt-wishlist-btn" 
                   data-product-id="{{ product.id | default: 'demo-tile' }}" 
@@ -1358,14 +1433,37 @@
     var root = document.getElementById('ellora-prod-tile-{{ section.id }}');
     if (!root) return;
 
-    // Gallery Thumbnail Switching
+    // Gallery Thumbnail Switching (4 Images + 1 Video at Last)
     var thumbs = root.querySelectorAll('.el-pt-thumb');
     var mainImg = document.getElementById('elPtMainImage-{{ section.id }}');
+    var videoWrap = document.getElementById('elPtVideoWrap-{{ section.id }}');
+    var videoEl = videoWrap ? videoWrap.querySelector('video') : null;
+
     thumbs.forEach(function(thumb) {
       thumb.addEventListener('click', function() {
         thumbs.forEach(function(t) { t.classList.remove('is-active'); });
         thumb.classList.add('is-active');
-        if (mainImg) mainImg.src = thumb.getAttribute('data-src');
+
+        var mediaType = thumb.getAttribute('data-media-type');
+        if (mediaType === 'video') {
+          if (mainImg) mainImg.style.display = 'none';
+          if (videoWrap) {
+            videoWrap.style.display = 'block';
+            if (videoEl) {
+              videoEl.currentTime = 0;
+              videoEl.play().catch(function() {});
+            }
+          }
+        } else {
+          if (videoWrap) {
+            videoWrap.style.display = 'none';
+            if (videoEl) videoEl.pause();
+          }
+          if (mainImg) {
+            mainImg.style.display = 'block';
+            mainImg.src = thumb.getAttribute('data-src');
+          }
+        }
       });
     });
 
