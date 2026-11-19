@@ -485,6 +485,7 @@
               <a href="{{ prod.url }}" style="text-decoration: none;">
                 <h3 class="el-pr-prod-title">{{ prod.title | escape }}</h3>
               </a>
+              {% render 'el-card-swatches', product: prod, show_swatches: section.settings.show_color_swatches %}
               <p class="el-pr-price">{{ prod.price | money }} /M2</p>
 
               {%- assign default_variant = prod.selected_or_first_available_variant -%}
@@ -537,6 +538,7 @@
               <a href="{{ prod.url }}" style="text-decoration: none;">
                 <h3 class="el-pr-prod-title">{{ prod.title | escape }}</h3>
               </a>
+              {% render 'el-card-swatches', product: prod, show_swatches: section.settings.show_color_swatches %}
               <p class="el-pr-price">{{ prod.price | money }} /M2</p>
 
               {%- assign default_variant = prod.selected_or_first_available_variant -%}
@@ -747,6 +749,13 @@
       "id": "subtitle",
       "label": "Subtitle",
       "default": "Curated pairings designed to work harmoniously together across architectural walls and floors."
+    },
+    {
+      "type": "select",
+      "id": "show_color_swatches",
+      "label": "Show Color Swatches on Product Cards",
+      "default": true,
+      "info": "Display color preview dots under product titles on cards"
     },
     {
       "type": "select",

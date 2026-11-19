@@ -686,6 +686,7 @@
                 <a href="{{ product.url }}" style="text-decoration: none;">
                   <h3 class="el-card-title">{{ product.title }}</h3>
                 </a>
+                {% render 'el-card-swatches', product: product, show_swatches: section.settings.show_color_swatches %}
                 <p class="el-card-price">{{ product.price | money }} {{ section.settings.price_unit | default: '/M2' }}</p>
 
                 {%- assign default_variant = product.selected_or_first_available_variant -%}
@@ -768,6 +769,7 @@
           </div>
           <div class="el-card-info">
             <h3 class="el-card-title">Aura Ivory Stone</h3>
+                  {% render 'el-card-swatches', block_color: 'Ivory, Sand', show_swatches: section.settings.show_color_swatches %}
             <p class="el-card-price">From £37.20/M2</p>
             <button type="button" class="el-card-add-btn" data-product-title="Aura Ivory Stone" aria-label="Add Aura Ivory Stone to cart">
               <svg viewBox="0 0 24 24"><path d="M2 9h20l-2 11H4L2 9z"></path><path d="M7 9l4.5-6"></path><path d="M17 9l-4.5-6"></path></svg>
@@ -783,6 +785,7 @@
           </div>
           <div class="el-card-info">
             <h3 class="el-card-title">Terracotta Fluted Tile</h3>
+                  {% render 'el-card-swatches', block_color: 'Terracotta, Sand', show_swatches: section.settings.show_color_swatches %}
             <p class="el-card-price">From £42.00/M2</p>
             <button type="button" class="el-card-add-btn" data-product-title="Terracotta Fluted Tile" aria-label="Add Terracotta Fluted Tile to cart">
               <svg viewBox="0 0 24 24"><path d="M2 9h20l-2 11H4L2 9z"></path><path d="M7 9l4.5-6"></path><path d="M17 9l-4.5-6"></path></svg>
@@ -798,6 +801,7 @@
           </div>
           <div class="el-card-info">
             <h3 class="el-card-title">Classic Travertine Slab</h3>
+                  {% render 'el-card-swatches', block_color: 'Beige, Sand, Ivory', show_swatches: section.settings.show_color_swatches %}
             <p class="el-card-price">From £54.50/M2</p>
             <button type="button" class="el-card-add-btn" data-product-title="Classic Travertine Slab" aria-label="Add Classic Travertine Slab to cart">
               <svg viewBox="0 0 24 24"><path d="M2 9h20l-2 11H4L2 9z"></path><path d="M7 9l4.5-6"></path><path d="M17 9l-4.5-6"></path></svg>
@@ -813,6 +817,7 @@
           </div>
           <div class="el-card-info">
             <h3 class="el-card-title">Warm Sandstone Neutral</h3>
+                  {% render 'el-card-swatches', block_color: 'Sand, Beige', show_swatches: section.settings.show_color_swatches %}
             <p class="el-card-price">From £39.80/M2</p>
             <button type="button" class="el-card-add-btn" data-product-title="Warm Sandstone Neutral" aria-label="Add Warm Sandstone Neutral to cart">
               <svg viewBox="0 0 24 24"><path d="M2 9h20l-2 11H4L2 9z"></path><path d="M7 9l4.5-6"></path><path d="M17 9l-4.5-6"></path></svg>
@@ -828,6 +833,7 @@
           </div>
           <div class="el-card-info">
             <h3 class="el-card-title">Calacatta Niche Marble</h3>
+                  {% render 'el-card-swatches', block_color: 'White, Gold', show_swatches: section.settings.show_color_swatches %}
             <p class="el-card-price">From £62.00/M2</p>
             <button type="button" class="el-card-add-btn" data-product-title="Calacatta Niche Marble" aria-label="Add Calacatta Niche Marble to cart">
               <svg viewBox="0 0 24 24"><path d="M2 9h20l-2 11H4L2 9z"></path><path d="M7 9l4.5-6"></path><path d="M17 9l-4.5-6"></path></svg>
@@ -843,6 +849,7 @@
           </div>
           <div class="el-card-info">
             <h3 class="el-card-title">Rustic Courtyard Flagstone</h3>
+                  {% render 'el-card-swatches', block_color: 'Slate, Charcoal, Grey', show_swatches: section.settings.show_color_swatches %}
             <p class="el-card-price">From £48.00/M2</p>
             <button type="button" class="el-card-add-btn" data-product-title="Rustic Courtyard Flagstone" aria-label="Add Rustic Courtyard Flagstone to cart">
               <svg viewBox="0 0 24 24"><path d="M2 9h20l-2 11H4L2 9z"></path><path d="M7 9l4.5-6"></path><path d="M17 9l-4.5-6"></path></svg>

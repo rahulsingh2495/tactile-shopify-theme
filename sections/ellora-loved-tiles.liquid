@@ -478,6 +478,7 @@
                 <a href="{{ product.url }}" style="text-decoration:none; color:inherit;">
                   <h3 class="el-product-title">{{ product.title }}</h3>
                 </a>
+                {% render 'el-card-swatches', product: product, show_swatches: section.settings.show_color_swatches %}
                 <p class="el-product-price">{{ product.price | money }} / m²</p>
               </div>
               {%- assign default_variant = product.selected_or_first_available_variant -%}
@@ -516,6 +517,7 @@
                 <a href="{{ block.settings.link | default: '/collections/all' }}" style="text-decoration:none; color:inherit;">
                   <h3 class="el-product-title">{{ block.settings.title }}</h3>
                 </a>
+                {% render 'el-card-swatches', block_color: block.settings.swatch_colors, show_swatches: section.settings.show_color_swatches %}
                 <p class="el-product-price">{{ block.settings.price }}</p>
               </div>
               <button type="button" class="el-card-add-btn" data-product-title="{{ block.settings.title | escape }}" aria-label="Add {{ block.settings.title }} to cart">
@@ -754,6 +756,13 @@
         { "value": "slider", "label": "Slider (Carousel)" }
       ],
       "default": "grid"
+    },
+    {
+      "type": "range",
+      "id": "show_color_swatches",
+      "label": "Show Color Swatches on Product Cards",
+      "default": true,
+      "info": "Display color preview dots under product titles on cards"
     },
     {
       "type": "range",

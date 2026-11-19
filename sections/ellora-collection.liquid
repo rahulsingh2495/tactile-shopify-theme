@@ -1739,32 +1739,7 @@
                   <a href="{{ product.url }}" style="text-decoration: none;">
                     <h3 class="el-card-title">{{ product.title }}</h3>
                   </a>
-                  {%- if product_colors_list.size > 0 -%}
-                    <div class="el-card-color-swatches" aria-label="Available Colors">
-                      {%- for clr in product_colors_list limit: 5 -%}
-                        {%- assign clr_low = clr | downcase -%}
-                        {%- assign dot_color = '#d8c7b5' -%}
-                        {%- if clr_low contains 'ivory' or clr_low contains 'white' -%}{%- assign dot_color = '#F5F2EB' -%}
-                        {%- elsif clr_low contains 'beige' or clr_low contains 'sand' or clr_low contains 'travertine' -%}{%- assign dot_color = '#D8C7B5' -%}
-                        {%- elsif clr_low contains 'burgundy' or clr_low contains 'wine' -%}{%- assign dot_color = '#6A2B35' -%}
-                        {%- elsif clr_low contains 'rose' or clr_low contains 'pink' or clr_low contains 'blush' -%}{%- assign dot_color = '#C89D91' -%}
-                        {%- elsif clr_low contains 'anthracite' or clr_low contains 'charcoal' -%}{%- assign dot_color = '#2E2D2B' -%}
-                        {%- elsif clr_low contains 'slate' or clr_low contains 'grey' or clr_low contains 'gray' or clr_low contains 'concrete' -%}{%- assign dot_color = '#7E8082' -%}
-                        {%- elsif clr_low contains 'emerald' -%}{%- assign dot_color = '#1B4D3E' -%}
-                        {%- elsif clr_low contains 'olive' or clr_low contains 'cypress' -%}{%- assign dot_color = '#4B5320' -%}
-                        {%- elsif clr_low contains 'sage' -%}{%- assign dot_color = '#9CAF88' -%}
-                        {%- elsif clr_low contains 'green' -%}{%- assign dot_color = '#2D5A43' -%}
-                        {%- elsif clr_low contains 'cream' or clr_low contains 'bone' or clr_low contains 'calacatta' -%}{%- assign dot_color = '#FDF6E2' -%}
-                        {%- elsif clr_low contains 'black' or clr_low contains 'nero' -%}{%- assign dot_color = '#1E1B18' -%}
-                        {%- elsif clr_low contains 'terracotta' or clr_low contains 'cotto' or clr_low contains 'sienna' -%}{%- assign dot_color = '#CC9E8F' -%}
-                        {%- elsif clr_low contains 'ochre' or clr_low contains 'mustard' or clr_low contains 'gold' -%}{%- assign dot_color = '#C4823F' -%}
-                        {%- elsif clr_low contains 'silver' -%}{%- assign dot_color = '#C5C6C7' -%}
-                        {%- elsif clr_low contains 'walnut' or clr_low contains 'wood' or clr_low contains 'brown' -%}{%- assign dot_color = '#5C4033' -%}
-                        {%- elsif clr_low contains 'sepia' or clr_low contains 'taupe' -%}{%- assign dot_color = '#7F675B' -%}
-                        {%- elsif clr_low contains 'indigo' or clr_low contains 'navy' or clr_low contains 'midnight' -%}{%- assign dot_color = '#1E293B' -%}
-                        {%- elsif clr_low contains 'blue' -%}{%- assign dot_color = '#8BAAC1' -%}
-                        {%- elsif clr_low contains 'sisal' or clr_low contains 'jute' or clr_low contains 'natural' -%}{%- assign dot_color = '#C7B198' -%}
-                        {%- endif -%}
+                  {% render 'el-card-swatches', product: product, show_swatches: section.settings.show_color_swatches %}
                         <span class="el-card-swatch-dot" style="background-color: {{ dot_color }};" title="{{ clr | escape }}"></span>
                       {%- endfor -%}
                       {%- if product_colors_list.size > 5 -%}
