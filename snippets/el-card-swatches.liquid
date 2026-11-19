@@ -36,7 +36,7 @@
   {%- assign product_colors_list = product_colors_arr | remove_first: ',' | split: ',' | uniq -%}
 
   {%- if product_colors_list.size > 0 -%}
-    <div class="el-card-color-swatches" aria-label="Available Colors">
+    <div class="el-card-color-swatches" aria-label="Available Colors" style="display:inline-flex;align-items:center;gap:5px;margin:0;flex-shrink:0;">
       {%- for clr in product_colors_list limit: 5 -%}
         {%- assign clr_clean = clr | strip -%}
         {%- assign clr_low = clr_clean | downcase -%}
@@ -62,10 +62,10 @@
         {%- elsif clr_low contains 'blue' -%}{%- assign dot_color = '#8BAAC1' -%}
         {%- elsif clr_low contains 'sisal' or clr_low contains 'jute' or clr_low contains 'natural' -%}{%- assign dot_color = '#C7B198' -%}
         {%- endif -%}
-        <span class="el-card-swatch-dot" style="background-color: {{ dot_color }};" title="{{ clr_clean | escape }}"></span>
+        <span class="el-card-swatch-dot" style="background-color: {{ dot_color }};width:12px;height:12px;border-radius:50%;border:1px solid rgba(0,0,0,0.15);display:inline-block;flex-shrink:0;box-shadow:inset 0 1px 2px rgba(0,0,0,0.1);transition:transform 0.15s ease;" title="{{ clr_clean | escape }}"></span>
       {%- endfor -%}
       {%- if product_colors_list.size > 5 -%}
-        <span class="el-card-swatch-more">+{{ product_colors_list.size | minus: 5 }}</span>
+        <span class="el-card-swatch-more" style="font-size:11px;color:#8C827A;font-weight:500;line-height:1;">+{{ product_colors_list.size | minus: 5 }}</span>
       {%- endif -%}
     </div>
   {%- endif -%}

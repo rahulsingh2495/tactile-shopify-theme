@@ -14,7 +14,7 @@
       "settings": {
         "eyebrow": "",
         "title": "Surfaces for calm,<br>considered interiors.",
-        "description": "Every surface is selected for its tactile quality, tonal depth and architecture presence. From calm residences to contemporary commercial spaces, Ellora Living focuses on materials that age beautifully and create spaces with emotional resonance.",
+        "description": "Ellora Spaces was founded by Isha and Vanya, whose first meeting at a design show sparked a conversation that has never quite stopped. They connected over their fascination with materials, the possibilities of craft and the extraordinary things the human hand can create.",
         "image_position": "center",
         "image_height_desktop": 580,
         "image_height_mobile": 340,
@@ -30,7 +30,16 @@
         "padding_top_desktop": 60,
         "padding_bottom_desktop": 40,
         "padding_top_mobile": 40,
-        "padding_bottom_mobile": 28
+        "padding_bottom_mobile": 28,
+        "show_story": true,
+        "story_eyebrow": "THE STORY OF ELLORA",
+        "story_lead": "At the heart of that connection was a deep appreciation for India’s rich craft traditions and the endless creativity they continue to inspire.",
+        "story_p1": "Ellora Spaces was founded by Isha and Vanya, whose first meeting at a design show sparked a conversation that has never quite stopped.",
+        "story_p2": "They connected over their fascination with materials, the possibilities of craft and the extraordinary things the human hand can create. At the heart of that connection was a deep appreciation for India’s rich craft traditions and the endless creativity they continue to inspire.",
+        "story_p3": "Both are drawn to the way design makes us feel: how a home can bring comfort, a workspace can encourage focus, and a room for movement or reflection can help us reconnect with ourselves. They share a curiosity about the spaces we move through each day and how each can support a different part of our lives.",
+        "story_p4": "Ellora brings these passions together, exploring material, texture and craftsmanship to create surfaces and objects with character and purpose. It is an expression of their shared belief that the things we surround ourselves with can enrich both our spaces and our everyday experience.",
+        "story_names": "Vanya and Isha",
+        "story_role": "Founders, Ellora Spaces"
       }
     },
     "about_features": {

@@ -1,0 +1,324 @@
+{% comment %}
+  ==========================================================================
+  ELLORA SPACES — ABOUT PAGE: FOUNDERS' STORY & MANIFESTO
+  File: sections/ellora-about-story.liquid
+  Fully customizable via Shopify Theme Customizer
+  ==========================================================================
+{% endcomment %}
+
+<div class="el-section-wrapper el-sec-about-story-wrapper" id="ellora-about-story-{{ section.id }}">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
+
+    #ellora-about-story-{{ section.id }} {
+      --el-bg: {{ section.settings.bg_color | default: '#FAF9F6' }};
+      --el-dark: {{ section.settings.title_color | default: '#1C1B19' }};
+      --el-text: {{ section.settings.text_color | default: '#4A453F' }};
+      --el-accent: {{ section.settings.accent_color | default: '#B86B53' }};
+      --el-font-serif: 'Cormorant Garamond', Georgia, serif;
+      --el-font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+
+      background-color: var(--el-bg);
+      padding-top: {{ section.settings.padding_top_desktop | default: 64 }}px;
+      padding-bottom: {{ section.settings.padding_bottom_desktop | default: 64 }}px;
+      width: 100%;
+      font-family: var(--el-font-sans);
+      box-sizing: border-box;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    #ellora-about-story-{{ section.id }} *,
+    #ellora-about-story-{{ section.id }} *::before,
+    #ellora-about-story-{{ section.id }} *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    #ellora-about-story-{{ section.id }} .el-about-story-container {
+      width: 90%;
+      max-width: {{ section.settings.container_max_width | default: 1720 }}px;
+      margin: 0 auto;
+    }
+
+    #ellora-about-story-{{ section.id }} .el-about-story-kicker-row {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 36px;
+    }
+
+    #ellora-about-story-{{ section.id }} .el-about-story-eyebrow {
+      font-size: 11px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--el-accent);
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    #ellora-about-story-{{ section.id }} .el-about-story-line {
+      flex: 1;
+      height: 1px;
+      background-color: #E6E1D9;
+    }
+
+    #ellora-about-story-{{ section.id }} .el-about-story-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.35fr;
+      gap: 64px;
+      align-items: flex-start;
+    }
+
+    #ellora-about-story-{{ section.id }} .el-about-story-lead {
+      font-family: var(--el-font-serif);
+      font-size: clamp(26px, 2.6vw, 36px);
+      font-weight: 400;
+      line-height: 1.25;
+      color: var(--el-dark);
+      letter-spacing: -0.01em;
+      position: sticky;
+      top: 100px;
+    }
+
+    #ellora-about-story-{{ section.id }} .el-about-story-text-col {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    #ellora-about-story-{{ section.id }} .el-about-story-p {
+      font-family: var(--el-font-sans);
+      font-size: clamp(14px, 1.05vw, 15px);
+      line-height: 1.72;
+      color: var(--el-text);
+      font-weight: 400;
+    }
+
+    #ellora-about-story-{{ section.id }} .el-about-story-signoff {
+      margin-top: 16px;
+      padding-top: 24px;
+      border-top: 1px solid #ECE7DE;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    #ellora-about-story-{{ section.id }} .el-about-story-names {
+      font-family: var(--el-font-serif);
+      font-size: 26px;
+      font-style: italic;
+      color: var(--el-dark);
+      letter-spacing: 0.02em;
+    }
+
+    #ellora-about-story-{{ section.id }} .el-about-story-role {
+      font-family: var(--el-font-sans);
+      font-size: 11.5px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--el-accent);
+      font-weight: 600;
+    }
+
+    @media (max-width: 1024px) {
+      #ellora-about-story-{{ section.id }} {
+        padding-top: {{ section.settings.padding_top_mobile | default: 44 }}px;
+        padding-bottom: {{ section.settings.padding_bottom_mobile | default: 44 }}px;
+      }
+      #ellora-about-story-{{ section.id }} .el-about-story-grid {
+        grid-template-columns: 1fr;
+        gap: 32px;
+      }
+      #ellora-about-story-{{ section.id }} .el-about-story-lead {
+        position: static;
+        font-size: 24px;
+      }
+    }
+
+    @media (max-width: 640px) {
+      #ellora-about-story-{{ section.id }} .el-about-story-container {
+        width: 92%;
+      }
+      #ellora-about-story-{{ section.id }} .el-about-story-p {
+        font-size: 14px;
+        line-height: 1.62;
+      }
+    }
+  </style>
+
+  <div class="el-about-story-container">
+    <div class="el-about-story-kicker-row">
+      <span class="el-about-story-eyebrow">{{ section.settings.eyebrow | default: "THE STORY OF ELLORA" }}</span>
+      <div class="el-about-story-line"></div>
+    </div>
+
+    <div class="el-about-story-grid">
+      <div class="el-about-story-lead-col">
+        <h2 class="el-about-story-lead">
+          {{ section.settings.lead_quote | default: "At the heart of that connection was a deep appreciation for India’s rich craft traditions and the endless creativity they continue to inspire." }}
+        </h2>
+      </div>
+
+      <div class="el-about-story-text-col">
+        <p class="el-about-story-p">
+          {{ section.settings.p1 | default: "Ellora Spaces was founded by Isha and Vanya, whose first meeting at a design show sparked a conversation that has never quite stopped." }}
+        </p>
+        <p class="el-about-story-p">
+          {{ section.settings.p2 | default: "They connected over their fascination with materials, the possibilities of craft and the extraordinary things the human hand can create. At the heart of that connection was a deep appreciation for India’s rich craft traditions and the endless creativity they continue to inspire." }}
+        </p>
+        <p class="el-about-story-p">
+          {{ section.settings.p3 | default: "Both are drawn to the way design makes us feel: how a home can bring comfort, a workspace can encourage focus, and a room for movement or reflection can help us reconnect with ourselves. They share a curiosity about the spaces we move through each day and how each can support a different part of our lives." }}
+        </p>
+        <p class="el-about-story-p">
+          {{ section.settings.p4 | default: "Ellora brings these passions together, exploring material, texture and craftsmanship to create surfaces and objects with character and purpose. It is an expression of their shared belief that the things we surround ourselves with can enrich both our spaces and our everyday experience." }}
+        </p>
+
+        <div class="el-about-story-signoff">
+          <span class="el-about-story-names">{{ section.settings.signoff_names | default: "Vanya and Isha" }}</span>
+          <span class="el-about-story-role">{{ section.settings.signoff_role | default: "Founders, Ellora Spaces" }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "About 02 - Our Story",
+  "tag": "section",
+  "class": "section-ellora-about-story",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Story Narrative"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow / Subheading",
+      "default": "THE STORY OF ELLORA"
+    },
+    {
+      "type": "textarea",
+      "id": "lead_quote",
+      "label": "Lead Quote / Highlight",
+      "default": "At the heart of that connection was a deep appreciation for India’s rich craft traditions and the endless creativity they continue to inspire."
+    },
+    {
+      "type": "textarea",
+      "id": "p1",
+      "label": "Paragraph 1",
+      "default": "Ellora Spaces was founded by Isha and Vanya, whose first meeting at a design show sparked a conversation that has never quite stopped."
+    },
+    {
+      "type": "textarea",
+      "id": "p2",
+      "label": "Paragraph 2",
+      "default": "They connected over their fascination with materials, the possibilities of craft and the extraordinary things the human hand can create. At the heart of that connection was a deep appreciation for India’s rich craft traditions and the endless creativity they continue to inspire."
+    },
+    {
+      "type": "textarea",
+      "id": "p3",
+      "label": "Paragraph 3",
+      "default": "Both are drawn to the way design makes us feel: how a home can bring comfort, a workspace can encourage focus, and a room for movement or reflection can help us reconnect with ourselves. They share a curiosity about the spaces we move through each day and how each can support a different part of our lives."
+    },
+    {
+      "type": "textarea",
+      "id": "p4",
+      "label": "Paragraph 4",
+      "default": "Ellora brings these passions together, exploring material, texture and craftsmanship to create surfaces and objects with character and purpose. It is an expression of their shared belief that the things we surround ourselves with can enrich both our spaces and our everyday experience."
+    },
+    {
+      "type": "text",
+      "id": "signoff_names",
+      "label": "Founders' Names",
+      "default": "Vanya and Isha"
+    },
+    {
+      "type": "text",
+      "id": "signoff_role",
+      "label": "Founders' Title / Role",
+      "default": "Founders, Ellora Spaces"
+    },
+    {
+      "type": "header",
+      "content": "Colors & Layout"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#FAF9F6"
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Title Color",
+      "default": "#1C1B19"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#4A453F"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accent Color",
+      "default": "#B86B53"
+    },
+    {
+      "type": "range",
+      "id": "container_max_width",
+      "label": "Container Max Width (px)",
+      "min": 1100,
+      "max": 1920,
+      "step": 20,
+      "default": 1720
+    },
+    {
+      "type": "range",
+      "id": "padding_top_desktop",
+      "label": "Desktop Padding Top (px)",
+      "min": 20,
+      "max": 140,
+      "step": 4,
+      "default": 64
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_desktop",
+      "label": "Desktop Padding Bottom (px)",
+      "min": 20,
+      "max": 140,
+      "step": 4,
+      "default": 64
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "label": "Mobile Padding Top (px)",
+      "min": 10,
+      "max": 80,
+      "step": 2,
+      "default": 44
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "label": "Mobile Padding Bottom (px)",
+      "min": 10,
+      "max": 80,
+      "step": 2,
+      "default": 44
+    }
+  ],
+  "presets": [
+    {
+      "name": "About 02 - Our Story"
+    }
+  ]
+}
+{% endschema %}
