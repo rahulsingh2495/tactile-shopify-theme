@@ -98,37 +98,11 @@
       padding: 0;
     }
 
-    #ellora-hero-{{ section.id }} .el-hero-box {
-      background: #FFFFFF;
-      max-width: 530px;
-      padding: 44px 48px;
-      border-radius: var(--el-radius-sm);
-      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.08);
-      border: 1px solid rgba(232, 227, 220, 0.8);
-    }
-
-    #ellora-hero-{{ section.id }} .el-hero-title {
-      font-family: var(--el-font-serif);
-      font-size: 48px;
-      line-height: 1.12;
-      margin-bottom: 14px;
-      color: var(--el-dark);
-      font-weight: 400;
-      letter-spacing: -0.01em;
-    }
-
-    #ellora-hero-{{ section.id }} .el-hero-desc {
-      font-size: 15px;
-      color: #58544E;
-      line-height: 1.62;
-      margin-bottom: 28px;
-      font-weight: 400;
-    }
-
     #ellora-hero-{{ section.id }} .el-hero-buttons {
-      display: flex;
-      gap: 14px;
+      display: inline-flex;
+      gap: 16px;
       flex-wrap: wrap;
+      align-items: center;
     }
 
     #ellora-hero-{{ section.id }} .el-btn {
@@ -136,10 +110,10 @@
       align-items: center;
       justify-content: center;
       gap: 8px;
-      padding: 14px 30px;
-      font-size: 13.5px;
+      padding: 16px 36px;
+      font-size: 14px;
       font-weight: 500;
-      letter-spacing: 0.03em;
+      letter-spacing: 0.04em;
       border-radius: var(--el-radius-sm);
       transition: var(--el-transition);
       text-decoration: none;
@@ -150,25 +124,29 @@
       background-color: var(--el-primary, #CC9E8F) !important;
       color: #FFFFFF !important;
       border: 1px solid var(--el-primary, #CC9E8F) !important;
+      box-shadow: 0 4px 18px rgba(0, 0, 0, 0.18);
     }
     #ellora-hero-{{ section.id }} .el-btn-primary:hover {
       background-color: var(--el-primary-hover, #BF8673) !important;
       border-color: var(--el-primary-hover, #BF8673) !important;
-      box-shadow: 0 6px 20px rgba(204, 158, 143, 0.28) !important;
+      box-shadow: 0 8px 24px rgba(204, 158, 143, 0.35) !important;
+      transform: translateY(-1px);
     }
 
     #ellora-hero-{{ section.id }} .el-btn-outline {
-      background-color: rgba(255, 255, 255, 0.9);
-      color: var(--el-dark);
-      border: 1px solid var(--el-border);
-      backdrop-filter: blur(6px);
-      -webkit-backdrop-filter: blur(6px);
+      background-color: rgba(255, 255, 255, 0.95);
+      color: var(--el-dark, #1C1B19);
+      border: 1px solid rgba(255, 255, 255, 0.9);
+      box-shadow: 0 4px 18px rgba(0, 0, 0, 0.15);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
     }
     #ellora-hero-{{ section.id }} .el-btn-outline:hover {
       background-color: var(--el-primary, #CC9E8F) !important;
       border-color: var(--el-primary, #CC9E8F) !important;
       color: #FFFFFF !important;
-      box-shadow: 0 6px 20px rgba(204, 158, 143, 0.28) !important;
+      box-shadow: 0 8px 24px rgba(204, 158, 143, 0.35) !important;
+      transform: translateY(-1px);
     }
 
     /* Scroll Indicator */
@@ -203,156 +181,7 @@
       stroke-width: 2;
     }
 
-    /* Hero-scoped Side Sign Up Tab (only if hero signup is enabled) */
-    #ellora-hero-{{ section.id }} .el-side-signup-tab {
-      position: fixed;
-      left: 0;
-      top: 50%;
-      transform: translateY(-50%);
-      background: #FFFFFF;
-      color: var(--el-primary, #CC9E8F);
-      border: 1px solid var(--el-border, #E8E3DC);
-      border-left: none;
-      padding: 14px 10px;
-      writing-mode: vertical-rl;
-      text-orientation: mixed;
-      letter-spacing: 0.16em;
-      font-size: 11px;
-      font-weight: 600;
-      text-transform: uppercase;
-      cursor: pointer;
-      z-index: 998;
-      border-radius: 0 8px 8px 0;
-      box-shadow: 2px 4px 18px rgba(0,0,0,0.08);
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      transition: all 0.25s ease;
-    }
-    #ellora-hero-{{ section.id }} .el-side-signup-tab:hover {
-      background: var(--el-primary, #CC9E8F);
-      color: #FFFFFF !important;
-      box-shadow: 4px 6px 22px rgba(204, 158, 143, 0.32);
-    }
-    #ellora-hero-{{ section.id }} .el-side-signup-tab svg {
-      width: 14px;
-      height: 14px;
-      transform: rotate(90deg);
-    }
-
-    /* Side Sign Up Modal Overlay */
-    .el-signup-modal-backdrop {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: rgba(28, 27, 25, 0.52);
-      backdrop-filter: blur(4px);
-      -webkit-backdrop-filter: blur(4px);
-      z-index: 999998;
-      opacity: 0;
-      visibility: hidden;
-      transition: opacity 0.3s ease, visibility 0.3s ease;
-    }
-    .el-signup-modal-backdrop.is-open {
-      opacity: 1;
-      visibility: visible;
-    }
-    .el-signup-modal {
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%) scale(0.95);
-      background: #FFFFFF;
-      max-width: 460px;
-      width: 90%;
-      border-radius: 12px;
-      padding: 38px 32px 32px;
-      box-shadow: 0 24px 60px rgba(0,0,0,0.22);
-      z-index: 999999;
-      opacity: 0;
-      visibility: hidden;
-      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease, visibility 0.3s ease;
-      font-family: var(--el-font-sans, -apple-system, sans-serif);
-      text-align: center;
-      box-sizing: border-box;
-    }
-    .el-signup-modal.is-open {
-      transform: translate(-50%, -50%) scale(1);
-      opacity: 1;
-      visibility: visible;
-    }
-    .el-signup-modal-close {
-      position: absolute;
-      top: 14px;
-      right: 14px;
-      background: transparent;
-      border: none;
-      font-size: 22px;
-      line-height: 1;
-      cursor: pointer;
-      color: #736E67;
-      padding: 6px;
-      transition: color 0.2s;
-    }
-    .el-signup-modal-close:hover {
-      color: #1C1B19;
-    }
-    .el-signup-modal-kicker {
-      font-size: 11px;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      font-weight: 600;
-      color: var(--el-primary, #CC9E8F);
-      margin-bottom: 8px;
-    }
-    .el-signup-modal-title {
-      font-family: var(--el-font-serif, serif);
-      font-size: 28px;
-      font-weight: 400;
-      color: #1C1B19;
-      margin-bottom: 10px;
-      line-height: 1.2;
-    }
-    .el-signup-modal-sub {
-      font-size: 13.5px;
-      line-height: 1.55;
-      color: #5C554E;
-      margin-bottom: 24px;
-    }
-    .el-signup-form-row {
-      display: flex;
-      gap: 10px;
-    }
-    .el-signup-input {
-      flex: 1;
-      padding: 12px 14px;
-      border: 1px solid #E8E3DC;
-      border-radius: 4px;
-      font-size: 14px;
-      font-family: inherit;
-    }
-    .el-signup-input:focus {
-      outline: none;
-      border-color: var(--el-primary, #CC9E8F);
-    }
-    .el-signup-submit-btn {
-      padding: 12px 20px;
-      background: var(--el-primary, #CC9E8F);
-      color: #FFFFFF;
-      border: none;
-      border-radius: 4px;
-      font-weight: 600;
-      font-size: 13px;
-      letter-spacing: 0.05em;
-      cursor: pointer;
-      transition: background 0.2s ease;
-      white-space: nowrap;
-    }
-    .el-signup-submit-btn:hover {
-      background: var(--el-primary-hover, #BF8673);
-    }
+    /* Global side sign up drawer managed by site header */
 
     /* WhatsApp Float */
     .el-whatsapp-float {
@@ -383,29 +212,26 @@
 
     @media (max-width: 900px) {
       #ellora-hero-{{ section.id }} .el-hero {
-        height: 80vh;
-        min-height: 620px;
-        padding-bottom: 40px;
-      }
-      #ellora-hero-{{ section.id }} .el-hero-box {
-        max-width: 480px;
-        padding: 36px 32px;
+        min-height: 520px;
+        padding-bottom: 48px;
       }
     }
 
     @media (max-width: 640px) {
       #ellora-hero-{{ section.id }} .el-hero {
-        min-height: 560px;
-        height: auto;
-        padding-top: 140px;
-        padding-bottom: 30px;
+        min-height: 480px;
+        padding-bottom: 36px;
       }
-      #ellora-hero-{{ section.id }} .el-hero-box {
-        padding: 30px 24px;
-        max-width: 100%;
+      #ellora-hero-{{ section.id }} .el-hero-buttons {
+        width: 100%;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
       }
-      #ellora-hero-{{ section.id }} .el-hero-title {
-        font-size: 34px;
+      #ellora-hero-{{ section.id }} .el-btn {
+        width: 100%;
+        text-align: center;
+        padding: 14px 24px;
       }
       #ellora-hero-{{ section.id }} .el-hero-scroll-indicator {
         display: none;
@@ -415,10 +241,16 @@
 
   <section class="el-hero">
     <div class="el-hero-bg">
-      {%- if section.settings.image != blank -%}
-        {{ section.settings.image | image_url: width: 2400 | image_tag: class: 'el-hero-img', loading: 'eager', alt: section.settings.heading }}
+      {%- if section.settings.video != blank -%}
+        {{ section.settings.video | video_tag: autoplay: true, loop: true, muted: true, playsinline: true, controls: false, class: 'el-hero-video' }}
+      {%- elsif section.settings.video_url != blank -%}
+        <video class="el-hero-video" autoplay muted loop playsinline preload="auto">
+          <source src="{{ section.settings.video_url }}" type="video/mp4">
+        </video>
+      {%- elsif section.settings.image != blank -%}
+        {{ section.settings.image | image_url: width: 2400 | image_tag: class: 'el-hero-img', loading: 'eager', alt: shop.name }}
       {%- else -%}
-        <img src="https://cdn.shopify.com/s/files/1/0990/3685/6647/files/sec1_hero_bg.jpg?v=1789453290" alt="{{ section.settings.heading }}" class="el-hero-img" loading="eager">
+        <img src="https://cdn.shopify.com/s/files/1/0990/3685/6647/files/sec1_hero_bg.jpg?v=1789453290" alt="{{ shop.name }}" class="el-hero-img" loading="eager">
       {%- endif -%}
     </div>
     <div class="el-hero-overlay"></div>
@@ -433,93 +265,24 @@
     {%- endif -%}
 
     <div class="el-hero-content">
-      <div class="el-hero-box">
-        <h1 class="el-hero-title">{{ section.settings.heading }}</h1>
-        <p class="el-hero-desc">
-          {{ section.settings.subheading }}
-        </p>
-        <div class="el-hero-buttons">
-          {%- if section.settings.btn1_label != blank -%}
-            <a href="{{ section.settings.btn1_link | default: '/collections/all' }}" class="el-btn el-btn-primary">
-              {{ section.settings.btn1_label }}
-            </a>
-          {%- endif -%}
-          {%- if section.settings.btn2_label != blank -%}
-            <a href="{{ section.settings.btn2_link | default: '#about' }}" class="el-btn el-btn-outline">
-              {{ section.settings.btn2_label }}
-            </a>
-          {%- endif -%}
-        </div>
+      <div class="el-hero-buttons">
+        {%- if section.settings.btn1_label != blank -%}
+          <a href="{{ section.settings.btn1_link | default: '/collections/all' }}" class="el-btn el-btn-primary">
+            {{ section.settings.btn1_label }}
+          </a>
+        {%- endif -%}
+        {%- if section.settings.btn2_label != blank -%}
+          <a href="{{ section.settings.btn2_link | default: '#about' }}" class="el-btn el-btn-outline">
+            {{ section.settings.btn2_label }}
+          </a>
+        {%- endif -%}
       </div>
     </div>
   </section>
 
 
 
-  {%- if section.settings.show_side_signup -%}
-    <!-- Floating Side Sign Up Tab Button -->
-    <button type="button" class="el-side-signup-tab" id="elSideSignupBtn-{{ section.id }}" aria-label="Sign Up for Updates">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
-        <polyline points="22,6 12,13 2,6"></polyline>
-      </svg>
-      <span>{{ section.settings.side_signup_text | default: 'SIGN UP' }}</span>
-    </button>
-
-    <!-- Side Sign Up Pop Over Modal -->
-    <div class="el-signup-modal-backdrop" id="elSignupBackdrop-{{ section.id }}"></div>
-    <div class="el-signup-modal" id="elSignupModal-{{ section.id }}" role="dialog" aria-modal="true" aria-labelledby="elSignupTitle-{{ section.id }}">
-      <button type="button" class="el-signup-modal-close" id="elSignupClose-{{ section.id }}" aria-label="Close modal">&times;</button>
-      <div class="el-signup-modal-kicker">STAY CONNECTED</div>
-      <h3 class="el-signup-modal-title" id="elSignupTitle-{{ section.id }}">Join the Ellora Circle</h3>
-      <p class="el-signup-modal-sub">Receive curated architectural stories, private collection previews, and material guidance.</p>
-      
-      {% form 'customer', class: 'el-signup-modal-form' %}
-        <input type="hidden" name="contact[tags]" value="newsletter, side-signup">
-        <div class="el-signup-form-row">
-          <input 
-            type="email" 
-            name="contact[email]" 
-            class="el-signup-input" 
-            placeholder="Enter your email address" 
-            required 
-            aria-label="Email address">
-          <button type="submit" class="el-signup-submit-btn">Subscribe</button>
-        </div>
-      {% endform %}
-    </div>
-
-    <script>
-      (function() {
-        var sid = "{{ section.id }}";
-        var triggerBtn = document.getElementById('elSideSignupBtn-' + sid);
-        var modal = document.getElementById('elSignupModal-' + sid);
-        var backdrop = document.getElementById('elSignupBackdrop-' + sid);
-        var closeBtn = document.getElementById('elSignupClose-' + sid);
-
-        function openModal() {
-          if (modal) modal.classList.add('is-open');
-          if (backdrop) backdrop.classList.add('is-open');
-          document.body.style.overflow = 'hidden';
-        }
-
-        function closeModal() {
-          if (modal) modal.classList.remove('is-open');
-          if (backdrop) backdrop.classList.remove('is-open');
-          document.body.style.overflow = '';
-        }
-
-        if (triggerBtn) triggerBtn.addEventListener('click', openModal);
-        if (closeBtn) closeBtn.addEventListener('click', closeModal);
-        if (backdrop) backdrop.addEventListener('click', closeModal);
-        document.addEventListener('keydown', function(e) {
-          if (e.key === 'Escape' && modal && modal.classList.contains('is-open')) {
-            closeModal();
-          }
-        });
-      })();
-    </script>
-  {%- endif -%}
+  
 
   {%- if section.settings.show_whatsapp and section.settings.whatsapp_number != blank -%}
     <!-- Floating WhatsApp -->

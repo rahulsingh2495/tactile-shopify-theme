@@ -14,8 +14,8 @@
       "settings": {
         "image_alignment": "center bottom",
         "overlay_opacity": 15,
-        "heading": "Explore by Space",
-        "subheading": "Stone, porcelain and ceramic surfaces designed for wellness-oriented interiors and contemporary living.",
+        "heading": "",
+        "subheading": "",
         "btn1_label": "Shop the Collection",
         "btn1_link": "shopify://collections/all",
         "btn2_label": "Explore the Story",

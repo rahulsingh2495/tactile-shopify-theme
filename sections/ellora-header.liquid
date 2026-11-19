@@ -760,18 +760,20 @@
       border-radius: 6px 0 0 6px !important;
       padding: 14px 8px !important;
       cursor: pointer !important;
-      display: flex !important;
-      flex-direction: column !important;
+      display: inline-flex !important;
+      flex-direction: row !important;
       align-items: center !important;
       justify-content: center !important;
-      gap: 10px !important;
+      writing-mode: vertical-rl !important;
+      text-orientation: mixed !important;
+      gap: 8px !important;
       box-shadow: -3px 4px 18px rgba(0, 0, 0, 0.18) !important;
       box-sizing: border-box !important;
       font-family: var(--el-hd-font-sans, -apple-system, sans-serif) !important;
       text-decoration: none !important;
-      width: 34px !important;
+      width: auto !important;
       min-width: 34px !important;
-      max-width: 34px !important;
+      max-width: 38px !important;
       transition: background-color 0.25s ease, padding-right 0.25s ease !important;
     }
 
@@ -781,29 +783,28 @@
     }
 
     .el-side-signup-tab svg {
-      width: 15px !important;
-      height: 15px !important;
+      width: 14px !important;
+      height: 14px !important;
       stroke: #FFFFFF !important;
       fill: none !important;
-      display: block !important;
+      display: inline-block !important;
       flex-shrink: 0 !important;
-      transform: none !important;
-      margin: 0 auto !important;
+      transform: rotate(90deg) !important;
+      margin: 0 !important;
     }
 
     .el-side-signup-tab span {
       writing-mode: vertical-rl !important;
-      transform: rotate(180deg) !important;
       font-size: 11px !important;
       font-weight: 600 !important;
-      letter-spacing: 0.08em !important;
+      letter-spacing: 0.1em !important;
       text-transform: uppercase !important;
       color: #FFFFFF !important;
       white-space: nowrap !important;
       line-height: 1 !important;
-      display: block !important;
+      display: inline-block !important;
       text-align: center !important;
-      margin: 0 auto !important;
+      margin: 0 !important;
     }
 
     /* Floating Side Sign-Up Drawer Wrapper & Scrim */
@@ -811,11 +812,11 @@
     body.el-side-signup-open .shopify-section-header,
     body.el-side-signup-open .section-header,
     body.el-side-signup-open #shopify-section-{{ section.id }} {
-      z-index: 2147483640 !important;
+      z-index: 100 !important;
     }
 
-    body.el-side-signup-open .el-header-main-nav,
-    body.el-side-signup-open .el-header-top-bar {
+    body.el-side-signup-open .el-main-header,
+    body.el-side-signup-open .el-announcement-bar {
       z-index: 10 !important;
     }
 
@@ -838,16 +839,16 @@
     }
 
     .el-side-signup-wrapper .el-side-signup-overlay {
-      position: absolute !important;
+      position: fixed !important;
       top: 0 !important;
       left: 0 !important;
-      width: 100% !important;
-      height: 100% !important;
-      background: rgba(28, 27, 25, 0.48) !important;
+      width: 100vw !important;
+      height: 100vh !important;
+      background: rgba(28, 27, 25, 0.55) !important;
       backdrop-filter: blur(4px) !important;
       -webkit-backdrop-filter: blur(4px) !important;
       opacity: 0 !important;
-      z-index: 1 !important;
+      z-index: 2147483646 !important;
       transition: opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1) !important;
     }
 
@@ -856,7 +857,7 @@
     }
 
     .el-side-signup-wrapper .el-side-signup-drawer {
-      position: absolute !important;
+      position: fixed !important;
       top: 0 !important;
       right: 0 !important;
       bottom: 0 !important;
@@ -865,7 +866,7 @@
       height: 100% !important;
       height: 100dvh !important;
       background: #FAF8F5 !important;
-      box-shadow: -12px 0 45px rgba(28, 27, 25, 0.22) !important;
+      box-shadow: -12px 0 45px rgba(28, 27, 25, 0.28) !important;
       transform: translateX(100%) !important;
       transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1) !important;
       display: flex !important;
@@ -874,7 +875,7 @@
       overflow-y: auto !important;
       -webkit-overflow-scrolling: touch !important;
       font-family: var(--el-hd-font-sans, -apple-system, sans-serif) !important;
-      z-index: 2 !important;
+      z-index: 2147483647 !important;
     }
 
     .el-side-signup-wrapper.is-open .el-side-signup-drawer {
@@ -2017,32 +2018,22 @@
                   <div class="el-pane-col">
                     <h5 class="el-col-subheading">Type</h5>
                     <ul class="el-col-list">
-                      <li><a href="{{ routes.all_products_collection_url }}">Honed Wall Panels</a></li>
-                      <li><a href="{{ routes.all_products_collection_url }}">Fluted Linear Panels</a></li>
-                      <li><a href="{{ routes.all_products_collection_url }}">Textured Relief Panels</a></li>
-                      <li><a href="{{ routes.all_products_collection_url }}">Large Format Slabs</a></li>
+                      <li><a href="{{ routes.all_products_collection_url }}?type=honed-wall-panels">Honed Wall Panels</a></li>
+                      <li><a href="{{ routes.all_products_collection_url }}?type=fluted-linear-panels">Fluted Linear Panels</a></li>
+                      <li><a href="{{ routes.all_products_collection_url }}?type=textured-relief-panels">Textured Relief Panels</a></li>
+                      <li><a href="{{ routes.all_products_collection_url }}?type=large-format-slabs">Large Format Slabs</a></li>
                     </ul>
                   </div>
                   <div class="el-pane-col">
-                    <h5 class="el-col-subheading">Cluster Tiles</h5>
+                    <h5 class="el-col-subheading">Size</h5>
                     <ul class="el-col-list">
-                      <li><a href="{{ routes.all_products_collection_url }}">Mosaic Clusters</a></li>
-                      <li><a href="{{ routes.all_products_collection_url }}">Micro-Cluster Mesh</a></li>
-                      <li><a href="{{ routes.all_products_collection_url }}">Staggered Modular Blocks</a></li>
-                      <li><a href="{{ routes.all_products_collection_url }}">Organic Split Face</a></li>
-                    </ul>
-                  </div>
-                  <div class="el-pane-col">
-                    <h5 class="el-col-subheading">Stone Tiles</h5>
-                    <ul class="el-col-list">
-                      <li><a href="{% if collections['marble-surfaces'] != blank %}{{ collections['marble-surfaces'].url }}{% else %}{{ tiles_base_url }}/marble{% endif %}">Marble Surfaces</a></li>
-                      <li><a href="{% if collections['travertine-surfaces'] != blank %}{{ collections['travertine-surfaces'].url }}{% else %}{{ tiles_base_url }}/travertine{% endif %}">Travertine Surfaces</a></li>
-                      <li><a href="{% if collections['limestone-surfaces'] != blank %}{{ collections['limestone-surfaces'].url }}{% else %}{{ tiles_base_url }}/limestone{% endif %}">French Limestone</a></li>
-                      <li><a href="{{ tiles_base_url }}/slate">Architectural Slate</a></li>
+                      <li><a href="{{ routes.all_products_collection_url }}?size=full-wall-panels">Full Wall Panels</a></li>
+                      <li><a href="{{ routes.all_products_collection_url }}?size=modular-tiles">Modular Tiles</a></li>
+                      <li><a href="{{ routes.all_products_collection_url }}?size=custom-architectural-cuts">Custom Architectural Cuts</a></li>
                     </ul>
                   </div>
                   <div class="el-pane-col el-col-bordered">
-                    <h5 class="el-col-subheading">Colors &amp; Tones</h5>
+                    <h5 class="el-col-subheading">Color</h5>
                     <ul class="el-col-list">
                       <li><a href="{{ routes.all_products_collection_url }}?color=gold"><span class="el-color-dot" style="background:#D4AF37;"></span>Gold</a></li>
                       <li><a href="{{ routes.all_products_collection_url }}?color=silver"><span class="el-color-dot" style="background:#C5C6C7;"></span>Silver</a></li>
@@ -2057,29 +2048,24 @@
                 <!-- Tab 2: Tiles -->
                 <div class="el-tab-pane" id="tiles-tab-{{ section.id }}" role="tabpanel">
                   <div class="el-pane-col">
-                    <h4 class="el-pane-heading">Tiles &amp; Stone</h4>
-                    <p class="el-pane-desc">Architectural stone, terracotta &amp; porcelain surfaces engineered to endure.</p>
+                    <h4 class="el-pane-heading">Tiles &amp; Surfaces</h4>
+                    <p class="el-pane-desc">Architectural porcelain, handcrafted ceramics, and bespoke mirror work surfaces.</p>
                     <a href="{{ tiles_base_url }}" class="el-pane-btn">View All Tiles →</a>
                   </div>
                   <div class="el-pane-col">
-                    <h5 class="el-col-subheading">Materials</h5>
+                    <h5 class="el-col-subheading">Type</h5>
                     <ul class="el-col-list">
-                      <li><a href="{% if collections['marble-surfaces'] != blank %}{{ collections['marble-surfaces'].url }}{% else %}{{ tiles_base_url }}/marble{% endif %}">Marble Surfaces</a></li>
-                      <li><a href="{% if collections['travertine-surfaces'] != blank %}{{ collections['travertine-surfaces'].url }}{% else %}{{ tiles_base_url }}/travertine{% endif %}">Travertine Surfaces</a></li>
-                      <li><a href="{% if collections['limestone-surfaces'] != blank %}{{ collections['limestone-surfaces'].url }}{% else %}{{ tiles_base_url }}/limestone{% endif %}">French Limestone</a></li>
-                      <li><a href="{{ tiles_base_url }}/porcelain">Sintered Porcelain</a></li>
-                      <li><a href="{{ tiles_base_url }}/terracotta">Tuscan Terracotta</a></li>
-                      <li><a href="{{ tiles_base_url }}/slate">Architectural Slate</a></li>
+                      <li><a href="{{ tiles_base_url }}?type=porcelain">Porcelain</a></li>
+                      <li><a href="{{ tiles_base_url }}?type=handmade-ceramic">Handmade Ceramic</a></li>
+                      <li><a href="{{ tiles_base_url }}?type=mirror-work">Mirror Work</a></li>
                     </ul>
                   </div>
                   <div class="el-pane-col">
-                    <h5 class="el-col-subheading">By Space</h5>
+                    <h5 class="el-col-subheading">Size</h5>
                     <ul class="el-col-list">
-                      <li><a href="{{ tiles_base_url }}/bathroom">Bathroom &amp; Wet Room</a></li>
-                      <li><a href="{{ tiles_base_url }}/kitchen">Kitchen &amp; Splashback</a></li>
-                      <li><a href="{{ tiles_base_url }}/living-room">Living &amp; Hallways</a></li>
-                      <li><a href="{{ tiles_base_url }}/outdoor">Outdoor &amp; Patio</a></li>
-                      <li><a href="{{ tiles_base_url }}/feature-wall">Feature &amp; Accent Walls</a></li>
+                      <li><a href="{{ tiles_base_url }}?size=full-tile-panels">Full Tile Panels</a></li>
+                      <li><a href="{{ tiles_base_url }}?size=cluster-panel-tiles">Cluster Panel Tiles</a></li>
+                      <li><a href="{{ tiles_base_url }}?size=smaller-handmade-ceramic-tiles">Smaller Handmade Ceramic Tiles</a></li>
                     </ul>
                   </div>
                   <div class="el-pane-col el-col-bordered">
@@ -2348,23 +2334,24 @@
 
           <div class="el-drawer-subheading" style="margin-top: 14px;">Stone Panels</div>
           <a href="{{ routes.all_products_collection_url }}" style="color: var(--el-hd-primary); font-weight: 500;">View Stone Panels →</a>
-          <a href="{{ routes.all_products_collection_url }}">Honed Wall Panels</a>
-          <a href="{{ routes.all_products_collection_url }}">Fluted Linear Panels</a>
-          <a href="{{ routes.all_products_collection_url }}">Cluster Mosaic Tiles</a>
-          <a href="{{ routes.all_products_collection_url }}">Large Format Slabs</a>
+          <a href="{{ routes.all_products_collection_url }}?type=honed-wall-panels">Honed Wall Panels</a>
+          <a href="{{ routes.all_products_collection_url }}?type=fluted-linear-panels">Fluted Linear Panels</a>
+          <a href="{{ routes.all_products_collection_url }}?type=textured-relief-panels">Textured Relief Panels</a>
+          <a href="{{ routes.all_products_collection_url }}?type=large-format-slabs">Large Format Slabs</a>
+          <a href="{{ routes.all_products_collection_url }}?size=full-wall-panels">Full Wall Panels</a>
+          <a href="{{ routes.all_products_collection_url }}?size=modular-tiles">Modular Tiles</a>
+          <a href="{{ routes.all_products_collection_url }}?size=custom-architectural-cuts">Custom Architectural Cuts</a>
           <a href="{{ routes.all_products_collection_url }}?color=gold"><span class="el-color-dot" style="background:#D4AF37;"></span>Gold Tone Panels</a>
           <a href="{{ routes.all_products_collection_url }}?color=silver"><span class="el-color-dot" style="background:#C5C6C7;"></span>Silver Tone Panels</a>
 
           <div class="el-drawer-subheading" style="margin-top: 14px;">Tiles &amp; Natural Stone</div>
           <a href="{{ tiles_base_url }}" style="color: var(--el-hd-primary); font-weight: 500;">View All Tiles →</a>
-          <a href="{% if collections['marble-surfaces'] != blank %}{{ collections['marble-surfaces'].url }}{% else %}{{ tiles_base_url }}/marble{% endif %}">Marble Surfaces</a>
-          <a href="{% if collections['travertine-surfaces'] != blank %}{{ collections['travertine-surfaces'].url }}{% else %}{{ tiles_base_url }}/travertine{% endif %}">Travertine Surfaces</a>
-          <a href="{{ tiles_base_url }}/limestone">French Limestone</a>
-          <a href="{{ tiles_base_url }}/porcelain">Sintered Porcelain</a>
-          <a href="{{ tiles_base_url }}/terracotta">Tuscan Terracotta</a>
-          <a href="{{ tiles_base_url }}/slate">Architectural Slate</a>
-          <a href="{{ tiles_base_url }}/bathroom">Bathroom &amp; Wet Rooms</a>
-          <a href="{{ tiles_base_url }}/kitchen">Kitchen &amp; Splashbacks</a>
+          <a href="{{ tiles_base_url }}?type=porcelain">Porcelain</a>
+          <a href="{{ tiles_base_url }}?type=handmade-ceramic">Handmade Ceramic</a>
+          <a href="{{ tiles_base_url }}?type=mirror-work">Mirror Work</a>
+          <a href="{{ tiles_base_url }}?size=full-tile-panels">Full Tile Panels</a>
+          <a href="{{ tiles_base_url }}?size=cluster-panel-tiles">Cluster Panel Tiles</a>
+          <a href="{{ tiles_base_url }}?size=smaller-handmade-ceramic-tiles">Smaller Handmade Ceramic Tiles</a>
           <a href="{{ tiles_base_url }}?color=gold"><span class="el-color-dot" style="background:#D4AF37;"></span>Gold</a>
           <a href="{{ tiles_base_url }}?color=silver"><span class="el-color-dot" style="background:#C5C6C7;"></span>Silver</a>
 
