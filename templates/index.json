@@ -20,7 +20,7 @@
         "btn1_link": "shopify://collections/all",
         "btn2_label": "Explore the Story",
         "btn2_link": "shopify://pages/about",
-        "show_scroll_indicator": true,
+        "show_scroll_indicator": false,
         "scroll_target": "#about",
         "show_whatsapp": true,
         "whatsapp_number": "+441234567890",

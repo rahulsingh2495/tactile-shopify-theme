@@ -53,7 +53,7 @@
       display: flex;
       align-items: flex-end;
       justify-content: center;
-      padding-bottom: 84px;
+      padding-bottom: {% if section.settings.show_scroll_indicator %}84px{% else %}52px{% endif %};
     }
 
     #ellora-hero-{{ section.id }} .el-hero-bg {
@@ -416,13 +416,14 @@
     },
     {
       "type": "header",
-      "content": "Utilities & Floats"
+      "content": "Scroll Indicator Arrow"
     },
     {
       "type": "checkbox",
       "id": "show_scroll_indicator",
-      "label": "Show Scroll Indicator Arrow",
-      "default": true
+      "label": "Show Down Arrow Scroll Indicator",
+      "default": false,
+      "info": "Toggle to show or hide the down-arrow button at the bottom of the hero"
     },
     {
       "type": "text",
