@@ -19,12 +19,12 @@
 
     #ellora-wishlist-{{ section.id }} {
       --el-wl-bg: {{ section.settings.bg_color | default: '#FFFFFF' }};
-      --el-wl-primary: {{ section.settings.primary_color | default: '#8E6356' }};
+      --el-wl-primary: {{ section.settings.primary_color | default: '#CC9E8F' }};
       --el-wl-dark: {{ section.settings.text_dark | default: '#1C1B19' }};
       --el-wl-muted: {{ section.settings.text_muted | default: '#68645F' }};
       --el-wl-border: {{ section.settings.border_color | default: '#ECE7E1' }};
-      --el-wl-btn-bg: {{ section.settings.btn_bg | default: '#BA9587' }};
-      --el-wl-btn-hover: {{ section.settings.btn_hover | default: '#A58072' }};
+      --el-wl-btn-bg: {{ section.settings.btn_bg | default: '#CC9E8F' }};
+      --el-wl-btn-hover: {{ section.settings.btn_hover | default: '#BF8673' }};
       --el-wl-font-serif: 'Cormorant Garamond', Georgia, serif;
       --el-wl-font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
 
@@ -222,8 +222,8 @@
     #ellora-wishlist-{{ section.id }} .el-wishlist-btn svg {
       width: 15px;
       height: 15px;
-      stroke: var(--el-wl-primary, #8E6356);
-      fill: var(--el-wl-primary, #8E6356);
+      stroke: var(--el-wl-primary, #CC9E8F);
+      fill: var(--el-wl-primary, #CC9E8F);
       stroke-width: 1.6;
       transition: all 0.2s ease;
     }
@@ -252,7 +252,7 @@
     }
 
     #ellora-wishlist-{{ section.id }} .el-product-card:hover .el-card-title {
-      color: var(--el-wl-primary, #8E6356);
+      color: var(--el-wl-primary, #CC9E8F);
     }
 
     #ellora-wishlist-{{ section.id }} .el-card-price {
@@ -289,10 +289,10 @@
     }
 
     #ellora-wishlist-{{ section.id }} .el-card-add-btn:hover {
-      background: var(--el-wl-primary, #8E6356);
-      border-color: var(--el-wl-primary, #8E6356);
+      background: var(--el-wl-primary, #CC9E8F);
+      border-color: var(--el-wl-primary, #CC9E8F);
       color: #FFFFFF;
-      box-shadow: 0 4px 12px rgba(142, 99, 86, 0.22);
+      box-shadow: 0 4px 12px rgba(204, 158, 143, 0.22);
     }
 
     #ellora-wishlist-{{ section.id }} .el-card-add-btn svg {
@@ -831,7 +831,7 @@
       "type": "color",
       "id": "primary_color",
       "label": "Primary Accent / Heading Color",
-      "default": "#8E6356"
+      "default": "#CC9E8F"
     },
     {
       "type": "color",
@@ -855,13 +855,13 @@
       "type": "color",
       "id": "btn_bg",
       "label": "Button Background Color",
-      "default": "#BA9587"
+      "default": "#CC9E8F"
     },
     {
       "type": "color",
       "id": "btn_hover",
       "label": "Button Hover Color",
-      "default": "#A58072"
+      "default": "#BF8673"
     },
     {
       "type": "range",

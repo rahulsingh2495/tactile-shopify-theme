@@ -22,13 +22,13 @@
 
     #ellora-search-{{ section.id }} {
       --el-sr-bg: {{ section.settings.bg_color | default: '#FFFFFF' }};
-      --el-sr-primary: {{ section.settings.primary_color | default: '#8E6356' }};
+      --el-sr-primary: {{ section.settings.primary_color | default: '#CC9E8F' }};
       --el-sr-dark: {{ section.settings.text_dark | default: '#1C1B19' }};
       --el-sr-muted: {{ section.settings.text_muted | default: '#68645F' }};
       --el-sr-border: {{ section.settings.border_color | default: '#ECE7E1' }};
       --el-sr-input-bg: {{ section.settings.input_bg | default: '#FAF8F5' }};
-      --el-sr-btn-bg: {{ section.settings.btn_bg | default: '#BA9587' }};
-      --el-sr-btn-hover: {{ section.settings.btn_hover | default: '#A58072' }};
+      --el-sr-btn-bg: {{ section.settings.btn_bg | default: '#CC9E8F' }};
+      --el-sr-btn-hover: {{ section.settings.btn_hover | default: '#BF8673' }};
       --el-sr-font-serif: 'Cormorant Garamond', Georgia, serif;
       --el-sr-font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
 
@@ -386,10 +386,10 @@
     }
 
     #ellora-search-{{ section.id }} .el-card-add-btn:hover {
-      background: var(--el-sr-primary, #8E6356);
-      border-color: var(--el-sr-primary, #8E6356);
+      background: var(--el-sr-primary, #CC9E8F);
+      border-color: var(--el-sr-primary, #CC9E8F);
       color: #FFFFFF;
-      box-shadow: 0 4px 12px rgba(142, 99, 86, 0.22);
+      box-shadow: 0 4px 12px rgba(204, 158, 143, 0.22);
     }
 
     #ellora-search-{{ section.id }} .el-card-add-btn svg {
@@ -952,7 +952,7 @@
         toast.style.cssText = 'position:fixed;bottom:24px;right:24px;background:#1C1B19;color:#FFFFFF;padding:12px 20px;border-radius:4px;font-family:sans-serif;font-size:13.5px;font-weight:500;box-shadow:0 4px 16px rgba(0,0,0,0.2);z-index:99999;opacity:0;transform:translateY(12px);transition:all 0.3s ease;pointer-events:none;display:flex;align-items:center;gap:10px;';
         document.body.appendChild(toast);
       }
-      toast.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="#BA9587" stroke="#BA9587" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg> <span>' + msg + '</span>';
+      toast.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="#CC9E8F" stroke="#CC9E8F" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg> <span>' + msg + '</span>';
       toast.style.opacity = '1';
       toast.style.transform = 'translateY(0)';
       clearTimeout(toastTimeout);
@@ -1232,7 +1232,7 @@
       "type": "color",
       "id": "primary_color",
       "label": "Headline & Primary Accent",
-      "default": "#8E6356"
+      "default": "#CC9E8F"
     },
     {
       "type": "color",
@@ -1262,13 +1262,13 @@
       "type": "color",
       "id": "btn_bg",
       "label": "Button Background",
-      "default": "#BA9587"
+      "default": "#CC9E8F"
     },
     {
       "type": "color",
       "id": "btn_hover",
       "label": "Button Hover Background",
-      "default": "#A58072"
+      "default": "#BF8673"
     },
     {
       "type": "range",

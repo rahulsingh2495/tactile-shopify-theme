@@ -3654,8 +3654,8 @@ details-disclosure > details {
   --el-text: #2D2A28;            /* Primary body typography */
   --el-muted: #736E67;           /* Elegant taupe for secondary text & counts */
   --el-muted-light: #9B958E;     /* Soft stone for disabled / borders / icons */
-  --el-terracotta: #8E6356;      /* Ellora signature terracotta accent */
-  --el-terracotta-dark: #7B4F43; /* Rich deep terracotta for buttons & hover */
+  --el-terracotta: #CC9E8F;      /* Ellora signature terracotta accent */
+  --el-terracotta-dark: #BF8673; /* Rich deep terracotta for buttons & hover */
   --el-terracotta-tint: #FAF2ED; /* Subtle terracotta blush for active pills */
   --el-border: #ECE7E1;          /* Clean minimal card & divider borders */
   --el-border-light: #F2EFEA;    /* Extra soft inner rule lines */

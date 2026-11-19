@@ -20,8 +20,8 @@
 
     #ellora-prod-wp-{{ section.id }} {
       --el-pw-bg: {{ section.settings.bg_color | default: '#FFFFFF' }};
-      --el-pw-primary: {{ section.settings.primary_color | default: '#8E6356' }};
-      --el-pw-primary-hover: {{ section.settings.primary_hover | default: '#734E43' }};
+      --el-pw-primary: {{ section.settings.primary_color | default: '#CC9E8F' }};
+      --el-pw-primary-hover: {{ section.settings.primary_hover | default: '#BF8673' }};
       --el-pw-dark: {{ section.settings.text_dark | default: '#1C1B19' }};
       --el-pw-muted: {{ section.settings.text_muted | default: '#68645F' }};
       --el-pw-border: {{ section.settings.border_color | default: '#ECE7E1' }};
@@ -421,7 +421,7 @@
       background: var(--el-pw-primary);
       color: #FFFFFF;
       font-weight: 600;
-      box-shadow: 0 2px 6px rgba(142, 99, 86, 0.25);
+      box-shadow: 0 2px 6px rgba(204, 158, 143, 0.25);
     }
 
     /* Color Swatch Option Buttons */
@@ -453,7 +453,7 @@
 
     #ellora-prod-wp-{{ section.id }} .el-pw-swatch-btn.is-active {
       border-color: var(--el-pw-primary);
-      background: rgba(142, 99, 86, 0.08);
+      background: rgba(204, 158, 143, 0.08);
       color: var(--el-pw-primary);
       font-weight: 600;
       box-shadow: 0 0 0 1px var(--el-pw-primary);
@@ -541,8 +541,8 @@
       width: 100%;
       height: 48px;
       background: #FFFFFF;
-      border: 1.5px solid var(--el-pw-primary, #8E6356);
-      color: var(--el-pw-primary, #8E6356);
+      border: 1.5px solid var(--el-pw-primary, #CC9E8F);
+      color: var(--el-pw-primary, #CC9E8F);
       border-radius: 4px;
       font-family: inherit;
       font-size: 13.5px;
@@ -559,9 +559,9 @@
     }
 
     #ellora-prod-wp-{{ section.id }} .el-pw-sample-btn:hover {
-      background: var(--el-pw-primary, #8E6356);
+      background: var(--el-pw-primary, #CC9E8F);
       color: #FFFFFF !important;
-      box-shadow: 0 4px 14px rgba(142, 99, 86, 0.25);
+      box-shadow: 0 4px 14px rgba(204, 158, 143, 0.25);
     }
 
     /* Sample Consultation Modal */
@@ -630,7 +630,7 @@
       font-weight: 600;
       text-transform: uppercase;
       letter-spacing: 0.08em;
-      color: #8E6356;
+      color: #CC9E8F;
       background: #f8f1ee;
       padding: 4px 12px;
       border-radius: 2px;
@@ -667,7 +667,7 @@
       justify-content: center;
       width: 100%;
       height: 46px;
-      background: var(--el-pw-primary, #8E6356);
+      background: var(--el-pw-primary, #CC9E8F);
       color: #FFFFFF !important;
       text-decoration: none;
       font-size: 13.5px;
@@ -691,8 +691,8 @@
       transition: all 0.2s ease;
     }
     #ellora-prod-wp-{{ section.id }} .el-sample-modal-btn-secondary:hover {
-      border-color: #8E6356;
-      color: #8E6356;
+      border-color: #CC9E8F;
+      color: #CC9E8F;
     }
 
     /* Pincode & Delivery Checker */
@@ -715,7 +715,7 @@
       margin-bottom: 12px;
     }
     #ellora-prod-wp-{{ section.id }} .el-pw-pincode-header svg {
-      color: var(--el-pw-primary, #8E6356);
+      color: var(--el-pw-primary, #CC9E8F);
     }
     #ellora-prod-wp-{{ section.id }} .el-pw-pincode-form {
       display: flex;
@@ -735,12 +735,12 @@
     }
     #ellora-prod-wp-{{ section.id }} .el-pw-pincode-input:focus {
       outline: none;
-      border-color: var(--el-pw-primary, #8E6356);
+      border-color: var(--el-pw-primary, #CC9E8F);
     }
     #ellora-prod-wp-{{ section.id }} .el-pw-pincode-btn {
       height: 40px;
       padding: 0 16px;
-      background: var(--el-pw-primary, #8E6356);
+      background: var(--el-pw-primary, #CC9E8F);
       color: #FFFFFF;
       border: none;
       border-radius: 4px;
@@ -750,7 +750,7 @@
       transition: background 0.2s;
     }
     #ellora-prod-wp-{{ section.id }} .el-pw-pincode-btn:hover {
-      background: var(--el-pw-primary-hover, #734E43);
+      background: var(--el-pw-primary-hover, #BF8673);
     }
     #ellora-prod-wp-{{ section.id }} .el-pw-pincode-result {
       font-size: 12.5px;
@@ -1037,7 +1037,7 @@
                       {%- elsif val_low contains 'green' -%}{%- assign swatch_color = '#2D5A43' -%}
                       {%- elsif val_low contains 'cream' or val_low contains 'bone' or val_low contains 'calacatta' -%}{%- assign swatch_color = '#FDF6E2' -%}
                       {%- elsif val_low contains 'black' or val_low contains 'nero' -%}{%- assign swatch_color = '#1E1B18' -%}
-                      {%- elsif val_low contains 'terracotta' or val_low contains 'cotto' or val_low contains 'sienna' -%}{%- assign swatch_color = '#8E6356' -%}
+                      {%- elsif val_low contains 'terracotta' or val_low contains 'cotto' or val_low contains 'sienna' -%}{%- assign swatch_color = '#CC9E8F' -%}
                       {%- elsif val_low contains 'ochre' or val_low contains 'mustard' or val_low contains 'gold' -%}{%- assign swatch_color = '#C4823F' -%}
                       {%- elsif val_low contains 'silver' -%}{%- assign swatch_color = '#C5C6C7' -%}
                       {%- elsif val_low contains 'walnut' or val_low contains 'wood' or val_low contains 'brown' -%}{%- assign swatch_color = '#5C4033' -%}
@@ -1217,7 +1217,7 @@
     <div class="el-sample-modal-dialog">
       <button type="button" class="el-sample-modal-close" aria-label="Close modal">&times;</button>
       <div class="el-sample-modal-icon">
-        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#8E6356" stroke-width="1.8">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#CC9E8F" stroke-width="1.8">
           <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
           <line x1="16" y1="2" x2="16" y2="6"></line>
           <line x1="8" y1="2" x2="8" y2="6"></line>
@@ -1634,13 +1634,13 @@
       "type": "color",
       "id": "primary_color",
       "label": "Primary Accent Color",
-      "default": "#8E6356"
+      "default": "#CC9E8F"
     },
     {
       "type": "color",
       "id": "primary_hover",
       "label": "Primary Accent Hover",
-      "default": "#734E43"
+      "default": "#BF8673"
     },
     {
       "type": "color",

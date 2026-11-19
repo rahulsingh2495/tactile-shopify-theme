@@ -7,7 +7,7 @@
   - Dynamic Shopify Menu Picker (choose any menu created in Online Store > Navigation)
   - Multi-level dropdowns & Multi-column Mega Menu support for backend menu items
   - Built-in luxury interactive Mega Menu option for "Shop" (Tiles + Wallpapers tabs, Collections)
-  - Top Announcement Bar: Dusty rose/terracotta background (#C59B8B), left banner text, right utility links / menu
+  - Top Announcement Bar: Dusty rose/terracotta background (#CC9E8F), left banner text, right utility links / menu
   - Center Logo: Official Ellora final logo CDN with desktop & mobile width sliders + image picker
   - Right Utility Icons: Search, Wishlist, Shopping Basket with real-time cart badge, Customer Account
   - Fully Responsive: Mobile hamburger button with smooth slide-left drawer navigation & multi-accordion
@@ -20,15 +20,15 @@
     @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
 
     #ellora-header-{{ section.id }} {
-      --el-hd-top-bg: {{ section.settings.top_bg | default: '#8E6356' }};
+      --el-hd-top-bg: {{ section.settings.top_bg | default: '#CC9E8F' }};
       --el-hd-top-text: {{ section.settings.top_text_color | default: '#FFFFFF' }};
       --el-hd-bg: {{ section.settings.header_bg | default: '#FFFFFF' }};
-      --el-hd-primary: {{ section.settings.accent_color | default: '#8E6356' }};
-      --el-hd-primary-hover: #734E43;
+      --el-hd-primary: {{ section.settings.accent_color | default: '#CC9E8F' }};
+      --el-hd-primary-hover: #BF8673;
       --el-hd-dark: {{ section.settings.text_color | default: '#1C1B19' }};
       --el-hd-menu-color: {{ section.settings.menu_link_color | default: section.settings.text_color | default: '#1C1B19' }};
-      --el-hd-menu-hover: {{ section.settings.menu_link_hover_color | default: section.settings.accent_color | default: '#8E6356' }};
-      --el-hd-menu-active: {{ section.settings.menu_link_active_color | default: section.settings.accent_color | default: '#8E6356' }};
+      --el-hd-menu-hover: {{ section.settings.menu_link_hover_color | default: section.settings.accent_color | default: '#CC9E8F' }};
+      --el-hd-menu-active: {{ section.settings.menu_link_active_color | default: section.settings.accent_color | default: '#CC9E8F' }};
       --el-hd-text: #44403B;
       --el-hd-muted: #736E67;
       --el-hd-border: #E8E3DC;
@@ -190,12 +190,12 @@
     }
 
     #ellora-header-{{ section.id }} .el-nav-link:hover {
-      color: var(--el-hd-menu-hover, #8E6356);
+      color: var(--el-hd-menu-hover, #CC9E8F);
     }
 
     #ellora-header-{{ section.id }} .el-nav-link.is-active,
     #ellora-header-{{ section.id }} .el-nav-link[aria-current="page"] {
-      color: var(--el-hd-menu-active, #8E6356) !important;
+      color: var(--el-hd-menu-active, #CC9E8F) !important;
       font-weight: 600;
       position: relative;
     }
@@ -208,13 +208,13 @@
       left: 0;
       width: 100%;
       height: 2px;
-      background-color: var(--el-hd-menu-active, #8E6356);
+      background-color: var(--el-hd-menu-active, #CC9E8F);
       border-radius: 1px;
     }
 
     #ellora-header-{{ section.id }} .el-nav-link.is-active .el-chevron-icon,
     #ellora-header-{{ section.id }} .el-nav-link[aria-current="page"] .el-chevron-icon {
-      stroke: var(--el-hd-menu-active, #8E6356);
+      stroke: var(--el-hd-menu-active, #CC9E8F);
     }
 
     #ellora-header-{{ section.id }} .el-chevron-icon {
@@ -274,13 +274,13 @@
     }
 
     #ellora-header-{{ section.id }} .el-dropdown-menu li a:hover {
-      color: var(--el-hd-menu-hover, #8E6356);
+      color: var(--el-hd-menu-hover, #CC9E8F);
       background-color: #FAF8F5;
     }
 
     #ellora-header-{{ section.id }} .el-dropdown-menu li a.is-active,
     #ellora-header-{{ section.id }} .el-dropdown-menu li a[aria-current="page"] {
-      color: var(--el-hd-menu-active, #8E6356) !important;
+      color: var(--el-hd-menu-active, #CC9E8F) !important;
       background-color: #FAF8F5;
       font-weight: 600;
     }
@@ -743,7 +743,7 @@
       top: 50% !important;
       transform: translateY(-50%) !important;
       z-index: 9998 !important;
-      background: #8E6356 !important;
+      background: #CC9E8F !important;
       color: #FFFFFF !important;
       border: none !important;
       outline: none !important;
@@ -766,7 +766,7 @@
     }
 
     .el-side-signup-tab:hover {
-      background: #734E43 !important;
+      background: #BF8673 !important;
       padding-right: 12px !important;
     }
 
@@ -887,7 +887,7 @@
       font-weight: 700 !important;
       letter-spacing: 0.16em !important;
       text-transform: uppercase !important;
-      color: #8E6356 !important;
+      color: #CC9E8F !important;
     }
 
     .el-ss-close-btn {
@@ -907,9 +907,9 @@
     }
 
     .el-ss-close-btn:hover {
-      background: #8E6356 !important;
+      background: #CC9E8F !important;
       color: #FFFFFF !important;
-      border-color: #8E6356 !important;
+      border-color: #CC9E8F !important;
     }
 
     /* Drawer Body */
@@ -936,7 +936,7 @@
       letter-spacing: 0.14em !important;
       text-transform: uppercase !important;
       background: #FAF4EF !important;
-      color: #8E6356 !important;
+      color: #CC9E8F !important;
       padding: 4px 10px !important;
       border-radius: 3px !important;
       margin-bottom: 12px !important;
@@ -977,7 +977,7 @@
       transform: translateY(-50%) !important;
       width: 17px !important;
       height: 17px !important;
-      stroke: #8E6356 !important;
+      stroke: #CC9E8F !important;
       pointer-events: none !important;
     }
 
@@ -997,14 +997,14 @@
     }
 
     .el-ss-input:focus {
-      border-color: #8E6356 !important;
-      box-shadow: 0 0 0 3px rgba(142, 99, 86, 0.12) !important;
+      border-color: #CC9E8F !important;
+      box-shadow: 0 0 0 3px rgba(204, 158, 143, 0.12) !important;
     }
 
     .el-ss-submit-btn {
       width: 100% !important;
       height: 48px !important;
-      background: #8E6356 !important;
+      background: #CC9E8F !important;
       color: #FFFFFF !important;
       border: none !important;
       border-radius: 4px !important;
@@ -1021,7 +1021,7 @@
     }
 
     .el-ss-submit-btn:hover {
-      background: #734E43 !important;
+      background: #BF8673 !important;
     }
 
     .el-ss-success {
@@ -1055,7 +1055,7 @@
     }
 
     .el-ss-perk-bullet {
-      color: #8E6356 !important;
+      color: #CC9E8F !important;
       font-size: 16px !important;
       line-height: 1.2 !important;
     }
@@ -1242,18 +1242,18 @@
       color: var(--el-hd-menu-color, #1C1B19);
     }
     #ellora-header-{{ section.id }} .el-drawer-accordion-btn:hover {
-      color: var(--el-hd-menu-hover, #8E6356);
+      color: var(--el-hd-menu-hover, #CC9E8F);
     }
     #ellora-header-{{ section.id }} .el-drawer-accordion-btn.is-active {
-      color: var(--el-hd-menu-active, #8E6356) !important;
+      color: var(--el-hd-menu-active, #CC9E8F) !important;
     }
 
     #ellora-header-{{ section.id }} .el-drawer-accordion-content a:hover {
-      color: var(--el-hd-menu-hover, #8E6356);
+      color: var(--el-hd-menu-hover, #CC9E8F);
     }
     #ellora-header-{{ section.id }} .el-drawer-accordion-content a.is-active,
     #ellora-header-{{ section.id }} .el-drawer-accordion-content a[aria-current="page"] {
-      color: var(--el-hd-menu-active, #8E6356) !important;
+      color: var(--el-hd-menu-active, #CC9E8F) !important;
       font-weight: 600;
     }
 
@@ -1269,12 +1269,12 @@
     }
 
     #ellora-header-{{ section.id }} .el-drawer-link:hover {
-      color: var(--el-hd-menu-hover, #8E6356);
+      color: var(--el-hd-menu-hover, #CC9E8F);
     }
 
     #ellora-header-{{ section.id }} .el-drawer-link.is-active,
     #ellora-header-{{ section.id }} .el-drawer-link[aria-current="page"] {
-      color: var(--el-hd-menu-active, #8E6356) !important;
+      color: var(--el-hd-menu-active, #CC9E8F) !important;
       font-weight: 600;
     }
 
@@ -1461,8 +1461,8 @@
     #ellora-header-{{ section.id }} .el-cart-drawer-wrapper .el-cd-close-btn:hover,
     .el-cart-drawer-wrapper .el-cd-close-btn:hover {
       background: #FAF8F5 !important;
-      border-color: #C59B8B !important;
-      color: #C59B8B !important;
+      border-color: #CC9E8F !important;
+      color: #CC9E8F !important;
       transform: rotate(90deg) !important;
     }
 
@@ -1539,7 +1539,7 @@
 
     #ellora-header-{{ section.id }} .el-cart-drawer-wrapper .el-cd-item-title:hover,
     .el-cart-drawer-wrapper .el-cd-item-title:hover {
-      color: #C59B8B !important;
+      color: #CC9E8F !important;
     }
 
     #ellora-header-{{ section.id }} .el-cart-drawer-wrapper .el-cd-item-variant,
@@ -1702,7 +1702,7 @@
 
     #ellora-header-{{ section.id }} .el-cart-drawer-wrapper .el-cd-empty-btn:hover,
     .el-cart-drawer-wrapper .el-cd-empty-btn:hover {
-      background: #C59B8B !important;
+      background: #CC9E8F !important;
     }
 
     /* Drawer Footer */
@@ -1744,7 +1744,7 @@
       justify-content: center !important;
       width: 100% !important;
       height: 48px !important;
-      background: #8E6356 !important;
+      background: #CC9E8F !important;
       color: #FFFFFF !important;
       text-decoration: none !important;
       font-size: 12.5px !important;
@@ -1993,7 +1993,7 @@
                     Tiles
                   </button>
                   <button type="button" class="el-megamenu-tab" data-tab="wallpapers-tab-{{ section.id }}" role="tab" aria-selected="false">
-                    Wallpaper <span style="font-size: 10px; background: rgba(142, 99, 86, 0.12); color: var(--el-hd-primary); padding: 2px 6px; border-radius: 10px; margin-left: 4px; font-weight: 600;">Coming Soon</span>
+                    Wallpaper <span style="font-size: 10px; background: rgba(204, 158, 143, 0.12); color: var(--el-hd-primary); padding: 2px 6px; border-radius: 10px; margin-left: 4px; font-weight: 600;">Coming Soon</span>
                   </button>
                 </div>
 
@@ -2038,7 +2038,7 @@
                       <li><a href="{{ routes.all_products_collection_url }}?color=silver"><span class="el-color-dot" style="background:#C5C6C7;"></span>Silver</a></li>
                       <li><a href="{{ routes.all_products_collection_url }}?color=ivory"><span class="el-color-dot" style="background:#F5F2EB;"></span>Ivory &amp; White</a></li>
                       <li><a href="{{ routes.all_products_collection_url }}?color=beige"><span class="el-color-dot" style="background:#D8C7B5;"></span>Beige &amp; Sand</a></li>
-                      <li><a href="{{ routes.all_products_collection_url }}?color=terracotta"><span class="el-color-dot" style="background:#8E6356;"></span>Terracotta</a></li>
+                      <li><a href="{{ routes.all_products_collection_url }}?color=terracotta"><span class="el-color-dot" style="background:#CC9E8F;"></span>Terracotta</a></li>
                       <li><a href="{{ routes.all_products_collection_url }}?color=charcoal"><span class="el-color-dot" style="background:#2E2D2B;"></span>Anthracite &amp; Slate</a></li>
                     </ul>
                   </div>
@@ -2079,7 +2079,7 @@
                       <li><a href="{{ tiles_base_url }}?color=silver"><span class="el-color-dot" style="background:#C5C6C7;"></span>Silver</a></li>
                       <li><a href="{{ tiles_base_url }}?color=ivory"><span class="el-color-dot" style="background:#F5F2EB;"></span>Ivory &amp; White</a></li>
                       <li><a href="{{ tiles_base_url }}?color=beige"><span class="el-color-dot" style="background:#D8C7B5;"></span>Beige &amp; Sand</a></li>
-                      <li><a href="{{ tiles_base_url }}?color=terracotta"><span class="el-color-dot" style="background:#8E6356;"></span>Terracotta</a></li>
+                      <li><a href="{{ tiles_base_url }}?color=terracotta"><span class="el-color-dot" style="background:#CC9E8F;"></span>Terracotta</a></li>
                       <li><a href="{{ tiles_base_url }}?color=charcoal"><span class="el-color-dot" style="background:#2E2D2B;"></span>Anthracite &amp; Slate</a></li>
                     </ul>
                   </div>
@@ -3407,7 +3407,7 @@
       "type": "color",
       "id": "accent_color",
       "label": "Accent Color",
-      "default": "#8E6356"
+      "default": "#CC9E8F"
     },
     {
       "type": "header",
@@ -3423,13 +3423,13 @@
       "type": "color",
       "id": "menu_link_hover_color",
       "label": "Menu Link Hover Color",
-      "default": "#8E6356"
+      "default": "#CC9E8F"
     },
     {
       "type": "color",
       "id": "menu_link_active_color",
       "label": "Menu Link Active Color",
-      "default": "#8E6356"
+      "default": "#CC9E8F"
     },
     {
       "type": "text",

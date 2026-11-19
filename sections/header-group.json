@@ -73,7 +73,7 @@
         "contact_url": "",
         "trade_label": "Trade",
         "trade_url": "shopify://pages/trade",
-        "top_bg": "#c59b8b",
+        "top_bg": "#CC9E8F",
         "top_text_color": "#ffffff",
         "fallback_logo": "https://cdn.shopify.com/s/files/1/0990/3685/6647/files/ellora_logo_final.png?v=1793618092",
         "logo_width": 110,
@@ -89,10 +89,10 @@
         "show_account": true,
         "header_bg": "#ffffff",
         "text_color": "#1c1b19",
-        "accent_color": "#8E6356",
+        "accent_color": "#CC9E8F",
         "menu_link_color": "#1C1B19",
-        "menu_link_hover_color": "#8E6356",
-        "menu_link_active_color": "#8E6356",
+        "menu_link_hover_color": "#CC9E8F",
+        "menu_link_active_color": "#CC9E8F",
         "drawer_footer_title": "Ellora Spaces Studio",
         "drawer_footer_sub": "Crafting enduring, organic living spaces."
       }
