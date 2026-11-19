@@ -1,1 +1,49 @@
-{"wrapper":"main.main-content","sections":{"main_search":{"type":"ellora-search","settings":{"kicker":"EXPLORE OUR CATALOGUE","title":"Search Surfaces","title_size_desktop":46,"title_size_mobile":32,"title_weight":"400","subtitle":"Find the ideal stone slabs, architectural tiles, and bespoke wallpapers for your room.","search_placeholder":"Search tiles, wallpapers, marble surfaces, sizes...","show_tags":true,"popular_tags":"Marble, Travertine, Fluted Tile, Limestone, Yoga Murals, Wallpapers, Outdoor","columns_desktop":3,"products_per_page":12,"show_wishlist":true,"show_quick_view":true,"price_unit":"\/M2","bg_color":"#ffffff","primary_color":"#CC9E8F","text_dark":"#1c1b19","text_muted":"#68645f","input_bg":"#faf8f5","border_color":"#ece7e1","btn_bg":"#CC9E8F","btn_hover":"#BF8673","container_max_width":1280,"padding_top":50,"padding_bottom":80,"padding_top_mobile":36,"padding_bottom_mobile":50}}},"order":["main_search"]}
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "wrapper": "main.main-content",
+  "sections": {
+    "main_search": {
+      "type": "ellora-search",
+      "settings": {
+        "kicker": "EXPLORE OUR CATALOGUE",
+        "title": "Search Surfaces",
+        "title_size_desktop": 46,
+        "title_size_mobile": 32,
+        "title_weight": "400",
+        "subtitle": "Find the ideal stone slabs, architectural tiles, and bespoke wallpapers for your room.",
+        "search_placeholder": "Search tiles, wallpapers, marble surfaces, sizes...",
+        "show_tags": true,
+        "popular_tags": "Marble, Travertine, Fluted Tile, Limestone, Yoga Murals, Wallpapers, Outdoor",
+        "columns_desktop": 3,
+        "products_per_page": 12,
+        "show_wishlist": true,
+        "show_quick_view": true,
+        "price_unit": "/M2",
+        "bg_color": "#ffffff",
+        "primary_color": "#CC9E8F",
+        "text_dark": "#1c1b19",
+        "text_muted": "#68645f",
+        "input_bg": "#faf8f5",
+        "border_color": "#ece7e1",
+        "btn_bg": "#CC9E8F",
+        "btn_hover": "#BF8673",
+        "container_max_width": 1280,
+        "padding_top": 50,
+        "padding_bottom": 80,
+        "padding_top_mobile": 36,
+        "padding_bottom_mobile": 50
+      }
+    }
+  },
+  "order": [
+    "main_search"
+  ]
+}

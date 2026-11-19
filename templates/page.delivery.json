@@ -1,1 +1,59 @@
-{"wrapper":"main.main-content","sections":{"delivery_hero":{"type":"ellora-delivery-hero","settings":{"kicker":"SPECIALIZED PALLET FREIGHT & DISPATCH","title":"Delivery & Site Logistics","desc":"Natural stone and large-format porcelain require specialized freight handling. We oversee pallet crating, transit tracking, and tail-lift offloading direct to your project site.","show_breadcrumbs":true,"show_pills":true,"banner_height":460,"banner_height_mobile":280,"banner_radius":2,"container_max_width":1280,"bg_color":"#FFFFFF","primary_color":"#CC9E8F","text_dark":"#1C1B19","text_muted":"#68645F","border_color":"#ECE7E1","card_bg":"#FAF8F5","padding_top":60,"padding_bottom":60}},"delivery_process":{"type":"ellora-delivery-process","settings":{"kicker":"HOW IT WORKS","title":"Our 4-Phase Delivery Journey","sub":"Every consignment of stone is crated, tracked, and offloaded with rigorous care to ensure pristine site delivery.","show_rates_table":true,"show_checklist":true,"container_max_width":1280,"bg_color":"#FAF8F5","card_bg":"#FFFFFF","primary_color":"#CC9E8F","text_dark":"#1C1B19","text_muted":"#68645F","border_color":"#ECE7E1","padding_top":80,"padding_bottom":100}}},"order":["delivery_hero","delivery_process"]}
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "wrapper": "main.main-content",
+  "sections": {
+    "delivery_hero": {
+      "type": "ellora-delivery-hero",
+      "settings": {
+        "kicker": "SPECIALIZED PALLET FREIGHT & DISPATCH",
+        "title": "Delivery & Site Logistics",
+        "desc": "Natural stone and large-format porcelain require specialized freight handling. We oversee pallet crating, transit tracking, and tail-lift offloading direct to your project site.",
+        "show_breadcrumbs": true,
+        "show_pills": true,
+        "banner_height": 460,
+        "banner_height_mobile": 280,
+        "banner_radius": 2,
+        "container_max_width": 1280,
+        "bg_color": "#FFFFFF",
+        "primary_color": "#CC9E8F",
+        "text_dark": "#1C1B19",
+        "text_muted": "#68645F",
+        "border_color": "#ECE7E1",
+        "card_bg": "#FAF8F5",
+        "padding_top": 60,
+        "padding_bottom": 60
+      }
+    },
+    "delivery_process": {
+      "type": "ellora-delivery-process",
+      "settings": {
+        "kicker": "HOW IT WORKS",
+        "title": "Our 4-Phase Delivery Journey",
+        "sub": "Every consignment of stone is crated, tracked, and offloaded with rigorous care to ensure pristine site delivery.",
+        "show_rates_table": true,
+        "show_checklist": true,
+        "container_max_width": 1280,
+        "bg_color": "#FAF8F5",
+        "card_bg": "#FFFFFF",
+        "primary_color": "#CC9E8F",
+        "text_dark": "#1C1B19",
+        "text_muted": "#68645F",
+        "border_color": "#ECE7E1",
+        "padding_top": 80,
+        "padding_bottom": 100
+      }
+    }
+  },
+  "order": [
+    "delivery_hero",
+    "delivery_process"
+  ]
+}
