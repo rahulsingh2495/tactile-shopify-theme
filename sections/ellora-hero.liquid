@@ -52,7 +52,8 @@
       overflow: hidden;
       display: flex;
       align-items: flex-end;
-      padding-bottom: 64px;
+      justify-content: center;
+      padding-bottom: 84px;
     }
 
     #ellora-hero-{{ section.id }} .el-hero-bg {
@@ -96,13 +97,19 @@
       max-width: 1720px;
       margin: 0 auto;
       padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
     }
 
     #ellora-hero-{{ section.id }} .el-hero-buttons {
       display: inline-flex;
-      gap: 16px;
+      gap: 18px;
       flex-wrap: wrap;
       align-items: center;
+      justify-content: center;
+      margin: 0 auto;
     }
 
     #ellora-hero-{{ section.id }} .el-btn {
@@ -241,12 +248,18 @@
 
   <section class="el-hero">
     <div class="el-hero-bg">
-      {%- if section.settings.video != blank -%}
-        {{ section.settings.video | video_tag: autoplay: true, loop: true, muted: true, playsinline: true, controls: false, class: 'el-hero-video' }}
-      {%- elsif section.settings.video_url != blank -%}
-        <video class="el-hero-video" autoplay muted loop playsinline preload="auto">
-          <source src="{{ section.settings.video_url }}" type="video/mp4">
-        </video>
+      {%- if section.settings.background_type == 'video' or section.settings.video != blank or section.settings.video_url != blank -%}
+        {%- if section.settings.video != blank -%}
+          {{ section.settings.video | video_tag: autoplay: true, loop: true, muted: true, playsinline: true, controls: false, class: 'el-hero-video' }}
+        {%- elsif section.settings.video_url != blank -%}
+          <video class="el-hero-video" autoplay muted loop playsinline preload="auto">
+            <source src="{{ section.settings.video_url }}" type="video/mp4">
+          </video>
+        {%- elsif section.settings.image != blank -%}
+          {{ section.settings.image | image_url: width: 2400 | image_tag: class: 'el-hero-img', loading: 'eager', alt: shop.name }}
+        {%- else -%}
+          <img src="https://cdn.shopify.com/s/files/1/0990/3685/6647/files/sec1_hero_bg.jpg?v=1789453290" alt="{{ shop.name }}" class="el-hero-img" loading="eager">
+        {%- endif -%}
       {%- elsif section.settings.image != blank -%}
         {{ section.settings.image | image_url: width: 2400 | image_tag: class: 'el-hero-img', loading: 'eager', alt: shop.name }}
       {%- else -%}
@@ -304,17 +317,41 @@
   "settings": [
     {
       "type": "header",
-      "content": "Hero Background"
+      "content": "Hero Background Media"
+    },
+    {
+      "type": "select",
+      "id": "background_type",
+      "label": "Background Media Type",
+      "options": [
+        { "value": "image", "label": "Image" },
+        { "value": "video", "label": "Video" }
+      ],
+      "default": "image",
+      "info": "Choose whether to display background image or video"
+    },
+    {
+      "type": "video",
+      "id": "video",
+      "label": "Background Video (Shopify File)",
+      "info": "Upload or pick a video file from Shopify files"
+    },
+    {
+      "type": "text",
+      "id": "video_url",
+      "label": "Background Video URL (External MP4)",
+      "info": "Or paste a direct .mp4 video link"
     },
     {
       "type": "image_picker",
       "id": "image",
-      "label": "Hero Image"
+      "label": "Hero Background Image",
+      "info": "Used as background or poster fallback"
     },
     {
       "type": "select",
       "id": "image_alignment",
-      "label": "Image Position",
+      "label": "Media Alignment Position",
       "options": [
         { "value": "center top", "label": "Top Center" },
         { "value": "center center", "label": "Center" },
