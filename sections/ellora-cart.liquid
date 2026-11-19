@@ -16,13 +16,21 @@
 {% endcomment %}
 
 <div class="el-section-wrapper el-sec-cart" id="ellora-cart-{{ section.id }}" data-section-id="{{ section.id }}">
+  {%- assign cart_primary = section.settings.primary_color -%}
+  {%- if cart_primary == blank or cart_primary == '#8E6356' or cart_primary == '#8e6356' or cart_primary == '#754F43' or cart_primary == '#754f43' or cart_primary == '#BA9587' or cart_primary == '#ba9587' or cart_primary == '#734E43' or cart_primary == '#734e43' or cart_primary == '#A36854' or cart_primary == '#a36854' -%}
+    {%- assign cart_primary = '#CC9E8F' -%}
+  {%- endif -%}
+  {%- assign cart_primary_hover = section.settings.primary_hover -%}
+  {%- if cart_primary_hover == blank or cart_primary_hover == '#8E6356' or cart_primary_hover == '#8e6356' or cart_primary_hover == '#754F43' or cart_primary_hover == '#754f43' or cart_primary_hover == '#BA9587' or cart_primary_hover == '#ba9587' or cart_primary_hover == '#734E43' or cart_primary_hover == '#734e43' or cart_primary_hover == '#A36854' or cart_primary_hover == '#a36854' -%}
+    {%- assign cart_primary_hover = '#BF8673' -%}
+  {%- endif -%}
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
 
     #ellora-cart-{{ section.id }} {
       --el-cart-bg: {{ section.settings.bg_color | default: '#FFFFFF' }};
-      --el-cart-primary: {{ section.settings.primary_color | default: '#CC9E8F' }};
-      --el-cart-primary-hover: {{ section.settings.primary_hover | default: '#BF8673' }};
+      --el-cart-primary: {{ cart_primary }};
+      --el-cart-primary-hover: {{ cart_primary_hover }};
       --el-cart-dark: {{ section.settings.text_dark | default: '#1C1B19' }};
       --el-cart-muted: {{ section.settings.text_muted | default: '#68645F' }};
       --el-cart-border: {{ section.settings.border_color | default: '#ECE7E1' }};
@@ -386,8 +394,8 @@
       gap: 10px;
       width: 100%;
       padding: 16px 24px;
-      background: var(--el-cart-primary);
-      color: #FFFFFF;
+      background: var(--el-cart-primary, #CC9E8F) !important;
+      color: #FFFFFF !important;
       text-decoration: none;
       font-size: 13.5px;
       font-weight: 600;
@@ -401,8 +409,8 @@
     }
 
     #ellora-cart-{{ section.id }} .el-cart-checkout-btn:hover {
-      background: var(--el-cart-primary-hover);
-      color: #FFFFFF;
+      background: var(--el-cart-primary-hover, #BF8673) !important;
+      color: #FFFFFF !important;
     }
 
     #ellora-cart-{{ section.id }} .el-cart-continue-link {
@@ -496,8 +504,8 @@
       align-items: center;
       gap: 8px;
       padding: 14px 28px;
-      background: var(--el-cart-primary);
-      color: #FFFFFF;
+      background: var(--el-cart-primary, #CC9E8F) !important;
+      color: #FFFFFF !important;
       text-decoration: none;
       font-size: 13px;
       font-weight: 600;
@@ -508,8 +516,8 @@
     }
 
     #ellora-cart-{{ section.id }} .el-cart-empty-btn:hover {
-      background: var(--el-cart-primary-hover);
-      color: #FFFFFF;
+      background: var(--el-cart-primary-hover, #BF8673) !important;
+      color: #FFFFFF !important;
     }
 
     /* Mobile Responsive */

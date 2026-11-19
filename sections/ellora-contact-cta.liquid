@@ -8,6 +8,14 @@
 {% endcomment %}
 
 <div class="el-section-wrapper el-sec-contact-cta" id="ellora-contact-cta-{{ section.id }}">
+  {%- assign cta_btn1_bg = section.settings.btn1_bg -%}
+  {%- if cta_btn1_bg == blank or cta_btn1_bg == '#8E6356' or cta_btn1_bg == '#8e6356' or cta_btn1_bg == '#754F43' or cta_btn1_bg == '#754f43' or cta_btn1_bg == '#BA9587' or cta_btn1_bg == '#ba9587' or cta_btn1_bg == '#734E43' or cta_btn1_bg == '#734e43' or cta_btn1_bg == '#A36854' or cta_btn1_bg == '#a36854' -%}
+    {%- assign cta_btn1_bg = '#CC9E8F' -%}
+  {%- endif -%}
+  {%- assign cta_btn1_hover = section.settings.btn1_hover_bg -%}
+  {%- if cta_btn1_hover == blank or cta_btn1_hover == '#8E6356' or cta_btn1_hover == '#8e6356' or cta_btn1_hover == '#754F43' or cta_btn1_hover == '#754f43' or cta_btn1_hover == '#BA9587' or cta_btn1_hover == '#ba9587' or cta_btn1_hover == '#734E43' or cta_btn1_hover == '#734e43' or cta_btn1_hover == '#A36854' or cta_btn1_hover == '#a36854' -%}
+    {%- assign cta_btn1_hover = '#BF8673' -%}
+  {%- endif -%}
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
 
@@ -17,12 +25,12 @@
       --el-card-border: {{ section.settings.card_border | default: '#F2E8E2' }};
       --el-title-color: {{ section.settings.title_color | default: '#CC9E8F' }};
       --el-text-color: {{ section.settings.text_color | default: '#5C5854' }};
-      --el-btn1-bg: {{ section.settings.btn1_bg | default: '#CC9E8F' }};
-      --el-btn1-hover-bg: {{ section.settings.btn1_hover_bg | default: '#BF8673' }};
+      --el-btn1-bg: {{ cta_btn1_bg }};
+      --el-btn1-hover-bg: {{ cta_btn1_hover }};
       --el-btn1-text: {{ section.settings.btn1_text_color | default: '#FFFFFF' }};
       --el-btn2-border: {{ section.settings.btn2_border_color | default: '#CC9E8F' }};
       --el-btn2-text: {{ section.settings.btn2_text_color | default: '#CC9E8F' }};
-      --el-btn2-hover-bg: {{ section.settings.btn2_hover_bg | default: '#CC9E8F' }};
+      --el-btn2-hover-bg: {{ section.settings.btn2_hover_bg | default: '#BF8673' }};
       --el-btn2-hover-text: {{ section.settings.btn2_hover_text | default: '#FFFFFF' }};
       --el-font-serif: 'Cormorant Garamond', Georgia, serif;
       --el-font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;

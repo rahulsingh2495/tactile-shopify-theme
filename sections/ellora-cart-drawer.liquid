@@ -15,13 +15,21 @@
 {% endcomment %}
 
 <div class="el-cart-drawer-wrapper" id="ellora-cart-drawer-{{ section.id }}" data-section-id="{{ section.id }}">
+  {%- assign cd_primary = section.settings.primary_color -%}
+  {%- if cd_primary == blank or cd_primary == '#8E6356' or cd_primary == '#8e6356' or cd_primary == '#754F43' or cd_primary == '#754f43' or cd_primary == '#BA9587' or cd_primary == '#ba9587' or cd_primary == '#734E43' or cd_primary == '#734e43' or cd_primary == '#A36854' or cd_primary == '#a36854' -%}
+    {%- assign cd_primary = '#CC9E8F' -%}
+  {%- endif -%}
+  {%- assign cd_primary_hover = section.settings.primary_hover -%}
+  {%- if cd_primary_hover == blank or cd_primary_hover == '#8E6356' or cd_primary_hover == '#8e6356' or cd_primary_hover == '#754F43' or cd_primary_hover == '#754f43' or cd_primary_hover == '#BA9587' or cd_primary_hover == '#ba9587' or cd_primary_hover == '#734E43' or cd_primary_hover == '#734e43' or cd_primary_hover == '#A36854' or cd_primary_hover == '#a36854' -%}
+    {%- assign cd_primary_hover = '#BF8673' -%}
+  {%- endif -%}
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
 
     #ellora-cart-drawer-{{ section.id }} {
       --el-cd-bg: {{ section.settings.bg_color | default: '#FFFFFF' }};
-      --el-cd-primary: {{ section.settings.primary_color | default: '#CC9E8F' }};
-      --el-cd-primary-hover: {{ section.settings.primary_hover | default: '#BF8673' }};
+      --el-cd-primary: {{ cd_primary }};
+      --el-cd-primary-hover: {{ cd_primary_hover }};
       --el-cd-dark: {{ section.settings.text_dark | default: '#1C1B19' }};
       --el-cd-muted: {{ section.settings.text_muted | default: '#68645F' }};
       --el-cd-border: {{ section.settings.border_color | default: '#ECE7E1' }};
@@ -353,8 +361,8 @@
       align-items: center;
       gap: 6px;
       padding: 11px 22px;
-      background: var(--el-cd-primary);
-      color: #FFFFFF;
+      background: var(--el-cd-primary, #CC9E8F) !important;
+      color: #FFFFFF !important;
       text-decoration: none;
       font-size: 12px;
       font-weight: 600;
@@ -365,8 +373,8 @@
     }
 
     #ellora-cart-drawer-{{ section.id }} .el-cd-empty-btn:hover {
-      background: var(--el-cd-primary-hover);
-      color: #FFFFFF;
+      background: var(--el-cd-primary-hover, #BF8673) !important;
+      color: #FFFFFF !important;
     }
 
     /* Drawer Footer */
@@ -407,8 +415,8 @@
       gap: 8px;
       width: 100%;
       padding: 14px 20px;
-      background: var(--el-cd-primary);
-      color: #FFFFFF;
+      background: var(--el-cd-primary, #CC9E8F) !important;
+      color: #FFFFFF !important;
       text-decoration: none;
       font-size: 13px;
       font-weight: 600;
@@ -422,8 +430,8 @@
     }
 
     #ellora-cart-drawer-{{ section.id }} .el-cd-checkout-btn:hover {
-      background: var(--el-cd-primary-hover);
-      color: #FFFFFF;
+      background: var(--el-cd-primary-hover, #BF8673) !important;
+      color: #FFFFFF !important;
     }
 
     #ellora-cart-drawer-{{ section.id }} .el-cd-view-cart-btn {

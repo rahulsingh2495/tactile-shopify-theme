@@ -7,14 +7,18 @@
 {% endcomment %}
 
 <div class="el-section-wrapper el-sec-crafted-wrapper" id="ellora-crafted-{{ section.id }}">
+  {%- assign crafted_btn_bg = section.settings.btn_color -%}
+  {%- if crafted_btn_bg == blank or crafted_btn_bg == '#8E6356' or crafted_btn_bg == '#8e6356' or crafted_btn_bg == '#754F43' or crafted_btn_bg == '#754f43' or crafted_btn_bg == '#BA9587' or crafted_btn_bg == '#ba9587' or crafted_btn_bg == '#734E43' or crafted_btn_bg == '#734e43' or crafted_btn_bg == '#A36854' or crafted_btn_bg == '#a36854' -%}
+    {%- assign crafted_btn_bg = '#CC9E8F' -%}
+  {%- endif -%}
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
 
     #ellora-crafted-{{ section.id }} {
       --el-dark: #1C1B19;
       --el-bg: {{ section.settings.bg_color | default: '#FFF9F8' }};
-      --el-btn-bg: {{ section.settings.btn_color | default: '#CC9E8F' }};
-      --el-btn-hover: #754F43;
+      --el-btn-bg: {{ crafted_btn_bg }};
+      --el-btn-hover: #BF8673;
       --el-font-serif: 'Cormorant Garamond', Georgia, serif;
       --el-font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
 
@@ -78,9 +82,9 @@
     }
 
     #ellora-crafted-{{ section.id }} .el-crafted-btn {
-      background-color: var(--el-btn-bg);
+      background-color: var(--el-btn-bg, #CC9E8F) !important;
       color: #FFFFFF !important;
-      border: none;
+      border: 1px solid var(--el-btn-bg, #CC9E8F) !important;
       padding: 14px 34px;
       font-size: 14.5px;
       font-weight: 500;
@@ -88,11 +92,12 @@
       display: inline-block;
       text-decoration: none;
       cursor: pointer;
-      transition: background-color 0.25s ease, transform 0.25s ease;
+      transition: background-color 0.25s ease, transform 0.25s ease, border-color 0.25s ease;
     }
 
     #ellora-crafted-{{ section.id }} .el-crafted-btn:hover {
-      background-color: var(--el-btn-hover);
+      background-color: var(--el-btn-hover, #BF8673) !important;
+      border-color: var(--el-btn-hover, #BF8673) !important;
       transform: translateY(-2px);
     }
 

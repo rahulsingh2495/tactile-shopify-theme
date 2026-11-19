@@ -14,13 +14,21 @@
 {% endcomment %}
 
 <div class="el-section-wrapper el-sec-advice-grid" id="ellora-advice-grid-{{ section.id }}">
+  {%- assign ag_primary = section.settings.primary_color -%}
+  {%- if ag_primary == blank or ag_primary == '#8E6356' or ag_primary == '#8e6356' or ag_primary == '#754F43' or ag_primary == '#754f43' or ag_primary == '#BA9587' or ag_primary == '#ba9587' or ag_primary == '#734E43' or ag_primary == '#734e43' or ag_primary == '#A36854' or ag_primary == '#a36854' -%}
+    {%- assign ag_primary = '#CC9E8F' -%}
+  {%- endif -%}
+  {%- assign ag_primary_hover = section.settings.primary_hover -%}
+  {%- if ag_primary_hover == blank or ag_primary_hover == '#8E6356' or ag_primary_hover == '#8e6356' or ag_primary_hover == '#754F43' or ag_primary_hover == '#754f43' or ag_primary_hover == '#BA9587' or ag_primary_hover == '#ba9587' or ag_primary_hover == '#734E43' or ag_primary_hover == '#734e43' or ag_primary_hover == '#A36854' or ag_primary_hover == '#a36854' -%}
+    {%- assign ag_primary_hover = '#BF8673' -%}
+  {%- endif -%}
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
 
     #ellora-advice-grid-{{ section.id }} {
       --el-ag-bg: {{ section.settings.bg_color | default: '#FFFFFF' }};
-      --el-ag-primary: {{ section.settings.primary_color | default: '#CC9E8F' }};
-      --el-ag-primary-hover: {{ section.settings.primary_hover | default: '#BF8673' }};
+      --el-ag-primary: {{ ag_primary }};
+      --el-ag-primary-hover: {{ ag_primary_hover }};
       --el-ag-dark: {{ section.settings.text_dark | default: '#1C1B19' }};
       --el-ag-muted: {{ section.settings.text_muted | default: '#68645F' }};
       --el-ag-border: {{ section.settings.border_color | default: '#ECE7E1' }};
@@ -206,7 +214,7 @@
       align-items: center;
       justify-content: center;
       gap: 8px;
-      background: var(--el-ag-primary);
+      background: var(--el-ag-primary, #CC9E8F) !important;
       color: #FFFFFF !important;
       padding: 13px 26px;
       font-size: 13.5px;
@@ -219,7 +227,7 @@
     }
 
     #ellora-advice-grid-{{ section.id }} .el-ag-consult-btn:hover {
-      background: var(--el-ag-primary-hover);
+      background: var(--el-ag-primary-hover, #BF8673) !important;
       transform: translateY(-1px);
     }
 

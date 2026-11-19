@@ -23,13 +23,17 @@
 {% endcomment %}
 
 <div class="el-related-collections-wrapper" id="ellora-related-{{ section.id }}">
+  {%- assign rc_accent = section.settings.accent_color -%}
+  {%- if rc_accent == blank or rc_accent == '#8E6356' or rc_accent == '#8e6356' or rc_accent == '#754F43' or rc_accent == '#754f43' or rc_accent == '#BA9587' or rc_accent == '#ba9587' or rc_accent == '#734E43' or rc_accent == '#734e43' or rc_accent == '#A36854' or rc_accent == '#a36854' -%}
+    {%- assign rc_accent = '#CC9E8F' -%}
+  {%- endif -%}
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
 
     #ellora-related-{{ section.id }} {
       --el-rc-bg: {{ section.settings.bg_color | default: '#FAF9F6' }};
       --el-rc-drawer-bg: {{ section.settings.drawer_bg | default: '#FAF8F5' }};
-      --el-rc-primary: {{ section.settings.accent_color | default: '#CC9E8F' }};
+      --el-rc-primary: {{ rc_accent }};
       --el-rc-dark: #1E1B18;
       --el-rc-text: #2D2A28;
       --el-rc-desc: #55504A;

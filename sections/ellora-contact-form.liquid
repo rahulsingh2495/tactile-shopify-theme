@@ -9,6 +9,14 @@
 {% endcomment %}
 
 <div class="el-section-wrapper el-sec-contact-form" id="ellora-contact-form-{{ section.id }}">
+  {%- assign cf_btn_bg = section.settings.btn_bg -%}
+  {%- if cf_btn_bg == blank or cf_btn_bg == '#8E6356' or cf_btn_bg == '#8e6356' or cf_btn_bg == '#754F43' or cf_btn_bg == '#754f43' or cf_btn_bg == '#BA9587' or cf_btn_bg == '#ba9587' or cf_btn_bg == '#734E43' or cf_btn_bg == '#734e43' or cf_btn_bg == '#A36854' or cf_btn_bg == '#a36854' -%}
+    {%- assign cf_btn_bg = '#CC9E8F' -%}
+  {%- endif -%}
+  {%- assign cf_btn_hover = section.settings.btn_hover_bg -%}
+  {%- if cf_btn_hover == blank or cf_btn_hover == '#8E6356' or cf_btn_hover == '#8e6356' or cf_btn_hover == '#754F43' or cf_btn_hover == '#754f43' or cf_btn_hover == '#BA9587' or cf_btn_hover == '#ba9587' or cf_btn_hover == '#734E43' or cf_btn_hover == '#734e43' or cf_btn_hover == '#A36854' or cf_btn_hover == '#a36854' -%}
+    {%- assign cf_btn_hover = '#BF8673' -%}
+  {%- endif -%}
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
 
@@ -22,8 +30,8 @@
       --el-input-focus: {{ section.settings.input_focus_border | default: '#CC9E8F' }};
       --el-input-text: {{ section.settings.input_text_color | default: '#1C1B19' }};
       --el-placeholder: {{ section.settings.placeholder_color | default: '#A49F98' }};
-      --el-btn-bg: {{ section.settings.btn_bg | default: '#CC9E8F' }};
-      --el-btn-hover: {{ section.settings.btn_hover_bg | default: '#BF8673' }};
+      --el-btn-bg: {{ cf_btn_bg }};
+      --el-btn-hover: {{ cf_btn_hover }};
       --el-btn-text: {{ section.settings.btn_text_color | default: '#FFFFFF' }};
       --el-font-serif: 'Cormorant Garamond', Georgia, serif;
       --el-font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
@@ -181,9 +189,9 @@
     #ellora-contact-form-{{ section.id }} .el-form-submit-btn {
       width: 100%;
       height: 48px;
-      background-color: var(--el-btn-bg);
-      color: var(--el-btn-text);
-      border: 1px solid var(--el-btn-bg);
+      background-color: var(--el-btn-bg, #CC9E8F) !important;
+      color: var(--el-btn-text, #FFFFFF) !important;
+      border: 1px solid var(--el-btn-bg, #CC9E8F) !important;
       border-radius: {{ section.settings.btn_radius | default: 3 }}px;
       font-family: var(--el-font-sans);
       font-size: 13.5px;
@@ -197,8 +205,8 @@
     }
 
     #ellora-contact-form-{{ section.id }} .el-form-submit-btn:hover {
-      background-color: var(--el-btn-hover);
-      border-color: var(--el-btn-hover);
+      background-color: var(--el-btn-hover, #BF8673) !important;
+      border-color: var(--el-btn-hover, #BF8673) !important;
     }
 
     #ellora-contact-form-{{ section.id }} .el-form-submit-btn:active {

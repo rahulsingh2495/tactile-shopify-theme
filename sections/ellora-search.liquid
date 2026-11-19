@@ -17,6 +17,14 @@
 {%- paginate search.results by search_limit -%}
 
 <div class="el-section-wrapper el-sec-search" id="ellora-search-{{ section.id }}">
+  {%- assign sr_btn_bg = section.settings.btn_bg -%}
+  {%- if sr_btn_bg == blank or sr_btn_bg == '#8E6356' or sr_btn_bg == '#8e6356' or sr_btn_bg == '#754F43' or sr_btn_bg == '#754f43' or sr_btn_bg == '#BA9587' or sr_btn_bg == '#ba9587' or sr_btn_bg == '#734E43' or sr_btn_bg == '#734e43' or sr_btn_bg == '#A36854' or sr_btn_bg == '#a36854' -%}
+    {%- assign sr_btn_bg = '#CC9E8F' -%}
+  {%- endif -%}
+  {%- assign sr_btn_hover = section.settings.btn_hover -%}
+  {%- if sr_btn_hover == blank or sr_btn_hover == '#8E6356' or sr_btn_hover == '#8e6356' or sr_btn_hover == '#754F43' or sr_btn_hover == '#754f43' or sr_btn_hover == '#BA9587' or sr_btn_hover == '#ba9587' or sr_btn_hover == '#734E43' or sr_btn_hover == '#734e43' or sr_btn_hover == '#A36854' or sr_btn_hover == '#a36854' -%}
+    {%- assign sr_btn_hover = '#BF8673' -%}
+  {%- endif -%}
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
 
@@ -27,8 +35,8 @@
       --el-sr-muted: {{ section.settings.text_muted | default: '#68645F' }};
       --el-sr-border: {{ section.settings.border_color | default: '#ECE7E1' }};
       --el-sr-input-bg: {{ section.settings.input_bg | default: '#FAF8F5' }};
-      --el-sr-btn-bg: {{ section.settings.btn_bg | default: '#CC9E8F' }};
-      --el-sr-btn-hover: {{ section.settings.btn_hover | default: '#BF8673' }};
+      --el-sr-btn-bg: {{ sr_btn_bg }};
+      --el-sr-btn-hover: {{ sr_btn_hover }};
       --el-sr-font-serif: 'Cormorant Garamond', Georgia, serif;
       --el-sr-font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
 
@@ -502,9 +510,9 @@
       align-items: center;
       justify-content: center;
       gap: 8px;
-      background: var(--el-sr-btn-bg);
-      color: #FFFFFF;
-      border: 1px solid var(--el-sr-btn-bg);
+      background: var(--el-sr-btn-bg, #CC9E8F) !important;
+      color: #FFFFFF !important;
+      border: 1px solid var(--el-sr-btn-bg, #CC9E8F) !important;
       border-radius: 3px;
       padding: 0 32px;
       height: 46px;
@@ -512,11 +520,12 @@
       font-weight: 500;
       text-decoration: none;
       cursor: pointer;
-      transition: background 0.25s ease;
+      transition: background 0.25s ease, border-color 0.25s ease;
     }
 
     #ellora-search-{{ section.id }} .el-sr-empty-btn:hover {
-      background: var(--el-sr-btn-hover);
+      background: var(--el-sr-btn-hover, #BF8673) !important;
+      border-color: var(--el-sr-btn-hover, #BF8673) !important;
     }
 
     /* Responsive */

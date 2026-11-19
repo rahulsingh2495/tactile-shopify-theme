@@ -15,12 +15,16 @@
 {% endcomment %}
 
 <div class="el-section-wrapper el-sec-prod-recs" id="ellora-prod-recs-{{ section.id }}" data-section-id="{{ section.id }}">
+  {%- assign pr_primary = section.settings.primary_color -%}
+  {%- if pr_primary == blank or pr_primary == '#8E6356' or pr_primary == '#8e6356' or pr_primary == '#754F43' or pr_primary == '#754f43' or pr_primary == '#BA9587' or pr_primary == '#ba9587' or pr_primary == '#734E43' or pr_primary == '#734e43' or pr_primary == '#A36854' or pr_primary == '#a36854' -%}
+    {%- assign pr_primary = '#CC9E8F' -%}
+  {%- endif -%}
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
 
     #ellora-prod-recs-{{ section.id }} {
       --el-pr-bg: {{ section.settings.bg_color | default: '#FAF8F5' }};
-      --el-pr-primary: {{ section.settings.primary_color | default: '#CC9E8F' }};
+      --el-pr-primary: {{ pr_primary }};
       --el-pr-dark: #1C1B19;
       --el-pr-muted: #68645F;
       --el-pr-border: #ECE7E1;

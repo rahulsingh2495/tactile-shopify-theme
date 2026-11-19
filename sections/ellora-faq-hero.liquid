@@ -10,12 +10,16 @@
 {% endcomment %}
 
 <div class="el-section-wrapper el-sec-faq-hero" id="ellora-faq-hero-{{ section.id }}">
+  {%- assign fh_primary = section.settings.primary_color -%}
+  {%- if fh_primary == blank or fh_primary == '#8E6356' or fh_primary == '#8e6356' or fh_primary == '#754F43' or fh_primary == '#754f43' or fh_primary == '#BA9587' or fh_primary == '#ba9587' or fh_primary == '#734E43' or fh_primary == '#734e43' or fh_primary == '#A36854' or fh_primary == '#a36854' -%}
+    {%- assign fh_primary = '#CC9E8F' -%}
+  {%- endif -%}
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
 
     #ellora-faq-hero-{{ section.id }} {
       --el-fh-bg: {{ section.settings.bg_color | default: '#FFFFFF' }};
-      --el-fh-primary: {{ section.settings.primary_color | default: '#CC9E8F' }};
+      --el-fh-primary: {{ fh_primary }};
       --el-fh-dark: {{ section.settings.text_dark | default: '#1C1B19' }};
       --el-fh-muted: {{ section.settings.text_muted | default: '#68645F' }};
       --el-fh-border: {{ section.settings.border_color | default: '#ECE7E1' }};

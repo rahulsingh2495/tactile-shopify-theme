@@ -7,6 +7,14 @@
 {% endcomment %}
 
 <div class="el-section-wrapper el-sec-about-explore-wrapper" id="ellora-about-explore-{{ section.id }}">
+  {%- assign abs_accent = section.settings.accent_color -%}
+  {%- if abs_accent == blank or abs_accent == '#8E6356' or abs_accent == '#8e6356' or abs_accent == '#754F43' or abs_accent == '#754f43' or abs_accent == '#BA9587' or abs_accent == '#ba9587' or abs_accent == '#734E43' or abs_accent == '#734e43' or abs_accent == '#A36854' or abs_accent == '#a36854' -%}
+    {%- assign abs_accent = '#CC9E8F' -%}
+  {%- endif -%}
+  {%- assign abs_arrow = section.settings.arrow_color -%}
+  {%- if abs_arrow == blank or abs_arrow == '#8E6356' or abs_arrow == '#8e6356' or abs_arrow == '#754F43' or abs_arrow == '#754f43' or abs_arrow == '#BA9587' or abs_arrow == '#ba9587' or abs_arrow == '#734E43' or abs_arrow == '#734e43' or abs_arrow == '#A36854' or abs_arrow == '#a36854' -%}
+    {%- assign abs_arrow = '#CC9E8F' -%}
+  {%- endif -%}
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
 
@@ -15,8 +23,8 @@
       --el-dark: {{ section.settings.title_color | default: '#1C1B19' }};
       --el-text: {{ section.settings.text_color | default: '#5C554E' }};
       --el-card-bg: {{ section.settings.card_bg | default: 'transparent' }};
-      --el-accent: {{ section.settings.accent_color | default: '#CC9E8F' }};
-      --el-arrow-color: {{ section.settings.arrow_color | default: '#A36854' }};
+      --el-accent: {{ abs_accent }};
+      --el-arrow-color: {{ abs_arrow }};
       --el-font-serif: 'Cormorant Garamond', Georgia, serif;
       --el-font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
 
@@ -476,7 +484,7 @@
       "type": "color",
       "id": "arrow_color",
       "label": "Arrow Icon Color",
-      "default": "#A36854"
+      "default": "#CC9E8F"
     },
     {
       "type": "color",

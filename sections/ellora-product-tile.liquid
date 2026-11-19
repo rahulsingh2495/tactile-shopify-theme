@@ -16,13 +16,21 @@
 {% endcomment %}
 
 <div class="el-section-wrapper el-sec-prod-tile" id="ellora-prod-tile-{{ section.id }}" data-section-id="{{ section.id }}">
+  {%- assign pt_primary = section.settings.primary_color -%}
+  {%- if pt_primary == blank or pt_primary == '#8E6356' or pt_primary == '#8e6356' or pt_primary == '#754F43' or pt_primary == '#754f43' or pt_primary == '#BA9587' or pt_primary == '#ba9587' or pt_primary == '#734E43' or pt_primary == '#734e43' or pt_primary == '#A36854' or pt_primary == '#a36854' -%}
+    {%- assign pt_primary = '#CC9E8F' -%}
+  {%- endif -%}
+  {%- assign pt_primary_hover = section.settings.primary_hover -%}
+  {%- if pt_primary_hover == blank or pt_primary_hover == '#8E6356' or pt_primary_hover == '#8e6356' or pt_primary_hover == '#754F43' or pt_primary_hover == '#754f43' or pt_primary_hover == '#734d42' or pt_primary_hover == '#734D42' or pt_primary_hover == '#BA9587' or pt_primary_hover == '#ba9587' or pt_primary_hover == '#734E43' or pt_primary_hover == '#734e43' or pt_primary_hover == '#A36854' or pt_primary_hover == '#a36854' -%}
+    {%- assign pt_primary_hover = '#BF8673' -%}
+  {%- endif -%}
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
 
     #ellora-prod-tile-{{ section.id }} {
       --el-pt-bg: {{ section.settings.bg_color | default: '#FFFFFF' }};
-      --el-pt-primary: {{ section.settings.primary_color | default: '#CC9E8F' }};
-      --el-pt-primary-hover: {{ section.settings.primary_hover | default: '#BF8673' }};
+      --el-pt-primary: {{ pt_primary }};
+      --el-pt-primary-hover: {{ pt_primary_hover }};
       --el-pt-dark: {{ section.settings.text_dark | default: '#1C1B19' }};
       --el-pt-muted: {{ section.settings.text_muted | default: '#68645F' }};
       --el-pt-border: {{ section.settings.border_color | default: '#ECE7E1' }};
@@ -550,7 +558,7 @@
     }
 
     #ellora-prod-tile-{{ section.id }} .el-pt-add-btn:hover {
-      background: var(--el-pt-primary-hover);
+      background: var(--el-pt-primary-hover, #BF8673) !important;
     }
 
     #ellora-prod-tile-{{ section.id }} .el-pt-sample-btn {
@@ -694,7 +702,7 @@
       transition: background 0.2s ease;
     }
     #ellora-prod-tile-{{ section.id }} .el-sample-modal-btn-primary:hover {
-      background: #734d42;
+      background: var(--el-pt-primary-hover, #BF8673) !important;
     }
     #ellora-prod-tile-{{ section.id }} .el-sample-modal-btn-secondary {
       background: none;

@@ -14,6 +14,14 @@
 {% endcomment %}
 
 <div class="el-section-wrapper el-sec-wishlist" id="ellora-wishlist-{{ section.id }}">
+  {%- assign wl_btn_bg = section.settings.btn_bg -%}
+  {%- if wl_btn_bg == blank or wl_btn_bg == '#8E6356' or wl_btn_bg == '#8e6356' or wl_btn_bg == '#754F43' or wl_btn_bg == '#754f43' or wl_btn_bg == '#BA9587' or wl_btn_bg == '#ba9587' or wl_btn_bg == '#734E43' or wl_btn_bg == '#734e43' or wl_btn_bg == '#A36854' or wl_btn_bg == '#a36854' -%}
+    {%- assign wl_btn_bg = '#CC9E8F' -%}
+  {%- endif -%}
+  {%- assign wl_btn_hover = section.settings.btn_hover -%}
+  {%- if wl_btn_hover == blank or wl_btn_hover == '#8E6356' or wl_btn_hover == '#8e6356' or wl_btn_hover == '#754F43' or wl_btn_hover == '#754f43' or wl_btn_hover == '#BA9587' or wl_btn_hover == '#ba9587' or wl_btn_hover == '#734E43' or wl_btn_hover == '#734e43' or wl_btn_hover == '#A36854' or wl_btn_hover == '#a36854' -%}
+    {%- assign wl_btn_hover = '#BF8673' -%}
+  {%- endif -%}
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
 
@@ -23,8 +31,8 @@
       --el-wl-dark: {{ section.settings.text_dark | default: '#1C1B19' }};
       --el-wl-muted: {{ section.settings.text_muted | default: '#68645F' }};
       --el-wl-border: {{ section.settings.border_color | default: '#ECE7E1' }};
-      --el-wl-btn-bg: {{ section.settings.btn_bg | default: '#CC9E8F' }};
-      --el-wl-btn-hover: {{ section.settings.btn_hover | default: '#BF8673' }};
+      --el-wl-btn-bg: {{ wl_btn_bg }};
+      --el-wl-btn-hover: {{ wl_btn_hover }};
       --el-wl-font-serif: 'Cormorant Garamond', Georgia, serif;
       --el-wl-font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
 
@@ -397,9 +405,9 @@
       align-items: center;
       justify-content: center;
       gap: 8px;
-      background: var(--el-wl-btn-bg);
-      color: #FFFFFF;
-      border: 1px solid var(--el-wl-btn-bg);
+      background: var(--el-wl-btn-bg, #CC9E8F) !important;
+      color: #FFFFFF !important;
+      border: 1px solid var(--el-wl-btn-bg, #CC9E8F) !important;
       border-radius: 3px;
       padding: 0 32px;
       height: 48px;
@@ -411,8 +419,8 @@
     }
 
     #ellora-wishlist-{{ section.id }} .el-wl-empty-btn:hover {
-      background: var(--el-wl-btn-hover);
-      border-color: var(--el-wl-btn-hover);
+      background: var(--el-wl-btn-hover, #BF8673) !important;
+      border-color: var(--el-wl-btn-hover, #BF8673) !important;
     }
 
     /* Responsive */

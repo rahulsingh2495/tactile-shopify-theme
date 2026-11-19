@@ -14,13 +14,17 @@
 {% endcomment %}
 
 <div class="el-section-wrapper el-footer-section-wrapper" id="ellora-footer-{{ section.id }}">
+  {%- assign ft_accent = section.settings.accent_color -%}
+  {%- if ft_accent == blank or ft_accent == '#8E6356' or ft_accent == '#8e6356' or ft_accent == '#754F43' or ft_accent == '#754f43' or ft_accent == '#BA9587' or ft_accent == '#ba9587' or ft_accent == '#734E43' or ft_accent == '#734e43' or ft_accent == '#A36854' or ft_accent == '#a36854' -%}
+    {%- assign ft_accent = '#CC9E8F' -%}
+  {%- endif -%}
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
 
     #ellora-footer-{{ section.id }} {
       --el-ft-bg: {{ section.settings.bg_color | default: '#FAF8F5' }};
       --el-ft-card-bg: {{ section.settings.card_bg | default: '#FFF8F5' }};
-      --el-ft-primary: {{ section.settings.accent_color | default: '#CC9E8F' }};
+      --el-ft-primary: {{ ft_accent }};
       --el-ft-primary-hover: #BF8673;
       --el-ft-dark: #2D2A28;
       --el-ft-heading: #2D2A28;
@@ -261,9 +265,9 @@
     #ellora-footer-{{ section.id }} .el-footer-submit-btn {
       width: 100%;
       height: 44px;
-      background-color: var(--el-ft-primary);
+      background-color: var(--el-ft-primary, #CC9E8F) !important;
       color: #FFFFFF !important;
-      border: none;
+      border: 1px solid var(--el-ft-primary, #CC9E8F) !important;
       border-radius: 4px;
       font-family: var(--el-ft-font-sans);
       font-size: 14px;
@@ -272,11 +276,12 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      transition: background-color 0.25s ease, transform 0.2s ease;
+      transition: background-color 0.25s ease, transform 0.2s ease, border-color 0.25s ease;
     }
 
     #ellora-footer-{{ section.id }} .el-footer-submit-btn:hover {
-      background-color: var(--el-ft-primary-hover);
+      background-color: var(--el-ft-primary-hover, #BF8673) !important;
+      border-color: var(--el-ft-primary-hover, #BF8673) !important;
       transform: translateY(-1px);
     }
 

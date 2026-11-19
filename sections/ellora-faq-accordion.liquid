@@ -14,12 +14,16 @@
 {% endcomment %}
 
 <div class="el-section-wrapper el-sec-faq-acc" id="ellora-faq-acc-{{ section.id }}">
+  {%- assign fa_primary = section.settings.primary_color -%}
+  {%- if fa_primary == blank or fa_primary == '#8E6356' or fa_primary == '#8e6356' or fa_primary == '#754F43' or fa_primary == '#754f43' or fa_primary == '#BA9587' or fa_primary == '#ba9587' or fa_primary == '#734E43' or fa_primary == '#734e43' or fa_primary == '#A36854' or fa_primary == '#a36854' -%}
+    {%- assign fa_primary = '#CC9E8F' -%}
+  {%- endif -%}
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
 
     #ellora-faq-acc-{{ section.id }} {
       --el-fa-bg: {{ section.settings.bg_color | default: '#FFFFFF' }};
-      --el-fa-primary: {{ section.settings.primary_color | default: '#CC9E8F' }};
+      --el-fa-primary: {{ fa_primary }};
       --el-fa-dark: {{ section.settings.text_dark | default: '#1C1B19' }};
       --el-fa-muted: {{ section.settings.text_muted | default: '#68645F' }};
       --el-fa-border: {{ section.settings.border_color | default: '#ECE7E1' }};

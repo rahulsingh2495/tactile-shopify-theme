@@ -7,11 +7,15 @@
 {% endcomment %}
 
 <div class="el-section-wrapper el-sec-hero-wrapper" id="ellora-hero-{{ section.id }}">
+  {%- assign hero_accent = section.settings.accent_color -%}
+  {%- if hero_accent == blank or hero_accent == '#8E6356' or hero_accent == '#8e6356' or hero_accent == '#754F43' or hero_accent == '#754f43' or hero_accent == '#BA9587' or hero_accent == '#ba9587' or hero_accent == '#734E43' or hero_accent == '#734e43' or hero_accent == '#A36854' or hero_accent == '#a36854' -%}
+    {%- assign hero_accent = '#CC9E8F' -%}
+  {%- endif -%}
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
 
     #ellora-hero-{{ section.id }} {
-      --el-primary: {{ section.settings.accent_color | default: '#CC9E8F' }};
+      --el-primary: {{ hero_accent }};
       --el-primary-hover: #BF8673;
       --el-dark: #1C1B19;
       --el-text: #2D2A28;
@@ -143,14 +147,14 @@
     }
 
     #ellora-hero-{{ section.id }} .el-btn-primary {
-      background-color: var(--el-primary);
+      background-color: var(--el-primary, #CC9E8F) !important;
       color: #FFFFFF !important;
-      border: 1px solid var(--el-primary);
+      border: 1px solid var(--el-primary, #CC9E8F) !important;
     }
     #ellora-hero-{{ section.id }} .el-btn-primary:hover {
-      background-color: var(--el-primary-hover);
-      border-color: var(--el-primary-hover);
-      box-shadow: 0 6px 20px rgba(204, 158, 143, 0.28);
+      background-color: var(--el-primary-hover, #BF8673) !important;
+      border-color: var(--el-primary-hover, #BF8673) !important;
+      box-shadow: 0 6px 20px rgba(204, 158, 143, 0.28) !important;
     }
 
     #ellora-hero-{{ section.id }} .el-btn-outline {
@@ -161,10 +165,10 @@
       -webkit-backdrop-filter: blur(6px);
     }
     #ellora-hero-{{ section.id }} .el-btn-outline:hover {
-      background-color: var(--el-primary);
-      border-color: var(--el-primary);
+      background-color: var(--el-primary, #CC9E8F) !important;
+      border-color: var(--el-primary, #CC9E8F) !important;
       color: #FFFFFF !important;
-      box-shadow: 0 6px 20px rgba(204, 158, 143, 0.28);
+      box-shadow: 0 6px 20px rgba(204, 158, 143, 0.28) !important;
     }
 
     /* Scroll Indicator */

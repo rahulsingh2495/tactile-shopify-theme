@@ -3774,3 +3774,39 @@ button.newsletter-button {
 button.newsletter-button:hover {
   background-color: var(--el-terracotta-dark) !important;
 }
+
+/* 5. GLOBAL BRAND BUTTON STYLING ENFORCEMENT */
+.button:not(.button--secondary):not(.button--tertiary),
+.button--primary,
+button.button--primary,
+.cart__checkout-button,
+button[name="checkout"],
+.el-btn-primary,
+.el-crafted-btn {
+  background-color: #CC9E8F !important;
+  border-color: #CC9E8F !important;
+  color: #FFFFFF !important;
+}
+
+.button:not(.button--secondary):not(.button--tertiary):hover,
+.button--primary:hover,
+button.button--primary:hover,
+.cart__checkout-button:hover,
+button[name="checkout"]:hover,
+.el-btn-primary:hover,
+.el-crafted-btn:hover {
+  background-color: #BF8673 !important;
+  border-color: #BF8673 !important;
+  color: #FFFFFF !important;
+}
+
+.button--secondary {
+  border-color: #CC9E8F !important;
+  color: #CC9E8F !important;
+}
+
+.button--secondary:hover {
+  background-color: #BF8673 !important;
+  border-color: #BF8673 !important;
+  color: #FFFFFF !important;
+}

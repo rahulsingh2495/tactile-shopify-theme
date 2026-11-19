@@ -313,9 +313,9 @@ div[class*="__main-padding"] {
 .product-form__submit.button--primary,
 .product-form__submit,
 button[name="add"] {
-  background-color: var(--el-terracotta-dark) !important;
+  background-color: var(--el-terracotta, #CC9E8F) !important;
   color: #FFFFFF !important;
-  border: 1px solid var(--el-terracotta-dark) !important;
+  border: 1px solid var(--el-terracotta, #CC9E8F) !important;
   border-radius: 4px !important;
   font-family: var(--el-font-sans) !important;
   font-size: 13px !important;
@@ -325,7 +325,7 @@ button[name="add"] {
   height: 48px !important;
   min-height: 48px !important;
   width: 100% !important;
-  box-shadow: 0 4px 14px rgba(123, 79, 67, 0.22) !important;
+  box-shadow: 0 4px 14px rgba(204, 158, 143, 0.22) !important;
   cursor: pointer !important;
   transition: all 0.25s ease !important;
 }
@@ -333,9 +333,9 @@ button[name="add"] {
 .product-form__submit.button--primary:hover,
 .product-form__submit:hover,
 button[name="add"]:hover {
-  background-color: #653E34 !important;
-  border-color: #653E34 !important;
-  box-shadow: 0 6px 20px rgba(123, 79, 67, 0.3) !important;
+  background-color: var(--el-terracotta-dark, #BF8673) !important;
+  border-color: var(--el-terracotta-dark, #BF8673) !important;
+  box-shadow: 0 6px 20px rgba(191, 134, 115, 0.3) !important;
   transform: translateY(-1px) !important;
 }
 

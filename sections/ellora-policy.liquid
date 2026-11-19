@@ -14,6 +14,14 @@
 {% endcomment %}
 
 <div class="el-section-wrapper el-sec-policy" id="ellora-policy-{{ section.id }}">
+  {%- assign pol_link = section.settings.link_color -%}
+  {%- if pol_link == blank or pol_link == '#8E6356' or pol_link == '#8e6356' or pol_link == '#754F43' or pol_link == '#754f43' or pol_link == '#BA9587' or pol_link == '#ba9587' or pol_link == '#734E43' or pol_link == '#734e43' or pol_link == '#A36854' or pol_link == '#a36854' -%}
+    {%- assign pol_link = '#CC9E8F' -%}
+  {%- endif -%}
+  {%- assign pol_link_hover = section.settings.link_hover_color -%}
+  {%- if pol_link_hover == blank or pol_link_hover == '#6D493E' or pol_link_hover == '#6d493e' or pol_link_hover == '#8E6356' or pol_link_hover == '#8e6356' or pol_link_hover == '#754F43' or pol_link_hover == '#754f43' or pol_link_hover == '#BA9587' or pol_link_hover == '#ba9587' -%}
+    {%- assign pol_link_hover = '#BF8673' -%}
+  {%- endif -%}
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
 
@@ -22,8 +30,8 @@
       --el-pol-heading: {{ section.settings.heading_color | default: '#1C1B19' }};
       --el-pol-text: {{ section.settings.text_color | default: '#4A4641' }};
       --el-pol-muted: {{ section.settings.muted_color | default: '#8C8780' }};
-      --el-pol-link: {{ section.settings.link_color | default: '#CC9E8F' }};
-      --el-pol-link-hover: {{ section.settings.link_hover_color | default: '#6D493E' }};
+      --el-pol-link: {{ pol_link }};
+      --el-pol-link-hover: {{ pol_link_hover }};
       --el-pol-border: {{ section.settings.border_color | default: '#ECE7E1' }};
       --el-pol-card-bg: {{ section.settings.card_bg | default: '#FAF8F5' }};
 
@@ -627,7 +635,7 @@
       "type": "color",
       "id": "link_hover_color",
       "label": "Link Hover Color",
-      "default": "#6D493E"
+      "default": "#BF8673"
     },
     {
       "type": "color",

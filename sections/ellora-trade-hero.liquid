@@ -12,13 +12,21 @@
 {% endcomment %}
 
 <div class="el-section-wrapper el-sec-trade-hero" id="ellora-trade-hero-{{ section.id }}">
+  {%- assign th_primary = section.settings.primary_color -%}
+  {%- if th_primary == blank or th_primary == '#8E6356' or th_primary == '#8e6356' or th_primary == '#754F43' or th_primary == '#754f43' or th_primary == '#BA9587' or th_primary == '#ba9587' or th_primary == '#734E43' or th_primary == '#734e43' or th_primary == '#A36854' or th_primary == '#a36854' -%}
+    {%- assign th_primary = '#CC9E8F' -%}
+  {%- endif -%}
+  {%- assign th_primary_hover = section.settings.primary_hover -%}
+  {%- if th_primary_hover == blank or th_primary_hover == '#8E6356' or th_primary_hover == '#8e6356' or th_primary_hover == '#754F43' or th_primary_hover == '#754f43' or th_primary_hover == '#BA9587' or th_primary_hover == '#ba9587' or th_primary_hover == '#734E43' or th_primary_hover == '#734e43' or th_primary_hover == '#A36854' or th_primary_hover == '#a36854' -%}
+    {%- assign th_primary_hover = '#BF8673' -%}
+  {%- endif -%}
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
 
     #ellora-trade-hero-{{ section.id }} {
       --el-th-bg: {{ section.settings.bg_color | default: '#FFFFFF' }};
-      --el-th-primary: {{ section.settings.primary_color | default: '#CC9E8F' }};
-      --el-th-primary-hover: {{ section.settings.primary_hover | default: '#BF8673' }};
+      --el-th-primary: {{ th_primary }};
+      --el-th-primary-hover: {{ th_primary_hover }};
       --el-th-dark: {{ section.settings.text_dark | default: '#1C1B19' }};
       --el-th-muted: {{ section.settings.text_muted | default: '#68645F' }};
       --el-th-border: {{ section.settings.border_color | default: '#ECE7E1' }};
@@ -121,8 +129,8 @@
       align-items: center;
       gap: 8px;
       padding: 13px 26px;
-      background: var(--el-th-primary);
-      color: #FFFFFF;
+      background: var(--el-th-primary, #CC9E8F) !important;
+      color: #FFFFFF !important;
       text-decoration: none;
       font-size: 13px;
       font-weight: 600;
@@ -133,8 +141,8 @@
     }
 
     #ellora-trade-hero-{{ section.id }} .el-th-btn-primary:hover {
-      background: var(--el-th-primary-hover);
-      color: #FFFFFF;
+      background: var(--el-th-primary-hover, #BF8673) !important;
+      color: #FFFFFF !important;
     }
 
     #ellora-trade-hero-{{ section.id }} .el-th-btn-secondary {

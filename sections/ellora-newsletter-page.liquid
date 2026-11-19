@@ -13,13 +13,21 @@
 {% endcomment %}
 
 <div class="el-section-wrapper el-sec-newsletter-page" id="ellora-newsletter-{{ section.id }}">
+  {%- assign nl_primary = section.settings.primary_color -%}
+  {%- if nl_primary == blank or nl_primary == '#8E6356' or nl_primary == '#8e6356' or nl_primary == '#754F43' or nl_primary == '#754f43' or nl_primary == '#BA9587' or nl_primary == '#ba9587' or nl_primary == '#734E43' or nl_primary == '#734e43' or nl_primary == '#A36854' or nl_primary == '#a36854' -%}
+    {%- assign nl_primary = '#CC9E8F' -%}
+  {%- endif -%}
+  {%- assign nl_primary_hover = section.settings.primary_hover -%}
+  {%- if nl_primary_hover == blank or nl_primary_hover == '#8E6356' or nl_primary_hover == '#8e6356' or nl_primary_hover == '#754F43' or nl_primary_hover == '#754f43' or nl_primary_hover == '#BA9587' or nl_primary_hover == '#ba9587' or nl_primary_hover == '#734E43' or nl_primary_hover == '#734e43' or nl_primary_hover == '#A36854' or nl_primary_hover == '#a36854' -%}
+    {%- assign nl_primary_hover = '#BF8673' -%}
+  {%- endif -%}
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
 
     #ellora-newsletter-{{ section.id }} {
       --el-nl-bg: {{ section.settings.bg_color | default: '#FAF8F5' }};
-      --el-nl-primary: {{ section.settings.primary_color | default: '#CC9E8F' }};
-      --el-nl-primary-hover: {{ section.settings.primary_hover | default: '#BF8673' }};
+      --el-nl-primary: {{ nl_primary }};
+      --el-nl-primary-hover: {{ nl_primary_hover }};
       --el-nl-dark: {{ section.settings.text_dark | default: '#1C1B19' }};
       --el-nl-muted: {{ section.settings.text_muted | default: '#68645F' }};
       --el-nl-border: {{ section.settings.border_color | default: '#ECE7E1' }};
@@ -181,9 +189,9 @@
     #ellora-newsletter-{{ section.id }} .el-nl-submit-btn {
       width: 100%;
       padding: 16px 28px;
-      background: var(--el-nl-primary);
-      color: #FFFFFF;
-      border: none;
+      background: var(--el-nl-primary, #CC9E8F) !important;
+      color: #FFFFFF !important;
+      border: 1px solid var(--el-nl-primary, #CC9E8F) !important;
       border-radius: 2px;
       font-family: inherit;
       font-size: 13.5px;
@@ -191,11 +199,12 @@
       letter-spacing: 0.08em;
       text-transform: uppercase;
       cursor: pointer;
-      transition: background 0.2s ease;
+      transition: background 0.2s ease, border-color 0.2s ease;
     }
 
     #ellora-newsletter-{{ section.id }} .el-nl-submit-btn:hover {
-      background: var(--el-nl-primary-hover);
+      background: var(--el-nl-primary-hover, #BF8673) !important;
+      border-color: var(--el-nl-primary-hover, #BF8673) !important;
     }
 
     #ellora-newsletter-{{ section.id }} .el-nl-disclaimer {

@@ -12,12 +12,16 @@
 {% endcomment %}
 
 <div class="el-section-wrapper el-sec-del-hero" id="ellora-delivery-hero-{{ section.id }}">
+  {%- assign dh_primary = section.settings.primary_color -%}
+  {%- if dh_primary == blank or dh_primary == '#8E6356' or dh_primary == '#8e6356' or dh_primary == '#754F43' or dh_primary == '#754f43' or dh_primary == '#BA9587' or dh_primary == '#ba9587' or dh_primary == '#734E43' or dh_primary == '#734e43' or dh_primary == '#A36854' or dh_primary == '#a36854' -%}
+    {%- assign dh_primary = '#CC9E8F' -%}
+  {%- endif -%}
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
 
     #ellora-delivery-hero-{{ section.id }} {
       --el-dh-bg: {{ section.settings.bg_color | default: '#FFFFFF' }};
-      --el-dh-primary: {{ section.settings.primary_color | default: '#CC9E8F' }};
+      --el-dh-primary: {{ dh_primary }};
       --el-dh-dark: {{ section.settings.text_dark | default: '#1C1B19' }};
       --el-dh-muted: {{ section.settings.text_muted | default: '#68645F' }};
       --el-dh-border: {{ section.settings.border_color | default: '#ECE7E1' }};

@@ -12,12 +12,16 @@
 {% endcomment %}
 
 <div class="el-section-wrapper el-sec-trade-benefits" id="ellora-trade-benefits-{{ section.id }}">
+  {%- assign tb_primary = section.settings.primary_color -%}
+  {%- if tb_primary == blank or tb_primary == '#8E6356' or tb_primary == '#8e6356' or tb_primary == '#754F43' or tb_primary == '#754f43' or tb_primary == '#BA9587' or tb_primary == '#ba9587' or tb_primary == '#734E43' or tb_primary == '#734e43' or tb_primary == '#A36854' or tb_primary == '#a36854' -%}
+    {%- assign tb_primary = '#CC9E8F' -%}
+  {%- endif -%}
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
 
     #ellora-trade-benefits-{{ section.id }} {
       --el-tb-bg: {{ section.settings.bg_color | default: '#FAF8F5' }};
-      --el-tb-primary: {{ section.settings.primary_color | default: '#CC9E8F' }};
+      --el-tb-primary: {{ tb_primary }};
       --el-tb-dark: {{ section.settings.text_dark | default: '#1C1B19' }};
       --el-tb-muted: {{ section.settings.text_muted | default: '#68645F' }};
       --el-tb-border: {{ section.settings.border_color | default: '#ECE7E1' }};
