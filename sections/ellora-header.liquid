@@ -1908,14 +1908,18 @@
               <a href="{{ top_advice_url }}">
                 {{ top_advice_label }}
               </a>
-              {%- if section.settings.show_top_contact and section.settings.contact_label != blank -%}
-                <a href="{{ section.settings.contact_url | default: '/pages/contact' }}">
-                  {{ section.settings.contact_label }}
-                </a>
-              {%- endif -%}
               <a href="{{ section.settings.trade_url | default: '/pages/trade' }}">
                 {{ section.settings.trade_label | default: 'Trade' }}
               </a>
+              {%- assign top_contact_label = section.settings.contact_label | default: 'Contact' -%}
+              {%- if top_contact_label == blank -%}
+                {%- assign top_contact_label = 'Contact' -%}
+              {%- endif -%}
+              {%- if section.settings.show_top_contact != false -%}
+                <a href="{{ section.settings.contact_url | default: '/pages/contact' }}">
+                  {{ top_contact_label }}
+                </a>
+              {%- endif -%}
             </div>
           {%- endif -%}
         </div>
@@ -2455,11 +2459,13 @@
           {%- if drawer_advice_label != blank -%}
             <a href="{{ drawer_advice_url }}">{{ drawer_advice_label }}</a>
           {%- endif -%}
-          {%- if section.settings.show_top_contact and section.settings.contact_label != blank -%}
-            <a href="{{ section.settings.contact_url | default: '/pages/contact' }}">{{ section.settings.contact_label }}</a>
+          <a href="{{ section.settings.trade_url | default: '/pages/trade' }}">{{ section.settings.trade_label | default: 'Trade' }}</a>
+          {%- assign drawer_contact_label = section.settings.contact_label | default: 'Contact' -%}
+          {%- if drawer_contact_label == blank -%}
+            {%- assign drawer_contact_label = 'Contact' -%}
           {%- endif -%}
-          {%- if section.settings.trade_label != blank -%}
-            <a href="{{ section.settings.trade_url | default: '/pages/trade' }}">{{ section.settings.trade_label }}</a>
+          {%- if section.settings.show_top_contact != false -%}
+            <a href="{{ section.settings.contact_url | default: '/pages/contact' }}">{{ drawer_contact_label }}</a>
           {%- endif -%}
         {%- endif -%}
       </div>
@@ -3238,13 +3244,6 @@
       "default": true
     },
     {
-      "type": "checkbox",
-      "id": "show_top_contact",
-      "label": "Show Contact in Top Bar",
-      "info": "Leave unchecked if Contact is already in Main Menu",
-      "default": false
-    },
-    {
       "type": "text",
       "id": "faq_label",
       "label": "Advice Hub Label",
@@ -3257,23 +3256,31 @@
     },
     {
       "type": "text",
-      "id": "contact_label",
-      "label": "Contact Label"
-    },
-    {
-      "type": "url",
-      "id": "contact_url",
-      "label": "Contact URL"
-    },
-    {
-      "type": "text",
       "id": "trade_label",
-      "label": "Trade Label"
+      "label": "Trade Label",
+      "default": "Trade"
     },
     {
       "type": "url",
       "id": "trade_url",
       "label": "Trade URL"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_top_contact",
+      "label": "Show Contact in Top Bar",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "contact_label",
+      "label": "Contact Label",
+      "default": "Contact"
+    },
+    {
+      "type": "url",
+      "id": "contact_url",
+      "label": "Contact URL"
     },
     {
       "type": "color",
