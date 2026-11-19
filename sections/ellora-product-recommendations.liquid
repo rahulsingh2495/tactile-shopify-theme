@@ -284,6 +284,54 @@
       margin: 0 0 14px;
     }
 
+    /* Card Price & Color Swatches Row */
+    #ellora-prod-recs-{{ section.id }} .el-card-price-row {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 10px;
+      width: 100%;
+      margin: 0 0 14px;
+    }
+
+    #ellora-prod-recs-{{ section.id }} .el-card-price-row .el-pr-price {
+      margin: 0 !important;
+    }
+
+    #ellora-prod-recs-{{ section.id }} .el-card-price-row .el-card-color-swatches {
+      margin: 0 !important;
+    }
+
+    #ellora-prod-recs-{{ section.id }} .el-card-color-swatches {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      margin: 0;
+      flex-shrink: 0;
+    }
+
+    #ellora-prod-recs-{{ section.id }} .el-card-swatch-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      border: 1px solid rgba(0, 0, 0, 0.15);
+      display: inline-block;
+      flex-shrink: 0;
+      box-shadow: inset 0 1px 2px rgba(0,0,0,0.1);
+      transition: transform 0.15s ease;
+      cursor: pointer;
+    }
+
+    #ellora-prod-recs-{{ section.id }} .el-card-swatch-dot:hover {
+      transform: scale(1.25);
+    }
+
+    #ellora-prod-recs-{{ section.id }} .el-card-swatch-more {
+      font-size: 11px;
+      color: var(--el-pr-muted, #7A7269);
+      font-weight: 500;
+    }
+
     /* Luxury Add to Cart Button matching collection */
     #ellora-prod-recs-{{ section.id }} .el-card-add-btn {
       margin-top: auto;
@@ -366,10 +414,13 @@
         line-height: 1.25;
         margin-bottom: 4px;
       }
+      #ellora-prod-recs-{{ section.id }} .el-card-price-row {
+        margin-bottom: 12px;
+      }
       #ellora-prod-recs-{{ section.id }} .el-pr-price {
         font-size: 13px;
         line-height: 1.4;
-        margin-bottom: 12px;
+        margin-bottom: 0 !important;
       }
       #ellora-prod-recs-{{ section.id }} .el-pr-header {
         flex-direction: column;
@@ -485,8 +536,10 @@
               <a href="{{ prod.url }}" style="text-decoration: none;">
                 <h3 class="el-pr-prod-title">{{ prod.title | escape }}</h3>
               </a>
-              {% render 'el-card-swatches', product: prod, show_swatches: section.settings.show_color_swatches %}
-              <p class="el-pr-price">{{ prod.price | money }} /M2</p>
+              <div class="el-card-price-row">
+                <p class="el-pr-price">{{ prod.price | money }} /M2</p>
+                {% render 'el-card-swatches', product: prod, show_swatches: section.settings.show_color_swatches %}
+              </div>
 
               {%- assign default_variant = prod.selected_or_first_available_variant -%}
               {%- if default_variant.available -%}
@@ -538,8 +591,10 @@
               <a href="{{ prod.url }}" style="text-decoration: none;">
                 <h3 class="el-pr-prod-title">{{ prod.title | escape }}</h3>
               </a>
-              {% render 'el-card-swatches', product: prod, show_swatches: section.settings.show_color_swatches %}
-              <p class="el-pr-price">{{ prod.price | money }} /M2</p>
+              <div class="el-card-price-row">
+                <p class="el-pr-price">{{ prod.price | money }} /M2</p>
+                {% render 'el-card-swatches', product: prod, show_swatches: section.settings.show_color_swatches %}
+              </div>
 
               {%- assign default_variant = prod.selected_or_first_available_variant -%}
               {%- if default_variant.available -%}

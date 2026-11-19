@@ -273,6 +273,19 @@
       margin: 0 0 14px;
     }
 
+    #ellora-wishlist-{{ section.id }} .el-card-price-row {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 10px;
+      width: 100%;
+      margin: 0 0 14px;
+    }
+
+    #ellora-wishlist-{{ section.id }} .el-card-price-row .el-card-price {
+      margin: 0 !important;
+    }
+
     /* Luxury Add to Cart Button */
     #ellora-wishlist-{{ section.id }} .el-card-add-btn {
       margin-top: auto;
@@ -588,7 +601,9 @@
         html += '    <a href="' + url + '" style="text-decoration: none;">';
         html += '      <h3 class="el-card-title">' + title + '</h3>';
         html += '    </a>';
-        html += '    <p class="el-card-price">' + price + '</p>';
+        html += '    <div class="el-card-price-row">';
+        html += '      <p class="el-card-price">' + price + '</p>';
+        html += '    </div>';
         html += '    <button type="button" class="el-card-add-btn" data-variant-id="' + (item.variantId || (isNaN(id) ? '' : id)) + '" data-product-title="' + title.replace(/"/g, '&quot;') + '" aria-label="Add ' + title.replace(/"/g, '&quot;') + ' to cart">';
         html += '      <svg viewBox="0 0 24 24"><path d="M2 9h20l-2 11H4L2 9z"></path><path d="M7 9l4.5-6"></path><path d="M17 9l-4.5-6"></path></svg>';
         html += '      <span>Add to Cart</span>';
