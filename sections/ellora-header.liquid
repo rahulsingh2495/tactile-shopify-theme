@@ -465,8 +465,8 @@
       position: absolute;
       top: calc(100% + 2px);
       left: 0;
-      width: 1080px;
-      max-width: 95vw;
+      width: 1140px;
+      max-width: 96vw;
       background: #FFFFFF;
       border: 1px solid var(--el-hd-border);
       border-radius: 4px;
@@ -637,14 +637,9 @@
 
     #ellora-header-{{ section.id }} .el-tab-pane {
       display: none;
-      grid-template-columns: 1.2fr 1fr 1fr 1fr;
-      gap: 22px;
+      grid-template-columns: 1.25fr 1.15fr 1.15fr 1.1fr;
+      gap: 28px;
       align-items: start;
-    }
-
-    #ellora-header-{{ section.id }} #stone-panel-tab-{{ section.id }} {
-      grid-template-columns: 1.35fr 1fr 1.05fr 1fr 1.15fr !important;
-      gap: 16px !important;
     }
 
     #ellora-header-{{ section.id }} .el-tab-pane.is-active {
@@ -726,6 +721,7 @@
       display: flex;
       align-items: center;
       gap: 9px;
+      white-space: nowrap;
       transition: color 0.2s ease, transform 0.2s ease;
     }
 
