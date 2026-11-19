@@ -507,7 +507,7 @@
             <li class="el-footer-nav-item"><a href="/pages/delivery-information">Delivery Info</a></li>
             <li class="el-footer-nav-item"><a href="/pages/ordering-samples">Ordering Samples</a></li>
             <li class="el-footer-nav-item"><a href="/pages/returns-refunds">Return Info</a></li>
-            <li class="el-footer-nav-item"><a href="/pages/contact">Contact</a></li>
+            <li class="el-footer-nav-item"><a href="/pages/quantity-discount">Quantity Discount</a></li>
           {%- endif -%}
         </ul>
       </div>
@@ -524,6 +524,8 @@
             <li class="el-footer-nav-item"><a href="/pages/trade">Trade</a></li>
             <li class="el-footer-nav-item"><a href="/pages/about">About Us</a></li>
             <li class="el-footer-nav-item"><a href="{{ routes.root_url }}#elloraliving" onclick="if(window.location.pathname === '/' || window.location.pathname === '{{ routes.root_url }}'){ var el = document.getElementById('elloraliving') || document.querySelector('.el-sec-community-wrapper'); if(el){ el.scrollIntoView({ behavior: 'smooth' }); return false; } }">#Ellora Living</a></li>
+            <li class="el-footer-nav-item"><a href="/pages/contact">Contact</a></li>
+            <li class="el-footer-nav-item"><a href="{{ blogs.first.url | default: '/blogs/news' }}">Blogs</a></li>
           {%- endif -%}
         </ul>
       </div>
