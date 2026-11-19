@@ -926,13 +926,30 @@
     }
   </style>
 
+  {%- assign is_mural = false -%}
+  {%- assign prod_title_down = product.title | default: '' | downcase -%}
+  {%- assign prod_type_down = product.type | default: '' | downcase -%}
+  {%- if prod_title_down contains 'mural' or prod_type_down contains 'mural' or prod_title_down contains 'wallpaper' or prod_type_down contains 'wallpaper' or section.settings.enable_mural_mode -%}
+    {%- assign is_mural = true -%}
+  {%- endif -%}
+  {%- for tag in product.tags -%}
+    {%- assign tag_down = tag | downcase -%}
+    {%- if tag_down contains 'mural' or tag_down contains 'mural set' or tag_down contains 'wallpaper' -%}
+      {%- assign is_mural = true -%}
+    {%- endif -%}
+  {%- endfor -%}
+
   <div class="el-pt-container">
 
     <!-- Breadcrumbs -->
     <div class="el-pt-breadcrumbs">
       <a href="{{ routes.root_url }}">Home</a>
       <span class="sep">/</span>
-      <a href="/collections/all">Tiles &amp; Stone</a>
+      {%- if is_mural -%}
+        <a href="/collections/all?filter=wallpaper">Wallpapers &amp; Murals</a>
+      {%- else -%}
+        <a href="/collections/all">Tiles &amp; Stone</a>
+      {%- endif -%}
       <span class="sep">/</span>
       <span class="current-page">{{ product.title | default: 'Roman Travertine Honed Slab' }}</span>
     </div>
@@ -1413,7 +1430,7 @@
           mainImg.src = vImg;
         }
 
-        calculateTiles();
+        if (muralSetInput) { calculateMuralSets(); } else { calculateTiles(); }
       }
     }
 
@@ -1445,6 +1462,11 @@
     var resultText = root.querySelector('#elTileCalcResult');
     var costText = root.querySelector('#elTileCalcCost');
 
+    // Mural Set Selection elements
+    var muralSetInput = root.querySelector('#elMuralSetQty');
+    var muralSetCount = root.querySelector('#elMuralSetCount');
+    var muralCalcCost = root.querySelector('#elMuralCalcCost');
+
     function calculateTiles() {
       var area = parseFloat(areaInput ? areaInput.value : 12) || 0;
       var boxSize = parseFloat(boxInput ? boxInput.value : 1.44) || 1.44;
@@ -1462,12 +1484,32 @@
       }
       if (costText) {
         var unitPrice = masterSelect && masterSelect.selectedOptions && masterSelect.selectedOptions[0] ? (parseFloat(masterSelect.selectedOptions[0].getAttribute('data-price-raw')) / 100) : {{ product.price | default: 14500 | divided_by: 100.0 }};
-        costText.textContent = 'Approx. $' + (boxesNeeded * boxSize * (unitPrice || 145.00)).toFixed(2);
+        costText.textContent = 'Approx. {{ cart.currency.symbol }}' + (boxesNeeded * boxSize * (unitPrice || 145.00)).toFixed(2);
+      }
+    }
+
+    function calculateMuralSets() {
+      var sets = parseInt(muralSetInput ? muralSetInput.value : 1, 10) || 1;
+      if (sets < 1) sets = 1;
+      if (muralSetInput) muralSetInput.value = sets;
+      if (qtyInput) qtyInput.value = sets;
+      if (muralSetCount) {
+        muralSetCount.textContent = sets + (sets === 1 ? ' Set' : ' Sets') + ' (Complete Mural)';
+      }
+      if (muralCalcCost) {
+        var setPrice = masterSelect && masterSelect.selectedOptions && masterSelect.selectedOptions[0] ? (parseFloat(masterSelect.selectedOptions[0].getAttribute('data-price-raw')) / 100) : {{ product.price | default: 14500 | divided_by: 100.0 }};
+        muralCalcCost.textContent = 'Total: {{ cart.currency.symbol }}' + (sets * (setPrice || 145.00)).toFixed(2);
       }
     }
 
     if (areaInput) areaInput.addEventListener('input', calculateTiles);
     if (wastageCheck) wastageCheck.addEventListener('change', calculateTiles);
+
+    if (muralSetInput) {
+      muralSetInput.addEventListener('input', calculateMuralSets);
+      muralSetInput.addEventListener('change', calculateMuralSets);
+      calculateMuralSets();
+    }
 
     // Quantity Stepper
     var minusBtn = root.querySelector('#elTileMinus');
@@ -1475,13 +1517,23 @@
     if (minusBtn && qtyInput) {
       minusBtn.addEventListener('click', function() {
         var v = parseInt(qtyInput.value, 10) || 1;
-        if (v > 1) qtyInput.value = v - 1;
+        if (v > 1) {
+          qtyInput.value = v - 1;
+          if (muralSetInput) {
+            muralSetInput.value = v - 1;
+            calculateMuralSets();
+          }
+        }
       });
     }
     if (plusBtn && qtyInput) {
       plusBtn.addEventListener('click', function() {
         var v = parseInt(qtyInput.value, 10) || 1;
         qtyInput.value = v + 1;
+        if (muralSetInput) {
+          muralSetInput.value = v + 1;
+          calculateMuralSets();
+        }
       });
     }
 
