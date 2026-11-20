@@ -646,6 +646,15 @@
       display: grid;
     }
 
+    #ellora-header-{{ section.id }} .el-tab-pane.el-pane-coming-soon.is-active {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 36px 0;
+      min-height: 180px;
+    }
+
     #ellora-header-{{ section.id }} .el-pane-col {
       display: flex;
       flex-direction: column;
@@ -2082,42 +2091,10 @@
                 </div>
 
                 <!-- Tab 3: Wallpaper (Coming Soon) -->
-                <div class="el-tab-pane" id="wallpapers-tab-{{ section.id }}" role="tabpanel">
-                  <div class="el-pane-col">
-                    <h4 class="el-pane-heading">Wallcoverings</h4>
-                    <p class="el-pane-desc">Curated murals, artisan textures and botanical studies printed to scale.</p>
-                    <a href="{{ wallpaper_base_url }}" class="el-pane-btn">View Wallpapers →</a>
-                  </div>
-                  <div class="el-pane-col">
-                    <h5 class="el-col-subheading">Style &amp; Art</h5>
-                    <ul class="el-col-list">
-                      <li><a href="{{ wallpaper_base_url }}/mural">Architectural Murals</a></li>
-                      <li><a href="{{ wallpaper_base_url }}/botanical">Botanical &amp; Foliage</a></li>
-                      <li><a href="{{ wallpaper_base_url }}/fresco">Renaissance Fresco</a></li>
-                      <li><a href="{{ wallpaper_base_url }}/geometric">Brutalist &amp; Geometric</a></li>
-                      <li><a href="{{ wallpaper_base_url }}/landscape">Panoramic Landscape</a></li>
-                      <li><a href="{{ wallpaper_base_url }}/chinoiserie">Chinoiserie Classic</a></li>
-                    </ul>
-                  </div>
-                  <div class="el-pane-col">
-                    <h5 class="el-col-subheading">Substrates</h5>
-                    <ul class="el-col-list">
-                      <li><a href="{{ wallpaper_base_url }}/linen">Textured Linen (300 gsm)</a></li>
-                      <li><a href="{{ wallpaper_base_url }}/non-woven">Non-Woven Matte</a></li>
-                      <li><a href="{{ wallpaper_base_url }}/peel-and-stick">Peel &amp; Stick Grasscloth</a></li>
-                      <li><a href="{{ wallpaper_base_url }}/foil">Artisan Metallic Foil</a></li>
-                    </ul>
-                  </div>
-                  <div class="el-pane-col el-col-bordered">
-                    <h5 class="el-col-subheading">Colors &amp; Tones</h5>
-                    <ul class="el-col-list">
-                      <li><a href="{{ wallpaper_base_url }}?color=gold"><span class="el-color-dot" style="background:#D4AF37;"></span>Gold</a></li>
-                      <li><a href="{{ wallpaper_base_url }}?color=silver"><span class="el-color-dot" style="background:#C5C6C7;"></span>Silver</a></li>
-                      <li><a href="{{ wallpaper_base_url }}?color=ivory"><span class="el-color-dot" style="background:#F5F2EB;"></span>Ivory &amp; Chalk</a></li>
-                      <li><a href="{{ wallpaper_base_url }}?color=sepia"><span class="el-color-dot" style="background:#7F675B;"></span>Sepia &amp; Taupe</a></li>
-                      <li><a href="{{ wallpaper_base_url }}?color=indigo"><span class="el-color-dot" style="background:#1E293B;"></span>Indigo &amp; Slate</a></li>
-                      <li><a href="{{ wallpaper_base_url }}?color=emerald"><span class="el-color-dot" style="background:#1B4D3E;"></span>Forest &amp; Sage</a></li>
-                    </ul>
+                <div class="el-tab-pane el-pane-coming-soon" id="wallpapers-tab-{{ section.id }}" role="tabpanel">
+                  <div class="el-pane-col" style="max-width: 520px;">
+                    <h4 class="el-pane-heading">Wallpaper Coming Soon</h4>
+                    <p class="el-pane-desc" style="margin-bottom: 0;">Curated murals, artisan textures and architectural wallcoverings launching soon.</p>
                   </div>
                 </div>
               </div>
@@ -2356,12 +2333,7 @@
           <a href="{{ tiles_base_url }}?color=silver"><span class="el-color-dot" style="background:#C5C6C7;"></span>Silver</a>
 
           <div class="el-drawer-subheading" style="margin-top: 14px;">Wallpaper (Coming Soon)</div>
-          <a href="{{ wallpaper_base_url }}" style="color: var(--el-hd-primary); font-weight: 500;">View All Wallpapers →</a>
-          <a href="{{ wallpaper_base_url }}/mural">Architectural Murals</a>
-          <a href="{{ wallpaper_base_url }}/botanical">Botanical Studies</a>
-          <a href="{{ wallpaper_base_url }}/fresco">Renaissance Fresco</a>
-          <a href="{{ wallpaper_base_url }}/linen">Textured Linen Substrate</a>
-          <a href="{{ wallpaper_base_url }}/bedroom">Bedroom Wallcoverings</a>
+          <span style="font-size: 13px; color: var(--el-hd-gray); padding: 4px 0 10px 0; display: block;">Collection launching soon</span>
         </div>
       </div>
     {%- endcapture -%}
