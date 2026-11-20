@@ -32,10 +32,10 @@
       --el-hd-top-text: {{ section.settings.top_text_color | default: '#FFFFFF' }};
       --el-hd-bg: {{ section.settings.header_bg | default: '#FFFFFF' }};
       --el-hd-primary: {{ hd_accent }};
-      --el-hd-primary-hover: #BF8673;
+      --el-hd-primary-hover: #805D52;
       --el-hd-dark: {{ section.settings.text_color | default: '#1C1B19' }};
       --el-hd-menu-color: {{ section.settings.menu_link_color | default: section.settings.text_color | default: '#1C1B19' }};
-      --el-hd-menu-hover: {{ section.settings.menu_link_hover_color | default: section.settings.accent_color | default: '#CC9E8F' }};
+      --el-hd-menu-hover: {{ section.settings.menu_link_hover_color | default: section.settings.accent_color | default: '#805D52' }};
       --el-hd-menu-active: {{ section.settings.menu_link_active_color | default: section.settings.accent_color | default: '#CC9E8F' }};
       --el-hd-text: #44403B;
       --el-hd-muted: #736E67;
@@ -198,7 +198,7 @@
     }
 
     #ellora-header-{{ section.id }} .el-nav-link:hover {
-      color: var(--el-hd-menu-hover, #CC9E8F);
+      color: #805D52;
     }
 
     #ellora-header-{{ section.id }} .el-nav-link.is-active,
@@ -404,7 +404,7 @@
     }
 
     #ellora-header-{{ section.id }} .el-header-icon-btn:hover {
-      color: var(--el-hd-primary);
+      color: #805D52;
       transform: translateY(-1px);
     }
 
@@ -592,7 +592,7 @@
     }
 
     #ellora-header-{{ section.id }} .el-sidebar-list a:hover {
-      color: var(--el-hd-primary);
+      color: #805D52;
       transform: translateX(2px);
     }
 
@@ -721,8 +721,8 @@
     }
 
     #ellora-header-{{ section.id }} .el-pane-btn:hover {
-      background-color: var(--el-hd-primary-hover, #BF8673) !important;
-      border-color: var(--el-hd-primary-hover, #BF8673) !important;
+      background-color: var(--el-hd-primary-hover, #805D52) !important;
+      border-color: var(--el-hd-primary-hover, #805D52) !important;
     }
 
     #ellora-header-{{ section.id }} .el-col-subheading {
@@ -754,7 +754,7 @@
     }
 
     #ellora-header-{{ section.id }} .el-col-list a:hover {
-      color: var(--el-hd-primary);
+      color: #805D52;
       transform: translateX(2px);
     }
 

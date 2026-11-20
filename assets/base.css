@@ -3655,7 +3655,7 @@ details-disclosure > details {
   --el-muted: #736E67;           /* Elegant taupe for secondary text & counts */
   --el-muted-light: #9B958E;     /* Soft stone for disabled / borders / icons */
   --el-terracotta: #CC9E8F;      /* Ellora signature terracotta accent */
-  --el-terracotta-dark: #BF8673; /* Rich deep terracotta for buttons & hover */
+  --el-terracotta-dark: #805D52; /* Rich deep terracotta for buttons & hover */
   --el-terracotta-tint: #FAF2ED; /* Subtle terracotta blush for active pills */
   --el-border: #ECE7E1;          /* Clean minimal card & divider borders */
   --el-border-light: #F2EFEA;    /* Extra soft inner rule lines */
@@ -3726,7 +3726,7 @@ header.header {
 .header__menu-item:hover,
 .list-menu__item:hover,
 .header__active-menu-item {
-  color: var(--el-terracotta) !important;
+  color: #805D52 !important;
 }
 
 /* 4. FOOTER & NEWSLETTER */
@@ -3752,7 +3752,7 @@ footer.footer,
 }
 
 .footer-block__details-content .list-menu__item--link:hover {
-  color: var(--el-terracotta) !important;
+  color: #805D52 !important;
 }
 
 .newsletter-form__button,
@@ -3775,6 +3775,15 @@ button.newsletter-button:hover {
   background-color: var(--el-terracotta-dark) !important;
 }
 
+/* Universal Product Card Title Hover */
+.el-product-card:hover .el-product-title,
+.el-product-card:hover .el-card-title,
+.el-pr-card:hover .el-pr-prod-title,
+.card-wrapper:hover .card__heading,
+.card-wrapper:hover .card__heading a {
+  color: #805D52 !important;
+}
+
 /* 5. GLOBAL BRAND BUTTON STYLING ENFORCEMENT */
 .button:not(.button--secondary):not(.button--tertiary),
 .button--primary,
@@ -3795,8 +3804,8 @@ button.button--primary:hover,
 button[name="checkout"]:hover,
 .el-btn-primary:hover,
 .el-crafted-btn:hover {
-  background-color: #BF8673 !important;
-  border-color: #BF8673 !important;
+  background-color: #805D52 !important;
+  border-color: #805D52 !important;
   color: #FFFFFF !important;
 }
 
@@ -3806,8 +3815,8 @@ button[name="checkout"]:hover,
 }
 
 .button--secondary:hover {
-  background-color: #BF8673 !important;
-  border-color: #BF8673 !important;
+  background-color: #805D52 !important;
+  border-color: #805D52 !important;
   color: #FFFFFF !important;
 }
 
