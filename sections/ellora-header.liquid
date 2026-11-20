@@ -653,101 +653,25 @@
       align-items: center;
       text-align: center;
       width: 100%;
-      min-height: 290px;
-      padding: 38px 28px;
-      background: #FAF8F5;
-      border: 1px solid #ECE7E1;
-      border-radius: 8px;
+      padding: 35px 20px;
       box-sizing: border-box;
     }
 
-    #ellora-header-{{ section.id }} .el-cs-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      font-family: var(--el-hd-font-sans);
-      font-size: 11px;
-      font-weight: 600;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--el-hd-primary);
-      background: rgba(204, 158, 143, 0.14);
-      padding: 5px 14px;
-      border-radius: 20px;
-      margin-bottom: 14px;
-    }
-
-    #ellora-header-{{ section.id }} .el-cs-title {
-      font-family: var(--el-hd-font-serif);
-      font-size: 30px;
-      font-weight: 400;
-      color: var(--el-hd-dark);
+    #ellora-header-{{ section.id }} .el-pane-coming-soon .el-pane-heading {
+      font-size: 26px;
       margin: 0 0 10px 0;
-      line-height: 1.2;
-      letter-spacing: -0.01em;
     }
 
-    #ellora-header-{{ section.id }} .el-cs-desc {
-      font-family: var(--el-hd-font-sans);
+    #ellora-header-{{ section.id }} .el-pane-coming-soon .el-pane-desc {
       font-size: 13.5px;
-      font-weight: 400;
       color: var(--el-hd-gray);
-      line-height: 1.6;
-      max-width: 540px;
-      margin: 0 auto 20px auto;
+      max-width: 460px;
+      margin: 0 0 20px 0;
+      line-height: 1.55;
     }
 
-    #ellora-header-{{ section.id }} .el-cs-pills {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 10px;
-      margin-bottom: 22px;
-    }
-
-    #ellora-header-{{ section.id }} .el-cs-pill {
-      font-family: var(--el-hd-font-sans);
-      font-size: 12px;
-      font-weight: 450;
-      color: var(--el-hd-text);
-      background: #FFFFFF;
-      border: 1px solid #E5E0D8;
-      border-radius: 20px;
-      padding: 6px 14px;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    #ellora-header-{{ section.id }} .el-cs-pill-dot {
-      width: 5px;
-      height: 5px;
-      border-radius: 50%;
-      background: var(--el-hd-primary);
-    }
-
-    #ellora-header-{{ section.id }} .el-cs-btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      background: var(--el-hd-primary);
-      color: #FFFFFF;
-      font-family: var(--el-hd-font-sans);
-      font-size: 12px;
-      font-weight: 500;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-      padding: 10px 22px;
-      border-radius: 4px;
-      text-decoration: none;
-      transition: background 0.25s ease, transform 0.2s ease;
-    }
-
-    #ellora-header-{{ section.id }} .el-cs-btn:hover {
-      background: #BF8673;
-      transform: translateY(-1px);
-      color: #FFFFFF;
+    #ellora-header-{{ section.id }} .el-pane-coming-soon .el-pane-btn {
+      align-self: center;
     }
 
     #ellora-header-{{ section.id }} .el-pane-col {
@@ -2187,23 +2111,9 @@
 
                 <!-- Tab 3: Wallpaper (Coming Soon) -->
                 <div class="el-tab-pane el-pane-coming-soon" id="wallpapers-tab-{{ section.id }}" role="tabpanel">
-                  <span class="el-cs-badge">
-                    <span class="el-cs-pill-dot"></span>
-                    Launching Soon
-                  </span>
-                  <h4 class="el-cs-title">Wallpaper Coming Soon</h4>
-                  <p class="el-cs-desc">
-                    Our curated collection of bespoke architectural murals, artisan textured linens, and handcrafted wallcoverings is currently being prepared.
-                  </p>
-                  <div class="el-cs-pills">
-                    <span class="el-cs-pill"><span class="el-cs-pill-dot"></span>Architectural Murals</span>
-                    <span class="el-cs-pill"><span class="el-cs-pill-dot"></span>Textured Linens (300 gsm)</span>
-                    <span class="el-cs-pill"><span class="el-cs-pill-dot"></span>Peel &amp; Stick Grasscloth</span>
-                    <span class="el-cs-pill"><span class="el-cs-pill-dot"></span>Artisan Metallic Foil</span>
-                  </div>
-                  <a href="{{ routes.all_products_collection_url }}" class="el-cs-btn">
-                    Explore Available Surfaces →
-                  </a>
+                  <h4 class="el-pane-heading">Wallpaper Coming Soon</h4>
+                  <p class="el-pane-desc">Our curated collection of wallcoverings and bespoke murals is launching soon.</p>
+                  <a href="{{ routes.all_products_collection_url }}" class="el-pane-btn">Explore Our Products →</a>
                 </div>
               </div>
             </div>
