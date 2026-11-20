@@ -3775,6 +3775,17 @@ button.newsletter-button:hover {
   background-color: var(--el-terracotta-dark) !important;
 }
 
+/* Universal Button Hover Consistency */
+.el-th-btn-secondary:hover,
+.el-fa-btn-secondary:hover,
+.el-cta-btn-secondary:hover,
+.el-btn-outline:hover,
+.button--secondary:hover {
+  background-color: #805D52 !important;
+  border-color: #805D52 !important;
+  color: #FFFFFF !important;
+}
+
 /* Universal Product Card Title Hover */
 .el-product-card:hover .el-product-title,
 .el-product-card:hover .el-card-title,
