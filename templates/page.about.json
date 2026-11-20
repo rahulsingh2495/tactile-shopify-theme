@@ -12,9 +12,9 @@
     "about_hero": {
       "type": "ellora-about-hero",
       "settings": {
-        "eyebrow": "",
-        "title": "Surfaces for calm,<br>considered interiors.",
-        "description": "Ellora Spaces was founded by Isha and Vanya, whose first meeting at a design show sparked a conversation that has never quite stopped. They connected over their fascination with materials, the possibilities of craft and the extraordinary things the human hand can create.",
+        "eyebrow": "ELLORA",
+        "title": "There are places that invite us to slow down.",
+        "description": "Places that soften the noise around us, hold a little more light and create a sense of ease.<br><br>In a world that often feels fast and demanding, we have come to value these spaces more deeply — places where we can pause, reconnect and feel more at home within ourselves.",
         "image_position": "center",
         "image_height_desktop": 580,
         "image_height_mobile": 340,
@@ -24,7 +24,7 @@
         "bg_color": "#faf9f6",
         "title_color": "#1c1b19",
         "text_color": "#4a453f",
-        "accent_color": "#CC9E8F",
+        "accent_color": "#B86B53",
         "container_max_width": 1720,
         "gap_below_header": 36,
         "padding_top_desktop": 60,
@@ -32,14 +32,38 @@
         "padding_top_mobile": 40,
         "padding_bottom_mobile": 28,
         "show_story": true,
-        "story_eyebrow": "THE STORY OF ELLORA",
-        "story_lead": "At the heart of that connection was a deep appreciation for India’s rich craft traditions and the endless creativity they continue to inspire.",
-        "story_p1": "Ellora Spaces was founded by Isha and Vanya, whose first meeting at a design show sparked a conversation that has never quite stopped.",
-        "story_p2": "They connected over their fascination with materials, the possibilities of craft and the extraordinary things the human hand can create. At the heart of that connection was a deep appreciation for India’s rich craft traditions and the endless creativity they continue to inspire.",
-        "story_p3": "Both are drawn to the way design makes us feel: how a home can bring comfort, a workspace can encourage focus, and a room for movement or reflection can help us reconnect with ourselves. They share a curiosity about the spaces we move through each day and how each can support a different part of our lives.",
-        "story_p4": "Ellora brings these passions together, exploring material, texture and craftsmanship to create surfaces and objects with character and purpose. It is an expression of their shared belief that the things we surround ourselves with can enrich both our spaces and our everyday experience.",
-        "story_names": "Vanya and Isha",
-        "story_role": "Founders, Ellora Spaces"
+        "story_eyebrow": "OUR PHILOSOPHY & CRAFT",
+        "story_lead": "At Ellora, this idea sits quietly at the heart of what we do: our surroundings influence how we feel, and the materials we choose are essential to creating spaces that support calm, balance and wellbeing.",
+        "story_p1": "The texture of stone and the softness of a wall covering shape the atmosphere of a room and our experience within it. Together with considered proportions, light and craftsmanship, they can bring a sense of comfort and grounding to the places we inhabit.",
+        "story_p2": "Our journey begins with sculptural stone panels and wall coverings, handcrafted in India for spaces around the world. Working with skilled craftspeople, quarries and ateliers, we bring traditional techniques into a contemporary design language, allowing age-old craft to find fresh expression.",
+        "story_p3": "We are drawn to materials with character and depth: tactile surfaces, subtle irregularities and details that reveal the hand of the maker. We value the marks and variations that make each piece individual, bringing a connection to its origins into the finished space.",
+        "story_p4": "For us, material is not simply something to look at. It is something to experience. Over time, the Ellora world will grow to include surfaces, objects and pieces for living that share this sense of warmth, craftsmanship and quiet refinement.",
+        "story_closing_title": "Ultimately, Ellora is about creating spaces that feel good to live in.",
+        "triplet_1": "A little calmer.",
+        "triplet_2": "A little warmer.",
+        "triplet_3": "A little more restorative."
+      }
+    },
+    "about_founders": {
+      "type": "ellora-about-story",
+      "settings": {
+        "eyebrow": "ABOUT THE FOUNDERS",
+        "lead_quote": "At the heart of that connection was a deep appreciation for India’s rich craft traditions and the endless creativity they continue to inspire.",
+        "p1": "Ellora Spaces was founded by Isha and Vanya, whose first meeting at a design show sparked a conversation that has never quite stopped.",
+        "p2": "They connected over their fascination with materials, the possibilities of craft and the extraordinary things the human hand can create. At the heart of that connection was a deep appreciation for India’s rich craft traditions and the endless creativity they continue to inspire.",
+        "p3": "Both are drawn to the way design makes us feel: how a home can bring comfort, a workspace can encourage focus, and a room for movement or reflection can help us reconnect with ourselves. They share a curiosity about the spaces we move through each day and how each can support a different part of our lives.",
+        "p4": "Ellora brings these passions together, exploring material, texture and craftsmanship to create surfaces and objects with character and purpose. It is an expression of their shared belief that the things we surround ourselves with can enrich both our spaces and our everyday experience.",
+        "signoff_names": "Vanya and Isha",
+        "signoff_role": "Founders, Ellora Spaces",
+        "bg_color": "#faf9f6",
+        "title_color": "#1c1b19",
+        "text_color": "#4a453f",
+        "accent_color": "#B86B53",
+        "container_max_width": 1720,
+        "padding_top_desktop": 48,
+        "padding_bottom_desktop": 64,
+        "padding_top_mobile": 36,
+        "padding_bottom_mobile": 44
       }
     },
     "about_features": {
@@ -282,6 +306,7 @@
   },
   "order": [
     "about_hero",
+    "about_founders",
     "about_features",
     "about_explore",
     "about_rules",
