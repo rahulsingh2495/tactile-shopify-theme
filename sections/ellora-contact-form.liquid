@@ -252,6 +252,9 @@
     }
 
     @media (max-width: 600px) {
+      #ellora-contact-form-{{ section.id }} {
+        padding-bottom: 80px;
+      }
       #ellora-contact-form-{{ section.id }} .el-form-grid-inner {
         grid-template-columns: 1fr;
         gap: 14px;
@@ -259,6 +262,9 @@
       #ellora-contact-form-{{ section.id }} .el-form-group.el-col-full,
       #ellora-contact-form-{{ section.id }} .el-submit-btn-wrap {
         grid-column: span 1;
+      }
+      #ellora-contact-form-{{ section.id }} .el-submit-btn-wrap {
+        margin-bottom: 24px;
       }
     }
   </style>

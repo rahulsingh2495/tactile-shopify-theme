@@ -657,8 +657,9 @@
       <!-- Live Search Form -->
       <div class="el-sr-search-bar">
         <form action="{{ routes.search_url }}" method="get" role="search" class="el-sr-search-form" id="elSearchForm-{{ section.id }}">
+          <label for="elSearchInput-{{ section.id }}" class="visually-hidden">Search tiles, stone panels and wallpapers</label>
           <input type="hidden" name="type" value="product">
-          <svg class="el-sr-search-icon" viewBox="0 0 24 24">
+          <svg class="el-sr-search-icon" viewBox="0 0 24 24" aria-hidden="true">
             <circle cx="11" cy="11" r="8"></circle>
             <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
           </svg>
@@ -669,6 +670,7 @@
             class="el-sr-input"
             value="{{ search.terms | escape }}"
             placeholder="{{ section.settings.search_placeholder | default: 'Search tiles, wallpapers, marble surfaces, sizes...' }}"
+            aria-label="Search tiles, stone panels and wallpapers"
             autocomplete="off"
             spellcheck="false"
           >
@@ -697,7 +699,7 @@
 
     <!-- Status & Results Count -->
     <div class="el-sr-status-bar">
-      <div class="el-sr-count-text" id="elSrCountText">
+      <div class="el-sr-count-text" id="elSrCountText" aria-live="polite">
         {%- if search.performed -%}
           Showing <strong>{{ search.results_count }}</strong> {{ search.results_count | pluralize: 'result', 'results' }}
           {%- if search.terms != blank -%} for &ldquo;<strong>{{ search.terms }}</strong>&rdquo;{%- endif -%}

@@ -466,7 +466,7 @@
       top: calc(100% + 2px);
       left: 0;
       width: 1140px;
-      max-width: 96vw;
+      max-width: calc(100vw - 80px);
       background: #FFFFFF;
       border: 1px solid var(--el-hd-border);
       border-radius: 4px;
@@ -479,6 +479,13 @@
                   visibility 0.25s;
       z-index: 1000;
       overflow: hidden;
+    }
+
+    @media (max-width: 1200px) {
+      #ellora-header-{{ section.id }} .el-megamenu-panel {
+        width: 880px;
+        max-width: calc(100vw - 80px);
+      }
     }
 
     #ellora-header-{{ section.id }} .el-megamenu-panel::before {
@@ -924,6 +931,12 @@
       display: inline-block !important;
       text-align: center !important;
       margin: 0 !important;
+    }
+
+    @media (max-width: 768px) {
+      .el-side-signup-tab {
+        display: none !important;
+      }
     }
 
     /* Floating Side Sign-Up Drawer Wrapper & Scrim */

@@ -130,11 +130,17 @@
     @media (max-width: 900px) {
       {%- if section.settings.enable_sticky_scroll -%}
         #ellora-manifesto-{{ section.id }} .el-manifesto-sticky-wrapper {
-          height: 150vh;
+          height: auto !important;
         }
         #ellora-manifesto-{{ section.id }} .el-manifesto-sticky-container {
-          height: auto;
-          min-height: 340px;
+          position: static !important;
+          height: auto !important;
+          min-height: 0 !important;
+          padding-top: 36px;
+          padding-bottom: 28px;
+        }
+        #ellora-manifesto-{{ section.id }} .el-scroll-word {
+          color: var(--el-highlight) !important;
         }
       {%- endif -%}
       #ellora-manifesto-{{ section.id }} .el-manifesto-heading {
@@ -150,7 +156,14 @@
     @media (max-width: 640px) {
       {%- if section.settings.enable_sticky_scroll -%}
         #ellora-manifesto-{{ section.id }} .el-manifesto-sticky-wrapper {
-          height: 130vh;
+          height: auto !important;
+        }
+        #ellora-manifesto-{{ section.id }} .el-manifesto-sticky-container {
+          position: static !important;
+          height: auto !important;
+          min-height: 0 !important;
+          padding-top: 28px;
+          padding-bottom: 24px;
         }
       {%- endif -%}
       #ellora-manifesto-{{ section.id }} .el-manifesto-heading {
@@ -158,6 +171,21 @@
         line-height: 1.45;
         text-indent: 0;
       }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      #ellora-manifesto-{{ section.id }} .el-manifesto-sticky-wrapper {
+        height: auto !important;
+      }
+      #ellora-manifesto-{{ section.id }} .el-manifesto-sticky-container {
+        position: static !important;
+        height: auto !important;
+        min-height: 0 !important;
+      }
+      #ellora-manifesto-{{ section.id }} .el-scroll-word {
+        color: var(--el-highlight) !important;
+      }
+    }
     }
   </style>
 
@@ -167,7 +195,7 @@
         {%- if section.settings.kicker != blank -%}
           <span class="el-manifesto-kicker">{{ section.settings.kicker }}</span>
         {%- endif -%}
-        <h2 class="el-manifesto-heading">
+        <h1 class="el-manifesto-heading">
           <span class="el-manifesto-lead">{{ section.settings.lead_text }} </span>
           <span class="el-manifesto-body" id="elManifestoBody-{{ section.id }}">
             {%- assign words = section.settings.scroll_body | split: ' ' -%}
@@ -175,7 +203,7 @@
               <span class="el-scroll-word">{{ word }} </span>
             {%- endfor -%}
           </span>
-        </h2>
+        </h1>
       </div>
     </div>
   </div>
