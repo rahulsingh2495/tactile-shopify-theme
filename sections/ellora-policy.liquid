@@ -106,13 +106,19 @@
       letter-spacing: 0.2em;
       text-transform: uppercase;
       font-weight: 600;
-      color: var(--el-pol-link);
+      color: #1C1B19;
       margin-bottom: 12px;
     }
 
     #ellora-policy-{{ section.id }} .el-policy-title {
-      color: #805D52 !important;
       font-family: {% if section.settings.heading_font_family == 'sans' %}'Plus Jakarta Sans', sans-serif{% else %}'Cormorant Garamond', Georgia, serif{% endif %};
+      font-size: var(--el-pol-title-size);
+      font-weight: var(--el-pol-title-weight);
+      color: #805D52 !important;
+      line-height: 1.15;
+      letter-spacing: -0.01em;
+      margin: 0 0 16px 0;
+    }'Plus Jakarta Sans', sans-serif{% else %}'Cormorant Garamond', Georgia, serif{% endif %};
       font-size: var(--el-pol-title-size);
       font-weight: var(--el-pol-title-weight);
       color: var(--el-pol-heading);
