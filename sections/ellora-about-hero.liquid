@@ -12,7 +12,7 @@
 
     #ellora-about-hero-{{ section.id }} {
       --el-bg: {{ section.settings.bg_color | default: '#FAF9F6' }};
-      --el-dark: {{ section.settings.title_color | default: '#1C1B19' }};
+      --el-dark: {{ section.settings.title_color | default: '#805D52' }};
       --el-text: {{ section.settings.text_color | default: '#4A453F' }};
       --el-accent: {{ section.settings.accent_color | default: '#B86B53' }};
       --el-font-serif: 'Cormorant Garamond', Georgia, serif;
@@ -66,6 +66,7 @@
     }
 
     #ellora-about-hero-{{ section.id }} .el-about-hero-title {
+      color: #805D52;
       font-family: var(--el-font-serif);
       font-size: clamp(34px, 4.4vw, {{ section.settings.title_font_size | default: 56 }}px);
       line-height: 1.12;
@@ -152,7 +153,7 @@
       font-size: clamp(26px, 2.6vw, 36px);
       font-weight: 400;
       line-height: 1.25;
-      color: var(--el-dark);
+      color: #805D52;
       letter-spacing: -0.01em;
       position: sticky;
       top: 100px;
@@ -211,7 +212,7 @@
       font-family: var(--el-font-serif);
       font-size: clamp(20px, 1.8vw, 24px);
       line-height: 1.35;
-      color: var(--el-dark);
+      color: #805D52;
       font-style: italic;
       margin-bottom: 14px;
     }

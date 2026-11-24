@@ -27,7 +27,7 @@
 
     #ellora-policy-{{ section.id }} {
       --el-pol-bg: {{ section.settings.bg_color | default: '#FFFFFF' }};
-      --el-pol-heading: {{ section.settings.heading_color | default: '#1C1B19' }};
+      --el-pol-heading: {{ section.settings.heading_color | default: '#805D52' }};
       --el-pol-text: {{ section.settings.text_color | default: '#4A4641' }};
       --el-pol-muted: {{ section.settings.muted_color | default: '#8C8780' }};
       --el-pol-link: {{ pol_link }};
@@ -111,6 +111,7 @@
     }
 
     #ellora-policy-{{ section.id }} .el-policy-title {
+      color: #805D52 !important;
       font-family: {% if section.settings.heading_font_family == 'sans' %}'Plus Jakarta Sans', sans-serif{% else %}'Cormorant Garamond', Georgia, serif{% endif %};
       font-size: var(--el-pol-title-size);
       font-weight: var(--el-pol-title-weight);
