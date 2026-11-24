@@ -26,7 +26,7 @@
         "title_size_mobile": 32,
         "title_weight": "400",
         "subtitle": "Review, compare, and shortlist your saved tiles, stone surfaces, and wallpapers in one place.",
-        "columns_desktop": 3,
+        "columns_desktop": 4,
         "empty_title": "Your wishlist is currently empty",
         "empty_desc": "You haven't saved any surfaces yet. Explore our curated collections of architectural tiles, stone slabs, and murals to curate your space.",
         "empty_btn_text": "Explore Collections",

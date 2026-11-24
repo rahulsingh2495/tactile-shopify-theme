@@ -256,7 +256,7 @@
     /* Exact Product Grid (Matching Collection & Wishlist) */
     #ellora-search-{{ section.id }} .el-product-grid {
       display: grid;
-      grid-template-columns: repeat({{ section.settings.columns_desktop | default: 3 }}, 1fr);
+      grid-template-columns: repeat({{ section.settings.columns_desktop | default: 4 }}, 1fr);
       gap: 32px 24px;
       margin-bottom: 48px;
     }
@@ -578,10 +578,17 @@
     }
 
     /* Responsive */
-    @media (max-width: 1100px) {
+    @media (max-width: 1200px) {
+      #ellora-search-{{ section.id }} .el-product-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 24px 18px;
+      }
+    }
+
+    @media (max-width: 900px) {
       #ellora-search-{{ section.id }} .el-product-grid {
         grid-template-columns: repeat(2, 1fr);
-        gap: 24px 18px;
+        gap: 20px 16px;
       }
     }
 
@@ -1255,7 +1262,7 @@
       "min": 2,
       "max": 5,
       "step": 1,
-      "default": 3
+      "default": 4
     },
     {
       "type": "select",
