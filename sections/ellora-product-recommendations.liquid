@@ -51,7 +51,7 @@
 
     #ellora-prod-recs-{{ section.id }} .el-pr-container {
       width: 90%;
-      ${1}1720 }}px;
+      max-width: {{ section.settings.container_max_width | default: 1720 }}px;
       margin: 0 auto;
     }
 
