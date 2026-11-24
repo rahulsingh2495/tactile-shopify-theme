@@ -116,7 +116,7 @@
         "spec_thickness": "15 mm Solid Calibrated",
         "spec_edge": "Micro-Beveled Rectified",
         "spec_slip": "R10 / P3 (Wet Room Suitable)",
-        "container_max_width": 1280,
+        "container_max_width": 1720,
         "bg_color": "#FFFFFF",
         "card_bg": "#FAF8F5",
         "primary_color": "#CC9E8F",
@@ -141,7 +141,7 @@
         "view_all_url": "",
         "bg_color": "#FAF8F5",
         "primary_color": "#CC9E8F",
-        "container_max_width": 1280,
+        "container_max_width": 1720,
         "padding_top": 80,
         "padding_bottom": 90
       }

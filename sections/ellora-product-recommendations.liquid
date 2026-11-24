@@ -51,7 +51,7 @@
 
     #ellora-prod-recs-{{ section.id }} .el-pr-container {
       width: 90%;
-      max-width: {{ section.settings.container_max_width | default: 1280 }}px;
+      ${1}1720 }}px;
       margin: 0 auto;
     }
 
@@ -390,6 +390,9 @@
     }
 
     @media (max-width: 1024px) {
+      #ellora-prod-recs-{{ section.id }} .el-pr-container {
+        width: 92%;
+      }
       #ellora-prod-recs-{{ section.id }} .el-pr-grid {
         grid-template-columns: repeat(2, 1fr);
         gap: 20px;
@@ -900,11 +903,11 @@
       "type": "range",
       "id": "container_max_width",
       "min": 1000,
-      "max": 1600,
+      "max": 1920,
       "step": 20,
       "unit": "px",
       "label": "Container Max Width",
-      "default": 1280
+      "default": 1720
     },
     {
       "type": "range",

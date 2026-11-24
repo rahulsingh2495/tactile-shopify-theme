@@ -60,7 +60,7 @@
 
     #ellora-search-{{ section.id }} .el-sr-container {
       width: 90%;
-      max-width: {{ section.settings.container_max_width | default: 1280 }}px;
+      ${1}1720 }}px;
       margin: 0 auto;
     }
 
@@ -586,6 +586,9 @@
     }
 
     @media (max-width: 768px) {
+      #ellora-search-{{ section.id }} .el-sr-container {
+        width: 92%;
+      }
       #ellora-search-{{ section.id }} .el-sr-headline {
         font-size: {{ section.settings.title_size_mobile | default: 32 }}px;
       }
@@ -1364,10 +1367,10 @@
       "id": "container_max_width",
       "label": "Container Max Width",
       "min": 1000,
-      "max": 1600,
+      "max": 1920,
       "step": 20,
       "unit": "px",
-      "default": 1280
+      "default": 1720
     },
     {
       "type": "header",

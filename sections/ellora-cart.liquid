@@ -57,7 +57,7 @@
 
     #ellora-cart-{{ section.id }} .el-cart-container {
       width: 90%;
-      max-width: {{ section.settings.container_max_width | default: 1280 }}px;
+      ${1}1720 }}px;
       margin: 0 auto;
     }
 
@@ -522,6 +522,10 @@
 
     /* Mobile Responsive */
     @media (max-width: 900px) {
+      #ellora-cart-{{ section.id }} .el-cart-container {
+        width: 92%;
+      }
+
       #ellora-cart-{{ section.id }} .el-cart-layout {
         grid-template-columns: 1fr;
         gap: 36px;
@@ -902,10 +906,10 @@
       "id": "container_max_width",
       "label": "Container Max Width",
       "min": 1000,
-      "max": 1600,
+      "max": 1920,
       "step": 20,
       "unit": "px",
-      "default": 1280
+      "default": 1720
     },
     {
       "type": "color",

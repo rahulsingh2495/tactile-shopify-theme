@@ -47,7 +47,7 @@
 
     #ellora-delivery-hero-{{ section.id }} .el-dh-container {
       width: 90%;
-      max-width: {{ section.settings.container_max_width | default: 1280 }}px;
+      ${1}1720 }}px;
       margin: 0 auto;
     }
 
@@ -155,6 +155,9 @@
     }
 
     @media (max-width: 900px) {
+      #ellora-delivery-hero-{{ section.id }} .el-dh-container {
+        width: 92%;
+      }
       #ellora-delivery-hero-{{ section.id }} .el-dh-split-header {
         grid-template-columns: 1fr;
         gap: 16px;
@@ -309,10 +312,10 @@
       "id": "container_max_width",
       "label": "Container Max Width",
       "min": 1000,
-      "max": 1600,
+      "max": 1920,
       "step": 20,
       "unit": "px",
-      "default": 1280
+      "default": 1720
     },
     {
       "type": "color",

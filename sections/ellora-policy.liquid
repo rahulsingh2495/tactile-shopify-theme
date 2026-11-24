@@ -61,7 +61,7 @@
 
     #ellora-policy-{{ section.id }} .el-policy-container {
       width: 90%;
-      max-width: {{ section.settings.container_max_width | default: 1280 }}px;
+      ${1}1720 }}px;
       margin: 0 auto;
       padding: 0;
     }
@@ -340,6 +340,9 @@
 
     /* Mobile Responsive */
     @media (max-width: 768px) {
+      #ellora-policy-{{ section.id }} .el-policy-container {
+        width: 92%;
+      }
       #ellora-policy-{{ section.id }} {
         padding-top: {{ section.settings.padding_top_mobile | default: 36 }}px;
         padding-bottom: {{ section.settings.padding_bottom_mobile | default: 50 }}px;
@@ -665,10 +668,10 @@
       "id": "container_max_width",
       "label": "Container Max Width",
       "min": 1000,
-      "max": 1600,
+      "max": 1920,
       "step": 20,
       "unit": "px",
-      "default": 1280
+      "default": 1720
     },
     {
       "type": "range",
