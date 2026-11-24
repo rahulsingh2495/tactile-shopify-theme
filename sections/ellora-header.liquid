@@ -498,6 +498,18 @@
       transform: translateY(0);
     }
 
+    #ellora-header-{{ section.id }} .el-has-megamenu.is-closed > .el-megamenu-panel {
+      opacity: 0 !important;
+      visibility: hidden !important;
+      transform: translateY(8px) !important;
+      pointer-events: none !important;
+      transition: none !important;
+    }
+
+    #ellora-header-{{ section.id }} .el-has-megamenu.is-closed > .el-nav-link .el-chevron-icon {
+      transform: rotate(0deg) !important;
+    }
+
     #ellora-header-{{ section.id }} .el-megamenu-header {
       height: 50px;
       padding: 0 24px;
@@ -520,11 +532,14 @@
     #ellora-header-{{ section.id }} .el-megamenu-close {
       background: none;
       border: none;
-      font-size: 16px;
-      line-height: 1;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
       color: var(--el-hd-muted);
       cursor: pointer;
-      padding: 6px;
+      padding: 0;
       border-radius: 4px;
       transition: color 0.2s ease, background-color 0.2s ease;
     }
@@ -2061,7 +2076,12 @@
           <div class="el-megamenu-panel" id="elShopMegaMenu-{{ section.id }}" role="region" aria-label="Shop Products Mega Menu">
             <div class="el-megamenu-header">
               <h3 class="el-megamenu-title">{{ section.settings.megamenu_title | default: 'Shop Products' }}</h3>
-              <button type="button" class="el-megamenu-close" id="elMegaMenuClose-{{ section.id }}" aria-label="Close Mega Menu">✕</button>
+              <button type="button" class="el-megamenu-close" id="elMegaMenuClose-{{ section.id }}" aria-label="Close Mega Menu">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="pointer-events:none;">
+                  <line x1="18" y1="6" x2="6" y2="18"></line>
+                  <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+              </button>
             </div>
 
             <div class="el-megamenu-body">
@@ -2797,44 +2817,86 @@
       });
     });
 
-    // Desktop Shop Button Click Toggle (for touch/click devices)
-    if (shopBtn && shopParent) {
-      shopBtn.addEventListener('click', function(e) {
+    // Desktop Mega Menu Toggle & Close Handling
+    var shopParents = document.querySelectorAll('#ellora-header-' + sectionId + ' .el-has-megamenu');
+    var megaCloses = document.querySelectorAll('#ellora-header-' + sectionId + ' .el-megamenu-close');
+    var shopNavBtns = document.querySelectorAll('#ellora-header-' + sectionId + ' .el-has-megamenu > .el-nav-link');
+
+    // Handle clicking the Close Cross icon (✕)
+    megaCloses.forEach(function(closeBtn) {
+      closeBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        shopParents.forEach(function(p) {
+          p.classList.remove('is-open');
+          p.classList.add('is-closed');
+        });
+        shopNavBtns.forEach(function(btn) {
+          btn.setAttribute('aria-expanded', 'false');
+          btn.blur();
+        });
+      });
+    });
+
+    // Reset is-closed state when cursor leaves the megamenu area
+    shopParents.forEach(function(p) {
+      p.addEventListener('mouseleave', function() {
+        p.classList.remove('is-closed');
+      });
+    });
+
+    // When hovering or clicking the "Shop" link again, remove is-closed so it reopens cleanly
+    shopNavBtns.forEach(function(btn) {
+      btn.addEventListener('mouseenter', function() {
+        var parent = btn.closest('.el-has-megamenu');
+        if (parent) {
+          parent.classList.remove('is-closed');
+        }
+      });
+
+      btn.addEventListener('click', function(e) {
         if (window.innerWidth > 991) {
           e.preventDefault();
           e.stopPropagation();
-          var isOpen = shopParent.classList.contains('is-open');
-          if (isOpen) {
-            shopParent.classList.remove('is-open');
-            shopBtn.setAttribute('aria-expanded', 'false');
+          var parent = btn.closest('.el-has-megamenu');
+          if (!parent) return;
+          var wasClosed = parent.classList.contains('is-closed');
+          parent.classList.remove('is-closed');
+          var isOpen = parent.classList.contains('is-open');
+          if (isOpen && !wasClosed) {
+            parent.classList.remove('is-open');
+            btn.setAttribute('aria-expanded', 'false');
           } else {
-            shopParent.classList.add('is-open');
-            shopBtn.setAttribute('aria-expanded', 'true');
+            parent.classList.add('is-open');
+            btn.setAttribute('aria-expanded', 'true');
           }
         }
       });
-    }
-
-    if (megaClose && shopParent) {
-      megaClose.addEventListener('click', function(e) {
-        e.stopPropagation();
-        shopParent.classList.remove('is-open');
-        if (shopBtn) shopBtn.setAttribute('aria-expanded', 'false');
-      });
-    }
+    });
 
     // Close Mega Menu when clicking outside or pressing Escape
     document.addEventListener('click', function(e) {
-      if (shopParent && !shopParent.contains(e.target)) {
-        shopParent.classList.remove('is-open');
-        if (shopBtn) shopBtn.setAttribute('aria-expanded', 'false');
-      }
+      shopParents.forEach(function(p) {
+        if (!p.contains(e.target)) {
+          p.classList.remove('is-open');
+          p.classList.remove('is-closed');
+          var b = p.querySelector(':scope > .el-nav-link');
+          if (b) b.setAttribute('aria-expanded', 'false');
+        }
+      });
     });
 
     document.addEventListener('keydown', function(e) {
-      if (e.key === 'Escape' && shopParent && shopParent.classList.contains('is-open')) {
-        shopParent.classList.remove('is-open');
-        if (shopBtn) shopBtn.setAttribute('aria-expanded', 'false');
+      if (e.key === 'Escape' || e.keyCode === 27) {
+        shopParents.forEach(function(p) {
+          p.classList.remove('is-open');
+          p.classList.add('is-closed');
+          var b = p.querySelector(':scope > .el-nav-link');
+          if (b) {
+            b.setAttribute('aria-expanded', 'false');
+            b.blur();
+          }
+        });
       }
     });
 
