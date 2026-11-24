@@ -258,6 +258,17 @@
       color: #9C968F;
     }
 
+    
+    @keyframes elInputPulse {
+      0% { box-shadow: 0 0 0 0 rgba(204, 158, 143, 0.7); }
+      70% { box-shadow: 0 0 0 10px rgba(204, 158, 143, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(204, 158, 143, 0); }
+    }
+    #ellora-footer-{{ section.id }} .el-footer-input.el-input-pulse {
+      animation: elInputPulse 1.2s ease-in-out infinite;
+      border-color: #805D52 !important;
+    }
+
     #ellora-footer-{{ section.id }} .el-footer-input:focus {
       border-color: var(--el-ft-primary);
     }
@@ -531,7 +542,7 @@
       </div>
 
       <!-- Col 5: Newsletter Card -->
-      <div class="el-footer-newsletter-card">
+      <div class="el-footer-newsletter-card" id="newsletter">
         <h3 class="el-footer-newsletter-title">{{ section.settings.newsletter_title | default: 'Notes on Materials, Interiors & Atmosphere.' }}</h3>
         <p class="el-footer-newsletter-desc">{{ section.settings.newsletter_desc | default: 'Occasional essays, collection releases & design guidance from Ellora Living.' }}</p>
 
@@ -543,6 +554,7 @@
             <input 
               type="email" 
               name="contact[email]" 
+              id="NewsletterInput" 
               class="el-footer-input" 
               placeholder="{{ section.settings.input_placeholder | default: 'Enter your email' }}" 
               required 
