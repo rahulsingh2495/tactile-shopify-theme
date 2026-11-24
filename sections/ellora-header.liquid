@@ -2121,7 +2121,7 @@
                     </a>
                   </li>
                   {%- for col in collections -%}
-                    {%- unless col.handle == 'frontpage' or col.handle == 'all' -%}
+                    {%- unless col.handle == 'frontpage' or col.handle == 'all' or col.all_products_count == 0 -%}
                       <li>
                         <a href="{{ col.url }}">
                           <span>{{ col.title }}</span>
@@ -2445,7 +2445,7 @@
           <div class="el-drawer-subheading">Shop By Collection</div>
           <a href="{{ routes.all_products_collection_url }}">All Products</a>
           {%- for col in collections -%}
-            {%- unless col.handle == 'frontpage' or col.handle == 'all' -%}
+            {%- unless col.handle == 'frontpage' or col.handle == 'all' or col.all_products_count == 0 -%}
               <a href="{{ col.url }}">
                 {{ col.title }}
                 {%- if col.all_products_count > 0 -%} ({{ col.all_products_count }}){%- endif -%}

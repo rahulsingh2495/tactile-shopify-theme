@@ -24,7 +24,7 @@
         "show_search": true,
         "search_placeholder": "Search products in this collection...",
         "show_wishlist": true,
-        "price_unit": "/M2",
+        "price_unit": "/ m²",
         "bg_color": "#FAF9F6",
         "card_bg": "#FFFFFF",
         "accent_color": "#CC9E8F",

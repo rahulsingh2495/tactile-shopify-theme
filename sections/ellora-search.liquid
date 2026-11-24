@@ -730,7 +730,7 @@
                     data-product-id="{{ product.id }}"
                     data-product-handle="{{ product.handle }}"
                     data-product-title="{{ product.title | escape }}"
-                    data-product-price="{{ product.price | money }} {{ section.settings.price_unit | default: '/M2' }}"
+                    data-product-price="{{ product.price | money }} {{ section.settings.price_unit | default: '/ m²' }}"
                     data-product-image="{% if product.featured_image != blank %}{{ product.featured_image | image_url: width: 600 }}{% else %}https://cdn.shopify.com/s/files/1/0990/3685/6647/files/sec4_surface_03_marble_stone.jpg?v=1789453291{% endif %}"
                     data-product-url="{{ product.url }}"
                   >
@@ -751,7 +751,7 @@
                   <h3 class="el-card-title">{{ product.title }}</h3>
                 </a>
                 <div class="el-card-price-row">
-                  <p class="el-card-price">{{ product.price | money }} {{ section.settings.price_unit | default: '/M2' }}</p>
+                  <p class="el-card-price">{{ product.price | money }} {{ section.settings.price_unit | default: '/ m²' }}</p>
                   {% render 'el-card-swatches', product: product, show_swatches: section.settings.show_color_swatches %}
                 </div>
 
@@ -830,13 +830,13 @@
       <div class="el-product-grid" id="elSearchProductGrid">
         <div class="el-product-card" data-title="aura ivory stone">
           <div class="el-card-media">
-            <button type="button" class="el-wishlist-btn" aria-label="Add to wishlist" data-product-id="fallback-1" data-product-title="Aura Ivory Stone" data-product-price="From £37.20/M2" data-product-image="https://cdn.shopify.com/s/files/1/0990/3685/6647/files/sec4_surface_03_marble_stone.jpg?v=1789453291" data-product-url="/collections/all"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg></button>
+            <button type="button" class="el-wishlist-btn" aria-label="Add to wishlist" data-product-id="fallback-1" data-product-title="Aura Ivory Stone" data-product-price="From £37.20/ m²" data-product-image="https://cdn.shopify.com/s/files/1/0990/3685/6647/files/sec4_surface_03_marble_stone.jpg?v=1789453291" data-product-url="/collections/all"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg></button>
             <img src="https://cdn.shopify.com/s/files/1/0990/3685/6647/files/sec4_surface_03_marble_stone.jpg?v=1789453291" alt="Aura Ivory Stone" class="el-card-img" loading="lazy">
           </div>
           <div class="el-card-info">
             <h3 class="el-card-title">Aura Ivory Stone</h3>
             <div class="el-card-price-row">
-              <p class="el-card-price">From £37.20/M2</p>
+              <p class="el-card-price">From £37.20/ m²</p>
               {% render 'el-card-swatches', block_color: 'Ivory, Sand', show_swatches: section.settings.show_color_swatches %}
             </div>
             <button type="button" class="el-card-add-btn" data-product-title="Aura Ivory Stone" aria-label="Add Aura Ivory Stone to cart">
@@ -848,13 +848,13 @@
 
         <div class="el-product-card" data-title="terracotta fluted tile">
           <div class="el-card-media">
-            <button type="button" class="el-wishlist-btn" aria-label="Add to wishlist" data-product-id="fallback-2" data-product-title="Terracotta Fluted Tile" data-product-price="From £42.00/M2" data-product-image="https://cdn.shopify.com/s/files/1/0990/3685/6647/files/sec6_product_02_aura_bistro_patio.jpg?v=1789453292" data-product-url="/collections/all"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg></button>
+            <button type="button" class="el-wishlist-btn" aria-label="Add to wishlist" data-product-id="fallback-2" data-product-title="Terracotta Fluted Tile" data-product-price="From £42.00/ m²" data-product-image="https://cdn.shopify.com/s/files/1/0990/3685/6647/files/sec6_product_02_aura_bistro_patio.jpg?v=1789453292" data-product-url="/collections/all"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg></button>
             <img src="https://cdn.shopify.com/s/files/1/0990/3685/6647/files/sec6_product_02_aura_bistro_patio.jpg?v=1789453292" alt="Terracotta Fluted Tile" class="el-card-img" loading="lazy">
           </div>
           <div class="el-card-info">
             <h3 class="el-card-title">Terracotta Fluted Tile</h3>
             <div class="el-card-price-row">
-              <p class="el-card-price">From £42.00/M2</p>
+              <p class="el-card-price">From £42.00/ m²</p>
               {% render 'el-card-swatches', block_color: 'Terracotta, Sand', show_swatches: section.settings.show_color_swatches %}
             </div>
             <button type="button" class="el-card-add-btn" data-product-title="Terracotta Fluted Tile" aria-label="Add Terracotta Fluted Tile to cart">
@@ -866,13 +866,13 @@
 
         <div class="el-product-card" data-title="classic travertine slab">
           <div class="el-card-media">
-            <button type="button" class="el-wishlist-btn" aria-label="Add to wishlist" data-product-id="fallback-3" data-product-title="Classic Travertine Slab" data-product-price="From £54.50/M2" data-product-image="https://cdn.shopify.com/s/files/1/0990/3685/6647/files/sec5_crafted_02_terracotta_bench.jpg?v=1789453291" data-product-url="/collections/all"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg></button>
+            <button type="button" class="el-wishlist-btn" aria-label="Add to wishlist" data-product-id="fallback-3" data-product-title="Classic Travertine Slab" data-product-price="From £54.50/ m²" data-product-image="https://cdn.shopify.com/s/files/1/0990/3685/6647/files/sec5_crafted_02_terracotta_bench.jpg?v=1789453291" data-product-url="/collections/all"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg></button>
             <img src="https://cdn.shopify.com/s/files/1/0990/3685/6647/files/sec5_crafted_02_terracotta_bench.jpg?v=1789453291" alt="Classic Travertine Slab" class="el-card-img" loading="lazy">
           </div>
           <div class="el-card-info">
             <h3 class="el-card-title">Classic Travertine Slab</h3>
             <div class="el-card-price-row">
-              <p class="el-card-price">From £54.50/M2</p>
+              <p class="el-card-price">From £54.50/ m²</p>
               {% render 'el-card-swatches', block_color: 'Beige, Sand, Ivory', show_swatches: section.settings.show_color_swatches %}
             </div>
             <button type="button" class="el-card-add-btn" data-product-title="Classic Travertine Slab" aria-label="Add Classic Travertine Slab to cart">
@@ -884,13 +884,13 @@
 
         <div class="el-product-card" data-title="warm sandstone neutral">
           <div class="el-card-media">
-            <button type="button" class="el-wishlist-btn" aria-label="Add to wishlist" data-product-id="fallback-4" data-product-title="Warm Sandstone Neutral" data-product-price="From £39.80/M2" data-product-image="https://cdn.shopify.com/s/files/1/0990/3685/6647/files/sec4_surface_05_warm_neutrals.jpg?v=1789453291" data-product-url="/collections/all"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg></button>
+            <button type="button" class="el-wishlist-btn" aria-label="Add to wishlist" data-product-id="fallback-4" data-product-title="Warm Sandstone Neutral" data-product-price="From £39.80/ m²" data-product-image="https://cdn.shopify.com/s/files/1/0990/3685/6647/files/sec4_surface_05_warm_neutrals.jpg?v=1789453291" data-product-url="/collections/all"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg></button>
             <img src="https://cdn.shopify.com/s/files/1/0990/3685/6647/files/sec4_surface_05_warm_neutrals.jpg?v=1789453291" alt="Warm Sandstone Neutral" class="el-card-img" loading="lazy">
           </div>
           <div class="el-card-info">
             <h3 class="el-card-title">Warm Sandstone Neutral</h3>
             <div class="el-card-price-row">
-              <p class="el-card-price">From £39.80/M2</p>
+              <p class="el-card-price">From £39.80/ m²</p>
               {% render 'el-card-swatches', block_color: 'Sand, Beige', show_swatches: section.settings.show_color_swatches %}
             </div>
             <button type="button" class="el-card-add-btn" data-product-title="Warm Sandstone Neutral" aria-label="Add Warm Sandstone Neutral to cart">
@@ -902,13 +902,13 @@
 
         <div class="el-product-card" data-title="calacatta niche marble">
           <div class="el-card-media">
-            <button type="button" class="el-wishlist-btn" aria-label="Add to wishlist" data-product-id="fallback-5" data-product-title="Calacatta Niche marble" data-product-price="From £62.00/M2" data-product-image="https://cdn.shopify.com/s/files/1/0990/3685/6647/files/sec8_community_card_02_mandir.jpg?v=1789453291" data-product-url="/collections/all"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg></button>
+            <button type="button" class="el-wishlist-btn" aria-label="Add to wishlist" data-product-id="fallback-5" data-product-title="Calacatta Niche marble" data-product-price="From £62.00/ m²" data-product-image="https://cdn.shopify.com/s/files/1/0990/3685/6647/files/sec8_community_card_02_mandir.jpg?v=1789453291" data-product-url="/collections/all"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg></button>
             <img src="https://cdn.shopify.com/s/files/1/0990/3685/6647/files/sec8_community_card_02_mandir.jpg?v=1789453291" alt="Calacatta Niche Marble" class="el-card-img" loading="lazy">
           </div>
           <div class="el-card-info">
             <h3 class="el-card-title">Calacatta Niche Marble</h3>
             <div class="el-card-price-row">
-              <p class="el-card-price">From £62.00/M2</p>
+              <p class="el-card-price">From £62.00/ m²</p>
               {% render 'el-card-swatches', block_color: 'White, Gold', show_swatches: section.settings.show_color_swatches %}
             </div>
             <button type="button" class="el-card-add-btn" data-product-title="Calacatta Niche Marble" aria-label="Add Calacatta Niche Marble to cart">
@@ -920,13 +920,13 @@
 
         <div class="el-product-card" data-title="rustic courtyard flagstone">
           <div class="el-card-media">
-            <button type="button" class="el-wishlist-btn" aria-label="Add to wishlist" data-product-id="fallback-6" data-product-title="Rustic Courtyard Flagstone" data-product-price="From £48.00/M2" data-product-image="https://cdn.shopify.com/s/files/1/0990/3685/6647/files/sec8_marquee_02_terrace_tree.jpg?v=1789453292" data-product-url="/collections/all"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg></button>
+            <button type="button" class="el-wishlist-btn" aria-label="Add to wishlist" data-product-id="fallback-6" data-product-title="Rustic Courtyard Flagstone" data-product-price="From £48.00/ m²" data-product-image="https://cdn.shopify.com/s/files/1/0990/3685/6647/files/sec8_marquee_02_terrace_tree.jpg?v=1789453292" data-product-url="/collections/all"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg></button>
             <img src="https://cdn.shopify.com/s/files/1/0990/3685/6647/files/sec8_marquee_02_terrace_tree.jpg?v=1789453292" alt="Rustic Courtyard Flagstone" class="el-card-img" loading="lazy">
           </div>
           <div class="el-card-info">
             <h3 class="el-card-title">Rustic Courtyard Flagstone</h3>
             <div class="el-card-price-row">
-              <p class="el-card-price">From £48.00/M2</p>
+              <p class="el-card-price">From £48.00/ m²</p>
               {% render 'el-card-swatches', block_color: 'Slate, Charcoal, Grey', show_swatches: section.settings.show_color_swatches %}
             </div>
             <button type="button" class="el-card-add-btn" data-product-title="Rustic Courtyard Flagstone" aria-label="Add Rustic Courtyard Flagstone to cart">
@@ -1317,7 +1317,7 @@
       "type": "text",
       "id": "price_unit",
       "label": "Price Unit Suffix",
-      "default": "/M2"
+      "default": "/ m²"
     },
     {
       "type": "header",

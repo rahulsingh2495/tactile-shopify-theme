@@ -26,7 +26,7 @@
         "products_per_page": 12,
         "show_wishlist": true,
         "show_quick_view": true,
-        "price_unit": "/M2",
+        "price_unit": "/ m²",
         "bg_color": "#ffffff",
         "primary_color": "#CC9E8F",
         "text_dark": "#1c1b19",
