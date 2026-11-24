@@ -67,7 +67,7 @@
 
     #ellora-about-hero-{{ section.id }} .el-about-hero-title {
       font-family: var(--el-font-serif);
-      font-size: clamp(34px, 4.4vw, {{ section.settings.title_font_size | default: 56 }}px);
+      font-size: {{ section.settings.title_font_size | default: 48 }}px;
       line-height: 1.12;
       font-weight: 400;
       color: #805D52 !important;
@@ -586,7 +586,7 @@
       "min": 32,
       "max": 72,
       "step": 2,
-      "default": 56
+      "default": 48
     },
     {
       "type": "range",
