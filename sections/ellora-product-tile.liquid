@@ -1158,11 +1158,11 @@
 
             <div class="el-pt-calc-inputs">
               <div class="el-pt-calc-input-wrap">
-                <label for="elTileAreaM2">Room Area (M²)</label>
+                <label for="elTileAreaM2">Room Area (m²)</label>
                 <input type="number" id="elTileAreaM2" class="el-pt-calc-input" placeholder="e.g. 15" min="1" step="0.5" value="12">
               </div>
               <div class="el-pt-calc-input-wrap">
-                <label for="elTileBoxSize">Box Size (M²)</label>
+                <label for="elTileBoxSize">Box Size (m²)</label>
                 <input type="number" id="elTileBoxSize" class="el-pt-calc-input" value="{{ section.settings.box_size | default: 1.44 }}" step="0.01" readonly>
               </div>
             </div>
@@ -1172,7 +1172,7 @@
               <span>Add 15% allowance for cuts, corner trimming &amp; pattern blending</span>
             </label>
 
-            <div class="el-pt-calc-result" id="elTileCalcResult">
+            <div class="el-pt-calc-result" id="elTileCalcResult" aria-live="polite">
               <span>Required: <strong>10 boxes</strong> (14.4 M²)</span>
               <span id="elTileCalcCost">Approx. $1,800.00</span>
             </div>
@@ -1273,7 +1273,8 @@
               data-opt1="{{ variant.option1 | escape }}"
               data-opt2="{{ variant.option2 | escape }}"
               data-opt3="{{ variant.option3 | escape }}"
-              data-img="{% if variant.featured_image %}{{ variant.featured_image | image_url: width: 1200 }}{% endif %}">
+              data-img="{% if variant.featured_image %}{{ variant.featured_image | image_url: width: 1200 }}{% endif %}"
+              data-box-size="{{ variant.metafields.custom.box_size | default: variant.metafields.ellora.box_size | default: variant.metafields.custom.coverage | default: section.settings.box_size | default: 1.44 }}">
               {{ variant.title }}
             </option>
           {%- endfor -%}

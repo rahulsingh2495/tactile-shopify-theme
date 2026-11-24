@@ -151,11 +151,13 @@
           {{ section.settings.title | default: 'Tell us about your room,<br>wall, floor or surface idea.' }}
         </h1>
       </div>
+      {%- if section.settings.description != blank -%}
       <div class="el-hero-description-wrap">
         <p class="el-hero-description">
-          {{ section.settings.description | default: 'Use this page to guide customers toward the right enquiry route: WhatsApp for quick help, video call for design guidance, email for project details, and trade for professional buyers.' }}
+          {{ section.settings.description }}
         </p>
       </div>
+      {%- endif -%}
     </div>
 
     <!-- Hero Banner Image Frame -->
@@ -245,7 +247,7 @@
       "type": "textarea",
       "id": "description",
       "label": "Right Explanatory Description",
-      "default": "Use this page to guide customers toward the right enquiry route: WhatsApp for quick help, video call for design guidance, email for project details, and trade for professional buyers."
+      "default": ""
     },
     {
       "type": "range",

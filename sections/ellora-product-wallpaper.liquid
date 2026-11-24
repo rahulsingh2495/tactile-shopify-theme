@@ -1110,7 +1110,7 @@
             </p>
 
             <div class="el-pw-calc-result" id="elWpCalcResult">
-              <span>Required: <strong>5 Sequential Panels</strong> (9.1 M²)</span>
+              <span>Required: <strong>5 Sequential Panels</strong> (9.1 m²)</span>
               <span id="elWpCostEstimate">Approx. $340.00</span>
             </div>
           </div>
@@ -1504,7 +1504,7 @@
       var estimatedCost = (panelCount * (unitPrice || 68.00)).toFixed(2);
 
       if (resultText) {
-        resultText.querySelector('strong').textContent = panelCount + ' Sequential Panels (' + sqm + ' M²)';
+        resultText.querySelector('strong').textContent = panelCount + ' Sequential Panels (' + sqm + ' m²)';
       }
       if (costEstimate) {
         costEstimate.textContent = 'Approx. $' + estimatedCost;

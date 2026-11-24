@@ -214,7 +214,7 @@
       ],
       "settings": {
         "heading": "Simple product rules<br>before purchase.",
-        "body": "Ellora should clearly show whether a product is sold by single piece, minimum pattern set, or as a full set. This avoids confusion for large tiles and multi-panel wallpapers.",
+        "body": "",
         "cta_text": "Explore Trade Services",
         "cta_link": "shopify://pages/trade",
         "sec_bg_color": "#faf9f6",

@@ -187,9 +187,11 @@
       <h2 class="el-cta-headline">
         {{ section.settings.title | default: 'Ready to shortlist the right surface?' }}
       </h2>
-      <p class="el-cta-description">
-        {{ section.settings.description | default: 'Ellora should clearly show whether a product is sold by single piece, minimum pattern set, or complete mural set. This avoids confusion for large tiles and multi-panel wallpapers.' }}
-      </p>
+      {%- if section.settings.description != blank -%}
+        <p class="el-cta-description">
+          {{ section.settings.description }}
+        </p>
+      {%- endif -%}
 
       <div class="el-cta-buttons-wrap">
         {%- if section.settings.btn1_text != blank -%}
@@ -274,7 +276,7 @@
       "type": "textarea",
       "id": "description",
       "label": "Subheading / Clarification Paragraph",
-      "default": "Ellora should clearly show whether a product is sold by single piece, minimum pattern set, or complete mural set. This avoids confusion for large tiles and multi-panel wallpapers."
+      "default": ""
     },
     {
       "type": "range",

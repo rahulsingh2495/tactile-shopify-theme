@@ -320,7 +320,7 @@
             <!-- Field 2: Email -->
             <div class="el-form-group">
               <label for="ElloraContact-Email-{{ section.id }}" class="el-field-label">
-                {{ section.settings.email_label | default: 'Name' }}
+                {{ section.settings.email_label | default: 'Email' }}
                 {%- if section.settings.email_required -%}<span class="el-field-required">*</span>{%- endif -%}
               </label>
               <input
@@ -328,7 +328,7 @@
                 id="ElloraContact-Email-{{ section.id }}"
                 name="contact[email]"
                 value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}"
-                placeholder="{{ section.settings.email_placeholder | default: 'Your Name' }}"
+                placeholder="{{ section.settings.email_placeholder | default: 'Your Email' }}"
                 {% if section.settings.email_required %}required{% endif %}
                 spellcheck="false"
                 autocapitalize="off"
@@ -551,13 +551,13 @@
       "type": "text",
       "id": "email_label",
       "label": "Field 2 Label",
-      "default": "Name"
+      "default": "Email"
     },
     {
       "type": "text",
       "id": "email_placeholder",
       "label": "Field 2 Placeholder",
-      "default": "Your Name"
+      "default": "Your Email"
     },
     {
       "type": "checkbox",

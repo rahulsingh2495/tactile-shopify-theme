@@ -1,1 +1,63 @@
-{"wrapper":"main.main-content","sections":{"contact_hero":{"type":"ellora-contact-hero","settings":{"title":"Tell us about your room,<br>wall, floor or surface idea.","description":"Use this page to guide customers toward the right enquiry route: WhatsApp for quick help, video call for design guidance, email for project details, and trade for professional buyers.","aspect_ratio":"banner","image_radius":6,"padding_top":60,"padding_bottom":40}},"contact_form":{"type":"ellora-contact-form","settings":{"title":"Send the key details in<br>one place.","description":"Share a few project details so Ellora can guide you with the right tile, wallpaper or mural option. Add your room type, approximate wall or floor size, product interest and any specific requirement you have in mind.","name_label":"Name","name_placeholder":"Your Name","name_required":true,"email_label":"Name","email_placeholder":"Your Name","email_required":true,"phone_label":"Phone","phone_placeholder":"Optional","phone_required":false,"project_type_label":"Project Type","project_type_required":true,"product_interest_label":"Product Interest","product_interest_required":true,"size_label":"Room or Wall Size","size_placeholder":"Example 400 x 280cm","size_required":true,"message_label":"Message","message_placeholder":"Tell us what you are trying to create...","message_required":true,"btn_text":"Submit","padding_top":60,"padding_bottom":70}},"contact_cta":{"type":"ellora-contact-cta","settings":{"title":"Ready to shortlist the right surface?","description":"Ellora should clearly show whether a product is sold by single piece, minimum pattern set, or complete mural set. This avoids confusion for large tiles and multi-panel wallpapers.","btn1_text":"Ask on Whatsapp","btn1_link":"#","btn2_text":"Explore the Collection","btn2_link":"\/collections\/all","padding_top":40,"padding_bottom":80}}},"order":["contact_hero","contact_form","contact_cta"]}
+{
+  "wrapper": "main.main-content",
+  "sections": {
+    "contact_hero": {
+      "type": "ellora-contact-hero",
+      "settings": {
+        "title": "Tell us about your room,<br>wall, floor or surface idea.",
+        "description": "",
+        "aspect_ratio": "banner",
+        "image_radius": 6,
+        "padding_top": 60,
+        "padding_bottom": 40
+      }
+    },
+    "contact_form": {
+      "type": "ellora-contact-form",
+      "settings": {
+        "title": "Send the key details in<br>one place.",
+        "description": "Share a few project details so Ellora can guide you with the right tile, wallpaper or mural option. Add your room type, approximate wall or floor size, product interest and any specific requirement you have in mind.",
+        "name_label": "Name",
+        "name_placeholder": "Your Name",
+        "name_required": true,
+        "email_label": "Email",
+        "email_placeholder": "Your Email",
+        "email_required": true,
+        "phone_label": "Phone",
+        "phone_placeholder": "Optional",
+        "phone_required": false,
+        "project_type_label": "Project Type",
+        "project_type_required": true,
+        "product_interest_label": "Product Interest",
+        "product_interest_required": true,
+        "size_label": "Room or Wall Size",
+        "size_placeholder": "Example 400 x 280cm",
+        "size_required": true,
+        "message_label": "Message",
+        "message_placeholder": "Tell us what you are trying to create...",
+        "message_required": true,
+        "btn_text": "Submit",
+        "padding_top": 60,
+        "padding_bottom": 70
+      }
+    },
+    "contact_cta": {
+      "type": "ellora-contact-cta",
+      "settings": {
+        "title": "Ready to shortlist the right surface?",
+        "description": "",
+        "btn1_text": "Ask on Whatsapp",
+        "btn1_link": "#",
+        "btn2_text": "Explore the Collection",
+        "btn2_link": "/collections/all",
+        "padding_top": 40,
+        "padding_bottom": 80
+      }
+    }
+  },
+  "order": [
+    "contact_hero",
+    "contact_form",
+    "contact_cta"
+  ]
+}

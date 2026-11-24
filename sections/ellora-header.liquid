@@ -2058,7 +2058,7 @@
       <div class="el-main-header-inner">
         
         <!-- Mobile Hamburger Toggle -->
-        <button type="button" class="el-mobile-toggle" id="elMobileToggle-{{ section.id }}" aria-label="Open navigation menu">
+        <button type="button" class="el-mobile-toggle" id="elMobileToggle-{{ section.id }}" aria-label="Open navigation menu" aria-expanded="false" aria-controls="elMobileDrawer-{{ section.id }}">
           <svg viewBox="0 0 24 24">
             <line x1="3" y1="6" x2="21" y2="6"></line>
             <line x1="3" y1="12" x2="21" y2="12"></line>
@@ -2411,7 +2411,7 @@
        SLIDE-OUT LEFT MOBILE DRAWER (RESPONSIVE BACKEND MENU)
        ======================================================================== -->
   <div class="el-drawer-overlay" id="elDrawerOverlay-{{ section.id }}" aria-hidden="true"></div>
-  <aside class="el-mobile-drawer" id="elMobileDrawer-{{ section.id }}" aria-label="Mobile Navigation" role="dialog" aria-modal="true">
+  <aside class="el-mobile-drawer" id="elMobileDrawer-{{ section.id }}" aria-label="Mobile Navigation" role="dialog" aria-modal="true" aria-hidden="true" inert>
     <div class="el-drawer-header">
       {%- if section.settings.logo != blank -%}
         {{ section.settings.logo | image_url: width: 300 | image_tag: class: 'el-drawer-logo-img', alt: 'Ellora Spaces' }}
@@ -2957,8 +2957,19 @@
     var drawerClose = document.getElementById('elDrawerClose-' + sectionId);
     var headerWrapper = document.getElementById('ellora-header-' + sectionId);
 
+    // Initial state: ensure closed drawer is inert & hidden from assistive tech
+    if (mobileDrawer) {
+      mobileDrawer.setAttribute('inert', '');
+      mobileDrawer.setAttribute('aria-hidden', 'true');
+    }
+
     function openDrawer() {
-      if (mobileDrawer) mobileDrawer.classList.add('is-open');
+      if (mobileDrawer) {
+        mobileDrawer.classList.add('is-open');
+        mobileDrawer.removeAttribute('inert');
+        mobileDrawer.setAttribute('aria-hidden', 'false');
+      }
+      if (mobileToggle) mobileToggle.setAttribute('aria-expanded', 'true');
       if (drawerOverlay) drawerOverlay.classList.add('is-open');
       document.body.style.overflow = 'hidden';
       document.body.classList.add('el-mobile-drawer-open');
@@ -2970,10 +2981,27 @@
           sectionParent.style.zIndex = '9999999';
         }
       }
+      // Focus drawer close button or first interactive element
+      setTimeout(function() {
+        if (drawerClose) {
+          drawerClose.focus();
+        } else if (mobileDrawer) {
+          var firstFocusable = mobileDrawer.querySelector('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+          if (firstFocusable) firstFocusable.focus();
+        }
+      }, 50);
     }
 
     function closeDrawer() {
-      if (mobileDrawer) mobileDrawer.classList.remove('is-open');
+      if (mobileDrawer) {
+        mobileDrawer.classList.remove('is-open');
+        mobileDrawer.setAttribute('inert', '');
+        mobileDrawer.setAttribute('aria-hidden', 'true');
+      }
+      if (mobileToggle) {
+        mobileToggle.setAttribute('aria-expanded', 'false');
+        mobileToggle.focus();
+      }
       if (drawerOverlay) drawerOverlay.classList.remove('is-open');
       document.body.style.overflow = '';
       document.body.classList.remove('el-mobile-drawer-open');
@@ -2991,13 +3019,41 @@
     if (drawerClose) drawerClose.addEventListener('click', closeDrawer);
     if (drawerOverlay) drawerOverlay.addEventListener('click', closeDrawer);
 
-    // Escape Key to Close Drawer
+    // Escape Key to Close Drawer & Restore Focus
     document.addEventListener('keydown', function(e) {
       if (e.key === 'Escape') {
-        closeDrawer();
-        if (shopParent) shopParent.classList.remove('is-open');
+        if (mobileDrawer && mobileDrawer.classList.contains('is-open')) {
+          e.preventDefault();
+          closeDrawer();
+        }
+        if (shopParent && shopParent.classList.contains('is-open')) {
+          shopParent.classList.remove('is-open');
+        }
       }
     });
+
+    // Focus trap inside mobile drawer
+    if (mobileDrawer) {
+      mobileDrawer.addEventListener('keydown', function(e) {
+        if (e.key !== 'Tab' || !mobileDrawer.classList.contains('is-open')) return;
+        var focusable = mobileDrawer.querySelectorAll('button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])');
+        if (!focusable.length) return;
+        var first = focusable[0];
+        var last = focusable[focusable.length - 1];
+
+        if (e.shiftKey) {
+          if (document.activeElement === first) {
+            e.preventDefault();
+            last.focus();
+          }
+        } else {
+          if (document.activeElement === last) {
+            e.preventDefault();
+            first.focus();
+          }
+        }
+      });
+    }
 
     // Mobile Accordions (Supports all dynamic backend menus)
     var accBtns = document.querySelectorAll('#ellora-header-' + sectionId + ' .el-drawer-accordion-btn');
