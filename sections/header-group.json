@@ -117,7 +117,7 @@
         "logo_width": 90,
         "logo_width_mobile": 90,
         "enable_sticky": true,
-        "show_bottom_border": false,
+        "show_bottom_border": true,
         "header_padding_y": 16,
         "show_search": true,
         "show_wishlist": true,
