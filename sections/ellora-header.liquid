@@ -559,18 +559,18 @@
     #ellora-header-{{ section.id }} .el-megamenu-body {
       display: grid;
       grid-template-columns: 215px 1fr;
-      min-height: 355px;
+      min-height: auto;
       align-items: stretch;
     }
 
     #ellora-header-{{ section.id }} .el-megamenu-sidebar {
       background: var(--el-hd-sidebar-bg);
-      padding: 24px 22px 28px;
+      padding: 22px 22px 20px;
       border-right: 1px solid #F0ECE6;
       display: flex;
       flex-direction: column;
       height: 100%;
-      min-height: 355px;
+      min-height: auto;
       box-sizing: border-box;
       max-height: 440px;
       overflow-y: auto;
@@ -629,7 +629,7 @@
       flex-direction: column;
       flex: 1;
       height: 100%;
-      min-height: 355px;
+      min-height: auto;
       box-sizing: border-box;
     }
 
@@ -638,7 +638,7 @@
       gap: 28px;
       border-bottom: 1px solid var(--el-hd-border-light);
       margin-bottom: 0;
-      padding: 14px 28px 0;
+      padding: 12px 28px 0;
       flex-shrink: 0;
     }
 
@@ -672,11 +672,11 @@
       gap: 28px;
       align-items: start;
       align-content: start;
-      padding: 22px 28px 24px;
+      padding: 20px 28px 18px;
       box-sizing: border-box;
       width: 100%;
       flex: 1;
-      min-height: 315px;
+      min-height: auto;
     }
 
     #ellora-header-{{ section.id }} .el-tab-pane.is-active {
@@ -688,7 +688,7 @@
       flex-direction: column;
       width: 100%;
       height: 100%;
-      min-height: 315px;
+      min-height: auto;
       padding: 0;
       margin: 0;
       flex: 1;
@@ -699,7 +699,7 @@
       width: 100%;
       height: 100%;
       flex: 1;
-      min-height: 315px;
+      min-height: 250px;
       background-color: #F5EFEB;
       background-image: linear-gradient(to right, rgba(245, 239, 235, 0.95) 0%, rgba(245, 239, 235, 0.6) 38%, rgba(245, 239, 235, 0) 60%), url("{{ 'ellora-wallpaper-banner.jpg' | asset_url }}");
       background-repeat: no-repeat;
@@ -707,7 +707,7 @@
       background-position: right center;
       display: flex;
       align-items: center;
-      padding: 32px 38px;
+      padding: 26px 36px;
       box-sizing: border-box;
       border-radius: 0;
       overflow: hidden;
@@ -2997,18 +2997,20 @@
 
     function syncMegaMenuHeight() {
       if (!tabPanes.length) return;
-      var maxHeight = 315;
+      var maxHeight = 0;
 
       tabPanes.forEach(function(pane) {
         var prevDisplay = pane.style.display;
         var prevVis = pane.style.visibility;
         var prevPos = pane.style.position;
         var prevH = pane.style.height;
+        var prevMinH = pane.style.minHeight;
 
         pane.style.display = pane.classList.contains('el-pane-wallpaper') ? 'flex' : 'grid';
         pane.style.visibility = 'hidden';
         pane.style.position = 'absolute';
         pane.style.height = 'auto';
+        pane.style.minHeight = 'auto';
 
         var measured = pane.offsetHeight || pane.scrollHeight;
         if (measured > maxHeight) {
@@ -3019,17 +3021,20 @@
         pane.style.visibility = prevVis;
         pane.style.position = prevPos;
         pane.style.height = prevH;
+        pane.style.minHeight = prevMinH;
       });
 
-      tabPanes.forEach(function(pane) {
-        pane.style.minHeight = maxHeight + 'px';
-      });
-      if (wallpaperBanner) {
-        wallpaperBanner.style.minHeight = maxHeight + 'px';
-      }
-      if (megaBody) {
-        var tabsH = megaTabs ? megaTabs.offsetHeight : 40;
-        megaBody.style.minHeight = (maxHeight + tabsH) + 'px';
+      if (maxHeight > 0) {
+        tabPanes.forEach(function(pane) {
+          pane.style.minHeight = maxHeight + 'px';
+        });
+        if (wallpaperBanner) {
+          wallpaperBanner.style.minHeight = maxHeight + 'px';
+        }
+        if (megaBody) {
+          var tabsH = megaTabs ? megaTabs.offsetHeight : 34;
+          megaBody.style.minHeight = (maxHeight + tabsH) + 'px';
+        }
       }
     }
 
