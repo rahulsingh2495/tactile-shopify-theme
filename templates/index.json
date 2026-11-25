@@ -34,44 +34,48 @@
     "features": {
       "type": "ellora-features",
       "blocks": {
-        "feature_P4pfwq": {
+        "feature_TrPRWt": {
           "type": "feature",
           "settings": {
-            "title": "Made for Quiet Spaces",
-            "description": "Considered surfaces for rooms where you can slow down and unwind.",
-            "link": ""
-          }
-        },
-        "feature_3fgfnh": {
-          "type": "feature",
-          "settings": {
-            "title": "Inspired by Heritage Craft",
-            "description": "Traditional patterns and relief work inform our designs.",
+            "icon": "auto",
+            "title": "Natural Gwalior Stone",
+            "description": "Subtle shifts in tone and texture give each panel its own character.",
             "link": ""
           }
         },
         "feature_FzExxd": {
           "type": "feature",
           "settings": {
+            "icon": "auto",
             "title": "Handcrafted in India",
             "description": "Each panel is assembled by hand from individual pieces of stone.",
             "link": ""
           }
         },
-        "feature_TrPRWt": {
+        "feature_3fgfnh": {
           "type": "feature",
           "settings": {
-            "title": "Natural Gwalior Stone",
-            "description": "Subtle shifts in tone and texture give each panel its own character.",
+            "icon": "auto",
+            "title": "Inspired by Heritage Craft",
+            "description": "Traditional patterns and relief work inform our designs.",
+            "link": ""
+          }
+        },
+        "feature_P4pfwq": {
+          "type": "feature",
+          "settings": {
+            "icon": "auto",
+            "title": "Made for Quiet Spaces",
+            "description": "Considered surfaces for rooms where you can slow down and unwind.",
             "link": ""
           }
         }
       },
       "block_order": [
-        "feature_P4pfwq",
-        "feature_3fgfnh",
+        "feature_TrPRWt",
         "feature_FzExxd",
-        "feature_TrPRWt"
+        "feature_3fgfnh",
+        "feature_P4pfwq"
       ],
       "settings": {
         "bg_color": "#faf9f6",
