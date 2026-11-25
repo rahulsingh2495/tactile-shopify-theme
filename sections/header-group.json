@@ -114,7 +114,7 @@
         "top_text_color": "#ffffff",
         "logo": "shopify://shop_images/ellora_logo_8780b82b-6b50-4332-a50a-c36cb355d900.png",
         "fallback_logo": "https://cdn.shopify.com/s/files/1/0990/3685/6647/files/ellora_logo_final.png?v=1793618092",
-        "logo_width": 110,
+        "logo_width": 90,
         "logo_width_mobile": 90,
         "enable_sticky": true,
         "show_bottom_border": false,
