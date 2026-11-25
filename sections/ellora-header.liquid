@@ -559,18 +559,18 @@
     #ellora-header-{{ section.id }} .el-megamenu-body {
       display: grid;
       grid-template-columns: 215px 1fr;
-      min-height: 385px;
+      min-height: auto;
       align-items: stretch;
     }
 
     #ellora-header-{{ section.id }} .el-megamenu-sidebar {
       background: var(--el-hd-sidebar-bg);
-      padding: 24px 22px 28px;
+      padding: 22px 22px 22px;
       border-right: 1px solid #F0ECE6;
       display: flex;
       flex-direction: column;
       height: 100%;
-      min-height: 385px;
+      min-height: auto;
       box-sizing: border-box;
       max-height: 440px;
       overflow-y: auto;
@@ -629,7 +629,7 @@
       flex-direction: column;
       flex: 1;
       height: 100%;
-      min-height: 385px;
+      min-height: auto;
       box-sizing: border-box;
     }
 
@@ -638,19 +638,19 @@
       gap: 28px;
       border-bottom: 1px solid var(--el-hd-border-light);
       margin-bottom: 0;
-      padding: 14px 28px 0;
+      padding: 10px 24px 0;
       flex-shrink: 0;
     }
 
     #ellora-header-{{ section.id }} .el-megamenu-tab {
       font-family: var(--el-hd-font-sans);
-      font-size: 13.5px;
+      font-size: 13px;
       font-weight: 500;
       color: var(--el-hd-muted);
       background: none;
       border: none;
       cursor: pointer;
-      padding: 0 0 10px 0;
+      padding: 0 0 8px 0;
       position: relative;
       transition: color 0.2s ease;
     }
@@ -668,15 +668,15 @@
 
     #ellora-header-{{ section.id }} .el-tab-pane {
       display: none;
-      grid-template-columns: 1.25fr 1.15fr 1.15fr 1.1fr;
-      gap: 28px;
+      grid-template-columns: 1.15fr 1fr 1fr 1.55fr;
+      gap: 24px;
       align-items: start;
       align-content: start;
-      padding: 22px 28px 26px;
+      padding: 16px 24px 18px;
       box-sizing: border-box;
       width: 100%;
       flex: 1;
-      min-height: 345px;
+      min-height: auto;
     }
 
     #ellora-header-{{ section.id }} .el-tab-pane.is-active {
@@ -688,7 +688,7 @@
       flex-direction: column;
       width: 100%;
       height: 100%;
-      min-height: 345px;
+      min-height: auto;
       padding: 0;
       margin: 0;
       flex: 1;
@@ -699,7 +699,7 @@
       width: 100%;
       height: 100%;
       flex: 1;
-      min-height: 345px;
+      min-height: 155px;
       background-color: #F5EFEB;
       background-image: linear-gradient(to right, rgba(245, 239, 235, 0.95) 0%, rgba(245, 239, 235, 0.6) 38%, rgba(245, 239, 235, 0) 60%), url("{{ 'ellora-wallpaper-banner.jpg' | asset_url }}");
       background-repeat: no-repeat;
@@ -707,7 +707,7 @@
       background-position: right center;
       display: flex;
       align-items: center;
-      padding: 36px 42px;
+      padding: 18px 24px;
       box-sizing: border-box;
       border-radius: 0;
       overflow: hidden;
@@ -716,7 +716,7 @@
     #ellora-header-{{ section.id }} .el-wp-banner-content {
       position: relative;
       z-index: 2;
-      max-width: 420px;
+      max-width: 360px;
       display: flex;
       flex-direction: column;
       align-items: flex-start;
@@ -726,49 +726,49 @@
     #ellora-header-{{ section.id }} .el-wp-banner-badge {
       display: inline-block;
       font-family: var(--el-hd-font-sans);
-      font-size: 10.5px;
+      font-size: 10px;
       font-weight: 500;
       letter-spacing: 0.12em;
       text-transform: uppercase;
       color: #635C54;
       border: 1px solid rgba(120, 112, 103, 0.45);
       border-radius: 999px;
-      padding: 4px 14px;
-      margin-bottom: 14px;
+      padding: 3px 12px;
+      margin-bottom: 10px;
       line-height: 1.3;
       background: rgba(255, 255, 255, 0.25);
     }
 
     #ellora-header-{{ section.id }} .el-wp-banner-title {
       font-family: var(--el-hd-font-serif), 'Playfair Display', Georgia, serif;
-      font-size: clamp(32px, 3.2vw, 42px);
+      font-size: 24px;
       font-weight: 400;
       color: #805D52;
       line-height: 1.15;
-      margin: 0 0 14px 0;
+      margin: 0 0 6px 0;
       letter-spacing: -0.01em;
     }
 
     #ellora-header-{{ section.id }} .el-wp-banner-desc {
       font-family: var(--el-hd-font-sans);
-      font-size: 13.5px;
+      font-size: 12px;
       color: #524B43;
-      line-height: 1.55;
-      margin: 0 0 22px 0;
-      max-width: 350px;
+      line-height: 1.4;
+      margin: 0 0 12px 0;
+      max-width: 300px;
     }
 
     #ellora-header-{{ section.id }} .el-wp-banner-btn {
       display: inline-flex;
       align-items: center;
-      gap: 8px;
+      gap: 7px;
       background-color: #805D52;
       color: #FFFFFF !important;
       font-family: var(--el-hd-font-sans);
-      font-size: 13px;
+      font-size: 11.5px;
       font-weight: 500;
       letter-spacing: 0.02em;
-      padding: 9px 20px;
+      padding: 6px 14px;
       border-radius: 4px;
       text-decoration: none;
       cursor: pointer;
@@ -800,20 +800,20 @@
 
     #ellora-header-{{ section.id }} .el-pane-heading {
       font-family: var(--el-hd-font-serif);
-      font-size: 26px;
+      font-size: 22px;
       font-weight: 400;
       color: var(--el-hd-dark);
-      margin: 0 0 8px 0;
+      margin: 0 0 6px 0;
       line-height: 1.15;
     }
 
     #ellora-header-{{ section.id }} .el-pane-desc {
       font-family: var(--el-hd-font-sans);
-      font-size: 13px;
-      line-height: 1.45;
+      font-size: 12px;
+      line-height: 1.4;
       color: var(--el-hd-muted);
-      margin: 0 0 18px 0;
-      max-width: 195px;
+      margin: 0 0 12px 0;
+      max-width: 210px;
     }
 
     #ellora-header-{{ section.id }} .el-pane-btn {
@@ -821,13 +821,13 @@
       align-items: center;
       justify-content: center;
       align-self: flex-start;
-      padding: 9px 15px;
+      padding: 6px 13px;
       background-color: var(--el-hd-primary, #CC9E8F) !important;
       color: #FFFFFF !important;
       border: 1px solid var(--el-hd-primary, #CC9E8F) !important;
       border-radius: 3px;
       font-family: var(--el-hd-font-sans);
-      font-size: 12px;
+      font-size: 11.5px;
       font-weight: 500;
       text-decoration: none;
       white-space: nowrap !important;
@@ -841,10 +841,10 @@
 
     #ellora-header-{{ section.id }} .el-col-subheading {
       font-family: var(--el-hd-font-serif);
-      font-size: 16px;
+      font-size: 14.5px;
       font-weight: 600;
       color: var(--el-hd-dark);
-      margin: 0 0 14px 0;
+      margin: 0 0 9px 0;
       letter-spacing: -0.01em;
     }
 
@@ -852,17 +852,23 @@
       list-style: none;
       display: flex;
       flex-direction: column;
-      gap: 11px;
+      gap: 7px;
+    }
+
+    #ellora-header-{{ section.id }} .el-pane-col-colors .el-col-list {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 6px 12px;
     }
 
     #ellora-header-{{ section.id }} .el-col-list a {
       font-family: var(--el-hd-font-sans);
-      font-size: 13px;
+      font-size: 12.5px;
       color: var(--el-hd-text);
       text-decoration: none;
       display: flex;
       align-items: center;
-      gap: 9px;
+      gap: 7px;
       white-space: nowrap;
       transition: color 0.2s ease, transform 0.2s ease;
     }
@@ -2238,7 +2244,7 @@
                     </ul>
                   </div>
 
-                  <div class="el-pane-col el-col-bordered">
+                  <div class="el-pane-col el-col-bordered el-pane-col-colors">
                     <h5 class="el-col-subheading">{{ tab1_col4_heading }}</h5>
                     <ul class="el-col-list">
                       {%- if section.settings.mm_tab1_col4_menu != blank and linklists[section.settings.mm_tab1_col4_menu].links.size > 0 -%}
@@ -2315,7 +2321,7 @@
                     </ul>
                   </div>
 
-                  <div class="el-pane-col el-col-bordered">
+                  <div class="el-pane-col el-col-bordered el-pane-col-colors">
                     <h5 class="el-col-subheading">{{ tab2_col4_heading }}</h5>
                     <ul class="el-col-list">
                       {%- if section.settings.mm_tab2_col4_menu != blank and linklists[section.settings.mm_tab2_col4_menu].links.size > 0 -%}
@@ -2997,18 +3003,20 @@
 
     function syncMegaMenuHeight() {
       if (!tabPanes.length) return;
-      var maxHeight = 345;
+      var maxHeight = 0;
 
       tabPanes.forEach(function(pane) {
         var prevDisplay = pane.style.display;
         var prevVis = pane.style.visibility;
         var prevPos = pane.style.position;
         var prevH = pane.style.height;
+        var prevMinH = pane.style.minHeight;
 
         pane.style.display = pane.classList.contains('el-pane-wallpaper') ? 'flex' : 'grid';
         pane.style.visibility = 'hidden';
         pane.style.position = 'absolute';
         pane.style.height = 'auto';
+        pane.style.minHeight = 'auto';
 
         var measured = pane.offsetHeight || pane.scrollHeight;
         if (measured > maxHeight) {
@@ -3019,17 +3027,20 @@
         pane.style.visibility = prevVis;
         pane.style.position = prevPos;
         pane.style.height = prevH;
+        pane.style.minHeight = prevMinH;
       });
 
-      tabPanes.forEach(function(pane) {
-        pane.style.minHeight = maxHeight + 'px';
-      });
-      if (wallpaperBanner) {
-        wallpaperBanner.style.minHeight = maxHeight + 'px';
-      }
-      if (megaBody) {
-        var tabsH = megaTabs ? megaTabs.offsetHeight : 42;
-        megaBody.style.minHeight = (maxHeight + tabsH) + 'px';
+      if (maxHeight > 0) {
+        tabPanes.forEach(function(pane) {
+          pane.style.minHeight = maxHeight + 'px';
+        });
+        if (wallpaperBanner) {
+          wallpaperBanner.style.minHeight = maxHeight + 'px';
+        }
+        if (megaBody) {
+          var tabsH = megaTabs ? megaTabs.offsetHeight : 34;
+          megaBody.style.minHeight = (maxHeight + tabsH) + 'px';
+        }
       }
     }
 
