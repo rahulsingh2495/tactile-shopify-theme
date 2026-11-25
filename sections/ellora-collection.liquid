@@ -1319,13 +1319,17 @@
           {%- if collection.filters.size > 0 -%}
             {%- for filter in collection.filters -%}
               {%- assign filter_label_down = filter.label | downcase -%}
+              {%- assign is_open_filter = false -%}
+              {%- if filter_label_down contains 'color' or filter_label_down contains 'colour' or filter.active_values.size > 0 -%}
+                {%- assign is_open_filter = true -%}
+              {%- endif -%}
 
               <div class="el-filter-accordion">
-                <button type="button" class="el-accordion-btn">
+                <button type="button" class="el-accordion-btn{% unless is_open_filter %} is-collapsed{% endunless %}" aria-expanded="{% if is_open_filter %}true{% else %}false{% endif %}">
                   <span>{{ filter.label }}</span>
                   <svg viewBox="0 0 10 6"><polyline points="1 1 5 5 9 1"></polyline></svg>
                 </button>
-                <div class="el-accordion-body">
+                <div class="el-accordion-body{% unless is_open_filter %} is-hidden{% endunless %}">
                   {%- case filter.type -%}
                     {%- when 'list', 'boolean' -%}
                       {%- for value in filter.values -%}
@@ -1459,7 +1463,7 @@
             {%- assign color_list = collected_colors | remove_first: ',' | split: ',' | uniq | sort -%}
             {%- if color_list.size > 0 -%}
               <div class="el-filter-accordion">
-                <button type="button" class="el-accordion-btn">
+                <button type="button" class="el-accordion-btn" aria-expanded="true">
                   <span>Color &amp; Tone</span>
                   <svg viewBox="0 0 10 6"><polyline points="1 1 5 5 9 1"></polyline></svg>
                 </button>
@@ -1516,11 +1520,11 @@
 
             {%- if has_any_mat -%}
               <div class="el-filter-accordion">
-                <button type="button" class="el-accordion-btn">
+                <button type="button" class="el-accordion-btn is-collapsed" aria-expanded="false">
                   <span>Surface Materials</span>
                   <svg viewBox="0 0 10 6"><polyline points="1 1 5 5 9 1"></polyline></svg>
                 </button>
-                <div class="el-accordion-body">
+                <div class="el-accordion-body is-hidden">
                   {%- for mat in curated_materials -%}
                     {%- assign mat_low = mat | downcase -%}
                     {%- if all_tags_str contains mat_low -%}
@@ -1549,11 +1553,11 @@
 
             {%- if has_any_space -%}
               <div class="el-filter-accordion">
-                <button type="button" class="el-accordion-btn">
+                <button type="button" class="el-accordion-btn is-collapsed" aria-expanded="false">
                   <span>Application & Space</span>
                   <svg viewBox="0 0 10 6"><polyline points="1 1 5 5 9 1"></polyline></svg>
                 </button>
-                <div class="el-accordion-body">
+                <div class="el-accordion-body is-hidden">
                   {%- for spc in curated_spaces -%}
                     {%- assign spc_low = spc | downcase -%}
                     {%- if all_tags_str contains spc_low -%}
@@ -1582,11 +1586,11 @@
 
             {%- if has_any_fin -%}
               <div class="el-filter-accordion">
-                <button type="button" class="el-accordion-btn">
+                <button type="button" class="el-accordion-btn is-collapsed" aria-expanded="false">
                   <span>Finish & Style</span>
                   <svg viewBox="0 0 10 6"><polyline points="1 1 5 5 9 1"></polyline></svg>
                 </button>
-                <div class="el-accordion-body">
+                <div class="el-accordion-body is-hidden">
                   {%- for fin in curated_finishes -%}
                     {%- assign fin_low = fin | downcase -%}
                     {%- if all_tags_str contains fin_low -%}
@@ -2079,10 +2083,26 @@
       btn.addEventListener('click', function() {
         var body = btn.nextElementSibling;
         if (body) {
+          var isCurrentlyHidden = body.classList.contains('is-hidden');
           body.classList.toggle('is-hidden');
           btn.classList.toggle('is-collapsed');
+          btn.setAttribute('aria-expanded', isCurrentlyHidden ? 'true' : 'false');
         }
       });
+    });
+
+    // Auto-expand any accordion containing active or checked inputs
+    root.querySelectorAll('.el-filter-accordion').forEach(function(acc) {
+      var hasChecked = acc.querySelector('input:checked');
+      if (hasChecked) {
+        var btn = acc.querySelector('.el-accordion-btn');
+        var body = acc.querySelector('.el-accordion-body');
+        if (btn && body) {
+          btn.classList.remove('is-collapsed');
+          btn.setAttribute('aria-expanded', 'true');
+          body.classList.remove('is-hidden');
+        }
+      }
     });
 
     // Dynamic Filter & Search System + Pagination
