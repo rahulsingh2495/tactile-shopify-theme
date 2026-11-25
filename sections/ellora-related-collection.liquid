@@ -348,6 +348,10 @@
     }
 
     @media (max-width: 768px) {
+      #ellora-related-{{ section.id }} .el-rc-title {
+        font-size: 32px !important;
+        line-height: 1.2;
+      }
       #ellora-related-{{ section.id }} {
         padding-top: {{ section.settings.padding_top_mobile | default: 40 }}px;
         padding-bottom: {{ section.settings.padding_bottom_mobile | default: 50 }}px;

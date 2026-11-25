@@ -287,6 +287,75 @@
           font-size: 1.6rem;
         }
       }
+      /* =========================================================================
+         ELLORA SPACES — STANDARDIZED MOBILE SECTION & PAGE HEADING SCALE
+         All primary section titles & page titles are 48px on desktop and strictly 
+         32px on mobile screens (max-width: 768px) for 100% design consistency.
+         ========================================================================= */
+      @media screen and (max-width: 768px) {
+        .el-section-title,
+        .el-col-hero-title,
+        .el-rc-title,
+        .el-hero-headline,
+        .el-manifesto-heading,
+        .el-space-title,
+        .el-crafted-title,
+        .el-sr-title,
+        .el-wl-title,
+        .el-cart-title,
+        .el-pt-title,
+        .el-pw-title,
+        .el-th-title,
+        .el-tb-title,
+        .el-tf-title,
+        .el-dh-title,
+        .el-dp-title,
+        .el-fh-title,
+        .el-ah-title,
+        .el-nl-title,
+        .el-form-headline,
+        .el-cta-headline,
+        .el-rules-heading,
+        .el-about-hero-title,
+        .el-explore-title,
+        .el-pr-title {
+          font-size: 32px !important;
+          line-height: 1.22 !important;
+        }
+      }
+
+      @media screen and (max-width: 360px) {
+        .el-section-title,
+        .el-col-hero-title,
+        .el-rc-title,
+        .el-hero-headline,
+        .el-manifesto-heading,
+        .el-space-title,
+        .el-crafted-title,
+        .el-sr-title,
+        .el-wl-title,
+        .el-cart-title,
+        .el-pt-title,
+        .el-pw-title,
+        .el-th-title,
+        .el-tb-title,
+        .el-tf-title,
+        .el-dh-title,
+        .el-dp-title,
+        .el-fh-title,
+        .el-ah-title,
+        .el-nl-title,
+        .el-form-headline,
+        .el-cta-headline,
+        .el-rules-heading,
+        .el-about-hero-title,
+        .el-explore-title,
+        .el-pr-title {
+          font-size: 28px !important;
+          line-height: 1.25 !important;
+        }
+      }
+
     {% endstyle %}
 
     {{ 'base.css' | asset_url | stylesheet_tag }}
