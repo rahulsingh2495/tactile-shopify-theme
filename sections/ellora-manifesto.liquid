@@ -38,24 +38,22 @@
     {%- if section.settings.enable_sticky_scroll -%}
       #ellora-manifesto-{{ section.id }} .el-manifesto-sticky-wrapper {
         position: relative;
-        height: {{ section.settings.scroll_depth | default: '160vh' }};
+        height: {{ section.settings.scroll_depth | default: '115vh' }};
         background-color: var(--el-bg-main);
       }
 
       #ellora-manifesto-{{ section.id }} .el-manifesto-sticky-container {
         position: -webkit-sticky;
         position: sticky;
-        top: 0;
-        height: {{ section.settings.section_height | default: '65vh' }};
-        min-height: {{ section.settings.min_height | default: 360 }}px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+        top: 14vh;
+        height: auto;
+        min-height: auto;
+        display: block;
         background-color: var(--el-bg-main);
         z-index: 5;
         box-sizing: border-box;
-        padding-top: {{ section.settings.padding_top | default: 30 }}px;
-        padding-bottom: {{ section.settings.padding_bottom | default: 30 }}px;
+        padding-top: {{ section.settings.padding_top | default: 40 }}px;
+        padding-bottom: {{ section.settings.padding_bottom | default: 40 }}px;
       }
     {%- else -%}
       #ellora-manifesto-{{ section.id }} .el-manifesto-sticky-wrapper {
@@ -70,8 +68,8 @@
         min-height: auto;
         display: block;
         background-color: var(--el-bg-main);
-        padding-top: {{ section.settings.padding_top | default: 50 }}px;
-        padding-bottom: {{ section.settings.padding_bottom | default: 50 }}px;
+        padding-top: {{ section.settings.padding_top | default: 45 }}px;
+        padding-bottom: {{ section.settings.padding_bottom | default: 45 }}px;
       }
     {%- endif -%}
 
@@ -114,9 +112,9 @@
     }
 
     #ellora-manifesto-{{ section.id }} .el-scroll-word {
-      {%- if section.settings.enable_sticky_scroll -%}
+      {%- if section.settings.enable_scroll_reveal != false -%}
         color: var(--el-dim);
-        transition: color 0.38s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        transition: color 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
       {%- else -%}
         color: var(--el-highlight);
       {%- endif -%}
@@ -128,24 +126,22 @@
     }
 
     @media (max-width: 900px) {
-      {%- if section.settings.enable_sticky_scroll -%}
-        #ellora-manifesto-{{ section.id }} .el-manifesto-sticky-wrapper {
-          height: auto !important;
-        }
-        #ellora-manifesto-{{ section.id }} .el-manifesto-sticky-container {
-          position: static !important;
-          height: auto !important;
-          min-height: 0 !important;
-          padding-top: 36px;
-          padding-bottom: 28px;
-        }
-        #ellora-manifesto-{{ section.id }} .el-scroll-word {
-          color: var(--el-highlight) !important;
-        }
-      {%- endif -%}
+      #ellora-manifesto-{{ section.id }} .el-manifesto-sticky-wrapper {
+        height: auto !important;
+      }
+      #ellora-manifesto-{{ section.id }} .el-manifesto-sticky-container {
+        position: static !important;
+        height: auto !important;
+        min-height: 0 !important;
+        padding-top: 36px;
+        padding-bottom: 28px;
+      }
+      #ellora-manifesto-{{ section.id }} .el-scroll-word {
+        color: var(--el-highlight) !important;
+      }
       #ellora-manifesto-{{ section.id }} .el-manifesto-heading {
         font-size: 32px !important;
-        line-height: 1.4;
+        line-height: 1.35;
         text-indent: 0;
       }
       #ellora-manifesto-{{ section.id }} .el-manifesto-kicker {
@@ -154,21 +150,19 @@
     }
 
     @media (max-width: 640px) {
-      {%- if section.settings.enable_sticky_scroll -%}
-        #ellora-manifesto-{{ section.id }} .el-manifesto-sticky-wrapper {
-          height: auto !important;
-        }
-        #ellora-manifesto-{{ section.id }} .el-manifesto-sticky-container {
-          position: static !important;
-          height: auto !important;
-          min-height: 0 !important;
-          padding-top: 28px;
-          padding-bottom: 24px;
-        }
-      {%- endif -%}
+      #ellora-manifesto-{{ section.id }} .el-manifesto-sticky-wrapper {
+        height: auto !important;
+      }
+      #ellora-manifesto-{{ section.id }} .el-manifesto-sticky-container {
+        position: static !important;
+        height: auto !important;
+        min-height: 0 !important;
+        padding-top: 28px;
+        padding-bottom: 24px;
+      }
       #ellora-manifesto-{{ section.id }} .el-manifesto-heading {
-        font-size: 26px !important;
-        line-height: 1.45;
+        font-size: 32px !important;
+        line-height: 1.35;
         text-indent: 0;
       }
     }
@@ -185,7 +179,6 @@
       #ellora-manifesto-{{ section.id }} .el-scroll-word {
         color: var(--el-highlight) !important;
       }
-    }
     }
   </style>
 
@@ -208,33 +201,55 @@
     </div>
   </div>
 
-  {%- if section.settings.enable_sticky_scroll -%}
+  {%- if section.settings.enable_scroll_reveal != false -%}
     <script>
       (function() {
+        const section = document.getElementById('ellora-manifesto-{{ section.id }}');
         const wrapper = document.getElementById('elStickyWrapper-{{ section.id }}');
         const body = document.getElementById('elManifestoBody-{{ section.id }}');
-        if (!wrapper || !body) return;
+        if (!section || !wrapper || !body) return;
 
         const words = body.querySelectorAll('.el-scroll-word');
         const totalWords = words.length;
         if (totalWords === 0) return;
 
+        // Mobile or prefers-reduced-motion: reveal all words immediately
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches || window.innerWidth <= 900) {
+          words.forEach(function(w) { w.classList.add('is-active'); });
+          return;
+        }
+
+        const isSticky = {{ section.settings.enable_sticky_scroll | default: false | json }};
         let ticking = false;
 
         function updateFill() {
-          const rect = wrapper.getBoundingClientRect();
           const windowH = window.innerHeight;
-          const totalDistance = rect.height - windowH;
+          let progress = 0;
 
-          if (totalDistance <= 0) {
-            words.forEach(w => w.classList.add('is-active'));
-            ticking = false;
-            return;
+          if (isSticky) {
+            const rect = wrapper.getBoundingClientRect();
+            const totalDistance = rect.height - windowH;
+
+            if (totalDistance <= 0) {
+              progress = rect.top <= windowH * 0.4 ? 1 : 0;
+            } else {
+              const scrolled = -rect.top;
+              progress = Math.min(Math.max(scrolled / totalDistance, 0), 1);
+            }
+          } else {
+            const rect = body.getBoundingClientRect();
+            // Natural scroll scrub: begins as text enters 82% of viewport, completes by 32%
+            const start = windowH * 0.82;
+            const end = windowH * 0.32;
+            const current = rect.top;
+            if (current >= start) {
+              progress = 0;
+            } else if (current <= end) {
+              progress = 1;
+            } else {
+              progress = (start - current) / (start - end);
+            }
           }
-
-          const scrolled = -rect.top;
-          const rawProgress = scrolled / totalDistance;
-          const progress = Math.min(Math.max(rawProgress, 0), 1);
 
           const activeCount = Math.floor(progress * (totalWords + 1));
 
@@ -250,6 +265,13 @@
         }
 
         window.addEventListener('scroll', function() {
+          if (!ticking) {
+            window.requestAnimationFrame(updateFill);
+            ticking = true;
+          }
+        }, { passive: true });
+
+        window.addEventListener('resize', function() {
           if (!ticking) {
             window.requestAnimationFrame(updateFill);
             ticking = true;
@@ -304,47 +326,32 @@
     },
     {
       "type": "header",
-      "content": "Layout & Height"
+      "content": "Scroll Animation & Reveal"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_scroll_reveal",
+      "label": "Enable Word-by-Word Scroll Reveal",
+      "default": true,
+      "info": "Words illuminate progressively as you scroll past the text block."
     },
     {
       "type": "checkbox",
       "id": "enable_sticky_scroll",
-      "label": "Enable Sticky Scroll Text-Fill Effect",
-      "default": true,
-      "info": "If disabled, section acts as a standard static editorial block with regular padding."
-    },
-    {
-      "type": "select",
-      "id": "section_height",
-      "label": "Section Height (When Sticky Enabled)",
-      "options": [
-        { "value": "55vh", "label": "Very Compact (55vh)" },
-        { "value": "65vh", "label": "Compact & Balanced (65vh)" },
-        { "value": "80vh", "label": "Standard (80vh)" },
-        { "value": "100vh", "label": "Full Screen (100vh)" }
-      ],
-      "default": "65vh"
-    },
-    {
-      "type": "range",
-      "id": "min_height",
-      "min": 250,
-      "max": 600,
-      "step": 10,
-      "unit": "px",
-      "label": "Minimum Container Height",
-      "default": 360
+      "label": "Pin Section While Scrolling (Sticky Mode)",
+      "default": false,
+      "info": "When disabled (recommended), text reveals smoothly in natural document flow with zero blank space below. When enabled, text is held in place during scroll."
     },
     {
       "type": "select",
       "id": "scroll_depth",
-      "label": "Scroll Animation Duration",
+      "label": "Sticky Scroll Distance",
       "options": [
-        { "value": "130vh", "label": "Snappy & Quick (130vh)" },
-        { "value": "160vh", "label": "Standard (160vh)" },
-        { "value": "220vh", "label": "Extended (220vh)" }
+        { "value": "115vh", "label": "Compact & Seamless (115vh)" },
+        { "value": "130vh", "label": "Balanced (130vh)" },
+        { "value": "160vh", "label": "Extended (160vh)" }
       ],
-      "default": "160vh"
+      "default": "115vh"
     },
     {
       "type": "header",

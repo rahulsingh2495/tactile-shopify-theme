@@ -83,13 +83,12 @@
     "manifesto": {
       "type": "ellora-manifesto",
       "settings": {
-        "padding_top": 35,
-        "padding_bottom": 35,
+        "padding_top": 45,
+        "padding_bottom": 45,
         "kicker_margin": 26,
-        "enable_sticky_scroll": true,
-        "section_height": "65vh",
-        "min_height": 360,
-        "scroll_depth": "160vh",
+        "enable_scroll_reveal": true,
+        "enable_sticky_scroll": false,
+        "scroll_depth": "115vh",
         "kicker": "ABOUT ELLORA",
         "font_size": 46,
         "lead_text": "The spaces we spend time in shape how we feel. Ellora was created to bring warmth, texture and lasting beauty to everyday spaces.",
