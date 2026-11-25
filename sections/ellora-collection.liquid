@@ -1364,9 +1364,10 @@
                             {%- elsif val_low contains 'sepia' or val_low contains 'taupe' -%}{%- assign swatch_color = '#7F675B' -%}
                             {%- elsif val_low contains 'indigo' or val_low contains 'navy' or val_low contains 'midnight' -%}{%- assign swatch_color = '#1E293B' -%}
                             {%- elsif val_low contains 'blue' -%}{%- assign swatch_color = '#8BAAC1' -%}
+                            {%- elsif val_low contains 'multi' or val_low contains 'mix' -%}{%- assign swatch_color = 'conic-gradient(from 180deg at 50% 50%, #C89D91 0deg, #D4AF37 90deg, #8BAAC1 180deg, #2D5A43 270deg, #C89D91 360deg)' -%}
                             {%- elsif val_low contains 'sisal' or val_low contains 'jute' or val_low contains 'natural' -%}{%- assign swatch_color = '#C7B198' -%}
                             {%- endif -%}
-                            <span class="el-swatch-dot" style="background-color: {{ swatch_color }};"></span>
+                            <span class="el-swatch-dot" style="background: {{ swatch_color }};"></span>
                           {%- endif -%}
 
                           <span>{{ value.label }} ({{ value.count }})</span>
@@ -1495,7 +1496,7 @@
                       {%- endif -%}
                       <label class="el-check-label">
                         <input type="checkbox" class="el-check-input el-tag-filter" data-group="color" value="{{ val_low | escape }}">
-                        <span class="el-swatch-dot" style="background-color: {{ swatch_color }};"></span>
+                        <span class="el-swatch-dot" style="background: {{ swatch_color }};"></span>
                         <span>{{ clr }}</span>
                       </label>
                     {%- endif -%}

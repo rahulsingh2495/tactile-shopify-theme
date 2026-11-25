@@ -2242,7 +2242,8 @@
                           {%- elsif val_low contains 'rose' or val_low contains 'pink' -%}{%- assign swatch_color = '#C89D91' -%}
                           {%- elsif val_low contains 'burgundy' or val_low contains 'wine' -%}{%- assign swatch_color = '#6A2B35' -%}
                           {%- elsif val_low contains 'green' or val_low contains 'olive' -%}{%- assign swatch_color = '#2D5A43' -%}
-                          {%- elsif val_low contains 'blue' or val_low contains 'navy' -%}{%- assign swatch_color = '#1E293B' -%}
+                          {%- elsif val_low contains 'blue' or val_low contains 'navy' -%}{%- assign swatch_color = '#8BAAC1' -%}
+                          {%- elsif val_low contains 'multi' or val_low contains 'mix' -%}{%- assign swatch_color = 'conic-gradient(from 180deg at 50% 50%, #C89D91 0deg, #D4AF37 90deg, #8BAAC1 180deg, #2D5A43 270deg, #C89D91 360deg)' -%}
                           {%- endif -%}
                           <li><a href="{{ lk.url }}"><span class="el-color-dot" style="background: {{ swatch_color }};"></span>{{ lk.title }}</a></li>
                         {%- endfor -%}
@@ -2253,6 +2254,8 @@
                         <li><a href="{{ routes.all_products_collection_url }}?color=beige"><span class="el-color-dot" style="background:#D8C7B5;"></span>Beige &amp; Sand</a></li>
                         <li><a href="{{ routes.all_products_collection_url }}?color=terracotta"><span class="el-color-dot" style="background:#CC9E8F;"></span>Terracotta</a></li>
                         <li><a href="{{ routes.all_products_collection_url }}?color=charcoal"><span class="el-color-dot" style="background:#2E2D2B;"></span>Anthracite &amp; Slate</a></li>
+                        <li><a href="{{ routes.all_products_collection_url }}?color=blue"><span class="el-color-dot" style="background:#8BAAC1;"></span>Blue</a></li>
+                        <li><a href="{{ routes.all_products_collection_url }}?color=multicoloured"><span class="el-color-dot" style="background: conic-gradient(from 180deg at 50% 50%, #C89D91 0deg, #D4AF37 90deg, #8BAAC1 180deg, #2D5A43 270deg, #C89D91 360deg);"></span>Multicoloured</a></li>
                       {%- endif -%}
                     </ul>
                   </div>
@@ -2316,7 +2319,8 @@
                           {%- elsif val_low contains 'rose' or val_low contains 'pink' -%}{%- assign swatch_color = '#C89D91' -%}
                           {%- elsif val_low contains 'burgundy' or val_low contains 'wine' -%}{%- assign swatch_color = '#6A2B35' -%}
                           {%- elsif val_low contains 'green' or val_low contains 'olive' -%}{%- assign swatch_color = '#2D5A43' -%}
-                          {%- elsif val_low contains 'blue' or val_low contains 'navy' -%}{%- assign swatch_color = '#1E293B' -%}
+                          {%- elsif val_low contains 'blue' or val_low contains 'navy' -%}{%- assign swatch_color = '#8BAAC1' -%}
+                          {%- elsif val_low contains 'multi' or val_low contains 'mix' -%}{%- assign swatch_color = 'conic-gradient(from 180deg at 50% 50%, #C89D91 0deg, #D4AF37 90deg, #8BAAC1 180deg, #2D5A43 270deg, #C89D91 360deg)' -%}
                           {%- endif -%}
                           <li><a href="{{ lk.url }}"><span class="el-color-dot" style="background: {{ swatch_color }};"></span>{{ lk.title }}</a></li>
                         {%- endfor -%}
@@ -2327,6 +2331,8 @@
                         <li><a href="{{ tiles_base_url }}?color=beige"><span class="el-color-dot" style="background:#D8C7B5;"></span>Beige &amp; Sand</a></li>
                         <li><a href="{{ tiles_base_url }}?color=terracotta"><span class="el-color-dot" style="background:#CC9E8F;"></span>Terracotta</a></li>
                         <li><a href="{{ tiles_base_url }}?color=charcoal"><span class="el-color-dot" style="background:#2E2D2B;"></span>Anthracite &amp; Slate</a></li>
+                        <li><a href="{{ tiles_base_url }}?color=blue"><span class="el-color-dot" style="background:#8BAAC1;"></span>Blue</a></li>
+                        <li><a href="{{ tiles_base_url }}?color=multicoloured"><span class="el-color-dot" style="background: conic-gradient(from 180deg at 50% 50%, #C89D91 0deg, #D4AF37 90deg, #8BAAC1 180deg, #2D5A43 270deg, #C89D91 360deg);"></span>Multicoloured</a></li>
                       {%- endif -%}
                     </ul>
                   </div>
@@ -2583,6 +2589,8 @@
           <a href="{{ routes.all_products_collection_url }}?size=modular-tiles">Modular Tiles</a>
           <a href="{{ routes.all_products_collection_url }}?color=gold"><span class="el-color-dot" style="background:#D4AF37;"></span>Gold Tone Panels</a>
           <a href="{{ routes.all_products_collection_url }}?color=silver"><span class="el-color-dot" style="background:#C5C6C7;"></span>Silver Tone Panels</a>
+          <a href="{{ routes.all_products_collection_url }}?color=blue"><span class="el-color-dot" style="background:#8BAAC1;"></span>Blue</a>
+          <a href="{{ routes.all_products_collection_url }}?color=multicoloured"><span class="el-color-dot" style="background: conic-gradient(from 180deg at 50% 50%, #C89D91 0deg, #D4AF37 90deg, #8BAAC1 180deg, #2D5A43 270deg, #C89D91 360deg);"></span>Multicoloured</a>
 
           <div class="el-drawer-subheading" style="margin-top: 14px;">{{ tab2_heading }}</div>
           <a href="{{ tab2_btn_url }}" style="color: {{ tab2_btn_bg }}; font-weight: 500;">{{ tab2_btn_text }}</a>
@@ -2599,6 +2607,8 @@
           <a href="{{ tiles_base_url }}?size=cluster-panel-tiles">Cluster Panel Tiles</a>
           <a href="{{ tiles_base_url }}?color=gold"><span class="el-color-dot" style="background:#D4AF37;"></span>Gold</a>
           <a href="{{ tiles_base_url }}?color=silver"><span class="el-color-dot" style="background:#C5C6C7;"></span>Silver</a>
+          <a href="{{ tiles_base_url }}?color=blue"><span class="el-color-dot" style="background:#8BAAC1;"></span>Blue</a>
+          <a href="{{ tiles_base_url }}?color=multicoloured"><span class="el-color-dot" style="background: conic-gradient(from 180deg at 50% 50%, #C89D91 0deg, #D4AF37 90deg, #8BAAC1 180deg, #2D5A43 270deg, #C89D91 360deg);"></span>Multicoloured</a>
 
           <div class="el-drawer-subheading" style="margin-top: 14px;">{{ tab3_label }}{% if tab3_badge != blank %} ({{ tab3_badge }}){% endif %}</div>
           <span style="font-size: 13px; color: var(--el-hd-gray); padding: 4px 0 10px 0; display: block;">{{ tab3_desc }}</span>
