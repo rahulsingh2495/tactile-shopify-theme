@@ -2095,6 +2095,40 @@
         {%- endif -%}
 
         <!-- Capture Dynamic Luxury Tabbed Mega Menu Panel -->
+        <!-- Dynamic Category & Collection Resolution for Mega Menu Tabs -->
+        {%- assign tab1_label = section.settings.mm_tab1_label | default: 'Stone Panel' -%}
+        {%- assign tab1_heading = section.settings.mm_tab1_heading | default: 'Stone Panels' -%}
+        {%- assign tab1_desc = section.settings.mm_tab1_desc | default: 'Architectural stone paneling, monolithic formats and precision-cut surfaces.' -%}
+        {%- assign tab1_btn_text = section.settings.mm_tab1_btn_text | default: 'Explore Stone Panels →' -%}
+        {%- assign tab1_btn_url = section.settings.mm_tab1_btn_url | default: routes.all_products_collection_url -%}
+        {%- assign tab1_btn_bg = section.settings.mm_tab1_btn_bg | default: '#CC9E8F' -%}
+        {%- assign tab1_btn_color = section.settings.mm_tab1_btn_color | default: '#FFFFFF' -%}
+        {%- assign tab1_col2_heading = section.settings.mm_tab1_col2_heading | default: 'Type' -%}
+        {%- assign tab1_col3_heading = section.settings.mm_tab1_col3_heading | default: 'Size' -%}
+        {%- assign tab1_col4_heading = section.settings.mm_tab1_col4_heading | default: 'Color' -%}
+
+        {%- assign tab2_label = section.settings.mm_tab2_label | default: 'Tiles' -%}
+        {%- assign tab2_heading = section.settings.mm_tab2_heading | default: 'Tiles & Surfaces' -%}
+        {%- assign tab2_desc = section.settings.mm_tab2_desc | default: 'Architectural porcelain, handcrafted ceramics, and bespoke mirror work surfaces.' -%}
+        {%- assign tab2_btn_text = section.settings.mm_tab2_btn_text | default: 'View All Tiles →' -%}
+        {%- assign tab2_btn_url = section.settings.mm_tab2_btn_url | default: tiles_base_url -%}
+        {%- assign tab2_btn_bg = section.settings.mm_tab2_btn_bg | default: '#CC9E8F' -%}
+        {%- assign tab2_btn_color = section.settings.mm_tab2_btn_color | default: '#FFFFFF' -%}
+        {%- assign tab2_col2_heading = section.settings.mm_tab2_col2_heading | default: 'Type' -%}
+        {%- assign tab2_col3_heading = section.settings.mm_tab2_col3_heading | default: 'Size' -%}
+        {%- assign tab2_col4_heading = section.settings.mm_tab2_col4_heading | default: 'Colors & Tones' -%}
+
+        {%- assign tab3_label = section.settings.mm_tab3_label | default: 'Wallpaper' -%}
+        {%- assign tab3_badge = section.settings.mm_tab3_badge | default: 'Coming Soon' -%}
+        {%- assign tab3_banner_badge = section.settings.mm_tab3_banner_badge | default: 'WALLPAPER COLLECTION' -%}
+        {%- assign tab3_title = section.settings.mm_tab3_title | default: 'Coming Soon' -%}
+        {%- assign tab3_desc = section.settings.mm_tab3_desc | default: 'A curated collection of premium wallcoverings and bespoke murals is launching soon.' -%}
+        {%- assign tab3_btn_text = section.settings.mm_tab3_btn_text | default: 'Notify Me' -%}
+        {%- assign tab3_btn_url = section.settings.mm_tab3_btn_url | default: '#newsletter' -%}
+        {%- assign tab3_btn_bg = section.settings.mm_tab3_btn_bg | default: '#805D52' -%}
+        {%- assign tab3_btn_color = section.settings.mm_tab3_btn_color | default: '#FFFFFF' -%}
+
+        <!-- Capture Dynamic Luxury Tabbed Mega Menu Panel -->
         {%- capture megamenu_panel_html -%}
           <div class="el-megamenu-panel" id="elShopMegaMenu-{{ section.id }}" role="region" aria-label="Shop Products Mega Menu">
             <div class="el-megamenu-header">
@@ -2110,7 +2144,7 @@
             <div class="el-megamenu-body">
               <!-- Sidebar: All Backend Collections Dynamically -->
               <div class="el-megamenu-sidebar">
-                <h4 class="el-sidebar-heading">Shop By Collection</h4>
+                <h4 class="el-sidebar-heading">{{ section.settings.megamenu_sidebar_heading | default: 'Shop By Collection' }}</h4>
                 <ul class="el-sidebar-list">
                   <li>
                     <a href="{{ routes.all_products_collection_url }}">
@@ -2139,49 +2173,87 @@
               <div class="el-megamenu-content">
                 <div class="el-megamenu-tabs" role="tablist">
                   <button type="button" class="el-megamenu-tab is-active" data-tab="stone-panel-tab-{{ section.id }}" role="tab" aria-selected="true">
-                    Stone Panel
+                    {{ tab1_label }}
                   </button>
                   <button type="button" class="el-megamenu-tab" data-tab="tiles-tab-{{ section.id }}" role="tab" aria-selected="false">
-                    Tiles
+                    {{ tab2_label }}
                   </button>
                   <button type="button" class="el-megamenu-tab" data-tab="wallpapers-tab-{{ section.id }}" role="tab" aria-selected="false">
-                    Wallpaper <span style="font-size: 10px; background: rgba(204, 158, 143, 0.12); color: var(--el-hd-primary); padding: 2px 6px; border-radius: 10px; margin-left: 4px; font-weight: 600;">Coming Soon</span>
+                    {{ tab3_label }}{% if tab3_badge != blank %} <span style="font-size: 10px; background: rgba(204, 158, 143, 0.12); color: var(--el-hd-primary); padding: 2px 6px; border-radius: 10px; margin-left: 4px; font-weight: 600;">{{ tab3_badge }}</span>{% endif %}
                   </button>
                 </div>
 
                 <!-- Tab 1: Stone Panel (First Tab) -->
                 <div class="el-tab-pane is-active" id="stone-panel-tab-{{ section.id }}" role="tabpanel">
                   <div class="el-pane-col">
-                    <h4 class="el-pane-heading">Stone Panels</h4>
-                    <p class="el-pane-desc">Architectural stone paneling, monolithic formats and precision-cut surfaces.</p>
-                    <a href="{{ routes.all_products_collection_url }}" class="el-pane-btn">Explore Stone Panels →</a>
+                    <h4 class="el-pane-heading">{{ tab1_heading }}</h4>
+                    {%- if tab1_desc != blank -%}
+                      <p class="el-pane-desc">{{ tab1_desc }}</p>
+                    {%- endif -%}
+                    {%- if tab1_btn_text != blank -%}
+                      <a href="{{ tab1_btn_url }}" class="el-pane-btn" style="background-color: {{ tab1_btn_bg }} !important; color: {{ tab1_btn_color }} !important; border-color: {{ tab1_btn_bg }} !important;">{{ tab1_btn_text }}</a>
+                    {%- endif -%}
                   </div>
+
                   <div class="el-pane-col">
-                    <h5 class="el-col-subheading">Type</h5>
+                    <h5 class="el-col-subheading">{{ tab1_col2_heading }}</h5>
                     <ul class="el-col-list">
-                      <li><a href="{{ routes.all_products_collection_url }}?type=honed-wall-panels">Honed Wall Panels</a></li>
-                      <li><a href="{{ routes.all_products_collection_url }}?type=fluted-linear-panels">Fluted Linear Panels</a></li>
-                      <li><a href="{{ routes.all_products_collection_url }}?type=textured-relief-panels">Textured Relief Panels</a></li>
-                      <li><a href="{{ routes.all_products_collection_url }}?type=large-format-slabs">Large Format Slabs</a></li>
+                      {%- if section.settings.mm_tab1_col2_menu != blank and linklists[section.settings.mm_tab1_col2_menu].links.size > 0 -%}
+                        {%- for lk in linklists[section.settings.mm_tab1_col2_menu].links -%}
+                          <li><a href="{{ lk.url }}">{{ lk.title }}</a></li>
+                        {%- endfor -%}
+                      {%- else -%}
+                        <li><a href="{{ routes.all_products_collection_url }}?type=honed-wall-panels">Honed Wall Panels</a></li>
+                        <li><a href="{{ routes.all_products_collection_url }}?type=fluted-linear-panels">Fluted Linear Panels</a></li>
+                        <li><a href="{{ routes.all_products_collection_url }}?type=textured-relief-panels">Textured Relief Panels</a></li>
+                        <li><a href="{{ routes.all_products_collection_url }}?type=large-format-slabs">Large Format Slabs</a></li>
+                      {%- endif -%}
                     </ul>
                   </div>
+
                   <div class="el-pane-col">
-                    <h5 class="el-col-subheading">Size</h5>
+                    <h5 class="el-col-subheading">{{ tab1_col3_heading }}</h5>
                     <ul class="el-col-list">
-                      <li><a href="{{ routes.all_products_collection_url }}?size=full-wall-panels">Full Wall Panels</a></li>
-                      <li><a href="{{ routes.all_products_collection_url }}?size=modular-tiles">Modular Tiles</a></li>
-                      <li><a href="{{ routes.all_products_collection_url }}?size=custom-architectural-cuts">Custom Architectural Cuts</a></li>
+                      {%- if section.settings.mm_tab1_col3_menu != blank and linklists[section.settings.mm_tab1_col3_menu].links.size > 0 -%}
+                        {%- for lk in linklists[section.settings.mm_tab1_col3_menu].links -%}
+                          <li><a href="{{ lk.url }}">{{ lk.title }}</a></li>
+                        {%- endfor -%}
+                      {%- else -%}
+                        <li><a href="{{ routes.all_products_collection_url }}?size=full-wall-panels">Full Wall Panels</a></li>
+                        <li><a href="{{ routes.all_products_collection_url }}?size=modular-tiles">Modular Tiles</a></li>
+                        <li><a href="{{ routes.all_products_collection_url }}?size=custom-architectural-cuts">Custom Architectural Cuts</a></li>
+                      {%- endif -%}
                     </ul>
                   </div>
+
                   <div class="el-pane-col el-col-bordered">
-                    <h5 class="el-col-subheading">Color</h5>
+                    <h5 class="el-col-subheading">{{ tab1_col4_heading }}</h5>
                     <ul class="el-col-list">
-                      <li><a href="{{ routes.all_products_collection_url }}?color=gold"><span class="el-color-dot" style="background:#D4AF37;"></span>Gold</a></li>
-                      <li><a href="{{ routes.all_products_collection_url }}?color=silver"><span class="el-color-dot" style="background:#C5C6C7;"></span>Silver</a></li>
-                      <li><a href="{{ routes.all_products_collection_url }}?color=ivory"><span class="el-color-dot" style="background:#F5F2EB;"></span>Ivory &amp; White</a></li>
-                      <li><a href="{{ routes.all_products_collection_url }}?color=beige"><span class="el-color-dot" style="background:#D8C7B5;"></span>Beige &amp; Sand</a></li>
-                      <li><a href="{{ routes.all_products_collection_url }}?color=terracotta"><span class="el-color-dot" style="background:#CC9E8F;"></span>Terracotta</a></li>
-                      <li><a href="{{ routes.all_products_collection_url }}?color=charcoal"><span class="el-color-dot" style="background:#2E2D2B;"></span>Anthracite &amp; Slate</a></li>
+                      {%- if section.settings.mm_tab1_col4_menu != blank and linklists[section.settings.mm_tab1_col4_menu].links.size > 0 -%}
+                        {%- for lk in linklists[section.settings.mm_tab1_col4_menu].links -%}
+                          {%- assign val_low = lk.title | downcase -%}
+                          {%- assign swatch_color = '#d8c7b5' -%}
+                          {%- if val_low contains 'gold' -%}{%- assign swatch_color = '#D4AF37' -%}
+                          {%- elsif val_low contains 'silver' -%}{%- assign swatch_color = '#C5C6C7' -%}
+                          {%- elsif val_low contains 'ivory' or val_low contains 'white' -%}{%- assign swatch_color = '#F5F2EB' -%}
+                          {%- elsif val_low contains 'beige' or val_low contains 'sand' or val_low contains 'travertine' -%}{%- assign swatch_color = '#D8C7B5' -%}
+                          {%- elsif val_low contains 'terracotta' or val_low contains 'cotto' -%}{%- assign swatch_color = '#CC9E8F' -%}
+                          {%- elsif val_low contains 'charcoal' or val_low contains 'slate' or val_low contains 'anthracite' or val_low contains 'black' -%}{%- assign swatch_color = '#2E2D2B' -%}
+                          {%- elsif val_low contains 'rose' or val_low contains 'pink' -%}{%- assign swatch_color = '#C89D91' -%}
+                          {%- elsif val_low contains 'burgundy' or val_low contains 'wine' -%}{%- assign swatch_color = '#6A2B35' -%}
+                          {%- elsif val_low contains 'green' or val_low contains 'olive' -%}{%- assign swatch_color = '#2D5A43' -%}
+                          {%- elsif val_low contains 'blue' or val_low contains 'navy' -%}{%- assign swatch_color = '#1E293B' -%}
+                          {%- endif -%}
+                          <li><a href="{{ lk.url }}"><span class="el-color-dot" style="background: {{ swatch_color }};"></span>{{ lk.title }}</a></li>
+                        {%- endfor -%}
+                      {%- else -%}
+                        <li><a href="{{ routes.all_products_collection_url }}?color=gold"><span class="el-color-dot" style="background:#D4AF37;"></span>Gold</a></li>
+                        <li><a href="{{ routes.all_products_collection_url }}?color=silver"><span class="el-color-dot" style="background:#C5C6C7;"></span>Silver</a></li>
+                        <li><a href="{{ routes.all_products_collection_url }}?color=ivory"><span class="el-color-dot" style="background:#F5F2EB;"></span>Ivory &amp; White</a></li>
+                        <li><a href="{{ routes.all_products_collection_url }}?color=beige"><span class="el-color-dot" style="background:#D8C7B5;"></span>Beige &amp; Sand</a></li>
+                        <li><a href="{{ routes.all_products_collection_url }}?color=terracotta"><span class="el-color-dot" style="background:#CC9E8F;"></span>Terracotta</a></li>
+                        <li><a href="{{ routes.all_products_collection_url }}?color=charcoal"><span class="el-color-dot" style="background:#2E2D2B;"></span>Anthracite &amp; Slate</a></li>
+                      {%- endif -%}
                     </ul>
                   </div>
                 </div>
@@ -2189,55 +2261,97 @@
                 <!-- Tab 2: Tiles -->
                 <div class="el-tab-pane" id="tiles-tab-{{ section.id }}" role="tabpanel">
                   <div class="el-pane-col">
-                    <h4 class="el-pane-heading">Tiles &amp; Surfaces</h4>
-                    <p class="el-pane-desc">Architectural porcelain, handcrafted ceramics, and bespoke mirror work surfaces.</p>
-                    <a href="{{ tiles_base_url }}" class="el-pane-btn">View All Tiles →</a>
+                    <h4 class="el-pane-heading">{{ tab2_heading }}</h4>
+                    {%- if tab2_desc != blank -%}
+                      <p class="el-pane-desc">{{ tab2_desc }}</p>
+                    {%- endif -%}
+                    {%- if tab2_btn_text != blank -%}
+                      <a href="{{ tab2_btn_url }}" class="el-pane-btn" style="background-color: {{ tab2_btn_bg }} !important; color: {{ tab2_btn_color }} !important; border-color: {{ tab2_btn_bg }} !important;">{{ tab2_btn_text }}</a>
+                    {%- endif -%}
                   </div>
+
                   <div class="el-pane-col">
-                    <h5 class="el-col-subheading">Type</h5>
+                    <h5 class="el-col-subheading">{{ tab2_col2_heading }}</h5>
                     <ul class="el-col-list">
-                      <li><a href="{{ tiles_base_url }}?type=porcelain">Porcelain</a></li>
-                      <li><a href="{{ tiles_base_url }}?type=handmade-ceramic">Handmade Ceramic</a></li>
-                      <li><a href="{{ tiles_base_url }}?type=mirror-work">Mirror Work</a></li>
+                      {%- if section.settings.mm_tab2_col2_menu != blank and linklists[section.settings.mm_tab2_col2_menu].links.size > 0 -%}
+                        {%- for lk in linklists[section.settings.mm_tab2_col2_menu].links -%}
+                          <li><a href="{{ lk.url }}">{{ lk.title }}</a></li>
+                        {%- endfor -%}
+                      {%- else -%}
+                        <li><a href="{{ tiles_base_url }}?type=porcelain">Porcelain</a></li>
+                        <li><a href="{{ tiles_base_url }}?type=handmade-ceramic">Handmade Ceramic</a></li>
+                        <li><a href="{{ tiles_base_url }}?type=mirror-work">Mirror Work</a></li>
+                      {%- endif -%}
                     </ul>
                   </div>
+
                   <div class="el-pane-col">
-                    <h5 class="el-col-subheading">Size</h5>
+                    <h5 class="el-col-subheading">{{ tab2_col3_heading }}</h5>
                     <ul class="el-col-list">
-                      <li><a href="{{ tiles_base_url }}?size=full-tile-panels">Full Tile Panels</a></li>
-                      <li><a href="{{ tiles_base_url }}?size=cluster-panel-tiles">Cluster Panel Tiles</a></li>
-                      <li><a href="{{ tiles_base_url }}?size=smaller-handmade-ceramic-tiles">Smaller Handmade Ceramic Tiles</a></li>
+                      {%- if section.settings.mm_tab2_col3_menu != blank and linklists[section.settings.mm_tab2_col3_menu].links.size > 0 -%}
+                        {%- for lk in linklists[section.settings.mm_tab2_col3_menu].links -%}
+                          <li><a href="{{ lk.url }}">{{ lk.title }}</a></li>
+                        {%- endfor -%}
+                      {%- else -%}
+                        <li><a href="{{ tiles_base_url }}?size=full-tile-panels">Full Tile Panels</a></li>
+                        <li><a href="{{ tiles_base_url }}?size=cluster-panel-tiles">Cluster Panel Tiles</a></li>
+                        <li><a href="{{ tiles_base_url }}?size=smaller-handmade-ceramic-tiles">Smaller Handmade Ceramic Tiles</a></li>
+                      {%- endif -%}
                     </ul>
                   </div>
+
                   <div class="el-pane-col el-col-bordered">
-                    <h5 class="el-col-subheading">Colors &amp; Tones</h5>
+                    <h5 class="el-col-subheading">{{ tab2_col4_heading }}</h5>
                     <ul class="el-col-list">
-                      <li><a href="{{ tiles_base_url }}?color=gold"><span class="el-color-dot" style="background:#D4AF37;"></span>Gold</a></li>
-                      <li><a href="{{ tiles_base_url }}?color=silver"><span class="el-color-dot" style="background:#C5C6C7;"></span>Silver</a></li>
-                      <li><a href="{{ tiles_base_url }}?color=ivory"><span class="el-color-dot" style="background:#F5F2EB;"></span>Ivory &amp; White</a></li>
-                      <li><a href="{{ tiles_base_url }}?color=beige"><span class="el-color-dot" style="background:#D8C7B5;"></span>Beige &amp; Sand</a></li>
-                      <li><a href="{{ tiles_base_url }}?color=terracotta"><span class="el-color-dot" style="background:#CC9E8F;"></span>Terracotta</a></li>
-                      <li><a href="{{ tiles_base_url }}?color=charcoal"><span class="el-color-dot" style="background:#2E2D2B;"></span>Anthracite &amp; Slate</a></li>
+                      {%- if section.settings.mm_tab2_col4_menu != blank and linklists[section.settings.mm_tab2_col4_menu].links.size > 0 -%}
+                        {%- for lk in linklists[section.settings.mm_tab2_col4_menu].links -%}
+                          {%- assign val_low = lk.title | downcase -%}
+                          {%- assign swatch_color = '#d8c7b5' -%}
+                          {%- if val_low contains 'gold' -%}{%- assign swatch_color = '#D4AF37' -%}
+                          {%- elsif val_low contains 'silver' -%}{%- assign swatch_color = '#C5C6C7' -%}
+                          {%- elsif val_low contains 'ivory' or val_low contains 'white' -%}{%- assign swatch_color = '#F5F2EB' -%}
+                          {%- elsif val_low contains 'beige' or val_low contains 'sand' or val_low contains 'travertine' -%}{%- assign swatch_color = '#D8C7B5' -%}
+                          {%- elsif val_low contains 'terracotta' or val_low contains 'cotto' -%}{%- assign swatch_color = '#CC9E8F' -%}
+                          {%- elsif val_low contains 'charcoal' or val_low contains 'slate' or val_low contains 'anthracite' or val_low contains 'black' -%}{%- assign swatch_color = '#2E2D2B' -%}
+                          {%- elsif val_low contains 'rose' or val_low contains 'pink' -%}{%- assign swatch_color = '#C89D91' -%}
+                          {%- elsif val_low contains 'burgundy' or val_low contains 'wine' -%}{%- assign swatch_color = '#6A2B35' -%}
+                          {%- elsif val_low contains 'green' or val_low contains 'olive' -%}{%- assign swatch_color = '#2D5A43' -%}
+                          {%- elsif val_low contains 'blue' or val_low contains 'navy' -%}{%- assign swatch_color = '#1E293B' -%}
+                          {%- endif -%}
+                          <li><a href="{{ lk.url }}"><span class="el-color-dot" style="background: {{ swatch_color }};"></span>{{ lk.title }}</a></li>
+                        {%- endfor -%}
+                      {%- else -%}
+                        <li><a href="{{ tiles_base_url }}?color=gold"><span class="el-color-dot" style="background:#D4AF37;"></span>Gold</a></li>
+                        <li><a href="{{ tiles_base_url }}?color=silver"><span class="el-color-dot" style="background:#C5C6C7;"></span>Silver</a></li>
+                        <li><a href="{{ tiles_base_url }}?color=ivory"><span class="el-color-dot" style="background:#F5F2EB;"></span>Ivory &amp; White</a></li>
+                        <li><a href="{{ tiles_base_url }}?color=beige"><span class="el-color-dot" style="background:#D8C7B5;"></span>Beige &amp; Sand</a></li>
+                        <li><a href="{{ tiles_base_url }}?color=terracotta"><span class="el-color-dot" style="background:#CC9E8F;"></span>Terracotta</a></li>
+                        <li><a href="{{ tiles_base_url }}?color=charcoal"><span class="el-color-dot" style="background:#2E2D2B;"></span>Anthracite &amp; Slate</a></li>
+                      {%- endif -%}
                     </ul>
                   </div>
                 </div>
 
                 <!-- Tab 3: Wallpaper (Coming Soon Banner) -->
                 <div class="el-tab-pane el-pane-wallpaper" id="wallpapers-tab-{{ section.id }}" role="tabpanel">
-                  <div class="el-wp-banner-card">
+                  <div class="el-wp-banner-card"{% if section.settings.mm_tab3_image != blank %} style="background-image: linear-gradient(to right, rgba(245, 239, 235, 0.95) 0%, rgba(245, 239, 235, 0.6) 38%, rgba(245, 239, 235, 0) 60%), url('{{ section.settings.mm_tab3_image | image_url: width: 900 }}');"{% endif %}>
                     <div class="el-wp-banner-content">
-                      <span class="el-wp-banner-badge">WALLPAPER COLLECTION</span>
-                      <h3 class="el-wp-banner-title">Coming Soon</h3>
-                      <p class="el-wp-banner-desc">
-                        A curated collection of premium wallcoverings and bespoke murals is launching soon.
-                      </p>
-                      <a href="#newsletter" class="el-wp-banner-btn" id="elWallpaperNotifyBtn-{{ section.id }}">
-                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                          <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
-                          <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
-                        </svg>
-                        <span>Notify Me</span>
-                      </a>
+                      {%- if tab3_banner_badge != blank -%}
+                        <span class="el-wp-banner-badge">{{ tab3_banner_badge }}</span>
+                      {%- endif -%}
+                      <h3 class="el-wp-banner-title">{{ tab3_title }}</h3>
+                      {%- if tab3_desc != blank -%}
+                        <p class="el-wp-banner-desc">{{ tab3_desc }}</p>
+                      {%- endif -%}
+                      {%- if tab3_btn_text != blank -%}
+                        <a href="{{ tab3_btn_url }}" class="el-wp-banner-btn" id="elWallpaperNotifyBtn-{{ section.id }}" style="background-color: {{ tab3_btn_bg }} !important; color: {{ tab3_btn_color }} !important;">
+                          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                            <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                          </svg>
+                          <span>{{ tab3_btn_text }}</span>
+                        </a>
+                      {%- endif -%}
                     </div>
                   </div>
                 </div>
@@ -2442,7 +2556,7 @@
           <svg viewBox="0 0 10 6"><polyline points="1 1 5 5 9 1"></polyline></svg>
         </button>
         <div class="el-drawer-accordion-content is-open">
-          <div class="el-drawer-subheading">Shop By Collection</div>
+          <div class="el-drawer-subheading">{{ section.settings.megamenu_sidebar_heading | default: 'Shop By Collection' }}</div>
           <a href="{{ routes.all_products_collection_url }}">All Products</a>
           {%- for col in collections -%}
             {%- unless col.handle == 'frontpage' or col.handle == 'all' or col.all_products_count == 0 -%}
@@ -2453,31 +2567,41 @@
             {%- endunless -%}
           {%- endfor -%}
 
-          <div class="el-drawer-subheading" style="margin-top: 14px;">Stone Panels</div>
-          <a href="{{ routes.all_products_collection_url }}" style="color: var(--el-hd-primary); font-weight: 500;">View Stone Panels →</a>
-          <a href="{{ routes.all_products_collection_url }}?type=honed-wall-panels">Honed Wall Panels</a>
-          <a href="{{ routes.all_products_collection_url }}?type=fluted-linear-panels">Fluted Linear Panels</a>
-          <a href="{{ routes.all_products_collection_url }}?type=textured-relief-panels">Textured Relief Panels</a>
-          <a href="{{ routes.all_products_collection_url }}?type=large-format-slabs">Large Format Slabs</a>
+          <div class="el-drawer-subheading" style="margin-top: 14px;">{{ tab1_heading }}</div>
+          <a href="{{ tab1_btn_url }}" style="color: {{ tab1_btn_bg }}; font-weight: 500;">{{ tab1_btn_text }}</a>
+          {%- if section.settings.mm_tab1_col2_menu != blank and linklists[section.settings.mm_tab1_col2_menu].links.size > 0 -%}
+            {%- for lk in linklists[section.settings.mm_tab1_col2_menu].links -%}
+              <a href="{{ lk.url }}">{{ lk.title }}</a>
+            {%- endfor -%}
+          {%- else -%}
+            <a href="{{ routes.all_products_collection_url }}?type=honed-wall-panels">Honed Wall Panels</a>
+            <a href="{{ routes.all_products_collection_url }}?type=fluted-linear-panels">Fluted Linear Panels</a>
+            <a href="{{ routes.all_products_collection_url }}?type=textured-relief-panels">Textured Relief Panels</a>
+            <a href="{{ routes.all_products_collection_url }}?type=large-format-slabs">Large Format Slabs</a>
+          {%- endif -%}
           <a href="{{ routes.all_products_collection_url }}?size=full-wall-panels">Full Wall Panels</a>
           <a href="{{ routes.all_products_collection_url }}?size=modular-tiles">Modular Tiles</a>
-          <a href="{{ routes.all_products_collection_url }}?size=custom-architectural-cuts">Custom Architectural Cuts</a>
           <a href="{{ routes.all_products_collection_url }}?color=gold"><span class="el-color-dot" style="background:#D4AF37;"></span>Gold Tone Panels</a>
           <a href="{{ routes.all_products_collection_url }}?color=silver"><span class="el-color-dot" style="background:#C5C6C7;"></span>Silver Tone Panels</a>
 
-          <div class="el-drawer-subheading" style="margin-top: 14px;">Tiles &amp; Natural Stone</div>
-          <a href="{{ tiles_base_url }}" style="color: var(--el-hd-primary); font-weight: 500;">View All Tiles →</a>
-          <a href="{{ tiles_base_url }}?type=porcelain">Porcelain</a>
-          <a href="{{ tiles_base_url }}?type=handmade-ceramic">Handmade Ceramic</a>
-          <a href="{{ tiles_base_url }}?type=mirror-work">Mirror Work</a>
+          <div class="el-drawer-subheading" style="margin-top: 14px;">{{ tab2_heading }}</div>
+          <a href="{{ tab2_btn_url }}" style="color: {{ tab2_btn_bg }}; font-weight: 500;">{{ tab2_btn_text }}</a>
+          {%- if section.settings.mm_tab2_col2_menu != blank and linklists[section.settings.mm_tab2_col2_menu].links.size > 0 -%}
+            {%- for lk in linklists[section.settings.mm_tab2_col2_menu].links -%}
+              <a href="{{ lk.url }}">{{ lk.title }}</a>
+            {%- endfor -%}
+          {%- else -%}
+            <a href="{{ tiles_base_url }}?type=porcelain">Porcelain</a>
+            <a href="{{ tiles_base_url }}?type=handmade-ceramic">Handmade Ceramic</a>
+            <a href="{{ tiles_base_url }}?type=mirror-work">Mirror Work</a>
+          {%- endif -%}
           <a href="{{ tiles_base_url }}?size=full-tile-panels">Full Tile Panels</a>
           <a href="{{ tiles_base_url }}?size=cluster-panel-tiles">Cluster Panel Tiles</a>
-          <a href="{{ tiles_base_url }}?size=smaller-handmade-ceramic-tiles">Smaller Handmade Ceramic Tiles</a>
           <a href="{{ tiles_base_url }}?color=gold"><span class="el-color-dot" style="background:#D4AF37;"></span>Gold</a>
           <a href="{{ tiles_base_url }}?color=silver"><span class="el-color-dot" style="background:#C5C6C7;"></span>Silver</a>
 
-          <div class="el-drawer-subheading" style="margin-top: 14px;">Wallpaper (Coming Soon)</div>
-          <span style="font-size: 13px; color: var(--el-hd-gray); padding: 4px 0 10px 0; display: block;">Collection launching soon</span>
+          <div class="el-drawer-subheading" style="margin-top: 14px;">{{ tab3_label }}{% if tab3_badge != blank %} ({{ tab3_badge }}){% endif %}</div>
+          <span style="font-size: 13px; color: var(--el-hd-gray); padding: 4px 0 10px 0; display: block;">{{ tab3_desc }}</span>
         </div>
       </div>
     {%- endcapture -%}
@@ -3469,6 +3593,237 @@
       "id": "megamenu_title",
       "label": "Mega Menu Title",
       "default": "Shop Products"
+    },
+    {
+      "type": "text",
+      "id": "megamenu_sidebar_heading",
+      "label": "Sidebar Collection List Heading",
+      "default": "Shop By Collection"
+    },
+    {
+      "type": "header",
+      "content": "Mega Menu - Tab 1 (Stone Panels)"
+    },
+    {
+      "type": "text",
+      "id": "mm_tab1_label",
+      "label": "Tab 1 Label",
+      "default": "Stone Panel"
+    },
+    {
+      "type": "text",
+      "id": "mm_tab1_heading",
+      "label": "Tab 1 Main Heading",
+      "default": "Stone Panels"
+    },
+    {
+      "type": "textarea",
+      "id": "mm_tab1_desc",
+      "label": "Tab 1 Description Paragraph",
+      "default": "Architectural stone paneling, monolithic formats and precision-cut surfaces."
+    },
+    {
+      "type": "text",
+      "id": "mm_tab1_btn_text",
+      "label": "Tab 1 Button Text",
+      "default": "Explore Stone Panels →"
+    },
+    {
+      "type": "url",
+      "id": "mm_tab1_btn_url",
+      "label": "Tab 1 Button Link (Optional: defaults to all products)"
+    },
+    {
+      "type": "color",
+      "id": "mm_tab1_btn_bg",
+      "label": "Tab 1 Button Background Color",
+      "default": "#cc9e8f"
+    },
+    {
+      "type": "color",
+      "id": "mm_tab1_btn_color",
+      "label": "Tab 1 Button Text Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "text",
+      "id": "mm_tab1_col2_heading",
+      "label": "Tab 1 Column 2 Heading",
+      "default": "Type"
+    },
+    {
+      "type": "link_list",
+      "id": "mm_tab1_col2_menu",
+      "label": "Tab 1 Column 2 Menu (Optional: custom links)",
+      "info": "Leave unselected to use default curated Type links."
+    },
+    {
+      "type": "text",
+      "id": "mm_tab1_col3_heading",
+      "label": "Tab 1 Column 3 Heading",
+      "default": "Size"
+    },
+    {
+      "type": "link_list",
+      "id": "mm_tab1_col3_menu",
+      "label": "Tab 1 Column 3 Menu (Optional: custom links)",
+      "info": "Leave unselected to use default curated Size links."
+    },
+    {
+      "type": "text",
+      "id": "mm_tab1_col4_heading",
+      "label": "Tab 1 Column 4 Heading",
+      "default": "Color"
+    },
+    {
+      "type": "link_list",
+      "id": "mm_tab1_col4_menu",
+      "label": "Tab 1 Column 4 Menu (Optional: custom links with swatches)",
+      "info": "Leave unselected to use default curated Color links with swatches."
+    },
+    {
+      "type": "header",
+      "content": "Mega Menu - Tab 2 (Tiles & Surfaces)"
+    },
+    {
+      "type": "text",
+      "id": "mm_tab2_label",
+      "label": "Tab 2 Label",
+      "default": "Tiles"
+    },
+    {
+      "type": "text",
+      "id": "mm_tab2_heading",
+      "label": "Tab 2 Main Heading",
+      "default": "Tiles & Surfaces"
+    },
+    {
+      "type": "textarea",
+      "id": "mm_tab2_desc",
+      "label": "Tab 2 Description Paragraph",
+      "default": "Architectural porcelain, handcrafted ceramics, and bespoke mirror work surfaces."
+    },
+    {
+      "type": "text",
+      "id": "mm_tab2_btn_text",
+      "label": "Tab 2 Button Text",
+      "default": "View All Tiles →"
+    },
+    {
+      "type": "url",
+      "id": "mm_tab2_btn_url",
+      "label": "Tab 2 Button Link (Optional: defaults to tiles collection)"
+    },
+    {
+      "type": "color",
+      "id": "mm_tab2_btn_bg",
+      "label": "Tab 2 Button Background Color",
+      "default": "#cc9e8f"
+    },
+    {
+      "type": "color",
+      "id": "mm_tab2_btn_color",
+      "label": "Tab 2 Button Text Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "text",
+      "id": "mm_tab2_col2_heading",
+      "label": "Tab 2 Column 2 Heading",
+      "default": "Type"
+    },
+    {
+      "type": "link_list",
+      "id": "mm_tab2_col2_menu",
+      "label": "Tab 2 Column 2 Menu (Optional: custom links)",
+      "info": "Leave unselected to use default curated Type links."
+    },
+    {
+      "type": "text",
+      "id": "mm_tab2_col3_heading",
+      "label": "Tab 2 Column 3 Heading",
+      "default": "Size"
+    },
+    {
+      "type": "link_list",
+      "id": "mm_tab2_col3_menu",
+      "label": "Tab 2 Column 3 Menu (Optional: custom links)",
+      "info": "Leave unselected to use default curated Size links."
+    },
+    {
+      "type": "text",
+      "id": "mm_tab2_col4_heading",
+      "label": "Tab 2 Column 4 Heading",
+      "default": "Colors & Tones"
+    },
+    {
+      "type": "link_list",
+      "id": "mm_tab2_col4_menu",
+      "label": "Tab 2 Column 4 Menu (Optional: custom links with swatches)",
+      "info": "Leave unselected to use default curated Color links with swatches."
+    },
+    {
+      "type": "header",
+      "content": "Mega Menu - Tab 3 (Wallpaper / Banner)"
+    },
+    {
+      "type": "text",
+      "id": "mm_tab3_label",
+      "label": "Tab 3 Label",
+      "default": "Wallpaper"
+    },
+    {
+      "type": "text",
+      "id": "mm_tab3_badge",
+      "label": "Tab 3 Badge Text",
+      "default": "Coming Soon"
+    },
+    {
+      "type": "text",
+      "id": "mm_tab3_banner_badge",
+      "label": "Card Badge Text",
+      "default": "WALLPAPER COLLECTION"
+    },
+    {
+      "type": "text",
+      "id": "mm_tab3_title",
+      "label": "Card Title",
+      "default": "Coming Soon"
+    },
+    {
+      "type": "textarea",
+      "id": "mm_tab3_desc",
+      "label": "Card Description Paragraph",
+      "default": "A curated collection of premium wallcoverings and bespoke murals is launching soon."
+    },
+    {
+      "type": "text",
+      "id": "mm_tab3_btn_text",
+      "label": "Card Button Text",
+      "default": "Notify Me"
+    },
+    {
+      "type": "url",
+      "id": "mm_tab3_btn_url",
+      "label": "Card Button Link (Optional: defaults to #newsletter)"
+    },
+    {
+      "type": "color",
+      "id": "mm_tab3_btn_bg",
+      "label": "Card Button Background Color",
+      "default": "#805D52"
+    },
+    {
+      "type": "color",
+      "id": "mm_tab3_btn_color",
+      "label": "Card Button Text Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "image_picker",
+      "id": "mm_tab3_image",
+      "label": "Card Background Image (Optional)",
+      "info": "Upload a custom background image for the Wallpaper banner card."
     },
     {
       "type": "header",
