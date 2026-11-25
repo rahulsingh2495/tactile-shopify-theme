@@ -473,6 +473,7 @@
       box-shadow: 0 16px 42px rgba(0, 0, 0, 0.08);
       opacity: 0;
       visibility: hidden;
+      pointer-events: none;
       transform: translateY(8px);
       transition: opacity 0.25s cubic-bezier(0.16, 1, 0.3, 1),
                   transform 0.25s cubic-bezier(0.16, 1, 0.3, 1),
@@ -502,7 +503,15 @@
     #ellora-header-{{ section.id }} .el-has-megamenu.is-open > .el-megamenu-panel {
       opacity: 1;
       visibility: visible;
+      pointer-events: auto;
       transform: translateY(0);
+    }
+
+    #ellora-header-{{ section.id }} .el-has-megamenu:not(:hover):not(.is-open) > .el-megamenu-panel,
+    #ellora-header-{{ section.id }} .el-has-megamenu:not(:hover):not(.is-open) .el-tab-pane {
+      opacity: 0 !important;
+      visibility: hidden !important;
+      pointer-events: none !important;
     }
 
     #ellora-header-{{ section.id }} .el-has-megamenu.is-closed > .el-megamenu-panel {
@@ -695,10 +704,14 @@
     }
 
     #ellora-header-{{ section.id }} .el-tab-pane.is-active {
+      z-index: 2;
+    }
+
+    #ellora-header-{{ section.id }} .el-has-megamenu:hover .el-tab-pane.is-active,
+    #ellora-header-{{ section.id }} .el-has-megamenu.is-open .el-tab-pane.is-active {
       visibility: visible;
       opacity: 1;
       pointer-events: auto;
-      z-index: 2;
     }
 
     #ellora-header-{{ section.id }} .el-tab-pane.el-pane-wallpaper {
