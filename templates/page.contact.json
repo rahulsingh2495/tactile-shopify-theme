@@ -115,7 +115,7 @@
         "btn2_text": "Explore the Collection",
         "btn2_link": "/collections/all",
         "btn2_open_new_tab": false,
-        "btn2_border_color": "#D0C2C2",
+        "btn2_border_color": "#DAD1D1",
         "btn2_text_color": "#000000",
         "btn2_hover_bg": "#cc9e8f",
         "btn2_hover_text": "#ffffff",
