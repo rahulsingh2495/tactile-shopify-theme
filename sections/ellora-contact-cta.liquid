@@ -164,7 +164,7 @@
         padding: {{ section.settings.card_padding_mobile | default: 44 }}px 20px;
       }
       #ellora-contact-cta-{{ section.id }} .el-cta-headline {
-        font-size: {{ section.settings.title_size_mobile | default: 32 }}px;
+        font-size: {{ section.settings.title_size_mobile | default: 28 }}px;
       }
       #ellora-contact-cta-{{ section.id }} .el-cta-buttons-wrap {
         flex-direction: column;
@@ -187,11 +187,9 @@
       <h2 class="el-cta-headline">
         {{ section.settings.title | default: 'Ready to shortlist the right surface?' }}
       </h2>
-      {%- if section.settings.description != blank -%}
-        <p class="el-cta-description">
-          {{ section.settings.description }}
-        </p>
-      {%- endif -%}
+      <p class="el-cta-description">
+        {{ section.settings.description | default: 'Ellora should clearly show whether a product is sold by single piece, minimum pattern set, or complete mural set. This avoids confusion for large tiles and multi-panel wallpapers.' }}
+      </p>
 
       <div class="el-cta-buttons-wrap">
         {%- if section.settings.btn1_text != blank -%}
@@ -259,7 +257,7 @@
       "max": 36,
       "step": 2,
       "unit": "px",
-      "default": 32
+      "default": 28
     },
     {
       "type": "select",
@@ -276,7 +274,7 @@
       "type": "textarea",
       "id": "description",
       "label": "Subheading / Clarification Paragraph",
-      "default": ""
+      "default": "Ellora should clearly show whether a product is sold by single piece, minimum pattern set, or complete mural set. This avoids confusion for large tiles and multi-panel wallpapers."
     },
     {
       "type": "range",
@@ -508,7 +506,7 @@
       "max": 80,
       "step": 2,
       "unit": "px",
-      "default": 32
+      "default": 28
     },
     {
       "type": "range",

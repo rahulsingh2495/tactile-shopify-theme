@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "wrapper": "main.main-content",
   "sections": {
@@ -5,18 +14,41 @@
       "type": "ellora-contact-hero",
       "settings": {
         "title": "Tell us about your room,<br>wall, floor or surface idea.",
+        "title_size_desktop": 48,
+        "title_size_mobile": 32,
+        "title_weight": "400",
         "description": "",
+        "desc_size": 13.5,
+        "custom_image_url": "",
         "aspect_ratio": "banner",
+        "custom_image_height": 460,
+        "custom_image_height_mobile": 260,
+        "image_position": "center center",
         "image_radius": 6,
+        "bg_color": "#ffffff",
+        "title_color": "#cc9e8f",
+        "text_color": "#5c5854",
+        "container_max_width": 1720,
+        "headline_max_width": 680,
+        "desc_max_width": 420,
+        "header_margin_bottom": 36,
         "padding_top": 60,
-        "padding_bottom": 40
+        "padding_bottom": 40,
+        "padding_top_mobile": 40,
+        "padding_bottom_mobile": 28
       }
     },
     "contact_form": {
       "type": "ellora-contact-form",
       "settings": {
         "title": "Send the key details in<br>one place.",
+        "title_size_desktop": 48,
+        "title_size_mobile": 32,
+        "title_weight": "400",
         "description": "Share a few project details so Ellora can guide you with the right tile, wallpaper or mural option. Add your room type, approximate wall or floor size, product interest and any specific requirement you have in mind.",
+        "desc_size": 13.5,
+        "left_col_width": 38,
+        "column_gap": 60,
         "name_label": "Name",
         "name_placeholder": "Your Name",
         "name_required": true,
@@ -36,22 +68,71 @@
         "message_label": "Message",
         "message_placeholder": "Tell us what you are trying to create...",
         "message_required": true,
+        "textarea_height": 135,
+        "select_placeholder": "Select one",
         "btn_text": "Submit",
+        "success_title": "Thank you for reaching out.",
+        "success_message": "Our design consultation team has received your project details and will be in touch shortly.",
+        "bg_color": "#ffffff",
+        "title_color": "#805D52",
+        "text_color": "#5c5854",
+        "label_color": "#45423e",
+        "input_bg": "#faf8f5",
+        "input_border": "#ede8e1",
+        "input_focus_border": "#cc9e8f",
+        "input_text_color": "#1c1b19",
+        "placeholder_color": "#a49f98",
+        "input_radius": 3,
+        "btn_bg": "#cc9e8f",
+        "btn_hover_bg": "#bf8673",
+        "btn_text_color": "#ffffff",
+        "btn_radius": 3,
+        "container_max_width": 1720,
         "padding_top": 60,
-        "padding_bottom": 70
+        "padding_bottom": 70,
+        "padding_top_mobile": 40,
+        "padding_bottom_mobile": 48
       }
     },
     "contact_cta": {
       "type": "ellora-contact-cta",
       "settings": {
         "title": "Ready to shortlist the right surface?",
+        "title_size_desktop": 48,
+        "title_size_mobile": 28,
+        "title_weight": "400",
         "description": "",
+        "desc_size": 13.5,
+        "desc_max_width": 620,
         "btn1_text": "Ask on Whatsapp",
         "btn1_link": "#",
+        "btn1_whatsapp_number": "",
+        "btn1_whatsapp_message": "",
+        "btn1_open_new_tab": true,
+        "btn1_bg": "#cc9e8f",
+        "btn1_hover_bg": "#bf8673",
+        "btn1_text_color": "#ffffff",
         "btn2_text": "Explore the Collection",
         "btn2_link": "/collections/all",
+        "btn2_open_new_tab": false,
+        "btn2_border_color": "",
+        "btn2_text_color": "#cc9e8f",
+        "btn2_hover_bg": "#cc9e8f",
+        "btn2_hover_text": "#ffffff",
+        "button_radius": 2,
+        "section_bg": "#ffffff",
+        "card_bg": "#fffaf8",
+        "card_border": "#f2e8e2",
+        "card_radius": 4,
+        "card_padding_desktop": 64,
+        "card_padding_mobile": 44,
+        "title_color": "#cc9e8f",
+        "text_color": "#5c5854",
+        "container_max_width": 1720,
         "padding_top": 40,
-        "padding_bottom": 80
+        "padding_bottom": 80,
+        "padding_top_mobile": 28,
+        "padding_bottom_mobile": 50
       }
     }
   },

@@ -35,7 +35,7 @@
       --el-pol-border: {{ section.settings.border_color | default: '#ECE7E1' }};
       --el-pol-card-bg: {{ section.settings.card_bg | default: '#FAF8F5' }};
 
-      --el-pol-title-size: {{ section.settings.title_font_size | default: 48 }}px;
+      --el-pol-title-size: {{ section.settings.title_font_size | default: 44 }}px;
       --el-pol-title-size-mob: {{ section.settings.title_font_size_mobile | default: 32 }}px;
       --el-pol-title-weight: {{ section.settings.title_font_weight | default: '400' }};
 
@@ -61,7 +61,7 @@
 
     #ellora-policy-{{ section.id }} .el-policy-container {
       width: 90%;
-      max-width: {{ section.settings.container_max_width | default: 1720 }}px;
+      max-width: {{ section.settings.container_max_width | default: 1280 }}px;
       margin: 0 auto;
       padding: 0;
     }
@@ -106,19 +106,13 @@
       letter-spacing: 0.2em;
       text-transform: uppercase;
       font-weight: 600;
-      color: #1C1B19;
+      color: var(--el-pol-link);
       margin-bottom: 12px;
     }
 
     #ellora-policy-{{ section.id }} .el-policy-title {
-      font-family: {% if section.settings.heading_font_family == 'sans' %}'Plus Jakarta Sans', sans-serif{% else %}'Cormorant Garamond', Georgia, serif{% endif %};
-      font-size: var(--el-pol-title-size);
-      font-weight: var(--el-pol-title-weight);
       color: #805D52 !important;
-      line-height: 1.15;
-      letter-spacing: -0.01em;
-      margin: 0 0 16px 0;
-    }'Plus Jakarta Sans', sans-serif{% else %}'Cormorant Garamond', Georgia, serif{% endif %};
+      font-family: {% if section.settings.heading_font_family == 'sans' %}'Plus Jakarta Sans', sans-serif{% else %}'Cormorant Garamond', Georgia, serif{% endif %};
       font-size: var(--el-pol-title-size);
       font-weight: var(--el-pol-title-weight);
       color: var(--el-pol-heading);
@@ -340,9 +334,6 @@
 
     /* Mobile Responsive */
     @media (max-width: 768px) {
-      #ellora-policy-{{ section.id }} .el-policy-container {
-        width: 92%;
-      }
       #ellora-policy-{{ section.id }} {
         padding-top: {{ section.settings.padding_top_mobile | default: 36 }}px;
         padding-bottom: {{ section.settings.padding_bottom_mobile | default: 50 }}px;
@@ -543,7 +534,7 @@
       "max": 64,
       "step": 2,
       "unit": "px",
-      "default": 48
+      "default": 44
     },
     {
       "type": "range",
@@ -668,10 +659,10 @@
       "id": "container_max_width",
       "label": "Container Max Width",
       "min": 1000,
-      "max": 1920,
+      "max": 1600,
       "step": 20,
       "unit": "px",
-      "default": 1720
+      "default": 1280
     },
     {
       "type": "range",

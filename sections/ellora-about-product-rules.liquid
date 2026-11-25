@@ -229,11 +229,9 @@
           {{ section.settings.heading | default: "Simple product rules<br>before purchase." }}
         </h2>
         
-        {%- if section.settings.body != blank -%}
-          <p class="el-rules-body">
-            {{ section.settings.body }}
-          </p>
-        {%- endif -%}
+        <p class="el-rules-body">
+          {{ section.settings.body | default: "Ellora should clearly show whether a product is sold by single piece, minimum pattern set, or as a full set. This avoids confusion for large tiles and multi-panel wallpapers." }}
+        </p>
 
         {%- if section.settings.cta_text != blank -%}
           <a href="{{ section.settings.cta_link | default: '#' }}" class="el-rules-cta">
@@ -301,7 +299,7 @@
       "type": "textarea",
       "id": "body",
       "label": "Body Description",
-      "default": ""
+      "default": "Ellora should clearly show whether a product is sold by single piece, minimum pattern set, or as a full set. This avoids confusion for large tiles and multi-panel wallpapers."
     },
     {
       "type": "text",
